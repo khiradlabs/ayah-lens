@@ -1,0 +1,33 @@
+# Credentials and private material
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.mobileprovision
+secrets/
+private/
+recordings/
+datasets/
+assets/
+vendor/
+evidence/local/
+
+# Model downloads
+*.onnx
+*.mlpackage/
+*.mlmodelc/
+*.safetensors
+*.gguf
+*.pt
+
+# Generated dependencies and builds
+node_modules/
+.expo/
+Pods/
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+*.log
