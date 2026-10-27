@@ -1,6 +1,6 @@
 # Resume October 27: approve and run the first real Muse test
 
-Status: Faraz resumed October 27. The registered iPhone is available; the pending paid/audio-upload approval has been presented again. The saved private Meta key passed read-only authentication/catalog lookup. The native Muse client is implemented and installed, but the key has not been provisioned to the phone and no paid inference or audio upload occurred. Twenty core tests, callback regression, local synthetic WebSocket integration probe and signed build/install passed.
+Status: Faraz resumed October 27. The registered iPhone is available; the pending paid/audio-upload approval has been presented again. The saved private Meta key passed read-only authentication/catalog lookup. The native Muse client is implemented and installed, and its private key is now provisioned to the phone. The agent has not initiated paid inference or audio upload. Twenty core tests, callback regression, local synthetic WebSocket integration probe and signed build/install passed.
 
 ## First action
 
@@ -22,3 +22,7 @@ The local WebSocket server emits synthetic Quran fragments. Its pass is not live
 - AYAH_DEVICE_ID=<selected-phone> bash tools/build.sh signed
 
 Apple agreement, device registration, Meta AI Developer Mode and glasses developer component are complete. Do not ask again.
+
+## Current phone state
+
+October 27: tools/provision_muse_key.py completed, Ayah Lens restarted, and temporary key handoff deletion was verified. Do not provision again without reason. The wearer was given a cost/audio-transfer disclosure and can choose Start Muse live Al-Fatihah to perform the test, then Stop and report the result. The agent must not initiate a billed provider request without the separate approval.

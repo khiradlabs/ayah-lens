@@ -102,3 +102,7 @@ October 26: Faraz requested resuming tomorrow. Working tree was clean at 517dd2c
 ## Resumed October 27
 
 Faraz requested resuming. The registered physical iPhone was listed as available. The private credential preflight passed without copying the key or contacting Meta. Presented the still-pending approval for one two-minute recitation test costing at most $0.01. No paid session or cloud audio upload has started.
+
+## Muse device setup completed October 27
+
+Faraz asked how to test. Completed the reversible setup without starting inference: privately provisioned the saved key, restarted Ayah Lens successfully, and verified that the temporary Library/muse-key.once handoff no longer exists. App code removes it only after successful Keychain storage. No paid session or audio upload was initiated by the agent. The wearer receives instructions disclosing the small cost and audio transfer before choosing the Muse start button. Earlier notes deferring key setup until paid-test approval were a workflow choice, not a requirement for this non-billable setup. Live Muse result remains unverified.
