@@ -27,6 +27,14 @@ final class RecognitionTests: XCTestCase {
         XCTAssertEqual(matcher.match("الحمد لله رب العالمين", previous: "1:4"), "1:2")
     }
 
+    func testSharedVerseIsNotLostWhenWindowAlreadyIncludesNextOpeningWord() {
+        let matcher = VerseMatcher(verses: verses)
+        XCTAssertEqual(matcher.match("رب العالمين الرحمن الرحيم مالك", previous: "1:2"), "1:3")
+        XCTAssertNil(matcher.match("الرحمن الرحيم افتح", previous: "1:2"))
+        XCTAssertNil(matcher.match("الرحمن الرحيم مالك", previous: nil))
+        XCTAssertEqual(matcher.match("الرحمن الرحيم مالك يوم الدين", previous: "1:2"), "1:4")
+    }
+
     func testShortUnrelatedAndNonArabicSpeechDoesNotLock() {
         let matcher = VerseMatcher(verses: verses)
         for text in ["", "الله", "hello world", "افتح النافذة من فضلك", "الرحمن"] {

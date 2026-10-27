@@ -10,9 +10,11 @@ public struct Verse: Codable, Identifiable, Sendable {
 }
 
 public struct VerseMatcher: Sendable {
-    private let verses: [(id: String, letters: [Character])]
+    private let verses: [(id: String, letters: [Character], opening: [Character])]
     public init(verses: [Verse]) {
-        self.verses = verses.map { ($0.id, Array(Self.normalize($0.arabic))) }
+        self.verses = verses.map {
+            ($0.id, Array(Self.normalize($0.arabic)), Array(Self.normalize(String($0.arabic.split(separator: " ").first ?? ""))))
+        }
     }
 
     // Only recognition copies are normalized. Published display strings stay verbatim.
@@ -32,6 +34,39 @@ public struct VerseMatcher: Sendable {
 
     public func match(_ transcript: String, previous: String?) -> String? {
         let query = Array(Self.normalize(transcript))
+        if let direct = matchSuffix(query, previous: previous) { return direct }
+        guard let previous, let index = verses.firstIndex(where: { $0.id == previous }),
+              index + 2 < verses.count, query.count >= 11 else { return nil }
+        let expected = verses[index + 1]
+        let following = verses[index + 2].opening
+        // A sampled window may finish inside the following ayah's first word.
+        // Require actual evidence for the expected verse and the following opening.
+        for count in 3...min(6, query.count - 8) {
+            let tail = Array(query.suffix(count))
+            let openingMatches = following.indices.contains { end in
+                let length = end + 1
+                return abs(count - length) <= 1 && Self.distance(tail, Array(following.prefix(length))) <= 1
+            }
+            if openingMatches, matchSuffix(Array(query.dropLast(count)), previous: previous) == expected.id {
+                return expected.id
+            }
+        }
+        return nil
+    }
+
+    private static func distance(_ left: [Character], _ right: [Character]) -> Int {
+        var row = Array(0...right.count)
+        for (i, letter) in left.enumerated() {
+            var next = [i + 1]
+            for (j, target) in right.enumerated() {
+                next.append(min(next[j] + 1, row[j + 1] + 1, row[j] + (letter == target ? 0 : 1)))
+            }
+            row = next
+        }
+        return row.last!
+    }
+
+    private func matchSuffix(_ query: [Character], previous: String?) -> String? {
         guard query.count >= 8 else { return nil }
         var scores: [(id: String, evidence: Int)] = []
         for verse in verses {

@@ -1,6 +1,6 @@
 # Ayah Lens implementation checkpoint
 
-October 26, 2026. Wearer confirmed the corrected combined check: app stayed open, lens text remained visible, and microphone sample count increased while speaking. The core simultaneous audio/display milestone passed. A local recognition slice is implemented and installed. The wearer reported it worked for most of Al-Fatihah, with one or two ayahs missed. This is a partial live-recognition pass; the specific misses remain unidentified.
+October 26, 2026. Wearer confirmed the corrected combined check: app stayed open, lens text remained visible, and microphone sample count increased while speaking. The core simultaneous audio/display milestone passed. A local recognition slice is implemented and installed. The wearer reported it worked for most of Al-Fatihah, with one or two ayahs missed. This is a partial live-recognition pass; the wearer identified Ar-Rahman ir-Rahim, likely 1:3, as a missed phrase.
 
 ## Done and verified
 
@@ -38,7 +38,7 @@ October 26, 2026. Wearer confirmed the corrected combined check: app stayed open
 ## Pending
 
 - Stop/restart behavior has core test coverage but no explicit wearer confirmation. Longer operation, directional robustness and recognition accuracy were not established by this check.
-- Identify the one or two ayahs missed in the wearer’s first live test. End-to-end latency, false locks and repeat/stop behavior still need measurement. A measured engine comparison, narrow Spark contribution, user-benefit evaluation and video production remain pending.
+- Retest the identified Ar-Rahman ir-Rahim miss after the bounded transition correction. End-to-end latency, false locks and repeat/stop behavior still need measurement. A measured engine comparison, narrow Spark contribution, user-benefit evaluation and video production remain pending.
 - No paid API call or cloud audio upload occurred in this milestone.
 
 ## Files and conventions
@@ -64,3 +64,12 @@ October 26, 2026. Wearer confirmed the corrected combined check: app stayed open
 ## First live-recognition observation
 
 The wearer reported: “it worked for the most part” with “one or two missed ayats.” This establishes real recitation-driven lens updates, not a complete seven-ayah accuracy pass. Asked which ayahs or phrases were missed before changing recognition behavior. No latency or exact miss count was measured. The model probe timings above are Mac-only execution timings.
+
+## Ar-Rahman ir-Rahim transition correction
+
+- Wearer identified Ar-Rahman ir-Rahim as a likely miss; its exact ASR transcript was not captured.
+- Reproduced one matcher defect: a rolling transcript ending “رب العالمين الرحمن الرحيم مالك” after 1:2 returned nil, although 1:3 was supported. The isolated repeated phrase already matched correctly with established sequence.
+- If a direct match fails, the matcher can now trim a bounded 3–6-letter tail only when it matches the following ayah’s opening and the remaining transcript independently supports the expected verse. Existing direct later-verse matches win. Unrelated tails or missing sequence remain rejected.
+- Fifteen tests passed. The new case failed before implementation, failed again when the fix was temporarily removed, and passed when restored. PCM callback regression remained green. Signed build succeeded.
+- This is a reproduced integration defect, not proof of the exact cause of the wearer’s miss. Actual glasses retest remains required. No model, cadence, global threshold or canonical display text changed.
+- Local investigation: build/logs/rahman-investigation.md.

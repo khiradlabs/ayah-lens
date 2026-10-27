@@ -1,10 +1,10 @@
 # Next: validate live Al-Fatihah recognition on the glasses
 
-Status: Partial live pass. The wearer reported most ayahs worked, with one or two missed. A question identifying the missed ayahs/phrases is pending.
+Status: Partial live pass. The wearer identified Ar-Rahman ir-Rahim as a likely miss. A bounded matcher transition correction passed fifteen tests and a signed build. Physical retest is pending.
 
 ## First action
 
-Read CHECKPOINT.md. Obtain the specific missed ayahs or phrases from the pending question. Do not assume whether the model, suffix matcher or one-second update cadence caused the miss. Reproduce the identified failure with a regression test or collect a short local diagnostic trace before changing behavior.
+Read CHECKPOINT.md. Retest Al-Fatihah at the wearer’s normal pace, especially the transition from Alhamdu lillahi rabbil alamin through Ar-Rahman ir-Rahim to Maliki yawmid-din. Confirm whether 1:3 appears. If it still misses, capture the phone transcript during that window before another change. Do not assume that the reproduced matcher case proves the exact cause of the original live miss.
 
 Do not infer accuracy from the synthetic model probe or manually selected lens output. If there is a failure, capture the exact error, transcript or new crash report before changing code. Keep new phone observations and local evidence private unless explicitly cleared.
 
