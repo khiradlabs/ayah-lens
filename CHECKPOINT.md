@@ -81,3 +81,16 @@ Installation of the transition correction passed signature/profile checks and co
 Faraz explicitly required Muse tools on October 26. Current code uses local Meta Omnilingual and DAT; no Muse API is integrated. Updated SPEC.md and NEXT-TASK.md to make Muse Voice Transcribe the next core integration, with local Omnilingual retained as an explicitly labelled fallback. A useful Spark role remains a separate measured milestone.
 
 Verified the official Muse speech protocol and pricing pages. Project credentials contain HF_TOKEN only. Proton Pass connection worked; no matching Meta/Muse/Ayah credential titles were found in the Khirad deployment or business vaults. No secret values were printed. API-key access and bounded paid/cloud-audio test authorization remain required before live Muse verification. No additional app code changed during this clarification.
+
+## Muse credential and client preparation
+
+- Faraz pasted META_API_KEY into the private project credentials file. Its value was never printed. File permissions remain 0600.
+- A read-only GET /v1/models accepted the key and listed muse-voice-transcribe-1.0 plus Standard Spark 1.3/1.2/1.1. This establishes authentication/catalog access, not active credits or paid speech success.
+- Implemented the native Muse WebSocket client, Arabic-biased handshake authentication, continuous 24 kHz int16 PCM conversion, cumulative partial replacement and turn-aware completion. Actual transcripts feed the existing canonical matcher.
+- Added distinct Start Muse live Al-Fatihah and Start local fallback controls. Muse remains disabled until runtime credentials are provisioned. There is no silent automatic fallback.
+- Each Muse stream has a two-minute audio cap, bounded audio queue, explicit endStream and bounded final-response cleanup. Keys are loaded from device-only Keychain; tools/provision_muse_key.py supports a private one-time handoff and app restart without including the value in argv or logs. Only its dry-run ran.
+- Twenty core tests passed. The five new Muse tests were observed RED first with fourteen assertions failing before implementation. Callback regression passed PCM/sample-rate handoff.
+- python3 tools/probe_muse.py passed the actual URLSession WebSocket client against a local synthetic server: no authorization upgrade header; handshake model/Arabic/PCM checked; audio blocked before acknowledgement; binary PCM delivered; synthetic partials selected canonical 1:2; endStream/normal closure passed. No Meta connection or real audio was used by this probe.
+- Signed Muse build and installation passed. Keychain import and live Muse transcription/lens behavior are not verified. No live Muse session, paid inference or cloud recitation upload has occurred.
+- A compile check caught missing isolation for the Keychain dictionary and await inside a probe assertion; these were corrected before installation. Explicit outer closure capture clears new ownership warnings.
+- Next gate: approve one test of up to two minutes using Faraz’s own recitation audio, at most $0.01 under the published $0.18/hour rate. Then provision the key, run live Muse and record actual matching/latency.

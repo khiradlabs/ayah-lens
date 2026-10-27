@@ -71,3 +71,13 @@ On the phone, register the app with the glasses. Check **Show selected verse on 
 For recognition, tap **Stop**, then **Start live Al-Fatihah**. Recite for 20–30 seconds and observe both the phone transcript and actual lens changes. The initial audio window takes five seconds; displayed inference time excludes that collection interval. Manual buttons remain separately labelled. Audio stays on the iPhone and is not saved.
 
 October 26 verification: combined audio/display was confirmed by the wearer. Recognition core tests, worker-queue PCM callback check, local model inference/resampling at 16/24/48 kHz, signed device build and installation passed. The synthetic-audio model probe checks execution, not Quran accuracy. The wearer reported real live-recognition updates for most ayahs, with one or two missed. Exact accuracy and timing remain unmeasured.
+
+## Muse mode
+
+The native Muse Voice Transcribe client is implemented and installed for testing. It uses the Meta realtime endpoint with Arabic bias and sends continuous mono int16 PCM at 24 kHz. Cumulative partials replace prior text, and the existing matcher selects published Arabic/Pickthall content. The UI distinguishes Muse from the manually selected local Omnilingual fallback.
+
+The API key stays outside the app bundle and Git. After the paid/audio test is approved, tools/provision_muse_key.py privately hands the key to device-only Keychain and restarts the app. Its --dry-run verifies local credential availability without copying it or contacting Meta. Muse is disabled until the key is imported. Do not paste keys into source or chat.
+
+Each test stream is capped at two minutes of audio. The client stops on queue overflow instead of accumulating delayed audio. No app audio recordings are saved. Muse mode sends audio to Meta; local fallback does not. Provider retention follows Meta’s service terms.
+
+Verification: twenty core tests and a local synthetic WebSocket integration probe passed, along with signed build/install. The model catalog accepted the private key. Live Muse speech recognition and physical lens output remain unverified pending paid-test approval. Run `python3 tools/probe_muse.py` for the transport fixture.

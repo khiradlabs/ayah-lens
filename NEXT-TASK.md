@@ -1,24 +1,24 @@
-# Next: put Muse in the recognition path
+# Next: approve and run the first real Muse test
 
-Status: Faraz required Muse tools. The installed app uses local Meta Omnilingual and DAT only. Muse Voice Transcribe and Spark are not integrated. Existing local recognition works for most ayahs; the Ar-Rahman ir-Rahim boundary correction is installed but awaits retest.
+Status: The saved private Meta key passed read-only authentication/catalog lookup. The native Muse client is implemented and installed, but the key has not been provisioned to the phone and no paid inference or audio upload occurred. Twenty core tests, callback regression, local synthetic WebSocket integration probe and signed build/install passed.
 
 ## First action
 
-Read CHECKPOINT.md and SPEC.md, including the October 26 Muse requirement. Locate a Meta Model API credential. The project credential file contains HF_TOKEN only; no matching Meta/Muse item titles were found in the Khirad business or deployment Proton Pass vaults. Never request a secret in chat or commit one.
+Read CHECKPOINT.md and SPEC.md. Obtain the pending spending/audio-upload approval for one Muse Voice Transcribe test of up to two minutes using Faraz’s own recitation, costing at most $0.01 at the published rate. Supplying the API key did not itself approve spending. No blocked status is warranted; the implementation and local checks are complete.
 
-Prepare and test the Muse Voice Transcribe adapter before requesting approval for a bounded paid/audio-upload probe. Target realtime PCM, handshake authorization, Arabic bias, cumulative partial replacement, explicit Muse/local-fallback labels, canonical verse matching and session cleanup. Keep the key outside the app and repository. No paid usage or cloud audio upload is authorized yet.
+After approval: run tools/provision_muse_key.py with the approved AYAH_DEVICE_ID. This copies a temporary 0600 handoff, restarts the app, and leaves API sessions stopped. The app imports the key into device-only Keychain and deletes the phone plaintext handoff. Keep the key value out of chat, arguments, logs and Git. If restart fails because the phone is locked, ask for unlock or have the wearer open the app manually. Verify handoff deletion or the enabled Muse control before claiming credential import.
 
-## Acceptance
+Ask the wearer to tap Start Muse live Al-Fatihah and recite at normal pace. Confirm the phone and lens explicitly say Muse Voice Transcribe. Observe automatic verse changes, especially 1:3. Record misses, wrong locks and initial-text latency. The stream is capped at two minutes; Stop ends input and cleans up. Silence must still be streamed in Muse mode.
 
-- Actual Muse transcripts from glasses audio drive canonical verse updates in the physical lens.
-- The UI and evidence identify whether Muse or local fallback supplied each result.
-- Record observed latency, wrong locks and missed ayahs in a short, cleared-audio comparison.
-- Evaluate a useful Spark ambiguity-resolution role separately; do not claim it before implementation and evidence.
+## Limits
 
-## Existing evidence and pending checks
+The local WebSocket server emits synthetic Quran fragments. Its pass is not live Muse proof. The model catalog proves key access only; credits and speech billing behavior remain unverified. Spark is not integrated and needs a separate useful evaluated role. Local Omnilingual remains an explicit fallback with a prior partial physical pass; its last 1:3 correction also awaits physical confirmation.
 
-Fifteen core tests and the callback probe passed. Local model execution/resampling, signed build and installation passed. The wearer confirmed simultaneous microphone/display and most local live matches. They identified Ar-Rahman ir-Rahim as a likely miss. A suffix-boundary regression was reproduced and corrected, but its physical retest is pending. These observations are not Muse results.
+## Repeatable checks
 
-The previously requested retest is Al-Fatihah at normal pace, especially 1:2 → 1:3 → 1:4. If it still misses, capture the current transcript before another matcher change. Do not let local tuning delay the explicit Muse requirement.
+- bash tools/test.sh
+- python3 tools/probe_muse.py
+- python3 tools/provision_muse_key.py --dry-run
+- AYAH_DEVICE_ID=<selected-phone> bash tools/build.sh signed
 
-Apple agreement, device registration, Meta AI Developer Mode and the glasses developer component are complete. Do not ask again. Use tools/device.py launch with the selected AYAH_DEVICE_ID when asked to open the app; the phone must be unlocked.
+Apple agreement, device registration, Meta AI Developer Mode and glasses developer component are complete. Do not ask again.

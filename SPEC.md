@@ -64,3 +64,13 @@ Official contracts checked October 26:
 - https://dev.meta.ai/docs/pricing-rate-limits
 
 Muse Voice Transcribe pricing is listed as $0.18 per audio hour. Realtime audio must be paced in real time; do not replay five-second rolling windows as overlapping streaming input. Perform a short cleared-audio probe before selecting the live listener, then compare verse matches, misses and observed latency. No paid call or cloud audio upload has occurred.
+
+## Muse client implementation status
+
+The Meta key was supplied privately and accepted by a read-only model-catalog request. The account lists Muse Voice Transcribe and Spark. No paid speech request or recitation upload has run.
+
+A native Muse realtime client, streaming 24 kHz int16 PCM encoder, cumulative/turn-aware transcript reducer and canonical matcher handoff are implemented. The phone has separate Muse and local-fallback controls. Muse is not silently substituted with local output. A two-minute processed-audio cap bounds each Muse test session. Eight pending audio chunks are allowed; overflow stops with a visible error rather than accumulating delayed audio. Stop sends endStream, allows final responses, and bounds connection cleanup.
+
+The key is not compiled into the app. An explicit development helper can privately provision a one-time app-container handoff, which the app imports into its non-synchronizing, device-only Keychain entry and deletes. This handoff has not run yet. The helper does not start paid inference.
+
+Validation: twenty core tests, real WebSocket transport against a local synthetic server, PCM callback regression and signed iPhone build/install. This verifies client execution and protocol behavior against the fixture, not compatibility or speech quality from a live Muse service. Approval of a two-minute test using Faraz’s own recitation audio, capped below $0.01 at published pricing, remains required by the spending rule.

@@ -20,3 +20,7 @@ The installed prototype bundles Meta Omnilingual ASR CTC-300M through aufklarerâ
 - Swift reference studied for waveform normalization, tensor layout and CTC semantics: https://github.com/soniqo/speech-swift/tree/main/Sources/OmnilingualASR
 
 The event implementation supplies its own native inference adapter, Arabic-only decoding restriction, rolling audio windows and Al-Fatihah matcher. The model and conversion predate the event and are not claimed as original work. The preparation helper extracts vocabulary entries without changing their token identifiers; these artifacts and model weights are excluded from Git. No third-party Swift implementation was copied. The Apache 2.0 licence and source notice are bundled as MODEL-NOTICE.txt.
+
+## Muse streaming protocol
+
+Muse Voice Transcribe is accessed through the hosted Meta Model API; its weights are not part of this repository. The original client and PCM adapter follow Metaâ€™s published realtime and voice schemas: https://dev.meta.ai/docs/api-reference/voice/realtime and https://dev.meta.ai/docs/api-reference/voice/schemas. A local synthetic-server probe verifies the wire format without claiming provider transcription accuracy. Muse Spark remains unimplemented.

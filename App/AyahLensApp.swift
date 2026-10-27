@@ -11,7 +11,7 @@ struct AyahLensApp: App {
                     VStack(alignment: .leading, spacing: 22) {
                         Text("Follow the words.\nFind the meaning.")
                             .font(.largeTitle.bold())
-                        Text(model.recognitionActive ? "Live recognition · Al-Fatihah prototype" : "Hardware prototype · Manual verse selection")
+                        Text(model.recognitionActive ? "\(model.recognitionSource) · Al-Fatihah" : "Hardware prototype · Manual verse selection")
                             .font(.subheadline).foregroundStyle(.secondary)
                         if let verse = model.verse {
                             VStack(alignment: .leading, spacing: 14) {
@@ -29,7 +29,10 @@ struct AyahLensApp: App {
                                 .disabled(model.registered || model.busy)
                             Button("Show selected verse on lens") { model.showSelectedVerse() }
                                 .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.recognitionActive)
-                            Button("Start live Al-Fatihah") { model.startRecognition() }
+                            Button("Start Muse live Al-Fatihah") { model.startMuse() }
+                                .disabled(!model.museConfigured || !model.registered || !model.hasDisplayDevice || model.busy || model.listening)
+                            if !model.museConfigured { Text("Muse API access has not been provisioned on this phone.").font(.caption) }
+                            Button("Start local fallback") { model.startRecognition() }
                                 .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.listening)
                             Button("Start microphone + lens") { model.startCombined() }
                                 .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.listening)
@@ -48,11 +51,13 @@ struct AyahLensApp: App {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(model.recognitionStatus).font(.headline)
                                 if !model.transcript.isEmpty { Text(model.transcript).font(.body) }
-                                Text("Inference: \(model.inferenceMilliseconds, specifier: "%.0f") ms · 5 s window · 1 s update interval")
-                                    .font(.caption.monospacedDigit())
+                                if !model.museActive {
+                                    Text("Inference: \(model.inferenceMilliseconds, specifier: "%.0f") ms · 5 s window · 1 s update interval")
+                                        .font(.caption.monospacedDigit())
+                                }
                             }
                         }
-                        Text("Experimental local recognition for Al-Fatihah only. Audio stays on this iPhone. Uncertain matches hold the current verse.")
+                        Text("Muse mode sends glasses audio to Meta for live transcription. Local fallback keeps audio on this iPhone. Both select published text; uncertain matches hold the current verse.")
                             .font(.footnote).foregroundStyle(.secondary)
                     }.padding(24)
                 }.navigationTitle("Ayah Lens")

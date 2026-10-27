@@ -25,6 +25,8 @@ final class GlassesModel: SessionHardware {
     var sampleRate = 0.0
     var selectedIndex = 0
     var recognitionActive = false
+    var museActive = false
+    var museConfigured = false
     var transcript = ""
     var recognitionStatus = "Manual verse selection"
     var inferenceMilliseconds = 0.0
@@ -46,10 +48,16 @@ final class GlassesModel: SessionHardware {
     @ObservationIgnored private var recognitionTask: Task<Void, Never>?
     @ObservationIgnored private var recognitionEpoch = UUID()
     @ObservationIgnored private var matchedID: String?
+    @ObservationIgnored private let muse = MuseVoiceClient()
+    @ObservationIgnored private var museSessionID: UUID?
+    @ObservationIgnored private var museContinuation: AsyncStream<MuseAudioChunk>.Continuation?
+    @ObservationIgnored private var museSender: Task<Void, Never>?
 
     var verse: Verse? { verses.indices.contains(selectedIndex) ? verses[selectedIndex] : nil }
+    var recognitionSource: String { museActive ? "Muse Voice Transcribe" : "Local Omnilingual fallback" }
 
     init() {
+        museConfigured = (try? MuseCredential.read()) != nil
         do {
             try Wearables.configure()
             displaySelector = AutoDeviceSelector(wearables: Wearables.shared, filter: { $0.supportsDisplay() })
@@ -136,7 +144,63 @@ final class GlassesModel: SessionHardware {
         }
     }
 
+    func startMuse() {
+        run { [self] in
+            self.stopHardware()
+            guard let key = try MuseCredential.read() else {
+                throw PrototypeError.message("Muse credentials are not provisioned on this phone yet.")
+            }
+            self.status = "Connecting to Muse Voice Transcribe…"
+            let epoch = self.recognitionEpoch
+            let id = try await self.muse.connect(apiKey: key, onTranscript: { [weak self] text in
+                Task { @MainActor in
+                    guard let self, self.recognitionEpoch == epoch, self.museActive else { return }
+                    do { try await self.applyTranscript(text) }
+                    catch { self.stop(); self.error = "The Muse verse could not be sent to the lens." }
+                }
+            }, onFailure: { [weak self] message in
+                Task { @MainActor in
+                    guard let self, self.recognitionEpoch == epoch else { return }
+                    self.stop(); self.error = message
+                }
+            })
+            self.museSessionID = id
+            try Task.checkCancellation()
+            self.recognitionActive = true
+            self.museActive = true
+            self.sampleCount = 0
+            self.transcript = ""
+            self.matchedID = nil
+            self.recognitionStatus = "Muse connected · listening for Al-Fatihah"
+            let (chunks, continuation) = AsyncStream<MuseAudioChunk>.makeStream(bufferingPolicy: .bufferingOldest(8))
+            self.museContinuation = continuation
+            let muse = self.muse
+            self.museSender = Task { [weak self] in
+                do {
+                    for await chunk in chunks {
+                        try Task.checkCancellation()
+                        try await muse.sendAudio(chunk, sessionID: id)
+                    }
+                } catch is CancellationError { }
+                catch {
+                    guard let self, self.recognitionEpoch == epoch else { return }
+                    self.stop(); self.error = error is MuseError ? error.localizedDescription : "The Muse audio connection failed."
+                }
+            }
+            try await SessionSequence(hardware: self).start()
+            self.status = "Muse live recognition active · two-minute test limit"
+        }
+    }
+
     private func receiveSamples(_ samples: [Float], sampleRate: Double) {
+        if museActive {
+            guard displayReady else { return }
+            if case .dropped = museContinuation?.yield(MuseAudioChunk(samples: samples, sampleRate: sampleRate)) {
+                stop()
+                error = "Muse could not keep up with live audio. Stopped instead of building a delayed queue."
+            }
+            return
+        }
         guard recognitionActive, displayReady,
               let window = windows.append(samples, sampleRate: sampleRate), recognitionTask == nil else { return }
         guard AudioLevel.measure(window).decibels > -45 else {
@@ -154,24 +218,28 @@ final class GlassesModel: SessionHardware {
                 guard let self, self.recognitionActive, self.recognitionEpoch == epoch else { return }
                 let duration = began.duration(to: .now).components
                 self.inferenceMilliseconds = Double(duration.seconds) * 1000 + Double(duration.attoseconds) / 1e15
-                self.transcript = text
-                guard let id = VerseMatcher(verses: self.verses).match(text, previous: self.matchedID),
-                      let index = self.verses.firstIndex(where: { $0.id == id }) else {
-                    self.recognitionStatus = "Uncertain · holding the current verse"
-                    return
-                }
-                self.recognitionStatus = "Matched Al-Fatihah \(id) · local Meta model"
-                if self.matchedID != id {
-                    self.matchedID = id
-                    self.selectedIndex = index
-                    try await self.sendVerse()
-                }
+                try await self.applyTranscript(text)
             } catch is CancellationError { }
             catch {
                 guard let self, self.recognitionEpoch == epoch else { return }
                 self.stop()
                 self.error = "Recognition stopped: \(error.localizedDescription)"
             }
+        }
+    }
+
+    private func applyTranscript(_ text: String) async throws {
+        transcript = text
+        guard let id = VerseMatcher(verses: verses).match(text, previous: matchedID),
+              let index = verses.firstIndex(where: { $0.id == id }) else {
+            recognitionStatus = "Uncertain · holding the current verse · \(recognitionSource)"
+            return
+        }
+        recognitionStatus = "Matched Al-Fatihah \(id) · \(recognitionSource)"
+        if matchedID != id {
+            matchedID = id
+            selectedIndex = index
+            try await sendVerse()
         }
     }
 
@@ -214,6 +282,14 @@ final class GlassesModel: SessionHardware {
     }
 
     func stopAudio() {
+        museContinuation?.finish(); museContinuation = nil
+        museSender?.cancel(); museSender = nil
+        if let id = museSessionID {
+            let muse = muse
+            Task { await muse.finish(sessionID: id) }
+        }
+        museSessionID = nil
+        museActive = false
         recognitionEpoch = UUID()
         recognitionTask?.cancel()
         recognitionTask = nil
@@ -297,7 +373,7 @@ final class GlassesModel: SessionHardware {
             try await display.send(FlexBox(direction: .column, spacing: 16) {
                 MWDATDisplay.Text("Ayah Lens · Al-Fatihah", style: .heading)
                 MWDATDisplay.Text("Listening for recitation…", style: .body)
-                MWDATDisplay.Text("Local Meta Omnilingual · five-second audio window", style: .meta, color: .secondary)
+                MWDATDisplay.Text(museActive ? "Muse Voice Transcribe · live audio" : "Local Omnilingual · five-second audio window", style: .meta, color: .secondary)
             }.padding(24))
             return
         }
@@ -306,7 +382,7 @@ final class GlassesModel: SessionHardware {
                 MWDATDisplay.Text("Ayah Lens · \(verse.id)", style: .meta, color: .secondary)
                 MWDATDisplay.Text(verse.arabic, style: .heading)
                 MWDATDisplay.Text(verse.translation, style: .body)
-                MWDATDisplay.Text(recognitionActive ? "Pickthall · Live recognition" : "Pickthall · Manual display check", style: .meta, color: .secondary)
+                MWDATDisplay.Text(recognitionActive ? "Pickthall · \(recognitionSource)" : "Pickthall · Manual display check", style: .meta, color: .secondary)
             }.padding(24)
         )
     }
