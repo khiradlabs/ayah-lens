@@ -28,9 +28,9 @@ struct AyahLensApp: App {
                             Button(model.registered ? "Glasses registered" : "Register glasses") { model.register() }
                                 .disabled(model.registered || model.busy)
                             Button("Show selected verse on lens") { model.showSelectedVerse() }
-                                .disabled(!model.registered || model.busy)
+                                .disabled(!model.registered || !model.hasDisplayDevice || model.busy)
                             Button("Start microphone + lens") { model.startCombined() }
-                                .disabled(!model.registered || model.busy || model.listening)
+                                .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.listening)
                             Button("Next verse · manual") { model.nextVerse() }.disabled(model.busy)
                             Button("Stop", role: .destructive) { model.stop() }
                         }.buttonStyle(.borderedProminent).frame(maxWidth: .infinity)

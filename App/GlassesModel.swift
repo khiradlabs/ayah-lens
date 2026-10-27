@@ -23,6 +23,7 @@ final class GlassesModel: SessionHardware {
     var error: String?
     var busy = false
     var registered = false
+    var hasDisplayDevice = false
     var displayReady = false
     var listening = false
     var sampleCount = 0
@@ -32,6 +33,8 @@ final class GlassesModel: SessionHardware {
     private(set) var verses: [Verse] = []
 
     @ObservationIgnored private let microphone = GlassesMicrophone()
+    @ObservationIgnored private var displaySelector: AutoDeviceSelector?
+    @ObservationIgnored private var deviceDiscoveryTask: Task<Void, Never>?
     @ObservationIgnored private var deviceSession: DeviceSession?
     @ObservationIgnored private var display: Display?
     @ObservationIgnored private var displayToken: AnyListenerToken?
@@ -46,16 +49,34 @@ final class GlassesModel: SessionHardware {
     init() {
         do {
             try Wearables.configure()
+            displaySelector = AutoDeviceSelector(wearables: Wearables.shared, filter: { $0.supportsDisplay() })
             guard let url = Bundle.main.url(forResource: "verses", withExtension: "json") else {
                 throw PrototypeError.message("The attributed verse resource is missing.")
             }
             verses = try JSONDecoder().decode([Verse].self, from: Data(contentsOf: url))
         } catch { self.error = error.localizedDescription }
+        if let selector = displaySelector {
+            deviceDiscoveryTask = Task { [weak self] in
+                for await identifier in selector.activeDeviceStream() {
+                    guard let self, !Task.isCancelled else { return }
+                    self.hasDisplayDevice = identifier != nil
+                    if self.registered && !self.busy && !self.displayReady {
+                        self.status = self.hasDisplayDevice
+                            ? "Display glasses available. Ready for the lens check."
+                            : "Registered. Waiting for the display glasses to connect."
+                    }
+                }
+            }
+        }
         registrationTask = Task { [weak self] in
             for await state in Wearables.shared.registrationStateStream() {
                 guard let self, !Task.isCancelled else { return }
                 self.registered = state == .registered
-                if self.registered { self.status = "Glasses registered. Ready for the lens check." }
+                if self.registered {
+                    self.status = self.hasDisplayDevice
+                        ? "Display glasses available. Ready for the lens check."
+                        : "Registered. Waiting for the display glasses to connect."
+                }
                 else if state == .registering { self.status = "Complete the connection in Meta AI." }
                 else if self.displayReady || self.listening { self.stop() }
             }
@@ -135,16 +156,21 @@ final class GlassesModel: SessionHardware {
     func startDisplay() async throws {
         guard registered else { throw PrototypeError.message("Register this app with your glasses first.") }
         guard deviceSession == nil else { throw PrototypeError.message("Stop the existing session before starting another.") }
-        status = "Connecting lens…"
-        let session = try Wearables.shared.createSession(deviceSelector: AutoDeviceSelector(wearables: Wearables.shared, filter: { $0.supportsDisplay() }))
-        deviceSession = session
-        deadlineTask = Task { [weak self, weak session] in
+        guard let selector = displaySelector else { throw PrototypeError.message("Display discovery could not be configured.") }
+        status = "Waiting for the display glasses…"
+        deadlineTask = Task { [weak self] in
             do { try await Task.sleep(for: .seconds(12)) } catch { return }
-            guard let self, self.deviceSession === session else { return }
-            self.error = "Timed out waiting for the glasses display."
+            guard let self else { return }
+            self.error = "Timed out waiting for the glasses display connection."
+            self.operationTask?.cancel()
             self.stopHardware()
         }
         defer { deadlineTask?.cancel(); deadlineTask = nil }
+        _ = try await DisplayReadiness.firstAvailable(in: selector.activeDeviceStream())
+        try Task.checkCancellation()
+        status = "Connecting lens…"
+        let session = try Wearables.shared.createSession(deviceSelector: selector)
+        deviceSession = session
         sessionErrorTask = Task { [weak self] in
             for await failure in session.errorStream() {
                 guard let self, !Task.isCancelled else { return }

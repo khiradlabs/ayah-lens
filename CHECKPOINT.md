@@ -1,6 +1,6 @@
 # Ayah Lens implementation checkpoint
 
-October 26, 2026. First hardware prototype built, signed, installed and launched. Arabic readability and simultaneous audio/display await wearer confirmation.
+October 26, 2026. The wearer reported successful registration but display startup failed with no eligible devices. A device-discovery startup race was corrected and the updated signed build installed. Relaunch was blocked because the phone was locked. Actual lens output remains unverified.
 
 ## Done and verified
 
@@ -18,6 +18,14 @@ October 26, 2026. First hardware prototype built, signed, installed and launched
 - First iPhone prototype uses native SwiftUI directly on DAT 1.0.1. The earlier Expo bridge is deferred to reduce integration work.
 - The current build explicitly labels manual verse selection and says recognition is not connected. The microphone meter uses actual captured sample data.
 - Prototype scope excludes battery endurance and broad production hardening. Prioritize the rubric and a repeatable three-minute demonstration.
+
+## Display startup correction
+
+- The original integration created AutoDeviceSelector inside display startup and immediately created a session. Meta SDK AGENTS.md explicitly requires retained selection or waiting for a non-nil active device.
+- The selector now lives from app startup, the controls reflect display eligibility, and session creation waits for discovery. Cancellation and a bounded timeout release hardware.
+- Seven core tests passed with zero failures. Removing the readiness fix reproduced two failures; restoring it returned all seven to green. Receipts: `build/logs/display-readiness-red.log`, `display-readiness-reverse-red.log`, `core-tests.log`.
+- Updated signed build: BUILD SUCCEEDED. Signature/profile checks and installation passed. Launch failed because the iPhone was locked.
+- Local SDK evidence also contained transport errors. This correction addresses a confirmed integration race; it does not establish that every hardware blocker is resolved.
 
 ## Pending
 
