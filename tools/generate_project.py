@@ -29,7 +29,7 @@ resource_files = sorted((root / "App/Resources").glob("*"))
 file_refs, sources, resources = [], [], []
 for file in source_files + resource_files:
     path = str(file.relative_to(root))
-    kind = "sourcecode.swift" if file.suffix == ".swift" else ("text.json" if file.suffix == ".json" else "text")
+    kind = "folder" if file.is_dir() else ("sourcecode.swift" if file.suffix == ".swift" else ("text.json" if file.suffix == ".json" else "text"))
     reference = obj(path, f"isa = PBXFileReference; lastKnownFileType = {kind}; path = {quote(path)}; sourceTree = SOURCE_ROOT;")
     file_refs.append(reference)
     build = obj(path + ":build", f"isa = PBXBuildFile; fileRef = {reference};")

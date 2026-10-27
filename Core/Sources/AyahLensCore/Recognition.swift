@@ -1,0 +1,114 @@
+import Foundation
+
+public struct Verse: Codable, Identifiable, Sendable {
+    public let id: String
+    public let arabic: String
+    public let translation: String
+    public init(id: String, arabic: String, translation: String) {
+        self.id = id; self.arabic = arabic; self.translation = translation
+    }
+}
+
+public struct VerseMatcher: Sendable {
+    private let verses: [(id: String, letters: [Character])]
+    public init(verses: [Verse]) {
+        self.verses = verses.map { ($0.id, Array(Self.normalize($0.arabic))) }
+    }
+
+    // Only recognition copies are normalized. Published display strings stay verbatim.
+    public static func normalize(_ text: String) -> String {
+        var result = ""
+        for scalar in text.unicodeScalars {
+            var value = scalar.value
+            if [0x622, 0x623, 0x625, 0x671].contains(value) { value = 0x627 }
+            if value == 0x649 || value == 0x6CC { value = 0x64A }
+            if value == 0x629 { value = 0x647 }
+            if (0x621...0x63A).contains(value) || (0x641...0x64A).contains(value) {
+                result.unicodeScalars.append(Unicode.Scalar(value)!)
+            }
+        }
+        return result
+    }
+
+    public func match(_ transcript: String, previous: String?) -> String? {
+        let query = Array(Self.normalize(transcript))
+        guard query.count >= 8 else { return nil }
+        var scores: [(id: String, evidence: Int)] = []
+        for verse in verses {
+            var best = 0
+            // The latest suffix matters when a rolling window spans several ayahs.
+            for length in 8...max(8, min(query.count, verse.letters.count + 2)) {
+                let suffix = Array(query.suffix(length))
+                var row = [Int](repeating: 0, count: verse.letters.count + 1)
+                for (i, letter) in suffix.enumerated() {
+                    var next = [i + 1]
+                    for (j, target) in verse.letters.enumerated() {
+                        next.append(min(next[j] + 1, row[j + 1] + 1, row[j] + (letter == target ? 0 : 1)))
+                    }
+                    row = next
+                }
+                let distance = row.min() ?? length
+                if Double(distance) / Double(length) <= 0.2 {
+                    best = max(best, length - 3 * distance)
+                }
+            }
+            if best >= 8 { scores.append((verse.id, best)) }
+        }
+        guard let best = scores.map(\.evidence).max() else { return nil }
+        let tied = scores.filter { best - $0.evidence <= 1 }
+        if tied.count == 1 { return tied[0].id }
+        // A known sequence can resolve the repeated basmala phrase, never missing evidence.
+        if let previous, let index = verses.firstIndex(where: { $0.id == previous }) {
+            if tied.contains(where: { $0.id == previous }) { return previous }
+            if index + 1 < verses.count, tied.contains(where: { $0.id == verses[index + 1].id }) {
+                return verses[index + 1].id
+            }
+        }
+        return nil
+    }
+}
+
+public struct RecognitionWindows: Sendable {
+    private var buffer: [Float] = []
+    private var rate: Double = 0
+    private var sinceWindow = 0
+    public init() {}
+    public mutating func append(_ samples: [Float], sampleRate: Double) -> [Float]? {
+        guard sampleRate.isFinite, sampleRate >= 1_000, sampleRate <= 192_000 else { return nil }
+        if rate != sampleRate { buffer.removeAll(); sinceWindow = 0; rate = sampleRate }
+        buffer.append(contentsOf: samples)
+        sinceWindow += samples.count
+        let window = Int(rate * 5)
+        if buffer.count > window { buffer.removeFirst(buffer.count - window) }
+        guard buffer.count == window, sinceWindow >= Int(rate) else { return nil }
+        sinceWindow = 0
+        return buffer
+    }
+}
+
+public struct ArabicCTC: Sendable {
+    public let allowedIDs: [Int]
+    private let pieces: [String?]
+    public init(pieces: [String?]) {
+        self.pieces = pieces
+        allowedIDs = pieces.indices.filter { index in
+            if index < 4 { return true }
+            guard let text = pieces[index] else { return false }
+            return !text.isEmpty && text.unicodeScalars.allSatisfy {
+                $0.value == 0x20 || $0.value == 0x2581 || (0x600...0x6FF).contains($0.value)
+                    || (0x750...0x77F).contains($0.value) || (0xFB50...0xFDFF).contains($0.value)
+                    || (0xFE70...0xFEFF).contains($0.value)
+            }
+        }
+    }
+    public func decode(ids: [Int]) -> String {
+        let allowed = Set(allowedIDs)
+        var previous = -1
+        var text = ""
+        for id in ids {
+            defer { previous = id }
+            if id != previous, id >= 4, allowed.contains(id), let piece = pieces[id] { text += piece }
+        }
+        return text.replacingOccurrences(of: "▁", with: " ").trimmingCharacters(in: .whitespaces)
+    }
+}

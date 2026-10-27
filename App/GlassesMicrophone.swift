@@ -6,7 +6,8 @@ final class GlassesMicrophone {
     private var tapInstalled = false
     private(set) var sampleRate: Double = 0
 
-    func start(onLevel: @escaping @Sendable (AudioLevel) -> Void) async throws {
+    func start(onLevel: @escaping @Sendable (AudioLevel) -> Void,
+               onSamples: @escaping @Sendable ([Float], Double) -> Void) async throws {
         let allowed = await withCheckedContinuation { continuation in
             AVAudioApplication.requestRecordPermission { continuation.resume(returning: $0) }
         }
@@ -27,11 +28,13 @@ final class GlassesMicrophone {
                 throw PrototypeError.message("The glasses microphone returned an invalid audio format.")
             }
             sampleRate = format.sampleRate
+            let inputRate = format.sampleRate
             engine.inputNode.installTap(onBus: 0, bufferSize: 2048, format: format) { @Sendable buffer, _ in
                 guard AVAudioSession.sharedInstance().currentRoute.inputs.contains(where: { $0.portType == .bluetoothHFP }) else { return }
                 guard let channel = buffer.floatChannelData?[0] else { return }
                 let samples = Array(UnsafeBufferPointer(start: channel, count: Int(buffer.frameLength)))
                 onLevel(AudioLevel.measure(samples))
+                onSamples(samples, inputRate)
             }
             tapInstalled = true
             engine.prepare()

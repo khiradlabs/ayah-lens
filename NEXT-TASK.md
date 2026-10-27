@@ -1,22 +1,20 @@
-# Next: recognize one short Quran passage
+# Next: validate live Al-Fatihah recognition on the glasses
 
-Status: The wearer confirmed the core combined glasses check on October 26, 2026. The app stayed open, text remained visible in the lens, and microphone sample count increased while speaking.
+Status: Partial live pass. The wearer reported most ayahs worked, with one or two missed. A question identifying the missed ayahs/phrases is pending.
 
 ## First action
 
-Read CHECKPOINT.md and SPEC.md, then the existing recognition strategy in the canonical feasibility plan. Start the narrow recognition slice for Al-Fatihah using the proven native microphone/display path. Preserve the manual-selection label until live recognition actually drives verse updates.
+Read CHECKPOINT.md. Obtain the specific missed ayahs or phrases from the pending question. Do not assume whether the model, suffix matcher or one-second update cadence caused the miss. Reproduce the identified failure with a regression test or collect a short local diagnostic trace before changing behavior.
 
-## Acceptance for recognition
+Do not infer accuracy from the synthetic model probe or manually selected lens output. If there is a failure, capture the exact error, transcript or new crash report before changing code. Keep new phone observations and local evidence private unless explicitly cleared.
 
-- Actual glasses audio identifies the recited ayah in the selected passage.
-- A matched identifier selects unchanged canonical Arabic and its attributed published translation.
-- Uncertain recognition does not advance to an invented or unsupported verse.
-- A real glasses test records observed behavior and limitations.
+## Acceptance
 
-No paid API call or external audio upload has been authorized by the hardware confirmation. Use cleared audio and obtain spending approval before paid calls.
+- Actual glasses audio changes the matched ayah and its unchanged Arabic/Pickthall text without manual next-verse taps.
+- Pauses and uncertain fragments hold the current verse; distinct repeats can return to an earlier ayah.
+- Record initial text latency, wrong locks and misses from a short passage. Inference duration on screen excludes five seconds of collection.
+- Stop/restart and an external reciter need explicit physical checks; they have not been established by this recognition build.
 
-## Evidence and limits
+The current listener is local Meta Omnilingual ASR. Hosted Voice Transcribe comparison, a useful Spark contribution, evaluation and video remain later work. No paid inference or external audio upload is authorized by the hardware confirmation.
 
-Seven core tests and the actual audio callback worker-queue probe passed. Signed build and installation passed. The wearer supplied the physical glasses confirmation. Stop/restart, long operation, head-direction robustness and recognition accuracy were not verified in this combined check.
-
-Apple agreement acceptance, development-device registration, Meta AI Developer Mode and glasses developer-component installation are complete. Do not request them again. Use tools/device.py launch with the selected AYAH_DEVICE_ID when asked to reopen the app; the phone must be unlocked.
+Apple agreement acceptance, device registration, Meta AI Developer Mode and glasses developer component are complete. Do not ask again. Use tools/device.py launch with the selected AYAH_DEVICE_ID when asked to reopen; the phone must be unlocked.

@@ -23,3 +23,5 @@ Before the event, local evaluation explored Tilawa, Meta Omnilingual ASR and a C
 | Tilawa | Evaluated recognition fallback | https://github.com/yazinsai/tilawa |
 
 Listing a component does not claim integration or change its licence. Confirm exact versions and licences before incorporating or distributing artifacts. Tilawa package code and its model assets have different licences.
+
+October 26 recognition slice: original serial CoreML adapter, bounded microphone windows, Arabic decoding restriction, normalized Al-Fatihah fragment matching, sequence-based ambiguity handling and native live-mode UI were built during the event. Existing Meta model weights and third-party conversion are credited separately in ATTRIBUTION.md. Wearer confirmed the earlier combined hardware loop; the wearer reported most ayahs recognized in the first live test, with one or two missed. Exact accuracy remains unmeasured.

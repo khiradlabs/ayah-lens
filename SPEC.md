@@ -37,4 +37,12 @@ No API keys are embedded in the app or repository. Cloud inference and recording
 
 ## Initial evidence
 
-Faraz confirmed stock lens tutorial output, clear wearer audio, and clear external-device recitation. External audio quality varies with head direction. Arabic rendering and simultaneous audio/display are still unverified at specification time.
+Faraz confirmed stock lens tutorial output, clear wearer audio, and clear external-device recitation. External audio quality varies with head direction. The wearer subsequently confirmed Arabic/English output with simultaneous microphone capture on October 26.
+
+## Current recognition slice
+
+Run the prepared Meta Omnilingual 5-second CoreML model locally in a serial inference actor. Collect bounded rolling windows from verified HFP audio at its actual rate and resample to 16 kHz. Use a one-second hop, skip quiet windows and avoid queued inference backlog. Restrict decoding to Arabic and match only the seven bundled Al-Fatihah ayahs. Display only unchanged canonical Arabic and Pickthall text.
+
+The live control is separate from the manual hardware controls. It first shows a listening card, then advances only on supported matches. Uncertain fragments hold the current verse. Sequence context can resolve a repeated phrase, while distinctive evidence permits repeats/backtracking. Stop invalidates pending recognition results before releasing hardware.
+
+Acceptance: a real glasses recitation changes ayahs automatically without manual selection; unrelated/short fragments do not force a match; the phone exposes actual transcript and inference timing. Five seconds of audio collection must not be misrepresented as inference latency. No cloud upload, paid inference or recorded audio storage is part of this slice.

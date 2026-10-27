@@ -10,12 +10,6 @@ enum PrototypeError: LocalizedError {
     }
 }
 
-struct Verse: Decodable, Identifiable {
-    let id: String
-    let arabic: String
-    let translation: String
-}
-
 @Observable
 @MainActor
 final class GlassesModel: SessionHardware {
@@ -30,6 +24,10 @@ final class GlassesModel: SessionHardware {
     var decibels = -80.0
     var sampleRate = 0.0
     var selectedIndex = 0
+    var recognitionActive = false
+    var transcript = ""
+    var recognitionStatus = "Manual verse selection"
+    var inferenceMilliseconds = 0.0
     private(set) var verses: [Verse] = []
 
     @ObservationIgnored private let microphone = GlassesMicrophone()
@@ -43,6 +41,11 @@ final class GlassesModel: SessionHardware {
     @ObservationIgnored private var sessionStateTask: Task<Void, Never>?
     @ObservationIgnored private var deadlineTask: Task<Void, Never>?
     @ObservationIgnored private var operationTask: Task<Void, Never>?
+    @ObservationIgnored private let recognizer = OmnilingualEngine()
+    @ObservationIgnored private var windows = RecognitionWindows()
+    @ObservationIgnored private var recognitionTask: Task<Void, Never>?
+    @ObservationIgnored private var recognitionEpoch = UUID()
+    @ObservationIgnored private var matchedID: String?
 
     var verse: Verse? { verses.indices.contains(selectedIndex) ? verses[selectedIndex] : nil }
 
@@ -114,6 +117,64 @@ final class GlassesModel: SessionHardware {
         }
     }
 
+    func startRecognition() {
+        run {
+            self.stopHardware()
+            self.status = "Loading Meta Omnilingual on this iPhone…"
+            guard let directory = Bundle.main.url(forResource: "Omnilingual", withExtension: nil) else {
+                throw PrototypeError.message("The local recognition model is missing. Prepare the model and rebuild.")
+            }
+            try await self.recognizer.load(directory: directory)
+            try Task.checkCancellation()
+            self.sampleCount = 0
+            self.transcript = ""
+            self.matchedID = nil
+            self.recognitionActive = true
+            self.recognitionStatus = "Listening · waiting for five seconds of audio"
+            try await SessionSequence(hardware: self).start()
+            self.status = "Live Al-Fatihah recognition active. Recite at a natural pace."
+        }
+    }
+
+    private func receiveSamples(_ samples: [Float], sampleRate: Double) {
+        guard recognitionActive, displayReady,
+              let window = windows.append(samples, sampleRate: sampleRate), recognitionTask == nil else { return }
+        guard AudioLevel.measure(window).decibels > -45 else {
+            recognitionStatus = "Quiet · holding the current verse"
+            return
+        }
+        let epoch = recognitionEpoch
+        let recognizer = recognizer
+        recognitionTask = Task { [weak self] in
+            let began = ContinuousClock.now
+            defer { if self?.recognitionEpoch == epoch { self?.recognitionTask = nil } }
+            do {
+                let text = try await recognizer.transcribe(window, sampleRate: sampleRate)
+                try Task.checkCancellation()
+                guard let self, self.recognitionActive, self.recognitionEpoch == epoch else { return }
+                let duration = began.duration(to: .now).components
+                self.inferenceMilliseconds = Double(duration.seconds) * 1000 + Double(duration.attoseconds) / 1e15
+                self.transcript = text
+                guard let id = VerseMatcher(verses: self.verses).match(text, previous: self.matchedID),
+                      let index = self.verses.firstIndex(where: { $0.id == id }) else {
+                    self.recognitionStatus = "Uncertain · holding the current verse"
+                    return
+                }
+                self.recognitionStatus = "Matched Al-Fatihah \(id) · local Meta model"
+                if self.matchedID != id {
+                    self.matchedID = id
+                    self.selectedIndex = index
+                    try await self.sendVerse()
+                }
+            } catch is CancellationError { }
+            catch {
+                guard let self, self.recognitionEpoch == epoch else { return }
+                self.stop()
+                self.error = "Recognition stopped: \(error.localizedDescription)"
+            }
+        }
+    }
+
     func nextVerse() {
         guard !verses.isEmpty else { return }
         selectedIndex = (selectedIndex + 1) % verses.count
@@ -135,19 +196,31 @@ final class GlassesModel: SessionHardware {
 
     func startAudio() async throws {
         status = "Starting glasses microphone…"
-        try await microphone.start { [weak self] level in
+        try await microphone.start(onLevel: { [weak self] level in
             Task { @MainActor in
                 guard let self, self.listening else { return }
                 self.sampleCount += level.sampleCount
                 self.decibels = level.decibels
             }
-        }
+        }, onSamples: { [weak self] samples, rate in
+            Task { @MainActor in
+                guard let self, self.listening else { return }
+                self.receiveSamples(samples, sampleRate: rate)
+            }
+        })
         try Task.checkCancellation()
         sampleRate = microphone.sampleRate
         listening = true
     }
 
     func stopAudio() {
+        recognitionEpoch = UUID()
+        recognitionTask?.cancel()
+        recognitionTask = nil
+        recognitionActive = false
+        recognitionStatus = "Manual verse selection"
+        windows = RecognitionWindows()
+        matchedID = nil
         listening = false
         microphone.stop()
         decibels = -80
@@ -220,12 +293,20 @@ final class GlassesModel: SessionHardware {
 
     private func sendVerse() async throws {
         guard let display, displayReady, let verse else { throw PrototypeError.message("No active lens or selected verse.") }
+        if recognitionActive && matchedID == nil {
+            try await display.send(FlexBox(direction: .column, spacing: 16) {
+                MWDATDisplay.Text("Ayah Lens · Al-Fatihah", style: .heading)
+                MWDATDisplay.Text("Listening for recitation…", style: .body)
+                MWDATDisplay.Text("Local Meta Omnilingual · five-second audio window", style: .meta, color: .secondary)
+            }.padding(24))
+            return
+        }
         try await display.send(
             FlexBox(direction: .column, spacing: 16) {
                 MWDATDisplay.Text("Ayah Lens · \(verse.id)", style: .meta, color: .secondary)
                 MWDATDisplay.Text(verse.arabic, style: .heading)
                 MWDATDisplay.Text(verse.translation, style: .body)
-                MWDATDisplay.Text("Pickthall · Manual display check", style: .meta, color: .secondary)
+                MWDATDisplay.Text(recognitionActive ? "Pickthall · Live recognition" : "Pickthall · Manual display check", style: .meta, color: .secondary)
             }.padding(24)
         )
     }

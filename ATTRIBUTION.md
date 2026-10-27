@@ -9,4 +9,14 @@ The English excerpt is Marmaduke Pickthall's published translation, retained ver
 
 Meta Wearables Device Access Toolkit 1.0.1 is downloaded by Swift Package Manager. Its SDK, frameworks and sample code retain Meta's terms and notices: https://github.com/facebook/meta-wearables-dat-ios. No Meta sample source is copied into this first application; the published samples and SDK interfaces informed integration.
 
-The MIT licence covers original Ayah Lens code, not third-party SDKs or reference texts. No recitation recordings or model weights are included.
+The MIT licence covers original Ayah Lens code, not third-party SDKs or reference texts. No recitation recordings or model weights are included in Git; locally assembled development builds bundle the model as described below.
+
+## Local recognition
+
+The installed prototype bundles Meta Omnilingual ASR CTC-300M through aufklarer’s 5-second CoreML INT8 conversion, labelled Apache-2.0 by its publisher:
+
+- Original model: https://github.com/facebookresearch/omnilingual-asr
+- CoreML export: https://huggingface.co/aufklarer/Omnilingual-ASR-CTC-300M-CoreML-INT8
+- Swift reference studied for waveform normalization, tensor layout and CTC semantics: https://github.com/soniqo/speech-swift/tree/main/Sources/OmnilingualASR
+
+The event implementation supplies its own native inference adapter, Arabic-only decoding restriction, rolling audio windows and Al-Fatihah matcher. The model and conversion predate the event and are not claimed as original work. The preparation helper extracts vocabulary entries without changing their token identifiers; these artifacts and model weights are excluded from Git. No third-party Swift implementation was copied. The Apache 2.0 licence and source notice are bundled as MODEL-NOTICE.txt.

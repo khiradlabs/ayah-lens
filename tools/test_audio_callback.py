@@ -29,6 +29,11 @@ struct CallbackBox: @unchecked Sendable {
 }
 @MainActor
 func makeCallback(onLevel: @escaping @Sendable (AudioLevel) -> Void) -> AVAudioNodeTapBlock {
+    let inputRate = 16000.0
+    let onSamples: @Sendable ([Float], Double) -> Void = { samples, rate in
+        precondition(samples == [1, 1, 1, 1] && rate == 16000)
+        print("PASS: PCM samples and actual rate delivered")
+    }
     return CALLBACK
 }
 @main struct Probe {
@@ -64,7 +69,8 @@ result = subprocess.run([str(output / "probe")], capture_output=True, text=True)
 print(result.stdout.strip())
 if result.returncode:
     print(f"FAIL: worker-queue tap exited {result.returncode}; see build/audio-callback-probe/result.log")
-passed = result.returncode == 0 and "PASS: app tap processed four samples" in result.stdout
+passed = (result.returncode == 0 and "PASS: app tap processed four samples" in result.stdout
+          and "PASS: PCM samples and actual rate delivered" in result.stdout)
 if result.returncode == 0 and not passed:
     print("FAIL: the tap never delivered measured samples")
 raise SystemExit(0 if passed else 1)

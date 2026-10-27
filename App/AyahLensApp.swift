@@ -11,7 +11,7 @@ struct AyahLensApp: App {
                     VStack(alignment: .leading, spacing: 22) {
                         Text("Follow the words.\nFind the meaning.")
                             .font(.largeTitle.bold())
-                        Text("Hardware prototype · Manual verse selection")
+                        Text(model.recognitionActive ? "Live recognition · Al-Fatihah prototype" : "Hardware prototype · Manual verse selection")
                             .font(.subheadline).foregroundStyle(.secondary)
                         if let verse = model.verse {
                             VStack(alignment: .leading, spacing: 14) {
@@ -28,10 +28,12 @@ struct AyahLensApp: App {
                             Button(model.registered ? "Glasses registered" : "Register glasses") { model.register() }
                                 .disabled(model.registered || model.busy)
                             Button("Show selected verse on lens") { model.showSelectedVerse() }
-                                .disabled(!model.registered || !model.hasDisplayDevice || model.busy)
+                                .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.recognitionActive)
+                            Button("Start live Al-Fatihah") { model.startRecognition() }
+                                .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.listening)
                             Button("Start microphone + lens") { model.startCombined() }
                                 .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.listening)
-                            Button("Next verse · manual") { model.nextVerse() }.disabled(model.busy)
+                            Button("Next verse · manual") { model.nextVerse() }.disabled(model.busy || model.recognitionActive)
                             Button("Stop", role: .destructive) { model.stop() }
                         }.buttonStyle(.borderedProminent).frame(maxWidth: .infinity)
                         if model.listening {
@@ -42,7 +44,15 @@ struct AyahLensApp: App {
                                     .font(.caption.monospacedDigit())
                             }.accessibilityIdentifier("microphone_status")
                         }
-                        Text("Live verse recognition is not connected in this build.")
+                        if model.recognitionActive {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(model.recognitionStatus).font(.headline)
+                                if !model.transcript.isEmpty { Text(model.transcript).font(.body) }
+                                Text("Inference: \(model.inferenceMilliseconds, specifier: "%.0f") ms · 5 s window · 1 s update interval")
+                                    .font(.caption.monospacedDigit())
+                            }
+                        }
+                        Text("Experimental local recognition for Al-Fatihah only. Audio stays on this iPhone. Uncertain matches hold the current verse.")
                             .font(.footnote).foregroundStyle(.secondary)
                     }.padding(24)
                 }.navigationTitle("Ayah Lens")
