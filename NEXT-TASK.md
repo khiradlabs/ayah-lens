@@ -1,26 +1,22 @@
-# Next: prove the first original glasses loop
+# Next: recognize one short Quran passage
 
-Status: IN PROGRESS. Wearer confirmed lens text works. Combined action crashed in the audio callback. The verified callback correction is installed; the phone was locked at launch.
+Status: The wearer confirmed the core combined glasses check on October 26, 2026. The app stayed open, text remained visible in the lens, and microphone sample count increased while speaking.
 
 ## First action
 
-Read `CHECKPOINT.md`. Unlock and open Ayah Lens. Tap Start microphone + lens while wearing the glasses. Confirm that the app stays open, the microphone counter increases while speaking, and the lens text remains visible. If it fails, retrieve the new crash report or exact on-screen error before changing anything else.
+Read CHECKPOINT.md and SPEC.md, then the existing recognition strategy in the canonical feasibility plan. Start the narrow recognition slice for Al-Fatihah using the proven native microphone/display path. Preserve the manual-selection label until live recognition actually drives verse updates.
 
-The requested sequence is Register glasses → Show selected verse on lens → Start microphone + lens. The wearer should see readable Arabic and English while the phone sample counter increases.
+## Acceptance for recognition
 
-## Definition of done
+- Actual glasses audio identifies the recited ayah in the selected passage.
+- A matched identifier selects unchanged canonical Arabic and its attributed published translation.
+- Uncertain recognition does not advance to an invented or unsupported verse.
+- A real glasses test records observed behavior and limitations.
 
-- Registration succeeds for the original app.
-- Arabic and the attributed translation are readable in the actual lens.
-- Both remain visible during real microphone capture.
-- Stop releases the session, and the observed result is recorded with its limitations.
+No paid API call or external audio upload has been authorized by the hardware confirmation. Use cleared audio and obtain spending approval before paid calls.
 
-If there is a failure, capture the displayed error and local SDK evidence before changing code. Stock display/audio results do not establish combined-mode success.
+## Evidence and limits
 
-Once this passes, implement recognition for one short passage. Keep the canonical text and translation unchanged; match to identifiers. Use only cleared audio sources for external inference, and obtain spending approval before paid calls.
+Seven core tests and the actual audio callback worker-queue probe passed. Signed build and installation passed. The wearer supplied the physical glasses confirmation. Stop/restart, long operation, head-direction robustness and recognition accuracy were not verified in this combined check.
 
-## Setup already complete
-
-Apple agreement acceptance, development-device registration approval, Meta AI Developer Mode, and glasses developer-component installation were completed. Do not request them again.
-
-Use `tools/device.py launch` with the currently selected AYAH_DEVICE_ID if the user asks to reopen the app. The phone must be unlocked.
+Apple agreement acceptance, development-device registration, Meta AI Developer Mode and glasses developer-component installation are complete. Do not request them again. Use tools/device.py launch with the selected AYAH_DEVICE_ID when asked to reopen the app; the phone must be unlocked.

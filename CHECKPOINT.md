@@ -1,6 +1,6 @@
 # Ayah Lens implementation checkpoint
 
-October 26, 2026. Wearer confirmed text works in the lens. Combined mode crashed in the microphone tap callback. The callback isolation fix passed the regression probe and was signed and installed. Launch was blocked by the locked phone; combined hardware retest is pending.
+October 26, 2026. Wearer confirmed the corrected combined check: app stayed open, lens text remained visible, and microphone sample count increased while speaking. The core simultaneous audio/display milestone passed. Recognition is not connected.
 
 ## Done and verified
 
@@ -25,7 +25,7 @@ October 26, 2026. Wearer confirmed text works in the lens. Combined mode crashed
 - The selector now lives from app startup, the controls reflect display eligibility, and session creation waits for discovery. Cancellation and a bounded timeout release hardware.
 - Seven core tests passed with zero failures. Removing the readiness fix reproduced two failures; restoring it returned all seven to green. Receipts: `build/logs/display-readiness-red.log`, `display-readiness-reverse-red.log`, `core-tests.log`.
 - Updated signed build: BUILD SUCCEEDED. Signature/profile checks and installation passed. Launch failed because the iPhone was locked.
-- Local SDK evidence also contained transport errors. This correction addresses a confirmed integration race; it does not establish that every hardware blocker is resolved.
+- Local SDK evidence also contained transport errors. The wearer subsequently confirmed lens text works. Transport errors alone did not establish a remaining display blocker.
 
 ## Combined-mode crash correction
 
@@ -33,12 +33,11 @@ October 26, 2026. Wearer confirmed text works in the lens. Combined mode crashed
 - The retrieved phone crash report identified an actor-isolation trap in the AVAudioEngine tap on its worker queue.
 - Marked the tap closure explicitly `@Sendable`; the UI still receives measured values on its actor.
 - `tools/test_audio_callback.py` executes the actual app closure with AVFoundation buffers on a worker queue. Bluetooth routing is synthetic in this host test. The original closure trapped with signal 5; the corrected closure processed four samples at the expected level. Removing the fix reproduced the trap, and restoring it passed.
-- All seven core tests passed. Updated signed build and installation passed. Relaunch was blocked by the locked phone. Actual simultaneous microphone/display behavior remains unverified.
+- All seven core tests passed. Updated signed build and installation passed. Relaunch was blocked by the locked phone. The wearer subsequently confirmed the app stayed open, lens text remained visible, and the sample counter increased while speaking.
 
 ## Pending
 
-- Wearer confirmed lens text works. Retest that it remains visible while the sample counter increases after the crash correction. Unit tests cannot establish hardware coexistence.
-- If native Arabic rendering fails, test a phone-rendered image fallback. If HFP/display coexistence fails, inspect the actual session error before choosing an in-stream PCM alternative.
+- Stop/restart behavior has core test coverage but no explicit wearer confirmation. Longer operation, directional robustness and recognition accuracy were not established by this check.
 - Recognition, a narrow Spark contribution, user-benefit evaluation and video production remain unimplemented.
 - No paid API call or cloud audio upload occurred in this milestone.
 
