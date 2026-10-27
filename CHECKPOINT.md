@@ -114,3 +114,9 @@ The current engineering focus is locating recognition-to-display delay. Physical
 A local benchmark using the bundled reference measured approximately 9.9 ms per matcher call in an unoptimized host build. This is not phone or end-to-end latency. Added provider audio-progress gap, actual matcher duration and lens SDK send-completion duration under the phone’s Muse timing disclosure. Diagnostic values remain visible after Stop. Audio-progress gap is not word timing; send completion does not prove the lens became visible at that instant.
 
 Twenty-one core tests passed after observed diagnostic-test failures. The actual WebSocket client passed a synthetic progress-frame probe. Signed build passed. No model, matching threshold or audio capture cadence changed in this diagnostic slice. New tests ran locally without paid inference. Actual phone timing readings are still needed before choosing a latency fix.
+
+## First-text and peak timing extension
+
+Current-gap snapshots cannot establish cumulative transcript latency or rule out an earlier backlog. Added a monotonic trace for the first nonempty transcript after the first audio buffer, the first supported match after that partial, and peak provider audio gap. The trace persists after Stop and resets for a new Muse session. The first-text interval includes pre-recitation silence; it is not word-aligned end-to-end latency. No audio or transcript is saved by this trace.
+
+Twenty-three tests passed after the two new trace cases were observed failing. PCM and real-WebSocket synthetic probes passed. Signed build passed. The actual screenshot and wearer observations remain in private local investigation notes. No new paid API request was initiated by the agent. Matching thresholds, model and streaming cadence are unchanged.

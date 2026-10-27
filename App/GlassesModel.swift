@@ -33,6 +33,7 @@ final class GlassesModel: SessionHardware {
     var museGapMilliseconds: Double?
     var matcherMilliseconds: Double?
     var lensSendMilliseconds: Double?
+    var museLatency = MuseLatencyTrace()
     private(set) var verses: [Verse] = []
 
     @ObservationIgnored private let microphone = GlassesMicrophone()
@@ -154,6 +155,7 @@ final class GlassesModel: SessionHardware {
             self.museGapMilliseconds = nil
             self.matcherMilliseconds = nil
             self.lensSendMilliseconds = nil
+            self.museLatency = MuseLatencyTrace()
             guard let key = try MuseCredential.read() else {
                 throw PrototypeError.message("Muse credentials are not provisioned on this phone yet.")
             }
@@ -174,6 +176,7 @@ final class GlassesModel: SessionHardware {
                 Task { @MainActor in
                     guard let self, self.recognitionEpoch == epoch, self.museActive else { return }
                     self.museGapMilliseconds = gap
+                    self.museLatency.gap(gap)
                 }
             })
             self.museSessionID = id
@@ -207,6 +210,7 @@ final class GlassesModel: SessionHardware {
     private func receiveSamples(_ samples: [Float], sampleRate: Double) {
         if museActive {
             guard displayReady else { return }
+            museLatency.audio(at: ProcessInfo.processInfo.systemUptime * 1000)
             if case .dropped = museContinuation?.yield(MuseAudioChunk(samples: samples, sampleRate: sampleRate)) {
                 stop()
                 error = "Muse could not keep up with live audio. Stopped instead of building a delayed queue."
@@ -242,6 +246,9 @@ final class GlassesModel: SessionHardware {
 
     private func applyTranscript(_ text: String) async throws {
         let began = ContinuousClock.now
+        if museActive, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            museLatency.partial(at: ProcessInfo.processInfo.systemUptime * 1000)
+        }
         transcript = text
         let candidate = VerseMatcher(verses: verses).match(text, previous: matchedID)
         matcherMilliseconds = elapsedMilliseconds(since: began)
@@ -251,6 +258,7 @@ final class GlassesModel: SessionHardware {
             return
         }
         recognitionStatus = "Matched Al-Fatihah \(id) · \(recognitionSource)"
+        if museActive { museLatency.match(at: ProcessInfo.processInfo.systemUptime * 1000) }
         if matchedID != id {
             matchedID = id
             selectedIndex = index

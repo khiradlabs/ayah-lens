@@ -63,9 +63,14 @@ struct AyahLensApp: App {
                             DisclosureGroup("Muse timing") {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text("Audio processing gap: \(gap, specifier: "%.0f") ms")
+                                    if let peak = model.museLatency.peakAudioGapMilliseconds { Text("Peak audio gap: \(peak, specifier: "%.0f") ms") }
+                                    if let first = model.museLatency.firstTranscriptMilliseconds { Text("First text after audio start: \(first / 1000, specifier: "%.2f") s") }
+                                    if let wait = model.museLatency.firstMatchAfterTranscriptMilliseconds { Text("First match after text: \(wait / 1000, specifier: "%.2f") s") }
                                     if let match = model.matcherMilliseconds { Text("Verse matching: \(match, specifier: "%.0f") ms") }
                                     if let send = model.lensSendMilliseconds { Text("Lens send completion: \(send, specifier: "%.0f") ms") }
                                     Text("Audio gap is provider progress, not word timing. Lens timing measures the SDK send completing.")
+                                        .font(.caption).foregroundStyle(.secondary)
+                                    Text("First-text time includes any silence before recitation starts.")
                                         .font(.caption).foregroundStyle(.secondary)
                                 }.font(.caption.monospacedDigit()).padding(.top, 8)
                             }

@@ -4,15 +4,17 @@ Status: Timing diagnostics are implemented and verified locally. Check private a
 
 ## First action
 
-Obtain the response to the question: did the phone transcript lag too, or only the lens? A new build adds a Muse timing disclosure with provider audio-processing gap, matcher duration and lens-send completion duration. These values remain after Stop. Obtain actual phone readings before choosing a latency change.
+Consult build/logs/muse-latency-investigation.md and private gates for the latest physical observations. The question about phone versus lens delay was answered; do not ask it again. The original snapshot fields do not establish first-transcript or end-to-end latency.
 
-The deterministic matcher benchmark was about 9.9 ms on the Mac in an unoptimized build. This does not explain a large delay by itself, nor prove the phone matches at that speed. The app already uses cumulative partials, so it does not intentionally wait for a final transcript. Provider progress is relative audio processed, not a word timestamp. Lens timing is SDK send completion, not observed pixels.
+The expanded Muse timing disclosure adds First text after audio start, First match after text, and Peak audio gap. Obtain these values from a user-authorized run. Ask the wearer to begin reciting as soon as the listening card appears; initial silence is included in the first-text metric. The values remain after Stop. Avoid changing ASR/matching behavior before locating the delay.
 
-Do not start another paid session without checking authorization. Never treat a prior bounded single-test approval as ongoing spend. A user may choose to run another test after a clear cost/audio-transfer disclosure. Keep consent, personal feedback and provider traces private.
+Provider audio progress is not a word timestamp, and SDK send completion is not observed pixels. A low final gap can hide an earlier backlog; use the peak too. The first-text metric is an initial-session measurement, not per-ayah latency. No transcript or audio is persisted by the trace.
+
+Do not initiate another paid session without checking authorization. Keep personal feedback, consent and actual provider traces private. Existing credentials and hardware setup are complete.
 
 ## Checks
 
-- bash tools/test.sh: twenty-one core tests plus actual PCM callback probe passed.
+- bash tools/test.sh: twenty-three core tests plus actual PCM callback probe passed.
 - python3 tools/probe_muse.py: real WebSocket client processed synthetic audio-progress events, PCM, partials and clean endStream.
 - Signed device build passed. Check the latest install/launch receipts for the phone state.
 

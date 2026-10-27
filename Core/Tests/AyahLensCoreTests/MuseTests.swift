@@ -52,4 +52,26 @@ final class MuseTests: XCTestCase {
         XCTAssertEqual(MuseAudioProgress.gapMilliseconds(sentBytes: 48000, processedMilliseconds: 1200), 0)
         XCTAssertNil(MuseAudioProgress.gapMilliseconds(sentBytes: 48000, processedMilliseconds: -1))
     }
+
+    func testFirstTranscriptAndEvidenceWaitAreMeasuredSeparately() {
+        var timing = MuseLatencyTrace()
+        timing.partial(at: 900)
+        XCTAssertNil(timing.firstTranscriptMilliseconds)
+        timing.audio(at: 1000)
+        timing.audio(at: 1100)
+        timing.partial(at: 1500)
+        timing.partial(at: 1800)
+        timing.match(at: 2500)
+        timing.match(at: 3000)
+        XCTAssertEqual(timing.firstTranscriptMilliseconds, 500)
+        XCTAssertEqual(timing.firstMatchAfterTranscriptMilliseconds, 1000)
+    }
+
+    func testPeakAudioGapSurvivesProviderCatchingUp() {
+        var timing = MuseLatencyTrace()
+        timing.gap(63)
+        timing.gap(800)
+        timing.gap(0)
+        XCTAssertEqual(timing.peakAudioGapMilliseconds, 800)
+    }
 }
