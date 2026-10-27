@@ -30,6 +30,9 @@ final class GlassesModel: SessionHardware {
     var transcript = ""
     var recognitionStatus = "Manual verse selection"
     var inferenceMilliseconds = 0.0
+    var museGapMilliseconds: Double?
+    var matcherMilliseconds: Double?
+    var lensSendMilliseconds: Double?
     private(set) var verses: [Verse] = []
 
     @ObservationIgnored private let microphone = GlassesMicrophone()
@@ -128,6 +131,7 @@ final class GlassesModel: SessionHardware {
     func startRecognition() {
         run {
             self.stopHardware()
+            self.museGapMilliseconds = nil
             self.status = "Loading Meta Omnilingual on this iPhone…"
             guard let directory = Bundle.main.url(forResource: "Omnilingual", withExtension: nil) else {
                 throw PrototypeError.message("The local recognition model is missing. Prepare the model and rebuild.")
@@ -147,6 +151,9 @@ final class GlassesModel: SessionHardware {
     func startMuse() {
         run { [self] in
             self.stopHardware()
+            self.museGapMilliseconds = nil
+            self.matcherMilliseconds = nil
+            self.lensSendMilliseconds = nil
             guard let key = try MuseCredential.read() else {
                 throw PrototypeError.message("Muse credentials are not provisioned on this phone yet.")
             }
@@ -162,6 +169,11 @@ final class GlassesModel: SessionHardware {
                 Task { @MainActor in
                     guard let self, self.recognitionEpoch == epoch else { return }
                     self.stop(); self.error = message
+                }
+            }, onAudioGap: { [weak self] gap in
+                Task { @MainActor in
+                    guard let self, self.recognitionEpoch == epoch, self.museActive else { return }
+                    self.museGapMilliseconds = gap
                 }
             })
             self.museSessionID = id
@@ -229,8 +241,11 @@ final class GlassesModel: SessionHardware {
     }
 
     private func applyTranscript(_ text: String) async throws {
+        let began = ContinuousClock.now
         transcript = text
-        guard let id = VerseMatcher(verses: verses).match(text, previous: matchedID),
+        let candidate = VerseMatcher(verses: verses).match(text, previous: matchedID)
+        matcherMilliseconds = elapsedMilliseconds(since: began)
+        guard let id = candidate,
               let index = verses.firstIndex(where: { $0.id == id }) else {
             recognitionStatus = "Uncertain · holding the current verse · \(recognitionSource)"
             return
@@ -239,8 +254,15 @@ final class GlassesModel: SessionHardware {
         if matchedID != id {
             matchedID = id
             selectedIndex = index
+            let sendBegan = ContinuousClock.now
             try await sendVerse()
+            lensSendMilliseconds = elapsedMilliseconds(since: sendBegan)
         }
+    }
+
+    private func elapsedMilliseconds(since start: ContinuousClock.Instant) -> Double {
+        let duration = start.duration(to: .now).components
+        return Double(duration.seconds) * 1000 + Double(duration.attoseconds) / 1e15
     }
 
     func nextVerse() {

@@ -106,3 +106,11 @@ Faraz requested resuming. The registered physical iPhone was listed as available
 ## Muse device setup completed October 27
 
 Faraz asked how to test. Completed the reversible setup without starting inference: privately provisioned the saved key, restarted Ayah Lens successfully, and verified that the temporary Library/muse-key.once handoff no longer exists. App code removes it only after successful Keychain storage. No paid session or audio upload was initiated by the agent. The wearer receives instructions disclosing the small cost and audio transfer before choosing the Muse start button. Earlier notes deferring key setup until paid-test approval were a workflow choice, not a requirement for this non-billable setup. Live Muse result remains unverified.
+
+## Muse timing diagnostics
+
+The current engineering focus is locating recognition-to-display delay. Physical test outcomes and authorization limits are maintained in private local records and action gates; check those before requesting another approval or starting billed tests.
+
+A local benchmark using the bundled reference measured approximately 9.9 ms per matcher call in an unoptimized host build. This is not phone or end-to-end latency. Added provider audio-progress gap, actual matcher duration and lens SDK send-completion duration under the phone’s Muse timing disclosure. Diagnostic values remain visible after Stop. Audio-progress gap is not word timing; send completion does not prove the lens became visible at that instant.
+
+Twenty-one core tests passed after observed diagnostic-test failures. The actual WebSocket client passed a synthetic progress-frame probe. Signed build passed. No model, matching threshold or audio capture cadence changed in this diagnostic slice. New tests ran locally without paid inference. Actual phone timing readings are still needed before choosing a latency fix.

@@ -59,6 +59,17 @@ struct AyahLensApp: App {
                         }
                         Text("Muse mode sends glasses audio to Meta for live transcription. Local fallback keeps audio on this iPhone. Both select published text; uncertain matches hold the current verse.")
                             .font(.footnote).foregroundStyle(.secondary)
+                        if let gap = model.museGapMilliseconds {
+                            DisclosureGroup("Muse timing") {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Audio processing gap: \(gap, specifier: "%.0f") ms")
+                                    if let match = model.matcherMilliseconds { Text("Verse matching: \(match, specifier: "%.0f") ms") }
+                                    if let send = model.lensSendMilliseconds { Text("Lens send completion: \(send, specifier: "%.0f") ms") }
+                                    Text("Audio gap is provider progress, not word timing. Lens timing measures the SDK send completing.")
+                                        .font(.caption).foregroundStyle(.secondary)
+                                }.font(.caption.monospacedDigit()).padding(.top, 8)
+                            }
+                        }
                     }.padding(24)
                 }.navigationTitle("Ayah Lens")
             }.tint(.teal)

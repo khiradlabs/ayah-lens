@@ -22,7 +22,8 @@ public actor MuseVoiceClient {
 
     public func connect(apiKey: String,
                         onTranscript: @escaping @Sendable (String) -> Void,
-                        onFailure: @escaping @Sendable (String) -> Void) async throws -> UUID {
+                        onFailure: @escaping @Sendable (String) -> Void,
+                        onAudioGap: @escaping @Sendable (Double) -> Void = { _ in }) async throws -> UUID {
         cancel()
         let id = epoch
         var request = URLRequest(url: endpoint)
@@ -46,7 +47,7 @@ public actor MuseVoiceClient {
             timeout?.cancel(); timeout = nil
             ready = true
             reader = Task { [weak self] in
-                await self?.readEvents(socket: socket, id: id, onTranscript: onTranscript, onFailure: onFailure)
+                await self?.readEvents(socket: socket, id: id, onTranscript: onTranscript, onFailure: onFailure, onAudioGap: onAudioGap)
             }
             return id
         } catch {
@@ -78,13 +79,21 @@ public actor MuseVoiceClient {
 
     private func readEvents(socket: URLSessionWebSocketTask, id: UUID,
                             onTranscript: @escaping @Sendable (String) -> Void,
-                            onFailure: @escaping @Sendable (String) -> Void) async {
+                            onFailure: @escaping @Sendable (String) -> Void,
+                            onAudioGap: @escaping @Sendable (Double) -> Void) async {
         var state = MuseTranscriptState()
         do {
             while !Task.isCancelled, epoch == id {
                 let frame = try await socket.receive()
                 guard epoch == id else { return }
-                if case .string(let message) = frame, let text = try state.consume(message) { onTranscript(text) }
+                if case .string(let message) = frame {
+                    if let event = try JSONSerialization.jsonObject(with: Data(message.utf8)) as? [String: Any],
+                       let processed = event["audioProcessedMs"] as? Int,
+                       let gap = MuseAudioProgress.gapMilliseconds(sentBytes: sentBytes, processedMilliseconds: processed) {
+                        onAudioGap(gap)
+                    }
+                    if let text = try state.consume(message) { onTranscript(text) }
+                }
             }
         } catch {
             guard epoch == id else { return }

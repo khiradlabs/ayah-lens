@@ -81,3 +81,7 @@ The API key stays outside the app bundle and Git. After the paid/audio test is a
 Each test stream is capped at two minutes of audio. The client stops on queue overflow instead of accumulating delayed audio. No app audio recordings are saved. Muse mode sends audio to Meta; local fallback does not. Provider retention follows Meta’s service terms.
 
 Verification: twenty core tests and a local synthetic WebSocket integration probe passed, along with signed build/install. The model catalog accepted the private key. Live Muse speech recognition and physical lens output remain unverified pending paid-test approval. Run `python3 tools/probe_muse.py` for the transport fixture.
+
+## Timing diagnostics
+
+The phone’s Muse timing disclosure exposes provider audio-progress gap, matcher duration and lens SDK send-completion duration. Values remain after Stop. These are stage diagnostics, not measured word-to-visible-text latency. The implementation continues using partial transcripts. Twenty-one core tests and the local synthetic WebSocket progress probe passed; physical timing observations are maintained separately from this repository.

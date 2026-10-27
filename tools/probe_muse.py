@@ -68,9 +68,11 @@ class Server(BaseHTTPRequestHandler):
             assert request["authorization"]["accessToken"] == "Bearer synthetic-test-key"
             assert request["model"] == "muse-voice-transcribe-1.0"
             assert request["audioEncoding"] == "PCM_24KHZ" and request["languageBias"] == ["Arabic"]
+            assert request["emitAudioProgress"] is True
             self.event({"sessionId": "synthetic-session"})
             opcode, audio = self.read_frame()
             assert opcode == 2 and 1000 < len(audio) < 32000 and len(audio) % 2 == 0
+            self.event({"type": "audioProgress", "audioProcessedMs": 0})
             self.event({"type": "speechStart", "turnId": 1})
             self.event({"type": "transcript", "transcript": "الحمد", "final": False})
             self.event({"type": "transcript", "transcript": "الحمد لله رب العالمين", "final": False})

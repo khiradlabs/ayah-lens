@@ -9,6 +9,7 @@ final class MuseTests: XCTestCase {
         XCTAssertEqual(object["audioEncoding"] as? String, "PCM_24KHZ")
         XCTAssertEqual(object["partialMode"] as? String, "CUMULATIVE")
         XCTAssertEqual(object["languageBias"] as? [String], ["Arabic"])
+        XCTAssertEqual(object["emitAudioProgress"] as? Bool, true)
         XCTAssertEqual((object["authorization"] as? [String: String])?["accessToken"], "Bearer synthetic-test-key")
     }
 
@@ -44,5 +45,11 @@ final class MuseTests: XCTestCase {
         let encoder = MusePCMEncoder()
         XCTAssertThrowsError(try encoder.encode([.nan], sampleRate: 24000))
         XCTAssertThrowsError(try encoder.encode([0], sampleRate: 0))
+    }
+
+    func testMuseProcessingGapUsesSentAudioAndRejectsInvalidProgress() {
+        XCTAssertEqual(MuseAudioProgress.gapMilliseconds(sentBytes: 48000, processedMilliseconds: 400), 600)
+        XCTAssertEqual(MuseAudioProgress.gapMilliseconds(sentBytes: 48000, processedMilliseconds: 1200), 0)
+        XCTAssertNil(MuseAudioProgress.gapMilliseconds(sentBytes: 48000, processedMilliseconds: -1))
     }
 }

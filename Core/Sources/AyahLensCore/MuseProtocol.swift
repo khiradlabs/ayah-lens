@@ -1,6 +1,14 @@
 import AVFoundation
 import Foundation
 
+public enum MuseAudioProgress {
+    public static func gapMilliseconds(sentBytes: Int, processedMilliseconds: Int) -> Double? {
+        guard sentBytes >= 0, processedMilliseconds >= 0 else { return nil }
+        // Progress is relative audio processed, not a timestamp for a recognized word.
+        return max(0, Double(sentBytes) / 48 - Double(processedMilliseconds))
+    }
+}
+
 public enum MuseError: Error, LocalizedError {
     case invalidAudio, rejected, notConnected, testLimit, connection
     public var errorDescription: String? {
@@ -21,7 +29,7 @@ public enum MuseProtocol {
             "authorization": ["accessToken": "Bearer " + apiKey],
             "model": "muse-voice-transcribe-1.0", "audioEncoding": "PCM_24KHZ",
             "mode": "ENDPOINTING", "partialMode": "CUMULATIVE",
-            "languageBias": ["Arabic"], "emitAudioProgress": false
+            "languageBias": ["Arabic"], "emitAudioProgress": true
         ])
     }
 }
