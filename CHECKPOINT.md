@@ -98,3 +98,7 @@ Verified the official Muse speech protocol and pricing pages. Project credential
 ## Paused by Faraz
 
 October 26: Faraz requested resuming tomorrow. Working tree was clean at 517dd2c and the prototype branch was pushed. Muse client is installed; the Meta key passed read-only authentication. Device Keychain provisioning has not run. The paid two-minute Muse test remains unapproved. No live Muse speech session or cloud recitation upload occurred. Resume with the pending approval, not another hardware setup sequence.
+
+## Resumed October 27
+
+Faraz requested resuming. The registered physical iPhone was listed as available. The private credential preflight passed without copying the key or contacting Meta. Presented the still-pending approval for one two-minute recitation test costing at most $0.01. No paid session or cloud audio upload has started.
