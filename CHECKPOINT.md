@@ -75,3 +75,9 @@ The wearer reported: “it worked for the most part” with “one or two missed
 - Local investigation: build/logs/rahman-investigation.md.
 
 Installation of the transition correction passed signature/profile checks and completed. Automatic launch was blocked by the locked iPhone. Open the installed app manually after unlocking for the pending normal-pace retest.
+
+## Muse priority correction
+
+Faraz explicitly required Muse tools on October 26. Current code uses local Meta Omnilingual and DAT; no Muse API is integrated. Updated SPEC.md and NEXT-TASK.md to make Muse Voice Transcribe the next core integration, with local Omnilingual retained as an explicitly labelled fallback. A useful Spark role remains a separate measured milestone.
+
+Verified the official Muse speech protocol and pricing pages. Project credentials contain HF_TOKEN only. Proton Pass connection worked; no matching Meta/Muse/Ayah credential titles were found in the Khirad deployment or business vaults. No secret values were printed. API-key access and bounded paid/cloud-audio test authorization remain required before live Muse verification. No additional app code changed during this clarification.

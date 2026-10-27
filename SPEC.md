@@ -46,3 +46,21 @@ Run the prepared Meta Omnilingual 5-second CoreML model locally in a serial infe
 The live control is separate from the manual hardware controls. It first shows a listening card, then advances only on supported matches. Uncertain fragments hold the current verse. Sequence context can resolve a repeated phrase, while distinctive evidence permits repeats/backtracking. Stop invalidates pending recognition results before releasing hardware.
 
 Acceptance: a real glasses recitation changes ayahs automatically without manual selection; unrelated/short fragments do not force a match; the phone exposes actual transcript and inference timing. Five seconds of audio collection must not be misrepresented as inference latency. No cloud upload, paid inference or recorded audio storage is part of this slice.
+
+## Muse requirement, clarified October 26
+
+Faraz explicitly required Muse tools in the hackathon build. The currently installed app uses Meta Omnilingual locally plus Meta Wearables DAT; it makes no Muse API calls. Hardware and local-recognition results must not be described as Muse integration.
+
+The next implementation priority is Muse Voice Transcribe (`muse-voice-transcribe-1.0`) as the primary live-listener candidate. Use its realtime WebSocket endpoint, Arabic language bias, mono signed 16-bit PCM at 16/24 kHz, handshake authentication, and cumulative partial replacement. Feed its actual transcripts to the existing canonical verse matcher. Preserve Omnilingual as an explicitly labelled local fallback; do not silently claim a fallback result came from Muse.
+
+Muse Spark is the next candidate for a narrow, evaluated ambiguity-resolution role over retrieved verse identifiers. It must never author Quran text or a replacement translation. Do not claim Spark integration before actual calls, evidence and a useful comparison exist.
+
+Prerequisites: obtain access to a Meta Model API key without embedding it in the app or Git, and approve a bounded paid test plus sending the chosen test audio to Meta. A credit claim is not evidence that API access or credits are active. On October 26, only HF_TOKEN was configured in the project credential file; matching Meta/Muse credentials were not found by title in the Khirad deployment or business Proton Pass vaults.
+
+Official contracts checked October 26:
+- https://dev.meta.ai/docs/speech-to-text
+- https://dev.meta.ai/docs/api-reference/voice/realtime
+- https://dev.meta.ai/docs/api-reference/voice/schemas
+- https://dev.meta.ai/docs/pricing-rate-limits
+
+Muse Voice Transcribe pricing is listed as $0.18 per audio hour. Realtime audio must be paced in real time; do not replay five-second rolling windows as overlapping streaming input. Perform a short cleared-audio probe before selecting the live listener, then compare verse matches, misses and observed latency. No paid call or cloud audio upload has occurred.
