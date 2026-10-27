@@ -27,6 +27,7 @@ node_modules/
 Pods/
 build/
 DerivedData/
+.build/
 *.xcuserstate
 xcuserdata/
 .DS_Store

@@ -4,7 +4,9 @@
 
 October 26, 2026: repository setup and project documentation only. No application code or successful physical-device test is claimed by this initial commit.
 
-The participant guide lists the building period as October 27 through November 4, 2026. Record implementation milestones and verification evidence here as work lands.
+October 26, 2026: Faraz relayed organizer clarification and provided the kickoff rules slide stating new work may be built October 26 through November 4. Application implementation began after that clarification. The earlier guide's October 27 start is superseded by the kickoff clarification.
+
+First application milestone: original native SwiftUI phone interface, manual canonical-verse display, glasses-only microphone capture, audio-first session sequencing and cleanup, and build/install tooling. Four core tests passed after observed failing tests. The first signed app installed and launched on the test iPhone. Actual Arabic readability and combined audio/display remain pending wearer confirmation at this milestone.
 
 ## Existing preparation
 

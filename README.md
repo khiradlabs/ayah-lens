@@ -4,9 +4,9 @@ A hackathon prototype for following Quran recitation with Arabic text and a publ
 
 ## Status
 
-Repository and project documentation established on October 26, 2026. Application implementation has not started. Physical glasses audio and display validation is in progress using Meta's existing sample applications.
+Implementation started October 26, 2026 after Faraz relayed organizer clarification and supplied the kickoff rules slide. Separate stock-sample checks established wearer-observed lens output and audio playback. Combined operation and Arabic rendering are the first application milestone.
 
-The participant guide lists October 27 through November 4 as the building period. Competition application code will be identified separately from pre-event preparation and third-party dependencies.
+The kickoff rules state new work may be built October 26 through November 4. Competition code is identified separately from preparation and third-party dependencies. See [SPEC.md](SPEC.md).
 
 ## What we aim to demonstrate
 
@@ -21,6 +21,7 @@ These are prototype goals, not claims of completed capabilities. All-day operati
 ## Planned approach
 
 An iPhone companion application connects through Meta's Wearables Device Access Toolkit. We will compare Meta Muse Voice Transcribe with Meta Omnilingual ASR before choosing the prototype recognition path. A verse matcher selects canonical text. Muse Spark may help resolve ambiguity or select source-backed answers after its contribution is validated.
+The first application is native SwiftUI. The current hardware-check build uses manual verse selection and a real microphone meter; speech recognition is not connected yet.
 
 Arabic and published translations come from attributed sources. Generative models will not author replacement Quran text or translations.
 
@@ -40,3 +41,24 @@ See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for the event-work boundary and depende
 Original code in this repository is MIT licensed. Third-party models, SDKs, datasets, fonts and translations retain their own licences. Dataset access does not establish permission to redistribute recordings or upload participants' voices to another service.
 
 Secrets, private recordings, datasets, downloaded model weights and local evaluation artifacts must not be committed.
+
+## Build and check
+
+Requires Xcode 27.1 or a compatible Swift 6 toolchain, a connected iPhone, Meta AI Developer Mode, and the glasses developer component.
+
+```bash
+bash tools/test.sh
+bash tools/build.sh unsigned
+```
+
+For a signed device build, set `AYAH_DEVICE_ID` from Xcode's current physical-device list and use your development team in the generated project settings.
+
+```bash
+bash tools/build.sh signed
+python3 tools/device.py install
+python3 tools/device.py launch
+```
+
+On the phone, register the app with the glasses. Check **Show selected verse on lens** first, then **Start microphone + lens**. Verify actual lens visibility and increasing sample count together. Report the result; this repository does not claim combined hardware success from unit tests alone.
+
+October 26 first-build verification: four core tests passed; signed device build, provisioning verification, installation and app launch succeeded. Arabic lens readability and simultaneous audio/display are awaiting wearer confirmation. No live recognition result is claimed.

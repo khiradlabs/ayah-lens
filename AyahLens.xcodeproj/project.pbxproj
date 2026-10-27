@@ -1,0 +1,36 @@
+// !$*UTF8*$!
+{ archiveVersion = 1; classes = {}; objectVersion = 56; objects = {
+49849314EB3FDFAA6E68B6AC = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/AyahLensApp.swift"; sourceTree = SOURCE_ROOT; };
+F4DAEC678582ECAD040CF5A9 = { isa = PBXBuildFile; fileRef = 49849314EB3FDFAA6E68B6AC; };
+383C3C389352A9117F99F5DA = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/GlassesMicrophone.swift"; sourceTree = SOURCE_ROOT; };
+95315A69D2FB84957DF1FABE = { isa = PBXBuildFile; fileRef = 383C3C389352A9117F99F5DA; };
+DA758304A54C5DBDBE0D6AE4 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App/GlassesModel.swift"; sourceTree = SOURCE_ROOT; };
+3556165AC4203CDEBB2B6209 = { isa = PBXBuildFile; fileRef = DA758304A54C5DBDBE0D6AE4; };
+3A620697322164689312B63E = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Core/Sources/AyahLensCore/AudioLevel.swift"; sourceTree = SOURCE_ROOT; };
+39D83B4222F2FDB72C8D6EB4 = { isa = PBXBuildFile; fileRef = 3A620697322164689312B63E; };
+95D787C23573734B4A123CDD = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Core/Sources/AyahLensCore/SessionSequence.swift"; sourceTree = SOURCE_ROOT; };
+59B97A17A09D7CFCEB73A0D6 = { isa = PBXBuildFile; fileRef = 95D787C23573734B4A123CDD; };
+D5BA6069619D4CBFE9D770F7 = { isa = PBXFileReference; lastKnownFileType = text; path = "App/Resources/TANZIL-NOTICE.txt"; sourceTree = SOURCE_ROOT; };
+B79F839A40508E42C737FE1D = { isa = PBXBuildFile; fileRef = D5BA6069619D4CBFE9D770F7; };
+3AD802970BA416CDD20DCBA1 = { isa = PBXFileReference; lastKnownFileType = text.json; path = "App/Resources/verses.json"; sourceTree = SOURCE_ROOT; };
+8869DA895F739D76B751E862 = { isa = PBXBuildFile; fileRef = 3AD802970BA416CDD20DCBA1; };
+86A55EE7983D754826459DBA = { isa = XCRemoteSwiftPackageReference; repositoryURL = "https://github.com/facebook/meta-wearables-dat-ios"; requirement = { kind = exactVersion; version = 1.0.1; }; };
+29B5F5F532A5B3405DE9AB53 = { isa = XCSwiftPackageProductDependency; package = 86A55EE7983D754826459DBA; productName = MWDATCore; };
+DCD15AFC0E566127C777A049 = { isa = PBXBuildFile; productRef = 29B5F5F532A5B3405DE9AB53; };
+73C19A656A1A6906AD94A00B = { isa = XCSwiftPackageProductDependency; package = 86A55EE7983D754826459DBA; productName = MWDATDisplay; };
+882E9E7849E30BA643520E5B = { isa = PBXBuildFile; productRef = 73C19A656A1A6906AD94A00B; };
+878A52FC5FF6A57D50B7B870 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (F4DAEC678582ECAD040CF5A9,95315A69D2FB84957DF1FABE,3556165AC4203CDEBB2B6209,39D83B4222F2FDB72C8D6EB4,59B97A17A09D7CFCEB73A0D6,); runOnlyForDeploymentPostprocessing = 0; };
+41D311A605520FC7B8B9A980 = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (B79F839A40508E42C737FE1D,8869DA895F739D76B751E862,); runOnlyForDeploymentPostprocessing = 0; };
+E2AA269EB967A8853A258BFA = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (DCD15AFC0E566127C777A049,882E9E7849E30BA643520E5B,); runOnlyForDeploymentPostprocessing = 0; };
+681C948D238C526E9E3424E0 = { isa = PBXFileReference; explicitFileType = wrapper.application; path = AyahLens.app; sourceTree = BUILT_PRODUCTS_DIR; };
+CB00D889DA9E2BC4A36341DA = { isa = PBXGroup; children = (681C948D238C526E9E3424E0,); name = Products; sourceTree = "<group>"; };
+19F479106CE8C3BA8C106518 = { isa = PBXGroup; children = (49849314EB3FDFAA6E68B6AC,383C3C389352A9117F99F5DA,DA758304A54C5DBDBE0D6AE4,3A620697322164689312B63E,95D787C23573734B4A123CDD,D5BA6069619D4CBFE9D770F7,3AD802970BA416CDD20DCBA1,CB00D889DA9E2BC4A36341DA,); sourceTree = "<group>"; };
+EDDA600A3F771F810A8065C9 = { isa = XCBuildConfiguration; buildSettings = {PRODUCT_NAME = "AyahLens";PRODUCT_BUNDLE_IDENTIFIER = "ai.khirad.apps.ayahlens";DEVELOPMENT_TEAM = "65LPT48UNK";CODE_SIGN_STYLE = "Automatic";INFOPLIST_FILE = "App/Info.plist";SWIFT_VERSION = "6.0";IPHONEOS_DEPLOYMENT_TARGET = "18.0";TARGETED_DEVICE_FAMILY = "1";SDKROOT = "iphoneos";SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";SWIFT_OPTIMIZATION_LEVEL = "-Onone";ENABLE_USER_SCRIPT_SANDBOXING = "YES";MARKETING_VERSION = "0.1.0";CURRENT_PROJECT_VERSION = "1";GENERATE_INFOPLIST_FILE = "NO";}; name = Debug; };
+2B23A31EEC75B029432F2445 = { isa = XCBuildConfiguration; buildSettings = { CLANG_ENABLE_MODULES = YES; }; name = Debug; };
+594BCDCC96599D88EF772A08 = { isa = XCBuildConfiguration; buildSettings = {PRODUCT_NAME = "AyahLens";PRODUCT_BUNDLE_IDENTIFIER = "ai.khirad.apps.ayahlens";DEVELOPMENT_TEAM = "65LPT48UNK";CODE_SIGN_STYLE = "Automatic";INFOPLIST_FILE = "App/Info.plist";SWIFT_VERSION = "6.0";IPHONEOS_DEPLOYMENT_TARGET = "18.0";TARGETED_DEVICE_FAMILY = "1";SDKROOT = "iphoneos";SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";SWIFT_OPTIMIZATION_LEVEL = "-O";ENABLE_USER_SCRIPT_SANDBOXING = "YES";MARKETING_VERSION = "0.1.0";CURRENT_PROJECT_VERSION = "1";GENERATE_INFOPLIST_FILE = "NO";}; name = Release; };
+07CA1E69F6068DEA30A4DA6B = { isa = XCBuildConfiguration; buildSettings = { CLANG_ENABLE_MODULES = YES; }; name = Release; };
+4A807E8A027297B0B93701FB = { isa = XCConfigurationList; buildConfigurations = (EDDA600A3F771F810A8065C9,594BCDCC96599D88EF772A08,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+B4E10CAA9C5E22150B71559C = { isa = XCConfigurationList; buildConfigurations = (2B23A31EEC75B029432F2445,07CA1E69F6068DEA30A4DA6B,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+34A04005BCAF206EEC990BD9 = { isa = PBXNativeTarget; buildConfigurationList = 4A807E8A027297B0B93701FB; buildPhases = (878A52FC5FF6A57D50B7B870,E2AA269EB967A8853A258BFA,41D311A605520FC7B8B9A980,); buildRules = (); dependencies = (); name = AyahLens; productName = AyahLens; productReference = 681C948D238C526E9E3424E0; productType = "com.apple.product-type.application"; packageProductDependencies = (29B5F5F532A5B3405DE9AB53,73C19A656A1A6906AD94A00B,); };
+244210E48437B6556980A702 = { isa = PBXProject; attributes = { LastUpgradeCheck = 2710; }; buildConfigurationList = B4E10CAA9C5E22150B71559C; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; knownRegions = (en,Base,); mainGroup = 19F479106CE8C3BA8C106518; productRefGroup = CB00D889DA9E2BC4A36341DA; projectDirPath = ""; projectRoot = ""; targets = (34A04005BCAF206EEC990BD9,); packageReferences = (86A55EE7983D754826459DBA,); };
+}; rootObject = 244210E48437B6556980A702; }
