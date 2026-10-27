@@ -1,10 +1,10 @@
 # Next: prove the first original glasses loop
 
-Status: IN PROGRESS. Updated discovery fix installed. Launch was blocked by the locked iPhone. The wearer reported registration success but no eligible display devices in the preceding build.
+Status: IN PROGRESS. Wearer confirmed lens text works. Combined action crashed in the audio callback. The verified callback correction is installed; the phone was locked at launch.
 
 ## First action
 
-Read `CHECKPOINT.md`. Unlock the phone and open Ayah Lens, or use the maintained launch helper. Observe whether the status becomes “Display glasses available.” Then retry the lens action. If it remains waiting, inspect discovery/transport evidence before another code change. Do not claim the hardware issue is fixed without wearer confirmation.
+Read `CHECKPOINT.md`. Unlock and open Ayah Lens. Tap Start microphone + lens while wearing the glasses. Confirm that the app stays open, the microphone counter increases while speaking, and the lens text remains visible. If it fails, retrieve the new crash report or exact on-screen error before changing anything else.
 
 The requested sequence is Register glasses → Show selected verse on lens → Start microphone + lens. The wearer should see readable Arabic and English while the phone sample counter increases.
 

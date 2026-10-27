@@ -27,7 +27,7 @@ final class GlassesMicrophone {
                 throw PrototypeError.message("The glasses microphone returned an invalid audio format.")
             }
             sampleRate = format.sampleRate
-            engine.inputNode.installTap(onBus: 0, bufferSize: 2048, format: format) { buffer, _ in
+            engine.inputNode.installTap(onBus: 0, bufferSize: 2048, format: format) { @Sendable buffer, _ in
                 guard AVAudioSession.sharedInstance().currentRoute.inputs.contains(where: { $0.portType == .bluetoothHFP }) else { return }
                 guard let channel = buffer.floatChannelData?[0] else { return }
                 let samples = Array(UnsafeBufferPointer(start: channel, count: Int(buffer.frameLength)))

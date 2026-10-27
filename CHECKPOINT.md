@@ -1,6 +1,6 @@
 # Ayah Lens implementation checkpoint
 
-October 26, 2026. The wearer reported successful registration but display startup failed with no eligible devices. A device-discovery startup race was corrected and the updated signed build installed. Relaunch was blocked because the phone was locked. Actual lens output remains unverified.
+October 26, 2026. Wearer confirmed text works in the lens. Combined mode crashed in the microphone tap callback. The callback isolation fix passed the regression probe and was signed and installed. Launch was blocked by the locked phone; combined hardware retest is pending.
 
 ## Done and verified
 
@@ -27,9 +27,17 @@ October 26, 2026. The wearer reported successful registration but display startu
 - Updated signed build: BUILD SUCCEEDED. Signature/profile checks and installation passed. Launch failed because the iPhone was locked.
 - Local SDK evidence also contained transport errors. This correction addresses a confirmed integration race; it does not establish that every hardware blocker is resolved.
 
+## Combined-mode crash correction
+
+- Wearer confirmed text works, then reported that combined mode closes the app and returns.
+- The retrieved phone crash report identified an actor-isolation trap in the AVAudioEngine tap on its worker queue.
+- Marked the tap closure explicitly `@Sendable`; the UI still receives measured values on its actor.
+- `tools/test_audio_callback.py` executes the actual app closure with AVFoundation buffers on a worker queue. Bluetooth routing is synthetic in this host test. The original closure trapped with signal 5; the corrected closure processed four samples at the expected level. Removing the fix reproduced the trap, and restoring it passed.
+- All seven core tests passed. Updated signed build and installation passed. Relaunch was blocked by the locked phone. Actual simultaneous microphone/display behavior remains unverified.
+
 ## Pending
 
-- Wearer confirmation that Arabic/English are readable and remain visible while captured sample count increases. This needs physical glasses observation; unit tests cannot establish it.
+- Wearer confirmed lens text works. Retest that it remains visible while the sample counter increases after the crash correction. Unit tests cannot establish hardware coexistence.
 - If native Arabic rendering fails, test a phone-rendered image fallback. If HFP/display coexistence fails, inspect the actual session error before choosing an in-stream PCM alternative.
 - Recognition, a narrow Spark contribution, user-benefit evaluation and video production remain unimplemented.
 - No paid API call or cloud audio upload occurred in this milestone.

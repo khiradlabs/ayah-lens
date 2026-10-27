@@ -9,4 +9,5 @@ swift test --package-path Core > build/logs/core-tests.log 2>&1
 result=$?
 set -e
 tail -25 build/logs/core-tests.log
-exit "$result"
+if [ "$result" -ne 0 ]; then exit "$result"; fi
+python3 tools/test_audio_callback.py
