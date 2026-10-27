@@ -1,21 +1,19 @@
-# Next: locate Muse recognition-to-display delay
+# Next: validate earlier matching of distinctive openings
 
-Status: Timing diagnostics are implemented and verified locally. Check private action gates and build/logs/muse-test-approval.json for the current physical validation result and remaining authorization scope. Do not rely on historical pending-approval text in older checkpoint sections.
+Status: An exact short-opening path is implemented and locally verified. Twenty-five tests, callback and synthetic WebSocket probes passed. Inspect the latest build/install receipts for phone state. Consult private action gates and build/logs/muse-latency-investigation.md for actual timing observations and authorization scope.
 
 ## First action
 
-Consult build/logs/muse-latency-investigation.md and private gates for the latest physical observations. The question about phone versus lens delay was answered; do not ask it again. The original snapshot fields do not establish first-transcript or end-to-end latency.
+A screenshot supplied the expanded timing values. Do not ask for the same old metrics again. Source investigation reproduced an avoidable rule: complete unique openings shorter than eight letters did not match. The correction accepts only exact complete two-word openings with six/seven normalized letters, unique in Al-Fatihah, preserving word boundaries and dagger-alif spelling aliases. The existing fuzzy floor and ambiguity handling are unchanged.
 
-The expanded Muse timing disclosure adds First text after audio start, First match after text, and Peak audio gap. Obtain these values from a user-authorized run. Ask the wearer to begin reciting as soon as the listening card appears; initial silence is included in the first-text metric. The values remain after Stop. Avoid changing ASR/matching behavior before locating the delay.
+Have the wearer test the corrected matcher only after a clear paid/audio-transfer disclosure and their choice to run. Start reciting when the listening card appears; initial silence is included in the first-text timing. Compare First match after text plus observed correctness of verse changes. Exact partials were not captured in the prior run, so do not attribute its whole evidence wait to the eight-letter rule or promise a particular time reduction. Provider first-text delay is a separate component.
 
-Provider audio progress is not a word timestamp, and SDK send completion is not observed pixels. A low final gap can hide an earlier backlog; use the peak too. The first-text metric is an initial-session measurement, not per-ayah latency. No transcript or audio is persisted by the trace.
+## Limits and checks
 
-Do not initiate another paid session without checking authorization. Keep personal feedback, consent and actual provider traces private. Existing credentials and hardware setup are complete.
+- Twenty-five core tests passed, including complete short openings, incomplete words, altered word splits, duplicate/ambiguous reference prefixes, and prior regressions.
+- Removing the correction reproduced four assertion failures, restoring returned green.
+- bash tools/test.sh and python3 tools/probe_muse.py passed.
+- No additional paid API request was started by the agent. Check private gates before any billed request.
+- Keep personal observations, consent, screenshots and provider traces out of public commits.
 
-## Checks
-
-- bash tools/test.sh: twenty-three core tests plus actual PCM callback probe passed.
-- python3 tools/probe_muse.py: real WebSocket client processed synthetic audio-progress events, PCM, partials and clean endStream.
-- Signed device build passed. Check the latest install/launch receipts for the phone state.
-
-Device Keychain setup is complete. Do not provision the key again without evidence of a credential problem. Apple agreement, device registration, Meta AI Developer Mode and glasses component are complete.
+Device Keychain and hardware setup are complete. Do not repeat provisioning or registration without new evidence. First-text time is initial-session timing, not per-ayah latency; lens timing measures SDK completion, not visible pixels.

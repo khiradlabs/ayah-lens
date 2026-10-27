@@ -10,10 +10,16 @@ public struct Verse: Codable, Identifiable, Sendable {
 }
 
 public struct VerseMatcher: Sendable {
-    private let verses: [(id: String, letters: [Character], opening: [Character])]
+    private let verses: [(id: String, letters: [Character], opening: [Character], shortOpenings: Set<String>)]
     public init(verses: [Verse]) {
         self.verses = verses.map {
-            ($0.id, Array(Self.normalize($0.arabic)), Array(Self.normalize(String($0.arabic.split(separator: " ").first ?? ""))))
+            let firstWords = $0.arabic.split(whereSeparator: \.isWhitespace).prefix(2)
+            // Uthmani dagger-alif and ordinary ASR spelling share a recognition alias.
+            let aliases: Set<String> = firstWords.count == 2
+                ? [firstWords.map { Self.normalize(String($0)) }.joined(separator: " "),
+                   firstWords.map { Self.normalize(String($0).replacingOccurrences(of: "ٰ", with: "ا")) }.joined(separator: " ")] : []
+            return ($0.id, Array(Self.normalize($0.arabic)),
+                    Array(Self.normalize(String($0.arabic.split(separator: " ").first ?? ""))), aliases)
         }
     }
 
@@ -35,6 +41,16 @@ public struct VerseMatcher: Sendable {
     public func match(_ transcript: String, previous: String?) -> String? {
         let query = Array(Self.normalize(transcript))
         if let direct = matchSuffix(query, previous: previous) { return direct }
+        // Complete, exact two-word openings can be distinctive before eight letters.
+        // Keep the fuzzy threshold intact; reject shared or unfinished openings.
+        let tailWords = transcript.split(whereSeparator: \.isWhitespace).suffix(2).map { Self.normalize(String($0)) }
+        if tailWords.count == 2, tailWords.allSatisfy({ !$0.isEmpty }) {
+            let prefix = tailWords.joined()
+            if (6...7).contains(prefix.count) {
+                let candidates = verses.filter { $0.shortOpenings.contains(tailWords.joined(separator: " ")) }
+                if candidates.count == 1 { return candidates[0].id }
+            }
+        }
         guard let previous, let index = verses.firstIndex(where: { $0.id == previous }),
               index + 2 < verses.count, query.count >= 11 else { return nil }
         let expected = verses[index + 1]

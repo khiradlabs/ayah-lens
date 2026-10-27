@@ -12,3 +12,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Arabic opening words can be shorter than a proposed trailing fragment. Iterate valid prefix indices instead of constructing a closed range from independently clamped bounds. Verify: the unrelated trailing-word assertion in `testSharedVerseIsNotLostWhenWindowAlreadyIncludesNextOpeningWord` must return nil without trapping.
 
 - Swift 6 rejects shared `[String: Any]` credential dictionaries without isolation and `await` inside assertion autoclosures. Isolate Keychain access on MainActor and await probe values before assertions. Verify: signed build and `python3 tools/probe_muse.py` must compile and pass.
+
+- Exact short-opening recognition must retain word boundaries in aliases; concatenation accepts wrongly split fragments. Verify: `testEarlyOpeningRequiresCompleteWordsAndUniqueReference` rejects incomplete words and alternate splits while accepting complete unique openings.

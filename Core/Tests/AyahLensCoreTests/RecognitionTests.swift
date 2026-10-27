@@ -42,6 +42,27 @@ final class RecognitionTests: XCTestCase {
         }
     }
 
+    func testCompleteUniqueTwoWordOpeningsDoNotWaitForEightLetters() {
+        let matcher = VerseMatcher(verses: verses)
+        XCTAssertEqual(matcher.match("بسم الله", previous: nil), "1:1")
+        XCTAssertEqual(matcher.match("مالك يوم", previous: "1:3"), "1:4")
+        XCTAssertEqual(matcher.match("ملك يوم", previous: "1:3"), "1:4")
+        XCTAssertEqual(matcher.match("أعوذ بالله من الشيطان الرجيم بسم الله", previous: nil), "1:1")
+    }
+
+    func testEarlyOpeningRequiresCompleteWordsAndUniqueReference() {
+        let matcher = VerseMatcher(verses: verses)
+        for text in ["بسم", "بسم الل", "بسم اللخ", "مالك يو", "الله رب", "الحمد ل", "بس مالله", "مال كيوم"] {
+            XCTAssertNil(matcher.match(text, previous: nil), text)
+        }
+        let ambiguous = VerseMatcher(verses: [
+            Verse(id: "reference-a", arabic: verses[0].arabic, translation: ""),
+            Verse(id: "reference-b", arabic: verses[0].arabic, translation: "")
+        ])
+        XCTAssertNil(ambiguous.match("بسم الله", previous: nil))
+        XCTAssertEqual(matcher.match("بسم الله الرحمن الرحيم الحمد لله", previous: "1:1"), "1:2")
+    }
+
     func testWindowsAreBoundedUseRealSampleRateAndResetOnRouteChange() {
         var windows = RecognitionWindows()
         XCTAssertNil(windows.append([Float](repeating: 1, count: 4_000), sampleRate: 1_000))

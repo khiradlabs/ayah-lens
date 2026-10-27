@@ -87,3 +87,5 @@ Verification: twenty core tests and a local synthetic WebSocket integration prob
 The phone’s Muse timing disclosure exposes provider audio-progress gap, matcher duration and lens SDK send-completion duration. Values remain after Stop. These are stage diagnostics, not measured word-to-visible-text latency. The implementation continues using partial transcripts. Twenty-one core tests and the local synthetic WebSocket progress probe passed; physical timing observations are maintained separately from this repository.
 
 Expanded timing also retains peak audio gap, first nonempty transcript after audio streaming begins, and first supported match after that transcript. Startup silence is included. These initial-session timings do not measure per-ayah or word-aligned lens delay. Twenty-three core tests passed.
+
+The selected-passage matcher now accepts distinctive complete two-word openings with six/seven normalized letters by exact, unique match. It preserves boundaries and canonical display text; approximate matching keeps its prior evidence floor. Twenty-five core tests passed. A live latency improvement is not yet claimed.

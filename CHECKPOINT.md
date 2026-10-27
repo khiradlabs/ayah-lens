@@ -120,3 +120,9 @@ Twenty-one core tests passed after observed diagnostic-test failures. The actual
 Current-gap snapshots cannot establish cumulative transcript latency or rule out an earlier backlog. Added a monotonic trace for the first nonempty transcript after the first audio buffer, the first supported match after that partial, and peak provider audio gap. The trace persists after Stop and resets for a new Muse session. The first-text interval includes pre-recitation silence; it is not word-aligned end-to-end latency. No audio or transcript is saved by this trace.
 
 Twenty-three tests passed after the two new trace cases were observed failing. PCM and real-WebSocket synthetic probes passed. Signed build passed. The actual screenshot and wearer observations remain in private local investigation notes. No new paid API request was initiated by the agent. Matching thresholds, model and streaming cadence are unchanged.
+
+## Exact short-opening recognition
+
+The source required at least eight letters even for a complete, distinctive two-word opening in the selected passage. Added an exact-match path for unique six/seven-letter opening aliases, retaining word boundaries and accounting for Uthmani dagger-alif recognition spelling. The approximate matcher’s threshold remains unchanged. Shared, incomplete or wrongly split fragments remain rejected, and longer supported suffixes retain precedence. Canonical display content is unchanged.
+
+Twenty-five tests passed after the new opening assertions were observed failing. Reverting the matcher reproduced four failures; restoring the fix returned green. The callback and real-WebSocket synthetic probes passed. Private observations and interpretation remain in build/logs/muse-latency-investigation.md. The actual first partial was not captured, so a physical retest is required before claiming a latency gain. This change does not alter provider first-text emission or stream cadence.
