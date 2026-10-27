@@ -1,6 +1,6 @@
 # Next: validate live Al-Fatihah recognition on the glasses
 
-Status: Partial live pass. The wearer identified Ar-Rahman ir-Rahim as a likely miss. A bounded matcher transition correction passed fifteen tests and a signed build. Physical retest is pending.
+Status: Partial live pass. The wearer identified Ar-Rahman ir-Rahim as a likely miss. A bounded matcher transition correction passed fifteen tests and a signed build. The correction is installed; automatic launch was blocked by the locked phone. Physical retest is pending.
 
 ## First action
 

@@ -73,3 +73,5 @@ The wearer reported: “it worked for the most part” with “one or two missed
 - Fifteen tests passed. The new case failed before implementation, failed again when the fix was temporarily removed, and passed when restored. PCM callback regression remained green. Signed build succeeded.
 - This is a reproduced integration defect, not proof of the exact cause of the wearer’s miss. Actual glasses retest remains required. No model, cadence, global threshold or canonical display text changed.
 - Local investigation: build/logs/rahman-investigation.md.
+
+Installation of the transition correction passed signature/profile checks and completed. Automatic launch was blocked by the locked iPhone. Open the installed app manually after unlocking for the pending normal-pace retest.
