@@ -344,6 +344,7 @@ final class GlassesModel: SessionHardware {
         if let id = result.matchedID {
             decisionRevision += 1
             sparkTask?.cancel(); sparkTask = nil; sparkRequestID = UUID()
+            sparkStatus = "Muse Spark idle · reference matched"
             try await acceptMatch(id, resolution: "Reference match")
             return
         }
@@ -451,7 +452,10 @@ final class GlassesModel: SessionHardware {
     }
 
     func stopAudio() {
-        if museActive { persistStreamTrace(force: true) }
+        if museActive {
+            sparkStatus = "Muse Spark stopped"
+            persistStreamTrace(force: true)
+        }
         transcriptTask?.cancel(); transcriptTask = nil; pendingTranscript = nil
         sparkTask?.cancel(); sparkTask = nil; sparkRequestID = UUID()
         decisionRevision += 1

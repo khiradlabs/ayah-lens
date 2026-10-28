@@ -46,7 +46,26 @@ public struct QuranIndex: Sendable {
         return Set((0..<(letters.count - 2)).map { String(letters[$0...($0 + 2)]) })
     }
 
+    // Search the newest complete-word suffix against the entire reference first.
+    // Older cumulative text must not exclude a newly recited short passage.
+    private func uniqueRecentMatch(_ transcript: String) -> Int? {
+        let words = transcript.split(whereSeparator: \.isWhitespace).suffix(12)
+        guard words.count >= 2 else { return nil }
+        for count in 2...words.count {
+            let query = VerseMatcher.normalize(words.suffix(count).joined(separator: " "))
+            guard query.count >= 8 else { continue }
+            let queryGrams = Self.grams(query)
+            guard let smallest = queryGrams.compactMap({ postings[$0] }).min(by: { $0.count < $1.count }) else { continue }
+            let exact = smallest.filter { normalized[$0].contains(query) }
+            if exact.count == 1 { return exact[0] }
+        }
+        return nil
+    }
+
     public func retrieve(_ transcript: String, previous: String?) -> QuranRetrieval {
+        if let position = uniqueRecentMatch(transcript) {
+            return QuranRetrieval(matchedID: verses[position].id, candidates: [verses[position]])
+        }
         let query = String(VerseMatcher.normalize(transcript).suffix(96))
         guard query.count >= 6 else { return QuranRetrieval(matchedID: nil, candidates: []) }
         let grams = Self.grams(query)

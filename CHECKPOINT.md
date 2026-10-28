@@ -180,3 +180,13 @@ Two new tests were observed RED with eight assertions failing. All 37 core tests
 An independent synthetic replay exposed a retrieval defect: after long cumulative Al-Fatihah text, recent Al-Ikhlas evidence can be excluded from the candidate set. It does not explain a transcript that stops updating. Track and fix it separately with a regression.
 
 Build 22 signature/profile checks, installation and device version comparison passed. Launch was blocked because the iPhone was locked. Unlock and open Ayah Lens manually for the diagnostic reproduction. No live Muse session was started by the agent.
+
+## Cumulative passage retrieval correction, October 28
+
+Reproduced a source-level defect: the cumulative Al-Fatihah-to-Al-Ikhlas sequence returned no match for all four Al-Ikhlas ayahs. Older text dominated candidate ranking. A globally unique recent complete-word suffix is now checked against the entire reference before approximate retrieval. Shared phrases remain subject to ambiguity/context rules. Published text is unchanged.
+
+Regression was observed failing four assertions, passed after correction, failed all four again with the correction removed, then was restored. The full suite passed 38 tests before final artifact verification. Direct reference matches and Stop now replace the obsolete Spark checking status; this small label correction was reviewed by diff and build.
+
+This source-level reproduction does not establish the exact cause of a particular physical display failure. The corrected artifact still requires the same wearer passage test. No new provider calls or audio uploads were made during this correction.
+
+Final verification: 38 core tests and actual PCM callback passed; optimized global index probe passed 40 queries and shared-opening abstention; local Spark HTTP probe passed. Signed Version 0.2.0 Build 23 built, installed, matched device metadata and launched successfully. The same physical recitation sequence is pending.

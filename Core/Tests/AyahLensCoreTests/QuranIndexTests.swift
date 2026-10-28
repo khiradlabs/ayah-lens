@@ -52,4 +52,24 @@ final class QuranIndexTests: XCTestCase {
             XCTAssertNil(index.retrieve(text, previous: nil).matchedID)
         }
     }
+    func testCumulativeRecitationCanSwitchFromFatihahToIkhlas() throws {
+        let index = QuranIndex(verses: try corpus())
+        let passage = [
+            ("بسم الله الرحمن الرحيم الحمد لله رب العالمين", "1:2"),
+            ("الرحمن الرحيم", "1:3"), ("مالك يوم الدين", "1:4"),
+            ("اياك نعبد واياك نستعين", "1:5"), ("اهدنا الصراط المستقيم", "1:6"),
+            ("صراط الذين انعمت عليهم غير المغضوب عليهم ولا الضالين", "1:7"),
+            ("قل هو الله احد", "112:1"), ("الله الصمد", "112:2"),
+            ("لم يلد ولم يولد", "112:3"), ("ولم يكن له كفوا احد", "112:4")
+        ]
+        var transcript = ""
+        var previous: String?
+        for (text, expected) in passage {
+            transcript += " " + text
+            let result = index.retrieve(transcript, previous: previous)
+            XCTAssertEqual(result.matchedID, expected, "Current phrase: \(text)")
+            previous = result.matchedID ?? previous
+        }
+    }
+
 }

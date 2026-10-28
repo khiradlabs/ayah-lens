@@ -23,4 +23,4 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 
 - The opening “الله لا إله إلا هو الحي القيوم” is shared by 2:255 and 3:2. Global retrieval must abstain without context; tests identifying 2:255 need its distinctive continuation. Verify the full-corpus shared-phrase test.
 
-- Global retrieval must rank recent recitation evidence during passage changes; a long cumulative transcript can hide a new short surah. Verify a cumulative Al-Fatihah-to-Al-Ikhlas regression before claiming passage-switch support. This regression is pending.
+- Global retrieval must rank recent recitation evidence during passage changes; a long cumulative transcript can hide a new short surah. Verify testCumulativeRecitationCanSwitchFromFatihahToIkhlas and the same actual glasses sequence. The regression now covers all four Al-Ikhlas transitions; physical validation remains pending.
