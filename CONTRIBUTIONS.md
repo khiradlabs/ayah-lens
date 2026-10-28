@@ -32,4 +32,4 @@ October 26 Muse client preparation: original Swift realtime transport, continuou
 
 Original event work now includes full-reference preparation/validation, an inverted trigram index, contextual candidate matching, and bounded lens pagination. The reference text itself is existing attributed material.
 
-An original Muse Spark 1.3 HTTP adapter uses strict structured output with supplied IDs or abstention. App integration limits calls, discards superseded results and looks up unchanged source text. Thirty-five core tests and local client probes passed. Real Spark inference and a measured benefit comparison remain pending. No model weights are claimed as original work.
+An original Muse Spark 1.3 HTTP adapter uses strict structured output with supplied IDs or abstention. App integration limits calls, discards superseded results and looks up unchanged source text. Thirty-five core tests and local client probes passed. Real Standard Spark inference subsequently passed three synthetic cases on October 28, including one recovery after matcher abstention. Representative live benefit remains pending. No model weights are claimed as original work.

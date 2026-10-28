@@ -4,12 +4,12 @@ Read SPEC.md and the latest CHECKPOINT.md entry. Version 0.2.0, Build 21 is inst
 
 ## Immediate validation
 
-1. Consult private gates before paid calls. No real Spark inference has run.
-2. Validate Standard muse-spark-1.3 on a bounded candidate fixture using the actual adapter. Keep credentials and receipts private.
-3. Compare matcher-only against Spark on noisy or ambiguous fragments. Include abstention cases. Report actual decisions and latency before claiming improvement.
-4. Run a bounded live check across selected different passages. Verify all recognized text comes from canonical lookup, plus repeats, passage changes and long-page navigation.
-5. Check an external reciter source with permission.
-6. Build the scoring evidence and three-minute video around verified behavior and clear model roles.
+1. Test Build 21 on the wearer with Muse Spark enabled. Observe phone transcript, candidate decision status and physical lens across selected passages. Check repeats, passage changes and long-page navigation.
+2. A bounded Muse validation was authorized on October 28; consult the private gate rather than asking for the same spending approval again.
+3. Check an external reciter source with permission.
+4. Build scoring evidence and the three-minute video around verified behavior and clear model roles.
+
+Standard Muse Spark provider validation passed three synthetic cases using the actual adapter. The matcher abstained on all three; Spark recovered noisy 1:6 in 3.28 seconds and correctly abstained twice. One shared-opening case bypassed the app's suppression as an adapter control. This is a selected diagnostic, not a representative accuracy benchmark. See ignored build/spark-evaluation/live.json.
 
 ## Current implementation
 

@@ -158,3 +158,15 @@ Verification: 35 core tests passed after observed failing feature tests; actual 
 Receipts remain ignored under build/logs, build/muse-probe, build/spark-probe and build/quran-probe. The Xcode build had no application warnings; its AppIntents extraction warning reflects no AppIntents dependency.
 
 Next: approved provider validation, measurable matcher-only/Spark comparison, selected live passages and long-page check, then scoring evidence and video. Private authorization and observations remain outside public documentation.
+
+## Muse Spark provider validation, October 28
+
+Ran tools/evaluate_spark.py --live through the actual MuseSparkClient against Standard muse-spark-1.3. Three synthetic transcript fixtures were used; no audio was uploaded by this evaluation. All expected decisions were returned.
+
+- Noisy guidance request: local matcher abstained between 1:6 and 37:118; Spark selected 1:6 in 3.283 seconds.
+- Shared praise without context: local matcher abstained; Spark also abstained in 0.711 seconds.
+- Shared opening without context: local matcher abstained; Spark also abstained in 1.395 seconds. This was an adapter control; app eligibility correctly suppresses Spark for this identical phrase.
+
+This establishes real provider execution and one selected synthetic recovery. It is a three-case diagnostic, not a representative accuracy benchmark or physical lens test. Spark latency supports using it only on uncertain evidence. No application code changed; the installed artifact remains version 0.2.0 Build 21. Live fixture receipts remain ignored under build/spark-evaluation.
+
+Next: wearer tests Build 21 with Muse Spark enabled across selected passages, observes resolver status and lens behavior, then checks long-page navigation. Private spending authorization is recorded separately. Do not request it again within the authorized bounded validation.

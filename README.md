@@ -20,7 +20,7 @@ Thirty-five core tests passed, including corpus coverage, global retrieval, shar
 
 Whole-Quran index queries were measured on a Mac. This is a host performance probe, not phone or visible-lens latency. Full corpus availability and selected passing cases do not establish accuracy for every ayah.
 
-Real Spark provider validation, matcher-only comparison, selected live passage changes, external-reciter testing and long-page readability remain pending. Hardware observations and approval records are maintained privately. No Spark decision benefit is claimed yet.
+Real Standard Muse Spark validation passed three synthetic cases: one noisy phrase recovered from matcher abstention and two shared phrases correctly left unresolved. The recovery took 3.28 seconds; abstentions took 0.71 and 1.39 seconds. One abstention case is an adapter control that the app correctly suppresses before calling Spark. This small diagnostic does not establish representative accuracy or live user benefit. Selected live passage changes, external-reciter testing and long-page readability remain pending. Hardware observations and approval records are maintained privately.
 
 ## Check and build
 
@@ -31,6 +31,7 @@ bash tools/test.sh
 python3 tools/probe_muse.py
 python3 tools/probe_spark.py
 bash tools/probe_quran.sh
+python3 tools/evaluate_spark.py  # offline preflight only
 ```
 
 The local fallback requires the prepared model. Download the [CoreML five-second export](https://huggingface.co/aufklarer/Omnilingual-ASR-CTC-300M-CoreML-INT8), then run the preparation helper with sentencepiece installed:
@@ -70,3 +71,5 @@ Implementation began October 26, 2026 after organizer clarification. The kickoff
 Original code is MIT licensed. Third-party SDKs, models and reference content retain their own notices. Preparation and existing models are distinguished from event work. Downloaded weights, credentials, recordings and local evidence are excluded from Git.
 
 This is a foreground hackathon prototype. Battery endurance, production accounts and App Store delivery are deferred. The next scoring milestone is evidence of useful Spark decisions, followed by a three-minute video showing real behavior.
+
+The repeatable synthetic comparison uses `python3 tools/evaluate_spark.py --live` only with paid-call authorization. It loads the private runtime credential, makes exactly three requests without retries, and records decisions under ignored build/spark-evaluation. It sends no audio.
