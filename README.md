@@ -1,64 +1,48 @@
 # Ayah Lens
 
-A hackathon prototype for following Quran recitation with Arabic text and a published translation on Meta Ray-Ban Display glasses.
+A hackathon prototype that follows Quran recitation and displays canonical Arabic and Pickthall English on Meta Ray-Ban Display glasses.
 
-## Status
+## Current build
 
-Implementation started October 26, 2026 after Faraz relayed organizer clarification and supplied the kickoff rules slide. The wearer confirmed Arabic/English lens output with simultaneous glasses microphone capture. The next build implements local Al-Fatihah recognition; the wearer reported most ayahs worked, with one or two missed in the first live test.
+Version 0.2.0, Build 21 contains the complete reference: 114 surahs and 6,236 aligned ayahs. Global passage lookup requires no surah selection.
 
-The kickoff rules state new work may be built October 26 through November 4. Competition code is identified separately from preparation and third-party dependencies. See [SPEC.md](SPEC.md).
+Muse Voice Transcribe supplies realtime Arabic partial transcripts. An indexed matcher retrieves candidates outside the phone UI actor. Muse Spark 1.3 can resolve ambiguous candidates using the transcript and recent verified position. Spark returns a supplied verse ID or abstention. Only the attributed reference supplies displayed Quran text and translation.
 
-## What we aim to demonstrate
+Spark is an explicit opt-in and permits at most three requests per run. Requests are bounded, deduplicated and cancelled or rejected when superseded. Strong reference matches update immediately. Identical shared phrases can remain unresolved until distinguishing evidence arrives.
 
-- Listen to a reciter through a verified glasses microphone path.
-- Identify the verse and show its Arabic text and a published translation.
-- Follow a short passage without manual verse lookup.
-- Handle selected pauses, repeated phrases and ambiguous matches.
-- Demonstrate a useful, verifiable role for Meta models.
+Long ayahs have separate Arabic and Pickthall pages with manual Previous/Next controls. These pages preserve every source character. They do not claim word alignment.
 
-These are prototype goals, not claims of completed capabilities. All-day operation and production deployment are outside the hackathon scope.
+The separately labelled local fallback uses Meta Omnilingual CTC-300M through a prepared CoreML export. It uses five-second windows. Muse mode sends audio to Meta; local fallback performs recognition on the phone. The app saves no audio recordings.
 
-## Planned approach
+## Verified and pending
 
-The native SwiftUI iPhone application connects through Meta's Wearables Device Access Toolkit. Meta Omnilingual ASR CTC-300M runs locally through the prepared CoreML INT8 export. Five-second windows update at one-second intervals when inference keeps up. A silence gate avoids inference below the prototype threshold. The Arabic-only CTC decoder feeds a deterministic verse matcher restricted to Al-Fatihah.
+Thirty-five core tests passed, including corpus coverage, global retrieval, shared-phrase abstention, Spark bounds and response validation, and exact page reconstruction. Actual Swift clients passed local synthetic WebSocket and HTTP integration probes. The PCM callback passed its worker-queue regression. Signed build, installation, installed-version verification and application launch passed.
 
-The matcher uses normalized recognition copies, edit distance and fragment length. Short, unrelated or ambiguous fragments hold the existing verse. Established verse order can distinguish the shared basmala phrase; repetition can move back to an earlier verse. These are heuristics, not calibrated confidence or proven recognition accuracy. A later Muse Voice Transcribe comparison and useful Muse Spark role remain pending.
+Whole-Quran index queries were measured on a Mac. This is a host performance probe, not phone or visible-lens latency. Full corpus availability and selected passing cases do not establish accuracy for every ayah.
 
-Arabic and published translations come from attributed sources. Generative models will not author replacement Quran text or translations.
+Real Spark provider validation, matcher-only comparison, selected live passage changes, external-reciter testing and long-page readability remain pending. Hardware observations and approval records are maintained privately. No Spark decision benefit is claimed yet.
 
-## Verification priorities
+## Check and build
 
-1. Prove real glasses audio capture and actual lens output.
-2. Demonstrate a correct short live passage.
-3. Record verse-match accuracy, false matches and time to stable text on a small documented evaluation.
-4. Rehearse a repeatable three-minute demonstration.
-
-The microphone test includes an external reciter because hearing the wearer does not establish that the glasses can follow someone else.
-
-## Project provenance and licensing
-
-See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for the event-work boundary and dependency attribution.
-
-Original code in this repository is MIT licensed. Third-party models, SDKs, datasets, fonts and translations retain their own licences. Dataset access does not establish permission to redistribute recordings or upload participants' voices to another service.
-
-Secrets, private recordings, datasets, downloaded model weights and local evaluation artifacts must not be committed.
-
-## Build and check
-
-Requires Xcode 27.1 or a compatible Swift 6 toolchain, a connected iPhone, Meta AI Developer Mode, and the glasses developer component.
+Requires a compatible Swift 6 toolchain, Xcode, an iPhone, Meta AI Developer Mode and the glasses developer component.
 
 ```bash
 bash tools/test.sh
-# Before building live recognition, download the 5-second CoreML export below.
-# Run this with a Python environment containing sentencepiece.
-python tools/prepare_model.py /path/to/Omnilingual-ASR-CTC-300M-CoreML-INT8
-bash tools/probe_model.sh
+python3 tools/probe_muse.py
+python3 tools/probe_spark.py
+bash tools/probe_quran.sh
+```
+
+The local fallback requires the prepared model. Download the [CoreML five-second export](https://huggingface.co/aufklarer/Omnilingual-ASR-CTC-300M-CoreML-INT8), then run the preparation helper with sentencepiece installed:
+
+```bash
+python3 tools/prepare_model.py /path/to/Omnilingual-ASR-CTC-300M-CoreML-INT8
 bash tools/build.sh unsigned
 ```
 
-Model source: [CoreML 5-second export](https://huggingface.co/aufklarer/Omnilingual-ASR-CTC-300M-CoreML-INT8). Supply its compiled model, config.json and tokenizer.model to the preparation helper. The helper does not download or upload audio. Weights and generated vocabulary remain ignored by Git.
+To regenerate the Quran reference, supply aligned Tanzil Uthmani and Pickthall source files to `tools/prepare_quran.py`. The helper validates all IDs and round-trips exact strings. See its command-line help.
 
-For a signed device build, set `AYAH_DEVICE_ID` from Xcode's current physical-device list and use your development team in the generated project settings.
+For device work, set AYAH_DEVICE_ID from Xcode's physical device list and configure your signing team.
 
 ```bash
 bash tools/build.sh signed
@@ -67,30 +51,22 @@ python3 tools/device.py verify
 python3 tools/device.py launch
 ```
 
-On the phone, register the app with the glasses. Check **Show selected verse on lens** first, then **Start microphone + lens**. Verify actual lens visibility and increasing sample count together. Report the result; this repository does not claim combined hardware success from unit tests alone.
+The build helper increments the build number. The app shows version/build in its header and timing panel. Device verification compares the installed version with the signed artifact.
 
-For recognition, tap **Stop**, then **Start live Al-Fatihah**. Recite for 20–30 seconds and observe both the phone transcript and actual lens changes. The initial audio window takes five seconds; displayed inference time excludes that collection interval. Manual buttons remain separately labelled. Audio stays on the iPhone and is not saved.
+## Live testing
 
-October 26 verification: combined audio/display was confirmed by the wearer. Recognition core tests, worker-queue PCM callback check, local model inference/resampling at 16/24/48 kHz, signed device build and installation passed. The synthetic-audio model probe checks execution, not Quran accuracy. The wearer reported real live-recognition updates for most ayahs, with one or two missed. Exact accuracy and timing remain unmeasured.
+Register glasses inside Ayah Lens. Use the manual display and microphone checks to verify hardware first. With the runtime credential installed and a bounded paid test approved, tap **Start Muse live Quran**. Each Muse stream permits two minutes of audio. Spark has a separate opt-in toggle and sends transcript fragments to Meta.
 
-## Muse mode
+Observe the phone transcript, selected verse and actual lens. Try distinctive passages, pauses and a passage change. Short shared phrases may require more context. Use an external reciter source only with permission.
 
-The native Muse Voice Transcribe client is implemented and installed for testing. It uses the Meta realtime endpoint with Arabic bias and sends continuous mono int16 PCM at 24 kHz. Cumulative partials replace prior text, and the existing matcher selects published Arabic/Pickthall content. The UI distinguishes Muse from the manually selected local Omnilingual fallback.
+The Muse timing panel exposes provider processing gap, first text after audio starts, first match after text, matching time and SDK send completion. Startup silence is included. These diagnostics do not measure word-to-visible-pixel delay.
 
-The API key stays outside the app bundle and Git. After the paid/audio test is approved, tools/provision_muse_key.py privately hands the key to device-only Keychain and restarts the app. Its --dry-run verifies local credential availability without copying it or contacting Meta. Muse is disabled until the key is imported. Do not paste keys into source or chat.
+Keys stay outside the bundle and Git in device-only Keychain. The private provisioning helper supports a dry-run and one-time handoff. Never include keys in source, logs or chat.
 
-Each test stream is capped at two minutes of audio. The client stops on queue overflow instead of accumulating delayed audio. No app audio recordings are saved. Muse mode sends audio to Meta; local fallback does not. Provider retention follows Meta’s service terms.
+## Provenance and scope
 
-Verification: twenty core tests and a local synthetic WebSocket integration probe passed, along with signed build/install. The model catalog accepted the private key. Live Muse speech recognition and physical lens output remain unverified pending paid-test approval. Run `python3 tools/probe_muse.py` for the transport fixture.
+Implementation began October 26, 2026 after organizer clarification. The kickoff build window ends November 4. See [CONTRIBUTIONS.md](CONTRIBUTIONS.md), [SPEC.md](SPEC.md) and [ATTRIBUTION.md](ATTRIBUTION.md).
 
-## Timing diagnostics
+Original code is MIT licensed. Third-party SDKs, models and reference content retain their own notices. Preparation and existing models are distinguished from event work. Downloaded weights, credentials, recordings and local evidence are excluded from Git.
 
-The phone’s Muse timing disclosure exposes provider audio-progress gap, matcher duration and lens SDK send-completion duration. Values remain after Stop. These are stage diagnostics, not measured word-to-visible-text latency. The implementation continues using partial transcripts. Twenty-one core tests and the local synthetic WebSocket progress probe passed; physical timing observations are maintained separately from this repository.
-
-Expanded timing also retains peak audio gap, first nonempty transcript after audio streaming begins, and first supported match after that transcript. Startup silence is included. These initial-session timings do not measure per-ayah or word-aligned lens delay. Twenty-three core tests passed.
-
-The selected-passage matcher now accepts distinctive complete two-word openings with six/seven normalized letters by exact, unique match. It preserves boundaries and canonical display text; approximate matching keeps its prior evidence floor. Twenty-five core tests passed. A live latency improvement is not yet claimed.
-
-The header shows a visible version/build label. tools/build.sh increments the local build identifier, and tools/device.py verify compares the installed version with the newly signed artifact. This distinguishes fresh installations from earlier prototype builds.
-
-Version and build also appear inside expanded Muse timing so diagnostic screenshots identify their source build.
+This is a foreground hackathon prototype. Battery endurance, production accounts and App Store delivery are deferred. The next scoring milestone is evidence of useful Spark decisions, followed by a three-minute video showing real behavior.

@@ -27,6 +27,12 @@ final class GlassesModel: SessionHardware {
     var recognitionActive = false
     var museActive = false
     var museConfigured = false
+    var sparkEnabled = false
+    var sparkStatus = "Muse Spark ready for ambiguity checks"
+    var sparkRequests = 0
+    var lastResolution = "Reference match"
+    var lensPageIndex = 0
+    private(set) var lensPages: [LensPage] = []
     var transcript = ""
     var recognitionStatus = "Manual verse selection"
     var inferenceMilliseconds = 0.0
@@ -56,9 +62,21 @@ final class GlassesModel: SessionHardware {
     @ObservationIgnored private var museSessionID: UUID?
     @ObservationIgnored private var museContinuation: AsyncStream<MuseAudioChunk>.Continuation?
     @ObservationIgnored private var museSender: Task<Void, Never>?
+    @ObservationIgnored private let quran = QuranRecognitionEngine()
+    @ObservationIgnored private let spark = MuseSparkClient()
+    @ObservationIgnored private var sparkGate = SparkGate()
+    @ObservationIgnored private var sparkTask: Task<Void, Never>?
+    @ObservationIgnored private var sparkRequestID = UUID()
+    @ObservationIgnored private var transcriptTask: Task<Void, Never>?
+    @ObservationIgnored private var pendingTranscript: String?
+    @ObservationIgnored private var latestCandidateIDs: Set<String> = []
+    @ObservationIgnored private var decisionRevision = 0
+    @ObservationIgnored private var recentIDs: [String] = []
+    @ObservationIgnored private var versePositions: [String: Int] = [:]
 
     var verse: Verse? { verses.indices.contains(selectedIndex) ? verses[selectedIndex] : nil }
     var recognitionSource: String { museActive ? "Muse Voice Transcribe" : "Local Omnilingual fallback" }
+    var hasLiveMatch: Bool { matchedID != nil }
 
     init() {
         museConfigured = (try? MuseCredential.read()) != nil
@@ -69,6 +87,8 @@ final class GlassesModel: SessionHardware {
                 throw PrototypeError.message("The attributed verse resource is missing.")
             }
             verses = try JSONDecoder().decode([Verse].self, from: Data(contentsOf: url))
+            versePositions = Dictionary(uniqueKeysWithValues: verses.enumerated().map { ($0.element.id, $0.offset) })
+            if let first = verses.first { lensPages = VersePagination.pages(for: first) }
         } catch { self.error = error.localizedDescription }
         if let selector = displaySelector {
             deviceDiscoveryTask = Task { [weak self] in
@@ -133,6 +153,9 @@ final class GlassesModel: SessionHardware {
         run {
             self.stopHardware()
             self.museGapMilliseconds = nil
+            self.status = "Preparing the complete Quran index…"
+            await self.quran.prepare(verses: self.verses)
+            try Task.checkCancellation()
             self.status = "Loading Meta Omnilingual on this iPhone…"
             guard let directory = Bundle.main.url(forResource: "Omnilingual", withExtension: nil) else {
                 throw PrototypeError.message("The local recognition model is missing. Prepare the model and rebuild.")
@@ -145,7 +168,7 @@ final class GlassesModel: SessionHardware {
             self.recognitionActive = true
             self.recognitionStatus = "Listening · waiting for five seconds of audio"
             try await SessionSequence(hardware: self).start()
-            self.status = "Live Al-Fatihah recognition active. Recite at a natural pace."
+            self.status = "Complete-Quran local recognition active. Recite at a natural pace."
         }
     }
 
@@ -156,16 +179,22 @@ final class GlassesModel: SessionHardware {
             self.matcherMilliseconds = nil
             self.lensSendMilliseconds = nil
             self.museLatency = MuseLatencyTrace()
+            self.sparkGate = SparkGate()
+            self.sparkRequests = 0
+            self.sparkStatus = "Muse Spark waiting for ambiguous evidence"
+            self.lastResolution = "Reference match"
             guard let key = try MuseCredential.read() else {
                 throw PrototypeError.message("Muse credentials are not provisioned on this phone yet.")
             }
+            self.status = "Preparing the complete Quran index…"
+            await self.quran.prepare(verses: self.verses)
+            try Task.checkCancellation()
             self.status = "Connecting to Muse Voice Transcribe…"
             let epoch = self.recognitionEpoch
             let id = try await self.muse.connect(apiKey: key, onTranscript: { [weak self] text in
                 Task { @MainActor in
                     guard let self, self.recognitionEpoch == epoch, self.museActive else { return }
-                    do { try await self.applyTranscript(text) }
-                    catch { self.stop(); self.error = "The Muse verse could not be sent to the lens." }
+                    self.queueTranscript(text)
                 }
             }, onFailure: { [weak self] message in
                 Task { @MainActor in
@@ -186,7 +215,7 @@ final class GlassesModel: SessionHardware {
             self.sampleCount = 0
             self.transcript = ""
             self.matchedID = nil
-            self.recognitionStatus = "Muse connected · listening for Al-Fatihah"
+            self.recognitionStatus = "Muse connected · identifying the recited passage"
             let (chunks, continuation) = AsyncStream<MuseAudioChunk>.makeStream(bufferingPolicy: .bufferingOldest(8))
             self.museContinuation = continuation
             let muse = self.muse
@@ -204,6 +233,31 @@ final class GlassesModel: SessionHardware {
             }
             try await SessionSequence(hardware: self).start()
             self.status = "Muse live recognition active · two-minute test limit"
+        }
+    }
+
+    private func queueTranscript(_ text: String) {
+        transcript = text
+        if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            museLatency.partial(at: ProcessInfo.processInfo.systemUptime * 1000)
+        }
+        pendingTranscript = text
+        guard transcriptTask == nil else { return }
+        let epoch = recognitionEpoch
+        transcriptTask = Task { [weak self] in
+            guard let self else { return }
+            defer { if self.recognitionEpoch == epoch { self.transcriptTask = nil } }
+            do {
+                while let latest = self.pendingTranscript, self.recognitionEpoch == epoch {
+                    self.pendingTranscript = nil
+                    try Task.checkCancellation()
+                    try await self.applyTranscript(latest)
+                }
+            } catch is CancellationError { }
+            catch {
+                guard self.recognitionEpoch == epoch else { return }
+                self.stop(); self.error = "The recognized verse could not be sent to the lens."
+            }
         }
     }
 
@@ -246,22 +300,66 @@ final class GlassesModel: SessionHardware {
 
     private func applyTranscript(_ text: String) async throws {
         let began = ContinuousClock.now
+        let epoch = recognitionEpoch
         if museActive, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             museLatency.partial(at: ProcessInfo.processInfo.systemUptime * 1000)
         }
-        transcript = text
-        let candidate = VerseMatcher(verses: verses).match(text, previous: matchedID)
+        if !museActive { transcript = text }
+        let result = await quran.retrieve(text, previous: matchedID)
+        try Task.checkCancellation()
+        guard recognitionEpoch == epoch, recognitionActive else { return }
         matcherMilliseconds = elapsedMilliseconds(since: began)
-        guard let id = candidate,
-              let index = verses.firstIndex(where: { $0.id == id }) else {
-            recognitionStatus = "Uncertain · holding the current verse · \(recognitionSource)"
+        latestCandidateIDs = Set(result.candidates.map(\.id))
+        if let id = result.matchedID {
+            decisionRevision += 1
+            sparkTask?.cancel(); sparkTask = nil; sparkRequestID = UUID()
+            try await acceptMatch(id, resolution: "Reference match")
             return
         }
-        recognitionStatus = "Matched Al-Fatihah \(id) · \(recognitionSource)"
+        recognitionStatus = "Identifying passage · holding the last verified verse"
+        guard museActive, sparkEnabled, result.sparkEligible, sparkTask == nil,
+              sparkGate.reserve(transcript: text, candidateIDs: result.candidates.map(\.id), previous: matchedID,
+                                at: ProcessInfo.processInfo.systemUptime),
+              let key = try MuseCredential.read() else { return }
+        sparkRequests = sparkGate.requests
+        sparkStatus = "Muse Spark checking \(result.candidates.count) candidates · \(sparkRequests)/3"
+        let revision = decisionRevision
+        let requestID = UUID()
+        sparkRequestID = requestID
+        let recent = recentIDs
+        let spark = spark
+        sparkTask = Task { [weak self] in
+            defer { if self?.sparkRequestID == requestID { self?.sparkTask = nil } }
+            do {
+                let selected = try await spark.resolve(transcript: text, candidates: result.candidates, recentIDs: recent, apiKey: key)
+                try Task.checkCancellation()
+                guard let self, self.recognitionEpoch == epoch, self.decisionRevision == revision else { return }
+                guard let id = selected else { self.sparkStatus = "Muse Spark abstained · waiting for more evidence"; return }
+                guard SparkGate.canApply(requested: text, latest: self.transcript, selectedID: id, latestCandidateIDs: self.latestCandidateIDs) else {
+                    self.sparkStatus = "Muse Spark result superseded by newer evidence"; return
+                }
+                self.sparkStatus = "Muse Spark selected \(id)"
+                self.decisionRevision += 1
+                try await self.acceptMatch(id, resolution: "Muse Spark selection")
+            } catch is CancellationError { }
+            catch {
+                guard let self, self.recognitionEpoch == epoch, self.sparkRequestID == requestID else { return }
+                self.sparkStatus = "Muse Spark unavailable · waiting for a reference match"
+            }
+        }
+    }
+
+    private func acceptMatch(_ id: String, resolution: String) async throws {
+        guard let index = versePositions[id] else { return }
+        recognitionStatus = "Matched Quran \(id) · \(resolution)"
         if museActive { museLatency.match(at: ProcessInfo.processInfo.systemUptime * 1000) }
-        if matchedID != id {
+        if matchedID != id || lastResolution != resolution {
+            if matchedID != id { recentIDs = Array((recentIDs + [id]).suffix(3)) }
             matchedID = id
+            lastResolution = resolution
             selectedIndex = index
+            lensPageIndex = 0
+            lensPages = VersePagination.pages(for: verses[index])
             let sendBegan = ContinuousClock.now
             try await sendVerse()
             lensSendMilliseconds = elapsedMilliseconds(since: sendBegan)
@@ -276,7 +374,17 @@ final class GlassesModel: SessionHardware {
     func nextVerse() {
         guard !verses.isEmpty else { return }
         selectedIndex = (selectedIndex + 1) % verses.count
+        lensPageIndex = 0
+        lensPages = VersePagination.pages(for: verses[selectedIndex])
         if displayReady { showSelectedVerse() }
+    }
+
+    func stepLensPage(_ delta: Int) {
+        guard displayReady, lensPages.count > 1 else { return }
+        run {
+            self.lensPageIndex = (self.lensPageIndex + delta + self.lensPages.count) % self.lensPages.count
+            try await self.sendVerse()
+        }
     }
 
     func stop() {
@@ -312,6 +420,10 @@ final class GlassesModel: SessionHardware {
     }
 
     func stopAudio() {
+        transcriptTask?.cancel(); transcriptTask = nil; pendingTranscript = nil
+        sparkTask?.cancel(); sparkTask = nil; sparkRequestID = UUID()
+        decisionRevision += 1
+        latestCandidateIDs.removeAll(); recentIDs.removeAll()
         museContinuation?.finish(); museContinuation = nil
         museSender?.cancel(); museSender = nil
         if let id = museSessionID {
@@ -401,18 +513,31 @@ final class GlassesModel: SessionHardware {
         guard let display, displayReady, let verse else { throw PrototypeError.message("No active lens or selected verse.") }
         if recognitionActive && matchedID == nil {
             try await display.send(FlexBox(direction: .column, spacing: 16) {
-                MWDATDisplay.Text("Ayah Lens · Al-Fatihah", style: .heading)
+                MWDATDisplay.Text("Ayah Lens · Quran", style: .heading)
                 MWDATDisplay.Text("Listening for recitation…", style: .body)
                 MWDATDisplay.Text(museActive ? "Muse Voice Transcribe · live audio" : "Local Omnilingual · five-second audio window", style: .meta, color: .secondary)
             }.padding(24))
             return
         }
+        guard lensPages.indices.contains(lensPageIndex) else { throw PrototypeError.message("The lens page is unavailable.") }
+        let page = lensPages[lensPageIndex]
         try await display.send(
             FlexBox(direction: .column, spacing: 16) {
-                MWDATDisplay.Text("Ayah Lens · \(verse.id)", style: .meta, color: .secondary)
-                MWDATDisplay.Text(verse.arabic, style: .heading)
-                MWDATDisplay.Text(verse.translation, style: .body)
-                MWDATDisplay.Text(recognitionActive ? "Pickthall · \(recognitionSource)" : "Pickthall · Manual display check", style: .meta, color: .secondary)
+                MWDATDisplay.Text("Ayah Lens · \(verse.id) · \(lensPageIndex + 1)/\(lensPages.count)", style: .meta, color: .secondary)
+                if !page.label.isEmpty { MWDATDisplay.Text(page.label, style: .meta, color: .secondary) }
+                if let arabic = page.arabic { MWDATDisplay.Text(arabic, style: page.translation == nil ? .body : .heading) }
+                if let translation = page.translation { MWDATDisplay.Text(translation, style: .body) }
+                MWDATDisplay.Text(recognitionActive ? "Pickthall · \(lastResolution)" : "Pickthall · Manual display check", style: .meta, color: .secondary)
+                if lensPages.count > 1 {
+                    ButtonGroup {
+                        MWDATDisplay.Button(label: "Previous", onClick: { @Sendable [weak self] in
+                            Task { @MainActor in self?.stepLensPage(-1) }
+                        })
+                        MWDATDisplay.Button(label: "Next", onClick: { @Sendable [weak self] in
+                            Task { @MainActor in self?.stepLensPage(1) }
+                        })
+                    }
+                }
             }.padding(24)
         )
     }

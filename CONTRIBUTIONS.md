@@ -18,8 +18,8 @@ Before the event, local evaluation explored Tilawa, Meta Omnilingual ASR and a C
 |---|---|---|
 | Meta Wearables Device Access Toolkit | Glasses connection, audio and display | https://github.com/facebook/meta-wearables-dat-ios |
 | Meta Omnilingual ASR | Candidate local recognition engine | https://github.com/facebookresearch/omnilingual-asr |
-| Meta Muse Voice Transcribe | Candidate hosted recognition engine | https://dev.meta.ai/docs/speech-to-text |
-| Meta Muse Spark | Candidate reasoning component | https://dev.meta.ai/docs/models |
+| Meta Muse Voice Transcribe | Realtime hosted recognition engine | https://dev.meta.ai/docs/speech-to-text |
+| Meta Muse Spark | Opt-in candidate resolver | https://dev.meta.ai/docs/models |
 | Tilawa | Evaluated recognition fallback | https://github.com/yazinsai/tilawa |
 
 Listing a component does not claim integration or change its licence. Confirm exact versions and licences before incorporating or distributing artifacts. Tilawa package code and its model assets have different licences.
@@ -27,3 +27,9 @@ Listing a component does not claim integration or change its licence. Confirm ex
 October 26 recognition slice: original serial CoreML adapter, bounded microphone windows, Arabic decoding restriction, normalized Al-Fatihah fragment matching, sequence-based ambiguity handling and native live-mode UI were built during the event. Existing Meta model weights and third-party conversion are credited separately in ATTRIBUTION.md. Wearer confirmed the earlier combined hardware loop; the wearer reported most ayahs recognized in the first live test, with one or two missed. Exact accuracy remains unmeasured.
 
 October 26 Muse client preparation: original Swift realtime transport, continuous PCM encoder, transcript reducer, canonical matcher handoff, explicit Muse/fallback controls and runtime Keychain provisioning helper. Twenty core tests and local WebSocket probe passed; live Muse speech inference remains pending paid-test approval. No Muse weights or keys are committed.
+
+## Complete-Quran and Spark milestone, October 27
+
+Original event work now includes full-reference preparation/validation, an inverted trigram index, contextual candidate matching, and bounded lens pagination. The reference text itself is existing attributed material.
+
+An original Muse Spark 1.3 HTTP adapter uses strict structured output with supplied IDs or abstention. App integration limits calls, discards superseded results and looks up unchanged source text. Thirty-five core tests and local client probes passed. Real Spark inference and a measured benefit comparison remain pending. No model weights are claimed as original work.

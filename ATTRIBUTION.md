@@ -1,11 +1,11 @@
 # Reference content and dependencies
 
-Arabic text in `App/Resources/verses.json` is an unmodified excerpt of the Tanzil Uthmani Quran text, verses 1:1–1:7. Source: https://tanzil.net/.
+Arabic text in `App/Resources/verses.json` is the unmodified Tanzil Uthmani Quran text, all 6,236 ayahs across 114 surahs. Source: https://tanzil.net/.
 
 Tanzil grants verbatim copying and distribution with attribution and a link to its site; changing the text is not allowed. Licence notice: https://tanzil.net/docs/text_license. The local preparation file preserves the complete source text separately. Normalization for future recognition must not alter the displayed source content.
 The original copyright and usage notice is preserved in `App/Resources/TANZIL-NOTICE.txt` and bundled with the app.
 
-The English excerpt is Marmaduke Pickthall's published translation, retained verbatim from the prepared reference file. The project uses it as a public-domain translation and labels its source in the interface.
+The English reference is Marmaduke Pickthall's published translation, retained verbatim from the prepared reference file. The project uses it as a public-domain translation and labels its source in the interface.
 
 Meta Wearables Device Access Toolkit 1.0.1 is downloaded by Swift Package Manager. Its SDK, frameworks and sample code retain Meta's terms and notices: https://github.com/facebook/meta-wearables-dat-ios. No Meta sample source is copied into this first application; the published samples and SDK interfaces informed integration.
 
@@ -19,8 +19,8 @@ The installed prototype bundles Meta Omnilingual ASR CTC-300M through aufklarer�
 - CoreML export: https://huggingface.co/aufklarer/Omnilingual-ASR-CTC-300M-CoreML-INT8
 - Swift reference studied for waveform normalization, tensor layout and CTC semantics: https://github.com/soniqo/speech-swift/tree/main/Sources/OmnilingualASR
 
-The event implementation supplies its own native inference adapter, Arabic-only decoding restriction, rolling audio windows and Al-Fatihah matcher. The model and conversion predate the event and are not claimed as original work. The preparation helper extracts vocabulary entries without changing their token identifiers; these artifacts and model weights are excluded from Git. No third-party Swift implementation was copied. The Apache 2.0 licence and source notice are bundled as MODEL-NOTICE.txt.
+The event implementation supplies its own native inference adapter, Arabic-only decoding restriction, rolling audio windows and Quran candidate matcher. The model and conversion predate the event and are not claimed as original work. The preparation helper extracts vocabulary entries without changing their token identifiers; these artifacts and model weights are excluded from Git. No third-party Swift implementation was copied. The Apache 2.0 licence and source notice are bundled as MODEL-NOTICE.txt.
 
 ## Muse streaming protocol
 
-Muse Voice Transcribe is accessed through the hosted Meta Model API; its weights are not part of this repository. The original client and PCM adapter follow Meta’s published realtime and voice schemas: https://dev.meta.ai/docs/api-reference/voice/realtime and https://dev.meta.ai/docs/api-reference/voice/schemas. A local synthetic-server probe verifies the wire format without claiming provider transcription accuracy. Muse Spark remains unimplemented.
+Muse Voice Transcribe is accessed through the hosted Meta Model API; its weights are not part of this repository. The original client and PCM adapter follow Meta’s published realtime and voice schemas: https://dev.meta.ai/docs/api-reference/voice/realtime and https://dev.meta.ai/docs/api-reference/voice/schemas. A local synthetic-server probe verifies the wire format without claiming provider transcription accuracy. Muse Spark 1.3 now supplies bounded candidate decisions through the hosted chat completions API. The adapter follows https://dev.meta.ai/docs/protocols/chat-completions and https://dev.meta.ai/docs/structured-output. Local HTTP fixtures verify request construction and response rejection; real provider validation and measured decision benefit remain pending.

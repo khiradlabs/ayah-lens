@@ -17,13 +17,13 @@ struct AyahLensApp: App {
                     VStack(alignment: .leading, spacing: 22) {
                         Text("Follow the words.\nFind the meaning.")
                             .font(.largeTitle.bold())
-                        Text(model.recognitionActive ? "\(model.recognitionSource) · Al-Fatihah" : "Hardware prototype · Manual verse selection")
+                        Text(model.recognitionActive ? "\(model.recognitionSource) · Quran" : "Complete Quran reference · \(model.verses.count) ayahs")
                             .font(.subheadline).foregroundStyle(.secondary)
                         Text(buildLabel).font(.caption).foregroundStyle(.secondary)
                             .accessibilityIdentifier("build_version")
-                        if let verse = model.verse {
+                        if let verse = model.verse, !model.recognitionActive || model.hasLiveMatch {
                             VStack(alignment: .leading, spacing: 14) {
-                                Text("Al-Fatihah · \(verse.id)").font(.caption.bold()).foregroundStyle(.teal)
+                                Text("Quran · \(verse.id)").font(.caption.bold()).foregroundStyle(.teal)
                                 Text(verse.arabic).font(.system(size: 30)).frame(maxWidth: .infinity, alignment: .trailing)
                                 Text(verse.translation).font(.title3)
                                 Text("Arabic: Tanzil · Translation: Pickthall").font(.caption).foregroundStyle(.secondary)
@@ -37,7 +37,11 @@ struct AyahLensApp: App {
                                 .disabled(model.registered || model.busy)
                             Button("Show selected verse on lens") { model.showSelectedVerse() }
                                 .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.recognitionActive)
-                            Button("Start Muse live Al-Fatihah") { model.startMuse() }
+                            Toggle("Muse Spark for ambiguous matches", isOn: $model.sparkEnabled)
+                                .disabled(model.listening || model.busy)
+                            Text("Spark sends transcript fragments to Meta. Maximum three Spark requests per run.")
+                                .font(.caption).foregroundStyle(.secondary)
+                            Button("Start Muse live Quran") { model.startMuse() }
                                 .disabled(!model.museConfigured || !model.registered || !model.hasDisplayDevice || model.busy || model.listening)
                             if !model.museConfigured { Text("Muse API access has not been provisioned on this phone.").font(.caption) }
                             Button("Start local fallback") { model.startRecognition() }
@@ -45,8 +49,14 @@ struct AyahLensApp: App {
                             Button("Start microphone + lens") { model.startCombined() }
                                 .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.listening)
                             Button("Next verse · manual") { model.nextVerse() }.disabled(model.busy || model.recognitionActive)
+                            if model.lensPages.count > 1 {
+                                Text("Lens page \(model.lensPageIndex + 1) of \(model.lensPages.count)").font(.caption)
+                                Button("Previous lens page") { model.stepLensPage(-1) }.disabled(!model.displayReady || model.busy)
+                                Button("Next lens page") { model.stepLensPage(1) }.disabled(!model.displayReady || model.busy)
+                            }
                             Button("Stop", role: .destructive) { model.stop() }
                         }.buttonStyle(.borderedProminent).frame(maxWidth: .infinity)
+                        Text(model.sparkEnabled ? model.sparkStatus : "Muse Spark is off").font(.caption).foregroundStyle(.secondary)
                         if model.listening {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Glasses microphone active").font(.headline)

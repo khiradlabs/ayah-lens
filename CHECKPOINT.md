@@ -142,3 +142,19 @@ Version and build are now shown both in the app header and inside expanded Muse 
 The target is the complete Quran. Current Build 18 bundles seven Al-Fatihah ayahs and uses Muse Voice Transcribe; Muse Spark is not integrated. The next delivery is complete-corpus indexed retrieval plus a measured, bounded Spark ambiguity resolver. SPEC.md was rewritten as the current scope and NEXT-TASK.md now prioritizes this milestone over individual short-surah additions.
 
 Audited existing prepared sources: both Arabic and Pickthall contain 6,236 unique, nonempty, aligned rows, contiguous within all 114 surahs. This establishes source readiness only. No full corpus was bundled, global recognizer shipped or Spark inference called during this scope clarification.
+
+## Complete-Quran and Spark build, October 27
+
+Current branch: feat/full-quran-muse. Current artifact: Version 0.2.0, Build 21. Signed build, installation, installed-version comparison and application launch passed.
+
+All 6,236 aligned Arabic/Pickthall rows are bundled verbatim. tools/prepare_quran.py verified source equality and corpus IDs. Retrieval uses an immutable trigram index on a separate actor, then detailed matching on bounded candidates. Repeated phrases require context. Selected global passage, backtracking and ambiguity regressions passed.
+
+Muse Spark 1.3 is wired as an opt-in resolver. Strict JSON limits output to retrieved IDs or abstention. Three requests per run, bounded excerpts, cooldown, deduplication, cancellation and stale-result checks limit the integration. No real Spark inference has occurred. Its decision benefit is unproven.
+
+Long ayahs use verbatim, bounded Arabic/Pickthall pages and manual Previous/Next controls. Physical page navigation and readability remain unverified.
+
+Verification: 35 core tests passed after observed failing feature tests; actual worker-queue PCM callback passed; real Swift WebSocket and HTTP clients passed local synthetic-server probes. Optimized global-query probe passed 40 selected queries. Host timings were approximately 27 ms median and 36 ms p95; these are not phone latency.
+
+Receipts remain ignored under build/logs, build/muse-probe, build/spark-probe and build/quran-probe. The Xcode build had no application warnings; its AppIntents extraction warning reflects no AppIntents dependency.
+
+Next: approved provider validation, measurable matcher-only/Spark comparison, selected live passages and long-page check, then scoring evidence and video. Private authorization and observations remain outside public documentation.

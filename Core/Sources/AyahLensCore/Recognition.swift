@@ -11,7 +11,7 @@ public struct Verse: Codable, Identifiable, Sendable {
 
 public struct VerseMatcher: Sendable {
     private let verses: [(id: String, letters: [Character], opening: [Character], shortOpenings: Set<String>)]
-    public init(verses: [Verse]) {
+    public init(verses: [Verse], shortOpeningCounts: [String: Int]? = nil) {
         self.verses = verses.map {
             let firstWords = $0.arabic.split(whereSeparator: \.isWhitespace).prefix(2)
             // Uthmani dagger-alif and ordinary ASR spelling share a recognition alias.
@@ -19,7 +19,8 @@ public struct VerseMatcher: Sendable {
                 ? [firstWords.map { Self.normalize(String($0)) }.joined(separator: " "),
                    firstWords.map { Self.normalize(String($0).replacingOccurrences(of: "ٰ", with: "ا")) }.joined(separator: " ")] : []
             return ($0.id, Array(Self.normalize($0.arabic)),
-                    Array(Self.normalize(String($0.arabic.split(separator: " ").first ?? ""))), aliases)
+                    Array(Self.normalize(String($0.arabic.split(separator: " ").first ?? ""))),
+                    Set(aliases.filter { shortOpeningCounts == nil || shortOpeningCounts?[$0] == 1 }))
         }
     }
 
@@ -51,10 +52,9 @@ public struct VerseMatcher: Sendable {
                 if candidates.count == 1 { return candidates[0].id }
             }
         }
-        guard let previous, let index = verses.firstIndex(where: { $0.id == previous }),
-              index + 2 < verses.count, query.count >= 11 else { return nil }
-        let expected = verses[index + 1]
-        let following = verses[index + 2].opening
+        guard let previous, let expectedID = Self.successor(previous), let followingID = Self.successor(previous, by: 2),
+              let expected = verses.first(where: { $0.id == expectedID }),
+              let following = verses.first(where: { $0.id == followingID })?.opening, query.count >= 11 else { return nil }
         // A sampled window may finish inside the following ayah's first word.
         // Require actual evidence for the expected verse and the following opening.
         for count in 3...min(6, query.count - 8) {
@@ -68,6 +68,12 @@ public struct VerseMatcher: Sendable {
             }
         }
         return nil
+    }
+
+    private static func successor(_ id: String, by distance: Int = 1) -> String? {
+        let parts = id.split(separator: ":")
+        guard parts.count == 2, let ayah = Int(parts[1]) else { return nil }
+        return "\(parts[0]):\(ayah + distance)"
     }
 
     private static func distance(_ left: [Character], _ right: [Character]) -> Int {
@@ -109,10 +115,10 @@ public struct VerseMatcher: Sendable {
         let tied = scores.filter { best - $0.evidence <= 1 }
         if tied.count == 1 { return tied[0].id }
         // A known sequence can resolve the repeated basmala phrase, never missing evidence.
-        if let previous, let index = verses.firstIndex(where: { $0.id == previous }) {
+        if let previous {
             if tied.contains(where: { $0.id == previous }) { return previous }
-            if index + 1 < verses.count, tied.contains(where: { $0.id == verses[index + 1].id }) {
-                return verses[index + 1].id
+            if let next = Self.successor(previous), tied.contains(where: { $0.id == next }) {
+                return next
             }
         }
         return nil

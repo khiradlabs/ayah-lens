@@ -57,8 +57,8 @@ for config in ["Debug", "Release"]:
         "IPHONEOS_DEPLOYMENT_TARGET": "18.0", "TARGETED_DEVICE_FAMILY": "1",
         "SDKROOT": "iphoneos", "SUPPORTED_PLATFORMS": "iphoneos iphonesimulator",
         "LD_RUNPATH_SEARCH_PATHS": "$(inherited) @executable_path/Frameworks",
-        "SWIFT_OPTIMIZATION_LEVEL": "-Onone" if config == "Debug" else "-O",
-        "ENABLE_USER_SCRIPT_SANDBOXING": "YES", "MARKETING_VERSION": "0.1.0",
+        "SWIFT_OPTIMIZATION_LEVEL": "-O",
+        "ENABLE_USER_SCRIPT_SANDBOXING": "YES", "MARKETING_VERSION": "0.2.0",
         "CURRENT_PROJECT_VERSION": "1", "GENERATE_INFOPLIST_FILE": "NO"
     }
     target_configs.append(obj("target:" + config, f"isa = XCBuildConfiguration; buildSettings = {settings(target_values)}; name = {config};"))

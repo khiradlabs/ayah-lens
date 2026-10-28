@@ -86,7 +86,8 @@ final class RecognitionTests: XCTestCase {
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
             .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         let reference = try JSONDecoder().decode([Verse].self, from: Data(contentsOf: root.appendingPathComponent("App/Resources/verses.json")))
-        let matcher = VerseMatcher(verses: reference)
+        // Preserve the original selected-passage regression; global scope has its own tests.
+        let matcher = VerseMatcher(verses: reference.filter { $0.id.hasPrefix("1:") })
         let fragments = ["بسم الله الرحمن الرحيم", "الحمد لله رب العالمين", "الرحمن الرحيم",
                          "مالك يوم الدين", "إياك نعبد وإياك نستعين", "اهدنا الصراط المستقيم", "ولا الضالين"]
         var previous: String?

@@ -20,3 +20,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Version-check negative cases must pass AYAH_DEVICE_ID and inspect the specific mismatch error; a missing-device argument error is not stale-build proof. Verify the before/after app-info receipts and compare the final installed bundleVersion with the signed artifact.
 
 - Al-Fatihah is an integration fixture, not the delivery scope. Verify the full-corpus milestone includes 114 surahs and 6,236 aligned ayah/translation rows plus global retrieval. Extra short-surah demos do not satisfy it. Spark remains unimplemented until its real adapter and approved validation are complete.
+
+- The opening “الله لا إله إلا هو الحي القيوم” is shared by 2:255 and 3:2. Global retrieval must abstain without context; tests identifying 2:255 need its distinctive continuation. Verify the full-corpus shared-phrase test.
