@@ -190,3 +190,9 @@ Regression was observed failing four assertions, passed after correction, failed
 This source-level reproduction does not establish the exact cause of a particular physical display failure. The corrected artifact still requires the same wearer passage test. No new provider calls or audio uploads were made during this correction.
 
 Final verification: 38 core tests and actual PCM callback passed; optimized global index probe passed 40 queries and shared-opening abstention; local Spark HTTP probe passed. Signed Version 0.2.0 Build 23 built, installed, matched device metadata and launched successfully. The same physical recitation sequence is pending.
+
+## Build 23 physical milestone, October 28
+
+The focused phone-and-lens verse-advancement check passed on Build 23. This establishes the live end-to-end loop for the tested run. It does not establish every ayah was recognized, a representative accuracy rate, word-aligned latency, long-page readability or external-reciter performance. Detailed observations and device receipts remain private under ignored build/logs.
+
+Next work: external-reciter evaluation with permission, long-ayah page navigation, then scoring evidence and the demo video. Do not repeat the resolved stopped-label or basic advancement investigation without a new failure.
