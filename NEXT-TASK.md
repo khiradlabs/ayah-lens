@@ -1,25 +1,26 @@
-# Next: validate earlier matching of distinctive openings
+# Next: complete-Quran retrieval and Muse Spark integration
 
-Status: An exact short-opening path is implemented and locally verified. Twenty-five tests, callback and synthetic WebSocket probes passed. Inspect the latest build/install receipts for phone state. Consult private action gates and build/logs/muse-latency-investigation.md for actual timing observations and authorization scope.
+Status: Full-Quran scope is explicit. The next milestone is the complete 114-surah, 6,236-ayah corpus plus a useful Muse Spark ambiguity layer. Do not substitute a sequence of extra short-surah demos. Build 18 remains the installed seven-ayah baseline.
 
 ## First action
 
-A screenshot supplied the expanded timing values. Do not ask for the same old metrics again. Source investigation reproduced an avoidable rule: complete unique openings shorter than eight letters did not match. The correction accepts only exact complete two-word openings with six/seven normalized letters, unique in Al-Fatihah, preserving word boundaries and dagger-alif spelling aliases. The existing fuzzy floor and ambiguity handling are unchanged.
+Read SPEC.md and CHECKPOINT.md. Start the full-corpus implementation plan from the existing prepared sources: ../ayah-lens-prep/assets/text/quran-uthmani.txt and en.pickthall.txt. Both have 6,236 unique aligned IDs and contiguous ayah numbers across 114 surahs; this was checked October 27. Preserve canonical strings and existing attribution.
 
-Have the wearer test the corrected matcher only after a clear paid/audio-transfer disclosure and their choice to run. Start reciting when the listening card appears; initial silence is included in the first-text timing. Compare First match after text plus observed correctness of verse changes. Exact partials were not captured in the prior run, so do not attribute its whole evidence wait to the eight-letter rule or promise a particular time reduction. Provider first-text delay is a separate component.
+Build a local retrieval index and a bounded candidate matcher outside the UI actor. The current seven-row scan is not appropriate to run over every ayah for every partial. Reuse existing normalization and regression cases where applicable. Check short-opening uniqueness globally; repeated basmala text must not force a false surah lock.
 
-## Limits and checks
+Integrate Muse Spark over ambiguous retrieved candidates with recent verified context. Strictly constrain/validate supplied IDs or abstention; never render model-authored scripture or translation. Strong matches should remain local and immediate. Test stale-response cancellation, invalid IDs and identical-phrase abstention. Compare with matcher-only decisions before claiming value.
 
-- Twenty-five core tests passed, including complete short openings, incomplete words, altered word splits, duplicate/ambiguous reference prefixes, and prior regressions.
-- Removing the correction reproduced four assertion failures, restoring returned green.
-- bash tools/test.sh and python3 tools/probe_muse.py passed.
-- No additional paid API request was started by the agent. Check private gates before any billed request.
-- Keep personal observations, consent, screenshots and provider traces out of public commits.
+## Implementation order
 
-Device Keychain and hardware setup are complete. Do not repeat provisioning or registration without new evidence. First-text time is initial-session timing, not per-ayah latency; lens timing measures SDK completion, not visible pixels.
+1. Generate and validate the complete aligned reference bundle.
+2. Implement/test indexed global retrieval, candidate matching and contextual following.
+3. Implement/test the bounded Spark adapter and ambiguity decision flow.
+4. Build/install with a distinct visible version/build and verify the physical artifact.
+5. Conduct approved live validation across selected different passages and an external reciter source.
+6. Collect impact evidence and make the three-minute video.
 
-## Latest installation identity
+Consult private gates before billed requests. Voice Transcribe and its runtime key are already set up. Spark access was listed by the model catalog but the app has not made Spark calls. No earlier single-test approval authorizes new Spark spend.
 
-Version 0.1.0, Build 18 was rebuilt, installed and verified against device metadata. Automatic launch was blocked by the locked phone. The wearer can unlock/open Ayah Lens and confirm the visible Build 18 label near the top. Do not infer a new test from duplicated timing screenshots; use a fresh user-chosen run and check first-match timing. tools/device.py verify is the maintained installed-build check.
+## Existing baseline
 
-The latest labelled build is version 0.1.0, Build 18. It installed, passed device-version verification and launched successfully. Version/build also appear inside Muse timing, so new diagnostic screenshots can identify the tested artifact.
+Build 18 contains Muse Voice Transcribe, explicit local Omnilingual fallback, Al-Fatihah matching, source-grounded display, latency diagnostics and visible version/build labels. Twenty-five core tests and the PCM/WebSocket probes passed. Actual wearer results are private; check build/logs/latest-muse-observation.json and action gates. Do not repeat version verification questions or hardware setup without new evidence.

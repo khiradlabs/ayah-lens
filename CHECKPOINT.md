@@ -136,3 +136,9 @@ A fresh signed build succeeded with the latest short-opening matcher and visible
 ## Build identity in diagnostic screenshots
 
 Version and build are now shown both in the app header and inside expanded Muse timing. Signed build succeeded; device metadata verified version 0.1.0, build 18 against the newly built artifact. Installation and app launch succeeded. Recognition logic is unchanged. No paid session was started by the agent.
+
+## Full-Quran scope and Spark priority
+
+The target is the complete Quran. Current Build 18 bundles seven Al-Fatihah ayahs and uses Muse Voice Transcribe; Muse Spark is not integrated. The next delivery is complete-corpus indexed retrieval plus a measured, bounded Spark ambiguity resolver. SPEC.md was rewritten as the current scope and NEXT-TASK.md now prioritizes this milestone over individual short-surah additions.
+
+Audited existing prepared sources: both Arabic and Pickthall contain 6,236 unique, nonempty, aligned rows, contiguous within all 114 surahs. This establishes source readiness only. No full corpus was bundled, global recognizer shipped or Spark inference called during this scope clarification.

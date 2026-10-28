@@ -18,3 +18,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - A constant CFBundleVersion of 1 hid install identity across prototype updates. The build helper now increments from the previous artifact and revision count, and the app displays it. Verify: the device-reported bundleVersion must equal the newly built Info.plist and the on-screen Build label.
 
 - Version-check negative cases must pass AYAH_DEVICE_ID and inspect the specific mismatch error; a missing-device argument error is not stale-build proof. Verify the before/after app-info receipts and compare the final installed bundleVersion with the signed artifact.
+
+- Al-Fatihah is an integration fixture, not the delivery scope. Verify the full-corpus milestone includes 114 surahs and 6,236 aligned ayah/translation rows plus global retrieval. Extra short-surah demos do not satisfy it. Spark remains unimplemented until its real adapter and approved validation are complete.

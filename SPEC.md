@@ -1,76 +1,61 @@
-# Ayah Lens hackathon prototype
+# Ayah Lens hackathon prototype specification
 
-## Goal and timing
+## Goal
 
-Build a useful, verifiable glasses experience for following Quran recitation. Faraz confirmed on October 26 that organizers opened the building period. His kickoff slide states new work may be built October 26 through November 4. Submission remains November 4 at 8 PM Houston time.
+Follow recitation from anywhere in the complete Quran through Meta glasses and display unchanged canonical Arabic plus a published English translation. The delivery target is all 114 surahs and 6,236 ayahs in the prepared reference, not a series of individually selected short-surah demos.
 
-## First milestone
+Al-Fatihah was the first integration slice for proving audio, live Muse transcription, matching and lens display. It is not the complete product scope.
 
-A native SwiftUI iPhone application connects to Meta Ray-Ban Display, sends an attributed Arabic ayah and published English translation, and captures glasses microphone samples while the lens remains active. This resolves the combined-hardware uncertainty before recognition integration.
+The event build window is October 26 through November 4 after organizer clarification. The submission target is November 4, 8 PM Houston time. The implementation is native SwiftUI using Meta Wearables DAT 1.0.1.
 
-Native SwiftUI keeps this prototype directly on the already-proven iOS SDK path. The earlier Expo bridge is deferred; cross-platform delivery is not required for this milestone.
+## Current implementation
+
+- Version 0.1.0, Build 18 contains the glasses microphone/display loop, Muse Voice Transcribe realtime client, local Omnilingual fallback, canonical lookup for seven Al-Fatihah ayahs, timing diagnostics and visible version/build labels.
+- Muse Voice Transcribe is integrated. Muse Spark is not integrated yet.
+- The prepared Arabic and Pickthall source files contain aligned, unique and contiguous IDs for all 6,236 ayahs across 114 surahs. The app currently bundles seven rows. Full-source availability is not full-Quran recognition coverage.
+- Twenty-five core tests plus PCM callback and local WebSocket probes passed for the current slice. Physical observations, consent and actual timing records are maintained privately.
+
+## Next delivery: complete-Quran retrieval and Muse Spark
+
+### 1. Canonical corpus
+
+Bundle the full aligned reference and preserve every displayed Arabic/translation string verbatim with existing attribution and notices. Normalize separate recognition copies only. Validate unique IDs, source alignment, nonempty text and complete corpus coverage. No model may author Quran text or a replacement translation.
+
+### 2. Global retrieval
+
+Identify the passage from incoming recitation without requiring the wearer to choose a surah. Use a fast local index to retrieve a small candidate set across the full corpus, then apply detailed matching only to those candidates. Run retrieval outside the UI actor. Do not scale the existing seven-row dynamic-programming scan directly to all rows on the main thread.
+
+Use recent verified verse IDs to follow sequence, pauses, repeats, backtracking and passage changes. Preserve the current fast local path for strong, distinctive evidence. Short-opening shortcuts must be unique in the applicable retrieval context; uniqueness inside Al-Fatihah alone is insufficient for the whole corpus.
+
+Shared basmala phrases and other identical text may remain unresolved until more context arrives. Keep the last verified display or show an identifying status. Do not invent a surah assignment to make the UI advance.
+
+### 3. Muse Spark decision layer
+
+Integrate Muse Spark as a bounded ambiguity resolver over retrieved candidates and recent verified context. It receives the ASR fragment as untrusted data, a small candidate list and recent position. Constrain output to supplied verse identifiers or abstention, then independently validate the identifier before canonical lookup.
+
+Strong local matches should remain immediate. Invoke Spark only where its contribution is useful, not for every streaming partial. Deduplicate in-flight requests and discard stale responses after Stop or a newer passage decision. Identical phrases without distinguishing context require abstention; a model cannot supply missing evidence.
+
+Measure matcher-only versus matcher-plus-Spark decisions on shared phrases and noisy fragments. Claim a benefit only after the comparison demonstrates one. Spark does not generate displayed Quran text, translations or unvalidated religious rulings.
 
 ## Acceptance
 
-- Development build signs and installs on the approved connected iPhone.
-- Registration completes through Meta AI Developer Mode and its installed glasses component.
-- A selected canonical Arabic ayah and its published translation appear in the actual lens.
-- Audio input is verified as Bluetooth HFP; the phone microphone is never silently substituted.
-- Combined mode configures audio before creating the display session. If display startup fails, audio stops and the error is visible.
-- The phone shows actual microphone level and received sample count; selected verse controls are explicitly labelled manual.
-- Stop releases microphone capture and the display session.
-- Hardware results come from a wearer observation; compilation alone is insufficient.
-
-## Next milestones, by scoring value
-
-1. Compare Meta recognition candidates on cleared recordings and integrate the chosen listener.
-2. Match transcript fragments to canonical verses; handle uncertain matches, pauses and repeats.
-3. Demonstrate one short passage without manual verse selection.
-4. Validate a narrow Spark contribution and small human-benefit test.
-5. Produce and rehearse a three-minute video around verified functionality.
+- All 6,236 Arabic and translation rows are bundled, aligned and unchanged.
+- Global retrieval handles distinctive samples from different surahs and middle-of-surah entry without manual selection.
+- Identical/shared fragments are handled as ambiguous when evidence is insufficient.
+- A short live run samples more than the original passage, including an external recitation source with permission.
+- Pauses, repeats and passage changes have regression tests and selected live checks.
+- Spark protocol/response validation has local tests; a real approved Spark call and measured comparison establish actual integration.
+- The phone and lens identify Muse versus local fallback. Every tested artifact shows version and build.
+- Report measured initial-session timings separately from per-ayah or word-aligned display delay. SDK send completion does not prove visible pixels at that instant.
 
 ## Boundaries
 
-This is a foreground hackathon prototype. All-day battery, thermal endurance, broad background support, production accounts and App Store release are deferred. Fine-tuning, revision feedback and additional models must earn time through rubric evidence.
+This is a foreground hackathon prototype. Battery endurance, exhaustive background/locked-phone operation, production accounts, App Store release and broad environmental hardening remain deferred.
 
-No API keys are embedded in the app or repository. Cloud inference and recording upload require a cleared recording source and approved spending. Model-generated Quran text or translations are excluded.
+Keep a verified HFP-only microphone route; do not silently substitute the phone microphone. Retain audio-first display startup, bounded queues, cleanup and cancellation. No keys in the app bundle, source, chat or logs; the current key is provisioned privately into device-only Keychain.
 
-## Initial evidence
+Live paid calls and external audio transfer must fit the current private authorization scope. An earlier single Voice Transcribe test does not authorize ongoing spend, dataset upload or Spark calls. Prepare concrete testable code before requesting the final paid validation approval.
 
-Faraz confirmed stock lens tutorial output, clear wearer audio, and clear external-device recitation. External audio quality varies with head direction. The wearer subsequently confirmed Arabic/English output with simultaneous microphone capture on October 26.
+## Follow-on scoring work
 
-## Current recognition slice
-
-Run the prepared Meta Omnilingual 5-second CoreML model locally in a serial inference actor. Collect bounded rolling windows from verified HFP audio at its actual rate and resample to 16 kHz. Use a one-second hop, skip quiet windows and avoid queued inference backlog. Restrict decoding to Arabic and match only the seven bundled Al-Fatihah ayahs. Display only unchanged canonical Arabic and Pickthall text.
-
-The live control is separate from the manual hardware controls. It first shows a listening card, then advances only on supported matches. Uncertain fragments hold the current verse. Sequence context can resolve a repeated phrase, while distinctive evidence permits repeats/backtracking. Stop invalidates pending recognition results before releasing hardware.
-
-Acceptance: a real glasses recitation changes ayahs automatically without manual selection; unrelated/short fragments do not force a match; the phone exposes actual transcript and inference timing. Five seconds of audio collection must not be misrepresented as inference latency. No cloud upload, paid inference or recorded audio storage is part of this slice.
-
-## Muse requirement, clarified October 26
-
-Faraz explicitly required Muse tools in the hackathon build. The currently installed app uses Meta Omnilingual locally plus Meta Wearables DAT; it makes no Muse API calls. Hardware and local-recognition results must not be described as Muse integration.
-
-The next implementation priority is Muse Voice Transcribe (`muse-voice-transcribe-1.0`) as the primary live-listener candidate. Use its realtime WebSocket endpoint, Arabic language bias, mono signed 16-bit PCM at 16/24 kHz, handshake authentication, and cumulative partial replacement. Feed its actual transcripts to the existing canonical verse matcher. Preserve Omnilingual as an explicitly labelled local fallback; do not silently claim a fallback result came from Muse.
-
-Muse Spark is the next candidate for a narrow, evaluated ambiguity-resolution role over retrieved verse identifiers. It must never author Quran text or a replacement translation. Do not claim Spark integration before actual calls, evidence and a useful comparison exist.
-
-Prerequisites: obtain access to a Meta Model API key without embedding it in the app or Git, and approve a bounded paid test plus sending the chosen test audio to Meta. A credit claim is not evidence that API access or credits are active. On October 26, only HF_TOKEN was configured in the project credential file; matching Meta/Muse credentials were not found by title in the Khirad deployment or business Proton Pass vaults.
-
-Official contracts checked October 26:
-- https://dev.meta.ai/docs/speech-to-text
-- https://dev.meta.ai/docs/api-reference/voice/realtime
-- https://dev.meta.ai/docs/api-reference/voice/schemas
-- https://dev.meta.ai/docs/pricing-rate-limits
-
-Muse Voice Transcribe pricing is listed as $0.18 per audio hour. Realtime audio must be paced in real time; do not replay five-second rolling windows as overlapping streaming input. Perform a short cleared-audio probe before selecting the live listener, then compare verse matches, misses and observed latency. No paid call or cloud audio upload has occurred.
-
-## Muse client implementation status
-
-The Meta key was supplied privately and accepted by a read-only model-catalog request. The account lists Muse Voice Transcribe and Spark. No paid speech request or recitation upload has run.
-
-A native Muse realtime client, streaming 24 kHz int16 PCM encoder, cumulative/turn-aware transcript reducer and canonical matcher handoff are implemented. The phone has separate Muse and local-fallback controls. Muse is not silently substituted with local output. A two-minute processed-audio cap bounds each Muse test session. Eight pending audio chunks are allowed; overflow stops with a visible error rather than accumulating delayed audio. Stop sends endStream, allows final responses, and bounds connection cleanup.
-
-The key is not compiled into the app. An explicit development helper can privately provision a one-time app-container handoff, which the app imports into its non-synchronizing, device-only Keychain entry and deletes. This handoff has not run yet. The helper does not start paid inference.
-
-Validation: twenty core tests, real WebSocket transport against a local synthetic server, PCM callback regression and signed iPhone build/install. This verifies client execution and protocol behavior against the fixture, not compatibility or speech quality from a live Muse service. Approval of a two-minute test using Faraz’s own recitation audio, capped below $0.01 at published pricing, remains required by the spending rule.
+After full-Quran retrieval and the meaningful Spark role are validated, collect a small user-benefit evaluation and produce the three-minute video with actual lens output, clear model roles, new-work provenance and honest evidence. Additional isolated-surah expansion is superseded by complete-corpus integration.
