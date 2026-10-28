@@ -22,3 +22,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Al-Fatihah is an integration fixture, not the delivery scope. Verify the full-corpus milestone includes 114 surahs and 6,236 aligned ayah/translation rows plus global retrieval. Extra short-surah demos do not satisfy it. Spark remains unimplemented until its real adapter and approved validation are complete.
 
 - The opening “الله لا إله إلا هو الحي القيوم” is shared by 2:255 and 3:2. Global retrieval must abstain without context; tests identifying 2:255 need its distinctive continuation. Verify the full-corpus shared-phrase test.
+
+- Global retrieval must rank recent recitation evidence during passage changes; a long cumulative transcript can hide a new short surah. Verify a cumulative Al-Fatihah-to-Al-Ikhlas regression before claiming passage-switch support. This regression is pending.

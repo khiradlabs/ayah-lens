@@ -10,12 +10,12 @@ The event build window is October 26 through November 4 after organizer clarific
 
 ## Current implementation
 
-- Version 0.2.0, Build 21 bundles all 6,236 aligned Arabic/Pickthall rows across 114 surahs.
+- Version 0.2.0, Build 22 bundles all 6,236 aligned Arabic/Pickthall rows across 114 surahs.
 - Muse Voice Transcribe supplies realtime Arabic transcripts. Global indexed retrieval runs outside the UI actor.
 - Muse Spark 1.3 is wired as an opt-in candidate resolver with strict supplied-ID validation, abstention and stale-response rejection.
 - Spark is limited to three requests per run. Actual provider validation passed three synthetic cases, including one recovery after matcher abstention. Representative live benefit remains pending.
 - Long ayahs use bounded, verbatim pages with manual Previous/Next controls. Physical readability and page navigation need testing.
-- Thirty-five core tests, the actual PCM callback, synthetic WebSocket and Spark HTTP probes passed. Signed build/install/version verification and application launch passed.
+- Thirty-seven core tests, the actual PCM callback, synthetic WebSocket and Spark HTTP probes passed. Signed build/install/version verification passed. Build 22 launch was blocked by the locked phone.
 - Full reference availability and selected regression cases do not establish recognition accuracy for every ayah.
 
 ## Delivery requirements

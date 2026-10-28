@@ -40,6 +40,8 @@ final class GlassesModel: SessionHardware {
     var matcherMilliseconds: Double?
     var lensSendMilliseconds: Double?
     var museLatency = MuseLatencyTrace()
+    var streamTrace = MuseStreamTrace()
+    @ObservationIgnored private var lastTraceWrite = 0.0
     private(set) var verses: [Verse] = []
 
     @ObservationIgnored private let microphone = GlassesMicrophone()
@@ -179,6 +181,8 @@ final class GlassesModel: SessionHardware {
             self.matcherMilliseconds = nil
             self.lensSendMilliseconds = nil
             self.museLatency = MuseLatencyTrace()
+            self.streamTrace = MuseStreamTrace()
+            self.lastTraceWrite = 0
             self.sparkGate = SparkGate()
             self.sparkRequests = 0
             self.sparkStatus = "Muse Spark waiting for ambiguous evidence"
@@ -204,6 +208,8 @@ final class GlassesModel: SessionHardware {
             }, onAudioGap: { [weak self] gap in
                 Task { @MainActor in
                     guard let self, self.recognitionEpoch == epoch, self.museActive else { return }
+                    self.streamTrace.providerUpdate(at: ProcessInfo.processInfo.systemUptime)
+                    self.persistStreamTrace()
                     self.museGapMilliseconds = gap
                     self.museLatency.gap(gap)
                 }
@@ -224,6 +230,9 @@ final class GlassesModel: SessionHardware {
                     for await chunk in chunks {
                         try Task.checkCancellation()
                         try await muse.sendAudio(chunk, sessionID: id)
+                        guard let self, self.recognitionEpoch == epoch else { return }
+                        self.streamTrace.sent(samples: chunk.samples.count, rate: chunk.sampleRate, at: ProcessInfo.processInfo.systemUptime)
+                        self.persistStreamTrace()
                     }
                 } catch is CancellationError { }
                 catch {
@@ -237,6 +246,8 @@ final class GlassesModel: SessionHardware {
     }
 
     private func queueTranscript(_ text: String) {
+        streamTrace.transcript(characters: text.count, at: ProcessInfo.processInfo.systemUptime)
+        persistStreamTrace(force: true)
         transcript = text
         if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             museLatency.partial(at: ProcessInfo.processInfo.systemUptime * 1000)
@@ -259,6 +270,26 @@ final class GlassesModel: SessionHardware {
                 self.stop(); self.error = "The recognized verse could not be sent to the lens."
             }
         }
+    }
+
+    private func persistStreamTrace(force: Bool = false) {
+        let now = ProcessInfo.processInfo.systemUptime
+        guard force || now - lastTraceWrite >= 1 else { return }
+        lastTraceWrite = now
+        do {
+            let snapshot = try JSONSerialization.jsonObject(with: JSONEncoder().encode(streamTrace.snapshot(at: now)))
+            let record: [String: Any] = [
+                "version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown",
+                "build": Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown",
+                "microphoneSamples": sampleCount, "displayReady": displayReady,
+                "museActive": museActive, "hasVerseMatch": matchedID != nil,
+                "sparkRequests": sparkRequests, "stream": snapshot
+            ]
+            let url = try FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                .appendingPathComponent("muse-diagnostics.json")
+            try JSONSerialization.data(withJSONObject: record, options: [.sortedKeys]).write(to: url, options: .atomic)
+            try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: url.path)
+        } catch { /* Diagnostics must not interrupt live recitation. */ }
     }
 
     private func receiveSamples(_ samples: [Float], sampleRate: Double) {
@@ -420,6 +451,7 @@ final class GlassesModel: SessionHardware {
     }
 
     func stopAudio() {
+        if museActive { persistStreamTrace(force: true) }
         transcriptTask?.cancel(); transcriptTask = nil; pendingTranscript = nil
         sparkTask?.cancel(); sparkTask = nil; sparkRequestID = UUID()
         decisionRevision += 1

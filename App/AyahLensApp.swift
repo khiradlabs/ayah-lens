@@ -75,6 +75,18 @@ struct AyahLensApp: App {
                                 }
                             }
                         }
+                        TimelineView(.periodic(from: .now, by: 1)) { _ in
+                            let trace = model.streamTrace.snapshot(at: ProcessInfo.processInfo.systemUptime)
+                            if trace.sentBatches > 0 {
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text("Muse stream diagnostics").font(.headline)
+                                    Text("Audio sent: \(trace.sentAudioSeconds, specifier: "%.1f") s · \(trace.sentBatches) batches")
+                                    Text("Provider updates: \(trace.providerUpdates) · Transcript updates: \(trace.transcriptUpdates)")
+                                    if let age = trace.providerAgeSeconds { Text("Last provider update: \(age, specifier: "%.0f") s ago") }
+                                    if let age = trace.transcriptAgeSeconds { Text("Last transcript update: \(age, specifier: "%.0f") s ago") }
+                                }.font(.caption.monospacedDigit())
+                            }
+                        }
                         Text("Muse mode sends glasses audio to Meta for live transcription. Local fallback keeps audio on this iPhone. Both select published text; uncertain matches hold the current verse.")
                             .font(.footnote).foregroundStyle(.secondary)
                         if let gap = model.museGapMilliseconds {

@@ -170,3 +170,13 @@ Ran tools/evaluate_spark.py --live through the actual MuseSparkClient against St
 This establishes real provider execution and one selected synthetic recovery. It is a three-case diagnostic, not a representative accuracy benchmark or physical lens test. Spark latency supports using it only on uncertain evidence. No application code changed; the installed artifact remains version 0.2.0 Build 21. Live fixture receipts remain ignored under build/spark-evaluation.
 
 Next: wearer tests Build 21 with Muse Spark enabled across selected passages, observes resolver status and lens behavior, then checks long-page navigation. Private spending authorization is recorded separately. Do not request it again within the authorized bounded validation.
+
+## Muse boundary diagnostics, October 28
+
+Version 0.2.0 Build 22 adds separate successful-audio-send, provider-progress and transcript-update counters with event ages. A numeric-only snapshot is written to Library/muse-diagnostics.json in the private app container. It includes no raw transcript, audio or credential. tools/read_muse_diagnostics.py retrieves the snapshot to ignored build/logs.
+
+Two new tests were observed RED with eight assertions failing. All 37 core tests and the actual worker-queue callback subsequently passed. Signed Build 22 succeeded. This is instrumentation, not a claimed fix for a stalled stream. Device installation/verification and wearer reproduction must be checked before drawing conclusions.
+
+An independent synthetic replay exposed a retrieval defect: after long cumulative Al-Fatihah text, recent Al-Ikhlas evidence can be excluded from the candidate set. It does not explain a transcript that stops updating. Track and fix it separately with a regression.
+
+Build 22 signature/profile checks, installation and device version comparison passed. Launch was blocked because the iPhone was locked. Unlock and open Ayah Lens manually for the diagnostic reproduction. No live Muse session was started by the agent.

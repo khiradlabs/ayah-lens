@@ -4,7 +4,7 @@ A hackathon prototype that follows Quran recitation and displays canonical Arabi
 
 ## Current build
 
-Version 0.2.0, Build 21 contains the complete reference: 114 surahs and 6,236 aligned ayahs. Global passage lookup requires no surah selection.
+Version 0.2.0, Build 22 contains the complete reference: 114 surahs and 6,236 aligned ayahs. Global passage lookup requires no surah selection.
 
 Muse Voice Transcribe supplies realtime Arabic partial transcripts. An indexed matcher retrieves candidates outside the phone UI actor. Muse Spark 1.3 can resolve ambiguous candidates using the transcript and recent verified position. Spark returns a supplied verse ID or abstention. Only the attributed reference supplies displayed Quran text and translation.
 
@@ -73,3 +73,5 @@ Original code is MIT licensed. Third-party SDKs, models and reference content re
 This is a foreground hackathon prototype. Battery endurance, production accounts and App Store delivery are deferred. The next scoring milestone is evidence of useful Spark decisions, followed by a three-minute video showing real behavior.
 
 The repeatable synthetic comparison uses `python3 tools/evaluate_spark.py --live` only with paid-call authorization. It loads the private runtime credential, makes exactly three requests without retries, and records decisions under ignored build/spark-evaluation. It sends no audio.
+
+Build 22 adds numeric stream diagnostics separating successful audio sends, provider-progress events and transcript updates. The private app snapshot contains no raw text, audio or credentials. Retrieve it with `python3 tools/read_muse_diagnostics.py` after setting AYAH_DEVICE_ID. This instrumentation has 37 passing core tests; it is not evidence that a stalled stream is fixed. Cumulative passage changes also have a known retrieval issue under investigation.
