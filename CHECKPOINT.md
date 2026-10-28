@@ -126,3 +126,9 @@ Twenty-three tests passed after the two new trace cases were observed failing. P
 The source required at least eight letters even for a complete, distinctive two-word opening in the selected passage. Added an exact-match path for unique six/seven-letter opening aliases, retaining word boundaries and accounting for Uthmani dagger-alif recognition spelling. The approximate matcher’s threshold remains unchanged. Shared, incomplete or wrongly split fragments remain rejected, and longer supported suffixes retain precedence. Canonical display content is unchanged.
 
 Twenty-five tests passed after the new opening assertions were observed failing. Reverting the matcher reproduced four failures; restoring the fix returned green. The callback and real-WebSocket synthetic probes passed. Private observations and interpretation remain in build/logs/muse-latency-investigation.md. The actual first partial was not captured, so a physical retest is required before claiming a latency gain. This change does not alter provider first-text emission or stream cadence.
+
+## Visible build identity and installation verification
+
+Build helper now sets an increasing CFBundleVersion using the larger of source revision count or the preceding local artifact plus one. The phone UI shows the bundle version below the subtitle. tools/device.py verify compares installed app metadata with the signed local artifact and fails on mismatch.
+
+A fresh signed build succeeded with the latest short-opening matcher and visible version label. Installation passed, and the device query reported version 0.1.0, build 17, matching the artifact. Earlier device metadata reported build 1. Automatic launch was blocked by the locked phone. No paid Muse request was started. Syntax checks and the actual installed-version probe passed; recognition logic was unchanged from the last twenty-five-test pass.

@@ -63,6 +63,7 @@ For a signed device build, set `AYAH_DEVICE_ID` from Xcode's current physical-de
 ```bash
 bash tools/build.sh signed
 python3 tools/device.py install
+python3 tools/device.py verify
 python3 tools/device.py launch
 ```
 
@@ -89,3 +90,5 @@ The phone’s Muse timing disclosure exposes provider audio-progress gap, matche
 Expanded timing also retains peak audio gap, first nonempty transcript after audio streaming begins, and first supported match after that transcript. Startup silence is included. These initial-session timings do not measure per-ayah or word-aligned lens delay. Twenty-three core tests passed.
 
 The selected-passage matcher now accepts distinctive complete two-word openings with six/seven normalized letters by exact, unique match. It preserves boundaries and canonical display text; approximate matching keeps its prior evidence floor. Twenty-five core tests passed. A live latency improvement is not yet claimed.
+
+The header shows a visible version/build label. tools/build.sh increments the local build identifier, and tools/device.py verify compares the installed version with the newly signed artifact. This distinguishes fresh installations from earlier prototype builds.

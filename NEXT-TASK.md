@@ -17,3 +17,7 @@ Have the wearer test the corrected matcher only after a clear paid/audio-transfe
 - Keep personal observations, consent, screenshots and provider traces out of public commits.
 
 Device Keychain and hardware setup are complete. Do not repeat provisioning or registration without new evidence. First-text time is initial-session timing, not per-ayah latency; lens timing measures SDK completion, not visible pixels.
+
+## Latest installation identity
+
+Version 0.1.0, Build 17 was rebuilt, installed and verified against device metadata. Automatic launch was blocked by the locked phone. The wearer can unlock/open Ayah Lens and confirm the visible Build 17 label near the top. Do not infer a new test from duplicated timing screenshots; use a fresh user-chosen run and check first-match timing. tools/device.py verify is the maintained installed-build check.

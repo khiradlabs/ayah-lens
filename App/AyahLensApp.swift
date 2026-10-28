@@ -4,6 +4,12 @@ import SwiftUI
 struct AyahLensApp: App {
     @State private var model = GlassesModel()
 
+    private var buildLabel: String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
+        return "Version \(version) · Build \(build)"
+    }
+
     var body: some Scene {
         WindowGroup {
             NavigationStack {
@@ -13,6 +19,8 @@ struct AyahLensApp: App {
                             .font(.largeTitle.bold())
                         Text(model.recognitionActive ? "\(model.recognitionSource) · Al-Fatihah" : "Hardware prototype · Manual verse selection")
                             .font(.subheadline).foregroundStyle(.secondary)
+                        Text(buildLabel).font(.caption).foregroundStyle(.secondary)
+                            .accessibilityIdentifier("build_version")
                         if let verse = model.verse {
                             VStack(alignment: .leading, spacing: 14) {
                                 Text("Al-Fatihah · \(verse.id)").font(.caption.bold()).foregroundStyle(.teal)

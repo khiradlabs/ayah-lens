@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Install or open the development prototype on an explicitly selected iPhone."""
 import argparse
+import json
 import os
 from pathlib import Path
 import plistlib
 import subprocess
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument("action", choices=["install", "launch"])
+parser.add_argument("action", choices=["install", "launch", "verify"])
 args = parser.parse_args()
 device = os.environ.get("AYAH_DEVICE_ID")
 if not device:
@@ -27,7 +28,16 @@ if args.action == "install":
         parser.error("The signed profile does not match the approved team and selected phone")
     subprocess.run(["codesign", "--verify", "--strict", str(app)], check=True)
     command = ["device", "install", "app", "--device", device, str(app)]
+elif args.action == "verify":
+    command = ["device", "info", "apps", "--device", device, "--bundle-id", bundle]
 else:
     command = ["device", "process", "launch", "--device", device, bundle]
 subprocess.run(["xcrun", "devicectl", "--timeout", "30", *command,
                 "--json-output", str(evidence / f"{args.action}.json")], check=True)
+if args.action == "verify":
+    info = plistlib.loads((root / "build/DerivedData/Build/Products/Debug-iphoneos/AyahLens.app/Info.plist").read_bytes())
+    apps = json.loads((evidence / "verify.json").read_text())["result"]["apps"]
+    installed = next((app for app in apps if app.get("bundleIdentifier") == bundle), None)
+    if not installed or installed.get("bundleVersion") != info["CFBundleVersion"] or installed.get("version") != info["CFBundleShortVersionString"]:
+        parser.error("The installed version does not match the newly built app")
+    print(f"PASS: installed Ayah Lens {installed['version']} build {installed['bundleVersion']} matches the latest local build")
