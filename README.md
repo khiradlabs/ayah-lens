@@ -92,3 +92,5 @@ Expanded timing also retains peak audio gap, first nonempty transcript after aud
 The selected-passage matcher now accepts distinctive complete two-word openings with six/seven normalized letters by exact, unique match. It preserves boundaries and canonical display text; approximate matching keeps its prior evidence floor. Twenty-five core tests passed. A live latency improvement is not yet claimed.
 
 The header shows a visible version/build label. tools/build.sh increments the local build identifier, and tools/device.py verify compares the installed version with the newly signed artifact. This distinguishes fresh installations from earlier prototype builds.
+
+Version and build also appear inside expanded Muse timing so diagnostic screenshots identify their source build.

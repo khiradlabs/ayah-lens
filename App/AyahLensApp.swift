@@ -70,6 +70,8 @@ struct AyahLensApp: App {
                         if let gap = model.museGapMilliseconds {
                             DisclosureGroup("Muse timing") {
                                 VStack(alignment: .leading, spacing: 8) {
+                                    Text(buildLabel).foregroundStyle(.secondary)
+                                        .accessibilityIdentifier("timing_build_version")
                                     Text("Audio processing gap: \(gap, specifier: "%.0f") ms")
                                     if let peak = model.museLatency.peakAudioGapMilliseconds { Text("Peak audio gap: \(peak, specifier: "%.0f") ms") }
                                     if let first = model.museLatency.firstTranscriptMilliseconds { Text("First text after audio start: \(first / 1000, specifier: "%.2f") s") }

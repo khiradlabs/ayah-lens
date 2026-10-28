@@ -20,4 +20,6 @@ Device Keychain and hardware setup are complete. Do not repeat provisioning or r
 
 ## Latest installation identity
 
-Version 0.1.0, Build 17 was rebuilt, installed and verified against device metadata. Automatic launch was blocked by the locked phone. The wearer can unlock/open Ayah Lens and confirm the visible Build 17 label near the top. Do not infer a new test from duplicated timing screenshots; use a fresh user-chosen run and check first-match timing. tools/device.py verify is the maintained installed-build check.
+Version 0.1.0, Build 18 was rebuilt, installed and verified against device metadata. Automatic launch was blocked by the locked phone. The wearer can unlock/open Ayah Lens and confirm the visible Build 18 label near the top. Do not infer a new test from duplicated timing screenshots; use a fresh user-chosen run and check first-match timing. tools/device.py verify is the maintained installed-build check.
+
+The latest labelled build is version 0.1.0, Build 18. It installed, passed device-version verification and launched successfully. Version/build also appear inside Muse timing, so new diagnostic screenshots can identify the tested artifact.
