@@ -31,6 +31,8 @@ final class GlassesModel: SessionHardware {
     var sparkStatus = "Muse Spark ready for ambiguity checks"
     var sparkRequests = 0
     var lastResolution = "Reference match"
+    var phraseStatus = "Automatic recitation portions"
+    var phraseRequests = 0
     var lensPageIndex = 0
     private(set) var lensPages: [LensPage] = []
     var transcript = ""
@@ -66,6 +68,11 @@ final class GlassesModel: SessionHardware {
     @ObservationIgnored private var museSender: Task<Void, Never>?
     @ObservationIgnored private let quran = QuranRecognitionEngine()
     @ObservationIgnored private let spark = MuseSparkClient()
+    @ObservationIgnored private let portionEngine = RecitationPortionEngine()
+    @ObservationIgnored private let phraseClient = MusePhraseClient()
+    @ObservationIgnored private var phraseTask: Task<Void, Never>?
+    @ObservationIgnored private var phraseAttempted: Set<String> = []
+    @ObservationIgnored private var phraseCache: [String: PhraseAlignment] = [:]
     @ObservationIgnored private var sparkGate = SparkGate()
     @ObservationIgnored private var sparkTask: Task<Void, Never>?
     @ObservationIgnored private var sparkRequestID = UUID()
@@ -91,6 +98,7 @@ final class GlassesModel: SessionHardware {
             verses = try JSONDecoder().decode([Verse].self, from: Data(contentsOf: url))
             versePositions = Dictionary(uniqueKeysWithValues: verses.enumerated().map { ($0.element.id, $0.offset) })
             if let first = verses.first { lensPages = VersePagination.pages(for: first) }
+            loadPhraseCache()
         } catch { self.error = error.localizedDescription }
         if let selector = displaySelector {
             deviceDiscoveryTask = Task { [weak self] in
@@ -155,6 +163,8 @@ final class GlassesModel: SessionHardware {
         run {
             self.stopHardware()
             self.museGapMilliseconds = nil
+            await self.portionEngine.reset()
+            self.phraseAttempted.removeAll(); self.phraseRequests = 0
             self.status = "Preparing the complete Quran index…"
             await self.quran.prepare(verses: self.verses)
             try Task.checkCancellation()
@@ -190,6 +200,8 @@ final class GlassesModel: SessionHardware {
             guard let key = try MuseCredential.read() else {
                 throw PrototypeError.message("Muse credentials are not provisioned on this phone yet.")
             }
+            await self.portionEngine.reset()
+            self.phraseAttempted.removeAll(); self.phraseRequests = 0
             self.status = "Preparing the complete Quran index…"
             await self.quran.prepare(verses: self.verses)
             try Task.checkCancellation()
@@ -283,7 +295,8 @@ final class GlassesModel: SessionHardware {
                 "build": Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown",
                 "microphoneSamples": sampleCount, "displayReady": displayReady,
                 "museActive": museActive, "hasVerseMatch": matchedID != nil,
-                "sparkRequests": sparkRequests, "stream": snapshot
+                "sparkRequests": sparkRequests, "phraseRequests": phraseRequests,
+                "lensPortion": lensPageIndex, "lensPortions": lensPages.count, "stream": snapshot
             ]
             let url = try FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
                 .appendingPathComponent("muse-diagnostics.json")
@@ -345,9 +358,10 @@ final class GlassesModel: SessionHardware {
             decisionRevision += 1
             sparkTask?.cancel(); sparkTask = nil; sparkRequestID = UUID()
             sparkStatus = "Muse Spark idle · reference matched"
-            try await acceptMatch(id, resolution: "Reference match")
+            try await acceptMatch(id, resolution: "Reference match", text: text)
             return
         }
+        if let current = matchedID { try await updateLivePortion(id: current, text: text) }
         recognitionStatus = "Identifying passage · holding the last verified verse"
         guard museActive, sparkEnabled, result.sparkEligible, sparkTask == nil,
               sparkGate.reserve(transcript: text, candidateIDs: result.candidates.map(\.id), previous: matchedID,
@@ -372,7 +386,7 @@ final class GlassesModel: SessionHardware {
                 }
                 self.sparkStatus = "Muse Spark selected \(id)"
                 self.decisionRevision += 1
-                try await self.acceptMatch(id, resolution: "Muse Spark selection")
+                try await self.acceptMatch(id, resolution: "Muse Spark selection", text: self.transcript)
             } catch is CancellationError { }
             catch {
                 guard let self, self.recognitionEpoch == epoch, self.sparkRequestID == requestID else { return }
@@ -381,20 +395,77 @@ final class GlassesModel: SessionHardware {
         }
     }
 
-    private func acceptMatch(_ id: String, resolution: String) async throws {
+    private func acceptMatch(_ id: String, resolution: String, text: String) async throws {
         guard let index = versePositions[id] else { return }
         recognitionStatus = "Matched Quran \(id) · \(resolution)"
         if museActive { museLatency.match(at: ProcessInfo.processInfo.systemUptime * 1000) }
-        if matchedID != id || lastResolution != resolution {
-            if matchedID != id { recentIDs = Array((recentIDs + [id]).suffix(3)) }
-            matchedID = id
-            lastResolution = resolution
-            selectedIndex = index
-            lensPageIndex = 0
-            lensPages = VersePagination.pages(for: verses[index])
-            let sendBegan = ContinuousClock.now
+        let changedVerse = matchedID != id
+        if changedVerse { recentIDs = Array((recentIDs + [id]).suffix(3)) }
+        matchedID = id; lastResolution = resolution; selectedIndex = index
+        try await updateLivePortion(id: id, text: text, force: changedVerse)
+        preparePhraseAlignment(for: verses[index])
+    }
+
+    private func updateLivePortion(id: String, text: String, force: Bool = false) async throws {
+        guard let position = versePositions[id] else { return }
+        let epoch = recognitionEpoch
+        let result = await portionEngine.update(verse: verses[position], transcript: text, alignment: phraseCache[id])
+        try Task.checkCancellation()
+        guard recognitionActive, recognitionEpoch == epoch, matchedID == id else { return }
+        lensPages = result.cards; lensPageIndex = result.index
+        phraseStatus = result.paired ? "Following part \(result.index + 1)/\(result.cards.count) · Arabic + Pickthall"
+            : "Following Arabic part \(result.index + 1)/\(result.cards.count) · full translation on phone"
+        if force || result.changed {
+            let began = ContinuousClock.now
             try await sendVerse()
-            lensSendMilliseconds = elapsedMilliseconds(since: sendBegan)
+            lensSendMilliseconds = elapsedMilliseconds(since: began)
+        }
+    }
+
+    private func loadPhraseCache() {
+        var urls: [URL] = []
+        if let bundled = Bundle.main.url(forResource: "phrase-alignments", withExtension: "json") { urls.append(bundled) }
+        if let library = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first {
+            urls.append(library.appendingPathComponent("phrase-alignments.json"))
+        }
+        for url in urls {
+            guard let data = try? Data(contentsOf: url), let plans = try? JSONDecoder().decode([PhraseAlignment].self, from: data) else { continue }
+            for plan in plans {
+                guard let index = versePositions[plan.verseID], (try? plan.cards(for: verses[index])) != nil else { continue }
+                phraseCache[plan.verseID] = plan
+            }
+        }
+    }
+
+    private func preparePhraseAlignment(for verse: Verse) {
+        guard museActive, sparkEnabled, phraseCache[verse.id] == nil,
+              verse.arabic.count > 56 || verse.translation.count > 100,
+              phraseTask == nil, phraseRequests < 3, !phraseAttempted.contains(verse.id),
+              let key = try? MuseCredential.read() else { return }
+        phraseAttempted.insert(verse.id); phraseRequests += 1
+        let epoch = recognitionEpoch
+        let client = phraseClient
+        phraseTask = Task { [weak self] in
+            defer { if self?.recognitionEpoch == epoch { self?.phraseTask = nil } }
+            do {
+                let plan = try await client.align(verse: verse, apiKey: key)
+                try Task.checkCancellation()
+                guard let self, self.recognitionEpoch == epoch else { return }
+                self.phraseCache[verse.id] = plan
+                if let url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first?.appendingPathComponent("phrase-alignments.json"),
+                   let data = try? JSONEncoder().encode(Array(self.phraseCache.values)) {
+                    try? data.write(to: url, options: .atomic)
+                    try? FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: url.path)
+                }
+                if self.matchedID == verse.id {
+                    do { try await self.updateLivePortion(id: verse.id, text: self.transcript) }
+                    catch {
+                        self.stop()
+                        self.error = "The paired portion could not be sent to the lens."
+                    }
+                }
+            } catch is CancellationError { }
+            catch { /* Keep automatic Arabic following when source alignment is unavailable. */ }
         }
     }
 
@@ -412,7 +483,7 @@ final class GlassesModel: SessionHardware {
     }
 
     func stepLensPage(_ delta: Int) {
-        guard displayReady, lensPages.count > 1 else { return }
+        guard !recognitionActive, displayReady, lensPages.count > 1 else { return }
         run {
             self.lensPageIndex = (self.lensPageIndex + delta + self.lensPages.count) % self.lensPages.count
             try await self.sendVerse()
@@ -456,6 +527,7 @@ final class GlassesModel: SessionHardware {
             sparkStatus = "Muse Spark stopped"
             persistStreamTrace(force: true)
         }
+        phraseTask?.cancel(); phraseTask = nil
         transcriptTask?.cancel(); transcriptTask = nil; pendingTranscript = nil
         sparkTask?.cancel(); sparkTask = nil; sparkRequestID = UUID()
         decisionRevision += 1
@@ -557,6 +629,15 @@ final class GlassesModel: SessionHardware {
         }
         guard lensPages.indices.contains(lensPageIndex) else { throw PrototypeError.message("The lens page is unavailable.") }
         let page = lensPages[lensPageIndex]
+        if recognitionActive {
+            try await display.send(FlexBox(direction: .column, spacing: 8) {
+                MWDATDisplay.Text("Quran \(verse.id) · \(lensPageIndex + 1)/\(lensPages.count)", style: .meta, color: .secondary)
+                if let arabic = page.arabic { MWDATDisplay.Text(arabic, style: .body) }
+                if let english = page.translation { MWDATDisplay.Text(english, style: .body) }
+                else { MWDATDisplay.Text("Translation on phone", style: .meta, color: .secondary) }
+            }.padding(12))
+            return
+        }
         try await display.send(
             FlexBox(direction: .column, spacing: 16) {
                 MWDATDisplay.Text("Ayah Lens · \(verse.id) · \(lensPageIndex + 1)/\(lensPages.count)", style: .meta, color: .secondary)

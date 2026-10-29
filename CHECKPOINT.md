@@ -196,3 +196,21 @@ Final verification: 38 core tests and actual PCM callback passed; optimized glob
 The focused phone-and-lens verse-advancement check passed on Build 23. This establishes the live end-to-end loop for the tested run. It does not establish every ayah was recognized, a representative accuracy rate, word-aligned latency, long-page readability or external-reciter performance. Detailed observations and device receipts remain private under ignored build/logs.
 
 Next work: external-reciter evaluation with permission, long-ayah page navigation, then scoring evidence and the demo video. Do not repeat the resolved stopped-label or basic advancement investigation without a new failure.
+
+## Automatic within-ayah following, October 29
+
+Version 0.3.0 Build 26 replaces manual listening pages with compact portions that follow the supported word position inside the ayah. Same-ayah transcript updates can now move the lens. The live layout has one header, Arabic and the paired Pickthall source span when available, without Next/Previous controls. Manual paging remains separate while stopped.
+
+New actor-isolated follower supports mid-ayah entry, repeats, source-matched late alignment, holding on unrelated/ambiguous evidence and cache-safe passage changes. Arabic slices are bounded to 56 grapheme clusters; English to 100 characters. These are conservative content bounds, not physical pixel-fit proof.
+
+Standard Muse Spark supplies paired exclusive source-word boundaries. Independently validated plans preserve every source word and reject incomplete, reordered, oversized or source-mismatched slices. The app never displays model-authored scripture or translation. Three source-only preparation calls produced cached plans for 2:102 and 73:20 with 20 portions each, and 2:255 with 14 portions. These are model-assisted phrase correspondences, not certified word translation alignment or acoustic timestamps.
+
+For other long ayahs, Arabic follows immediately. With Spark assistance enabled, the app can prepare up to three new verse alignments per run and cache successful plans. The full English remains on the phone if a paired plan is unavailable. No retry loop is added. Late results only update the current session/verse.
+
+Tests: source preservation and Arabic bounds across all 6,236 rows; within-ayah word tracking; same-ayah progression; repeats/unrelated evidence; strict protocol validation; late-plan/current-source checks; every bundled portion. New feature tests were observed RED first. Final suite: 48 passed, zero failures; actual worker-queue PCM callback passed.
+
+The optimized global-lookup/follower-actor probe passed 52 supported automatic transitions, including all 20 parts of both 2:102 and 73:20. It deliberately held the first two shared-opening portions of 2:255 until the passage was identifiable. The first probe incorrectly demanded an early unique ID; corrected that expectation rather than guessing a surah. Actual Swift WebSocket probe passed. Signed Build 26 succeeded, installed and matched device version metadata. Check the following entry for launch outcome. Physical no-clipping/automatic-following validation remains pending.
+
+Private receipts: build/logs/within-ayah-final-tests.log, portion-probe.log, portion-muse-probe.log, within-ayah-final-build.log and build/phrase-alignments/live.log. No new audio recording or personal transcript logging was added.
+
+Build 26 launch was blocked by the locked phone. Signed artifact contents confirm version 0.3.0, build 26 and byte-identical bundled source-boundary plans. Unlock and open Ayah Lens manually for the pending physical test.

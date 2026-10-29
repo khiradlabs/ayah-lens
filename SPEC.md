@@ -10,12 +10,12 @@ The event build window is October 26 through November 4 after organizer clarific
 
 ## Current implementation
 
-- Version 0.2.0, Build 23 bundles all 6,236 aligned Arabic/Pickthall rows across 114 surahs.
+- Version 0.3.0, Build 26 bundles all 6,236 aligned Arabic/Pickthall rows across 114 surahs.
 - Muse Voice Transcribe supplies realtime Arabic transcripts. Global indexed retrieval runs outside the UI actor.
 - Muse Spark 1.3 is wired as an opt-in candidate resolver with strict supplied-ID validation, abstention and stale-response rejection.
-- Spark is limited to three requests per run. Actual provider validation passed three synthetic cases, including one recovery after matcher abstention. Representative live benefit remains pending.
-- Long ayahs use bounded, verbatim pages with manual Previous/Next controls. Physical readability and page navigation need testing.
-- Thirty-eight core tests, the actual PCM callback, synthetic WebSocket and Spark HTTP probes passed. Signed build/install/version verification passed. Consult the latest checkpoint for Build 23 device launch status.
+- Spark ambiguity resolution is limited to three requests per run; source alignment has a separate three-new-verse limit. Actual provider validation passed three synthetic cases, including one recovery after matcher abstention. Representative live benefit remains pending.
+- Long ayahs use automatic compact source portions during listening. Manual paging is restricted to separate display tests. New physical layout validation remains pending.
+- Forty-eight core tests, the actual PCM callback, synthetic WebSocket and Spark HTTP probes passed. Signed build/install/version verification passed. Consult the latest checkpoint for Build 26 device launch status.
 - Full reference availability and selected regression cases do not establish recognition accuracy for every ayah.
 
 ## Delivery requirements
@@ -62,3 +62,16 @@ Live paid calls and external audio transfer must fit the current private authori
 ## Follow-on scoring work
 
 After full-Quran retrieval and the meaningful Spark role are validated, collect a small user-benefit evaluation and produce the three-minute video with actual lens output, clear model roles, new-work provenance and honest evidence. Additional isolated-surah expansion is superseded by complete-corpus integration.
+
+## October 29 change: automatic within-ayah following
+
+The live lens must show a compact portion corresponding to current recitation. It must not require Next/Previous during listening. Manual pagination remains a separate display test only.
+
+1. Track a supported word position inside a matched ayah from current Muse transcript evidence. Hold on unrelated/ambiguous fragments; support middle entry and deliberate repeats. Verify with exact/noisy/cumulative/ambiguous regression cases.
+2. Use compact source slices. Arabic and English must be exact substrings of the published references. Muse Spark may supply paired word boundaries only; validate monotonic complete coverage and display bounds before using them. Never display model-authored text.
+3. Cache accepted alignments per source verse. Arabic follows immediately while an uncached translation alignment is prepared. Unaligned translation stays available on the phone, rather than implying arbitrary word alignment. Apply new alignments only to the current session/verse. Limit new alignment calls to three per run and avoid repeated failed calls.
+4. Recompute the selected portion on each supported transcript update, even when the verse ID remains unchanged. Reset on passage change/Stop; prevent late responses and duplicate sends.
+5. Live lens layout uses one compact header, Arabic and the paired Pickthall portion when available. Remove navigation controls from the listening display. Verify source bounds over the full corpus; actual readability still requires the physical lens test.
+6. Run core regressions, actual client probes, signed build/install/version verification and a live probe. Record what was verified and what remains physical-user testing.
+
+This is phrase-level following from transcript evidence, not acoustic word timestamps. Full-Quran scope remains unchanged. First-use translation alignment can take time; subsequent uses load the validated cache.

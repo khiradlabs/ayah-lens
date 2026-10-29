@@ -1,4 +1,4 @@
-public struct LensPage: Sendable {
+public struct LensPage: Sendable, Equatable {
     public let arabic: String?
     public let translation: String?
     public let label: String

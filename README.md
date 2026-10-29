@@ -4,23 +4,25 @@ A hackathon prototype that follows Quran recitation and displays canonical Arabi
 
 ## Current build
 
-Version 0.2.0, Build 23 contains the complete reference: 114 surahs and 6,236 aligned ayahs. Global passage lookup requires no surah selection.
+Version 0.3.0, Build 26 contains the complete reference: 114 surahs and 6,236 aligned ayahs. Global passage lookup requires no surah selection.
 
 Muse Voice Transcribe supplies realtime Arabic partial transcripts. An indexed matcher retrieves candidates outside the phone UI actor. Muse Spark 1.3 can resolve ambiguous candidates using the transcript and recent verified position. Spark returns a supplied verse ID or abstention. Only the attributed reference supplies displayed Quran text and translation.
 
-Spark is an explicit opt-in and permits at most three requests per run. Requests are bounded, deduplicated and cancelled or rejected when superseded. Strong reference matches update immediately. Identical shared phrases can remain unresolved until distinguishing evidence arrives.
+Spark is an explicit opt-in. Ambiguous-verse resolution permits at most three requests per run; source alignment has a separate three-new-verse limit. Requests are bounded, deduplicated and cancelled or rejected when superseded. Strong reference matches update immediately. Identical shared phrases can remain unresolved until distinguishing evidence arrives.
 
-Long ayahs have separate Arabic and Pickthall pages with manual Previous/Next controls. These pages preserve every source character. They do not claim word alignment.
+Live long ayahs now follow recitation automatically inside the ayah. An actor tracks the supported source-word position from Muse transcripts and selects a compact portion. The listening lens has no Next/Previous controls.
+
+Muse Spark can pair consecutive source-word ranges from the Arabic and published Pickthall reference. Independent checks reject reordered, incomplete, oversized or source-mismatched plans. The app displays only exact source slices. Accepted plans are cached. The bundle includes 20 paired portions each for 2:102 and 73:20, plus 14 for 2:255. Other long ayahs follow Arabic immediately while an uncached paired translation is prepared, with at most three new alignment requests per run. The full translation stays on the phone when no valid alignment is available. This is transcript-based phrase following, not acoustic word timing. Manual pagination remains a separate stopped-session display test.
 
 The separately labelled local fallback uses Meta Omnilingual CTC-300M through a prepared CoreML export. It uses five-second windows. Muse mode sends audio to Meta; local fallback performs recognition on the phone. The app saves no audio recordings.
 
 ## Verified and pending
 
-Thirty-five core tests passed, including corpus coverage, global retrieval, shared-phrase abstention, Spark bounds and response validation, and exact page reconstruction. Actual Swift clients passed local synthetic WebSocket and HTTP integration probes. The PCM callback passed its worker-queue regression. Signed build, installation, installed-version verification and application launch passed.
+Forty-eight core tests passed, including corpus coverage, global retrieval, shared-phrase abstention, Spark bounds and response validation, and exact page reconstruction. Actual Swift clients passed local synthetic WebSocket and HTTP integration probes. The PCM callback passed its worker-queue regression. Signed build, installation, installed-version verification and application launch passed.
 
 Whole-Quran index queries were measured on a Mac. This is a host performance probe, not phone or visible-lens latency. Full corpus availability and selected passing cases do not establish accuracy for every ayah.
 
-Real Standard Muse Spark validation passed three synthetic cases: one noisy phrase recovered from matcher abstention and two shared phrases correctly left unresolved. The recovery took 3.28 seconds; abstentions took 0.71 and 1.39 seconds. One abstention case is an adapter control that the app correctly suppresses before calling Spark. This small diagnostic does not establish representative accuracy or live user benefit. Selected live passage changes, external-reciter testing and long-page readability remain pending. Hardware observations and approval records are maintained privately.
+Real Standard Muse Spark validation passed three synthetic cases: one noisy phrase recovered from matcher abstention and two shared phrases correctly left unresolved. The recovery took 3.28 seconds; abstentions took 0.71 and 1.39 seconds. One abstention case is an adapter control that the app correctly suppresses before calling Spark. This small diagnostic does not establish representative accuracy or live user benefit. Build 23 physical verse advancement passed. The new automatic within-ayah lens layout and external-reciter accuracy still need physical validation. Hardware observations and approval records are maintained privately.
 
 ## Check and build
 
@@ -32,6 +34,8 @@ python3 tools/probe_muse.py
 python3 tools/probe_spark.py
 bash tools/probe_quran.sh
 python3 tools/evaluate_spark.py  # offline preflight only
+bash tools/probe_portions.sh
+python3 tools/prepare_phrase_alignments.py  # offline/cache validation only
 ```
 
 The local fallback requires the prepared model. Download the [CoreML five-second export](https://huggingface.co/aufklarer/Omnilingual-ASR-CTC-300M-CoreML-INT8), then run the preparation helper with sentencepiece installed:
@@ -74,4 +78,10 @@ This is a foreground hackathon prototype. Battery endurance, production accounts
 
 The repeatable synthetic comparison uses `python3 tools/evaluate_spark.py --live` only with paid-call authorization. It loads the private runtime credential, makes exactly three requests without retries, and records decisions under ignored build/spark-evaluation. It sends no audio.
 
-Build 22 adds numeric stream diagnostics separating successful audio sends, provider-progress events and transcript updates. The private app snapshot contains no raw text, audio or credentials. Retrieve it with `python3 tools/read_muse_diagnostics.py` after setting AYAH_DEVICE_ID. This instrumentation has 37 passing core tests; it is not evidence that a stalled stream is fixed. Build 23 corrects a reproduced cumulative passage-change issue by checking globally unique recent exact evidence before older-context ranking. The cumulative Al-Fatihah-to-Al-Ikhlas regression passed all four transitions; removing the correction reproduced all four failures. Physical validation remains pending. Spark labels also reset after Stop and direct reference matches.
+Build 22 adds numeric stream diagnostics separating successful audio sends, provider-progress events and transcript updates. The private app snapshot contains no raw text, audio or credentials. Retrieve it with `python3 tools/read_muse_diagnostics.py` after setting AYAH_DEVICE_ID. This instrumentation has 37 passing core tests; it is not evidence that a stalled stream is fixed. Build 23 corrects a reproduced cumulative passage-change issue by checking globally unique recent exact evidence before older-context ranking. The cumulative Al-Fatihah-to-Al-Ikhlas regression passed all four transitions; removing the correction reproduced all four failures. Physical verse advancement was subsequently confirmed. Spark labels also reset after Stop and direct reference matches.
+
+## Automatic portion verification
+
+Forty-eight core tests passed, including all-corpus Arabic size/source preservation, same-ayah movement, middle entry, repeated/unrelated phrases, late cache application and every bundled paired portion. The optimized integration probe passed 52 supported transitions through global lookup and the actual follower actor. Two shared opening portions of 2:255 correctly remained unresolved until distinguishing evidence arrived. These host checks do not establish physical clipping, recitation accuracy or acoustic latency.
+
+The live layout bounds each Arabic portion to 56 grapheme clusters and English to 100 characters, with a compact header and no navigation buttons. Screen fit requires the actual glasses test. The separate prepare_phrase_alignments.py --live command makes up to three paid source-only Spark requests when authorized; cache hits make no call.

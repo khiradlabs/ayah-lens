@@ -24,3 +24,7 @@ The event implementation supplies its own native inference adapter, Arabic-only 
 ## Muse streaming protocol
 
 Muse Voice Transcribe is accessed through the hosted Meta Model API; its weights are not part of this repository. The original client and PCM adapter follow Meta’s published realtime and voice schemas: https://dev.meta.ai/docs/api-reference/voice/realtime and https://dev.meta.ai/docs/api-reference/voice/schemas. A local synthetic-server probe verifies the wire format without claiming provider transcription accuracy. Muse Spark 1.3 now supplies bounded candidate decisions through the hosted chat completions API. The adapter follows https://dev.meta.ai/docs/protocols/chat-completions and https://dev.meta.ai/docs/structured-output. Local HTTP fixtures verify request construction and response rejection; real provider validation passed three synthetic cases, with one noisy-fragment recovery. Representative live decision benefit remains pending.
+
+## Source phrase boundaries
+
+Muse Spark 1.3 supplies paired exclusive word boundaries into the unchanged Arabic/Pickthall references. App/Resources/phrase-alignments.json stores boundaries and their exact reference strings for cache validation. Rendering uses source substrings only. Accepted plans preserve complete word coverage and respect compact display bounds. These model-assisted phrase correspondences are not acoustic timestamps or an independently certified word-by-word translation alignment. Original text notices and provenance remain unchanged.

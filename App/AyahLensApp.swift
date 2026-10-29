@@ -37,9 +37,9 @@ struct AyahLensApp: App {
                                 .disabled(model.registered || model.busy)
                             Button("Show selected verse on lens") { model.showSelectedVerse() }
                                 .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.recognitionActive)
-                            Toggle("Muse Spark for ambiguous matches", isOn: $model.sparkEnabled)
+                            Toggle("Muse Spark assistance", isOn: $model.sparkEnabled)
                                 .disabled(model.listening || model.busy)
-                            Text("Spark sends transcript fragments to Meta. Maximum three Spark requests per run.")
+                            Text("Spark helps identify verses and pair Arabic portions with the published translation. New source alignments are cached.")
                                 .font(.caption).foregroundStyle(.secondary)
                             Button("Start Muse live Quran") { model.startMuse() }
                                 .disabled(!model.museConfigured || !model.registered || !model.hasDisplayDevice || model.busy || model.listening)
@@ -49,7 +49,7 @@ struct AyahLensApp: App {
                             Button("Start microphone + lens") { model.startCombined() }
                                 .disabled(!model.registered || !model.hasDisplayDevice || model.busy || model.listening)
                             Button("Next verse · manual") { model.nextVerse() }.disabled(model.busy || model.recognitionActive)
-                            if model.lensPages.count > 1 {
+                            if model.lensPages.count > 1 && !model.recognitionActive {
                                 Text("Lens page \(model.lensPageIndex + 1) of \(model.lensPages.count)").font(.caption)
                                 Button("Previous lens page") { model.stepLensPage(-1) }.disabled(!model.displayReady || model.busy)
                                 Button("Next lens page") { model.stepLensPage(1) }.disabled(!model.displayReady || model.busy)
@@ -66,6 +66,7 @@ struct AyahLensApp: App {
                             }.accessibilityIdentifier("microphone_status")
                         }
                         if model.recognitionActive {
+                            Text(model.phraseStatus).font(.caption).foregroundStyle(.teal)
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(model.recognitionStatus).font(.headline)
                                 if !model.transcript.isEmpty { Text(model.transcript).font(.body) }
