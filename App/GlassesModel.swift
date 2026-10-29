@@ -32,6 +32,9 @@ final class GlassesModel: SessionHardware {
     var sparkRequests = 0
     var lastResolution = "Reference match"
     var phraseStatus = "Automatic recitation portions"
+    var liveLensFrame: LiveLensFrame?
+    var lensMetrics = LensSendMetrics()
+    @ObservationIgnored private var liveLensSender: LatestLensSender<LiveLensFrame>?
     var phraseRequests = 0
     var lensPageIndex = 0
     private(set) var lensPages: [LensPage] = []
@@ -165,6 +168,7 @@ final class GlassesModel: SessionHardware {
             self.museGapMilliseconds = nil
             await self.portionEngine.reset()
             self.phraseAttempted.removeAll(); self.phraseRequests = 0
+            self.liveLensFrame = nil; self.lensMetrics = LensSendMetrics()
             self.status = "Preparing the complete Quran index…"
             await self.quran.prepare(verses: self.verses)
             try Task.checkCancellation()
@@ -202,6 +206,7 @@ final class GlassesModel: SessionHardware {
             }
             await self.portionEngine.reset()
             self.phraseAttempted.removeAll(); self.phraseRequests = 0
+            self.liveLensFrame = nil; self.lensMetrics = LensSendMetrics()
             self.status = "Preparing the complete Quran index…"
             await self.quran.prepare(verses: self.verses)
             try Task.checkCancellation()
@@ -296,7 +301,8 @@ final class GlassesModel: SessionHardware {
                 "microphoneSamples": sampleCount, "displayReady": displayReady,
                 "museActive": museActive, "hasVerseMatch": matchedID != nil,
                 "sparkRequests": sparkRequests, "phraseRequests": phraseRequests,
-                "lensPortion": lensPageIndex, "lensPortions": lensPages.count, "stream": snapshot
+                "lensPortion": lensPageIndex, "lensPortions": lensPages.count,
+                "lensDelivery": try JSONSerialization.jsonObject(with: JSONEncoder().encode(lensMetrics)), "stream": snapshot
             ]
             let url = try FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
                 .appendingPathComponent("muse-diagnostics.json")
@@ -416,9 +422,7 @@ final class GlassesModel: SessionHardware {
         phraseStatus = result.paired ? "Following part \(result.index + 1)/\(result.cards.count) · Arabic + Pickthall"
             : "Following Arabic part \(result.index + 1)/\(result.cards.count) · full translation on phone"
         if force || result.changed {
-            let began = ContinuousClock.now
             try await sendVerse()
-            lensSendMilliseconds = elapsedMilliseconds(since: began)
         }
     }
 
@@ -630,12 +634,30 @@ final class GlassesModel: SessionHardware {
         guard lensPages.indices.contains(lensPageIndex) else { throw PrototypeError.message("The lens page is unavailable.") }
         let page = lensPages[lensPageIndex]
         if recognitionActive {
-            try await display.send(FlexBox(direction: .column, spacing: 8) {
-                MWDATDisplay.Text("Quran \(verse.id) · \(lensPageIndex + 1)/\(lensPages.count)", style: .meta, color: .secondary)
-                if let arabic = page.arabic { MWDATDisplay.Text(arabic, style: .body) }
-                if let english = page.translation { MWDATDisplay.Text(english, style: .body) }
-                else { MWDATDisplay.Text("Translation on phone", style: .meta, color: .secondary) }
-            }.padding(12))
+            guard let frame = LensReadingWindow.frame(verseID: verse.id, cards: lensPages, index: lensPageIndex) else { return }
+            liveLensFrame = frame
+            if liveLensSender == nil {
+                let epoch = recognitionEpoch
+                liveLensSender = LatestLensSender<LiveLensFrame>(send: { [weak self] frame in
+                    guard let self, self.recognitionEpoch == epoch, self.displayReady else { throw CancellationError() }
+                    try await display.send(FlexBox(direction: .column, spacing: 8) {
+                        MWDATDisplay.Text(frame.header, style: .meta, color: .secondary)
+                        if let arabic = frame.page.arabic { MWDATDisplay.Text(arabic, style: .body) }
+                        if let english = frame.page.translation { MWDATDisplay.Text(english, style: .body) }
+                        else { MWDATDisplay.Text("Translation on phone", style: .meta, color: .secondary) }
+                    }.padding(12))
+                }, onFailure: { [weak self] _ in
+                    guard let self, self.recognitionEpoch == epoch else { return }
+                    self.stop()
+                    self.error = "The current reading window could not be sent to the lens."
+                }, onMetrics: { [weak self] metrics in
+                    guard let self, self.recognitionEpoch == epoch else { return }
+                    self.lensMetrics = metrics
+                    self.lensSendMilliseconds = metrics.sdkMilliseconds
+                    self.persistStreamTrace()
+                })
+            }
+            liveLensSender?.enqueue(frame)
             return
         }
         try await display.send(
@@ -660,6 +682,7 @@ final class GlassesModel: SessionHardware {
     }
 
     func stopDisplay() {
+        liveLensSender?.stop(); liveLensSender = nil
         deadlineTask?.cancel()
         sessionErrorTask?.cancel()
         sessionStateTask?.cancel()

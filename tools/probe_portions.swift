@@ -8,6 +8,7 @@ import Foundation
         let engine = RecitationPortionEngine()
         var transitions = 0
         var supported = 0
+        var contextWindows = 0
         for plan in plans {
             let verse = rows.first { $0.id == plan.verseID }!
             let words = verse.arabic.split(whereSeparator: \.isWhitespace)
@@ -27,6 +28,12 @@ import Foundation
                 }
                 let update = await engine.update(verse: verse, transcript: transcript, alignment: plan)
                 precondition(update.index == expected && update.paired)
+                guard let window = LensReadingWindow.frame(verseID: verse.id, cards: update.cards, index: update.index) else { fatalError("Missing live window") }
+                precondition(window.firstPortion == expected)
+                precondition((window.page.arabic?.count ?? 0) <= 84 && (window.page.translation?.count ?? 0) <= 150)
+                precondition(window.page.arabic == update.cards[expected...window.lastPortion].compactMap(\.arabic).joined())
+                precondition(window.page.translation == update.cards[expected...window.lastPortion].compactMap(\.translation).joined())
+                if window.lastPortion > expected { contextWindows += 1 }
                 precondition(update.cards.allSatisfy { ($0.arabic?.count ?? 0) <= 56 && ($0.translation?.count ?? 0) <= 100 })
                 precondition(update.cards.compactMap(\.arabic).joined() == verse.arabic)
                 precondition(update.cards.compactMap(\.translation).joined() == verse.translation)
@@ -36,6 +43,7 @@ import Foundation
             print("PASS: \(verse.id) · \(plan.boundaries.count) automatic paired portions through global lookup and actual follower actor")
         }
         precondition(transitions == supported)
+        print("PASS: \(contextWindows) bounded windows include upcoming context")
         print("PASS: \(transitions) portion transitions without Next, generated display text or paid calls")
     }
 }

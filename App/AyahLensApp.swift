@@ -24,8 +24,21 @@ struct AyahLensApp: App {
                         if let verse = model.verse, !model.recognitionActive || model.hasLiveMatch {
                             VStack(alignment: .leading, spacing: 14) {
                                 Text("Quran · \(verse.id)").font(.caption.bold()).foregroundStyle(.teal)
-                                Text(verse.arabic).font(.system(size: 30)).frame(maxWidth: .infinity, alignment: .trailing)
-                                Text(verse.translation).font(.title3)
+                                if model.recognitionActive, let frame = model.liveLensFrame {
+                                    Text("Lens preview · \(frame.firstPortion + 1)–\(frame.lastPortion + 1)/\(frame.totalPortions)")
+                                        .font(.caption).foregroundStyle(.secondary)
+                                    if let arabic = frame.page.arabic {
+                                        Text(arabic).font(.system(size: 30)).frame(maxWidth: .infinity, alignment: .trailing)
+                                    }
+                                    if let english = frame.page.translation { Text(english).font(.title3) }
+                                    DisclosureGroup("Full ayah") {
+                                        Text(verse.arabic).font(.title3)
+                                        Text(verse.translation).font(.body)
+                                    }
+                                } else {
+                                    Text(verse.arabic).font(.system(size: 30)).frame(maxWidth: .infinity, alignment: .trailing)
+                                    Text(verse.translation).font(.title3)
+                                }
                                 Text("Arabic: Tanzil · Translation: Pickthall").font(.caption).foregroundStyle(.secondary)
                                 Link("Tanzil source and text updates", destination: URL(string: "https://tanzil.net/")!).font(.caption)
                             }.padding().background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20))
@@ -101,6 +114,8 @@ struct AyahLensApp: App {
                                     if let wait = model.museLatency.firstMatchAfterTranscriptMilliseconds { Text("First match after text: \(wait / 1000, specifier: "%.2f") s") }
                                     if let match = model.matcherMilliseconds { Text("Verse matching: \(match, specifier: "%.0f") ms") }
                                     if let send = model.lensSendMilliseconds { Text("Lens send completion: \(send, specifier: "%.0f") ms") }
+                                    Text("Lens queue wait: \(model.lensMetrics.queueMilliseconds, specifier: "%.0f") ms")
+                                    Text("Peak lens send: \(model.lensMetrics.maxSDKMilliseconds, specifier: "%.0f") ms · skipped older frames: \(model.lensMetrics.superseded)")
                                     Text("Audio gap is provider progress, not word timing. Lens timing measures the SDK send completing.")
                                         .font(.caption).foregroundStyle(.secondary)
                                     Text("First-text time includes any silence before recitation starts.")

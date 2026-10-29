@@ -4,7 +4,7 @@ A hackathon prototype that follows Quran recitation and displays canonical Arabi
 
 ## Current build
 
-Version 0.3.0, Build 26 contains the complete reference: 114 surahs and 6,236 aligned ayahs. Global passage lookup requires no surah selection.
+Version 0.3.0, Build 28 contains the complete reference: 114 surahs and 6,236 aligned ayahs. Global passage lookup requires no surah selection.
 
 Muse Voice Transcribe supplies realtime Arabic partial transcripts. An indexed matcher retrieves candidates outside the phone UI actor. Muse Spark 1.3 can resolve ambiguous candidates using the transcript and recent verified position. Spark returns a supplied verse ID or abstention. Only the attributed reference supplies displayed Quran text and translation.
 
@@ -18,7 +18,7 @@ The separately labelled local fallback uses Meta Omnilingual CTC-300M through a 
 
 ## Verified and pending
 
-Forty-eight core tests passed, including corpus coverage, global retrieval, shared-phrase abstention, Spark bounds and response validation, and exact page reconstruction. Actual Swift clients passed local synthetic WebSocket and HTTP integration probes. The PCM callback passed its worker-queue regression. Signed build, installation, installed-version verification and application launch passed.
+Fifty-two core tests passed, including corpus coverage, global retrieval, shared-phrase abstention, Spark bounds and response validation, and exact page reconstruction. Actual Swift clients passed local synthetic WebSocket and HTTP integration probes. The PCM callback passed its worker-queue regression. Signed build, installation, installed-version verification and application launch passed.
 
 Whole-Quran index queries were measured on a Mac. This is a host performance probe, not phone or visible-lens latency. Full corpus availability and selected passing cases do not establish accuracy for every ayah.
 
@@ -82,6 +82,8 @@ Build 22 adds numeric stream diagnostics separating successful audio sends, prov
 
 ## Automatic portion verification
 
-Forty-eight core tests passed, including all-corpus Arabic size/source preservation, same-ayah movement, middle entry, repeated/unrelated phrases, late cache application and every bundled paired portion. The optimized integration probe passed 52 supported transitions through global lookup and the actual follower actor. Two shared opening portions of 2:255 correctly remained unresolved until distinguishing evidence arrived. These host checks do not establish physical clipping, recitation accuracy or acoustic latency.
+Fifty-two core tests passed, including all-corpus Arabic size/source preservation, same-ayah movement, middle entry, repeated/unrelated phrases, late cache application and every bundled paired portion. The optimized integration probe passed 52 supported transitions through global lookup and the actual follower actor. Two shared opening portions of 2:255 correctly remained unresolved until distinguishing evidence arrived. These host checks do not establish physical clipping, recitation accuracy or acoustic latency.
 
-The live layout bounds each Arabic portion to 56 grapheme clusters and English to 100 characters, with a compact header and no navigation buttons. Screen fit requires the actual glasses test. The separate prepare_phrase_alignments.py --live command makes up to three paid source-only Spark requests when authorized; cache hits make no call.
+Individual aligned portions remain bounded to 56 Arabic grapheme clusters and 100 English characters. The live reading window includes the current plus next portion when their combined size fits 84 Arabic grapheme clusters and 150 English characters. It has a compact header and no navigation buttons. Screen fit requires the actual glasses test. The separate prepare_phrase_alignments.py --live command makes up to three paid source-only Spark requests when authorized; cache hits make no call.
+
+Build 28 mirrors the selected window on the phone, with Full ayah separately expandable. Its newest-frame sender keeps one display send in flight and one latest pending window. Recognition processing no longer awaits each SDK send. Stop invalidates pending frames. Diagnostics separately report queue wait, SDK completion, peak SDK duration and superseded frames. These changes passed controlled async tests; actual lens delay and the larger window's physical fit require a wearer check.

@@ -7,6 +7,7 @@ xcrun swiftc -swift-version 6 -O -parse-as-library \
   Core/Sources/AyahLensCore/Recognition.swift \
   Core/Sources/AyahLensCore/QuranIndex.swift \
   Core/Sources/AyahLensCore/VersePagination.swift \
+  Core/Sources/AyahLensCore/LensReadingWindow.swift \
   Core/Sources/AyahLensCore/RecitationPortions.swift \
   Core/Sources/AyahLensCore/MuseSpark.swift \
   tools/probe_portions.swift -o build/portion-probe/probe

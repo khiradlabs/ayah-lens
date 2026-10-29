@@ -214,3 +214,13 @@ The optimized global-lookup/follower-actor probe passed 52 supported automatic t
 Private receipts: build/logs/within-ayah-final-tests.log, portion-probe.log, portion-muse-probe.log, within-ayah-final-build.log and build/phrase-alignments/live.log. No new audio recording or personal transcript logging was added.
 
 Build 26 launch was blocked by the locked phone. Signed artifact contents confirm version 0.3.0, build 26 and byte-identical bundled source-boundary plans. Unlock and open Ayah Lens manually for the pending physical test.
+
+## Reading context and nonblocking lens sender, October 29
+
+Current artifact: Version 0.3.0 Build 28. A reading window includes the current plus next source portion when their combined Arabic fits 84 grapheme clusters and English fits 150 characters. This adds upcoming context without moving the recognized position or changing source text. Alignment-plan bounds remain 56/100 per individual portion. The phone now previews the same window and keeps full reference text under Full ayah.
+
+A MainActor newest-frame sender decouples recitation processing from SDK display.send. It permits one in-flight and one latest pending frame, replaces superseded pending frames and invalidates pending work on Stop. Numeric metrics separate queue waiting from SDK completion, retaining completed/requested/superseded counts and peak send duration. SDK completion is not proof of visible pixels.
+
+New context-window tests were observed RED with three assertions; delayed-send/cancellation tests were observed RED with five assertions. All 52 core tests and the actual PCM callback passed after implementation. The integration probe passed 52 supported transitions, with upcoming context in 49 bounded windows and expected shared-opening abstention. Signed Build 28 built, installed and matched device metadata. Launch was blocked by the locked phone.
+
+Physical context fit and relative lens lag remain unverified for Build 28. This removes a confirmed processing/display coupling; it does not establish the cause or size of any perceived physical delay. No paid API calls or audio uploads were performed by this refinement. Private receipts: build/logs/context-sender-final-tests.log, context-window-probe.log, context-sender-final-build.log and lens-lag-investigation.md.

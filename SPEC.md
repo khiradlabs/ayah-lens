@@ -10,12 +10,12 @@ The event build window is October 26 through November 4 after organizer clarific
 
 ## Current implementation
 
-- Version 0.3.0, Build 26 bundles all 6,236 aligned Arabic/Pickthall rows across 114 surahs.
+- Version 0.3.0, Build 28 bundles all 6,236 aligned Arabic/Pickthall rows across 114 surahs.
 - Muse Voice Transcribe supplies realtime Arabic transcripts. Global indexed retrieval runs outside the UI actor.
 - Muse Spark 1.3 is wired as an opt-in candidate resolver with strict supplied-ID validation, abstention and stale-response rejection.
 - Spark ambiguity resolution is limited to three requests per run; source alignment has a separate three-new-verse limit. Actual provider validation passed three synthetic cases, including one recovery after matcher abstention. Representative live benefit remains pending.
 - Long ayahs use automatic compact source portions during listening. Manual paging is restricted to separate display tests. New physical layout validation remains pending.
-- Forty-eight core tests, the actual PCM callback, synthetic WebSocket and Spark HTTP probes passed. Signed build/install/version verification passed. Consult the latest checkpoint for Build 26 device launch status.
+- Fifty-two core tests, the actual PCM callback, synthetic WebSocket and Spark HTTP probes passed. Signed build/install/version verification passed. Consult the latest checkpoint for Build 28 device launch status.
 - Full reference availability and selected regression cases do not establish recognition accuracy for every ayah.
 
 ## Delivery requirements
@@ -75,3 +75,11 @@ The live lens must show a compact portion corresponding to current recitation. I
 6. Run core regressions, actual client probes, signed build/install/version verification and a live probe. Record what was verified and what remains physical-user testing.
 
 This is phrase-level following from transcript evidence, not acoustic word timestamps. Full-Quran scope remains unchanged. First-use translation alignment can take time; subsequent uses load the validated cache.
+
+## October 29 refinement: reading context and display scheduling
+
+The live window may include the current source portion plus the next portion when their combined Arabic is at most 84 grapheme clusters and English at most 150 characters. Preserve contiguous source spans. This is visible upcoming context, not a claim those words were already recognized. Keep individual alignment bounds unchanged.
+
+The phone's primary live card must mirror the same selected window; full ayah text remains separately accessible. This makes phone/lens comparison meaningful.
+
+Recitation processing must not wait for each SDK display send. Use one send in flight and one latest pending frame. Replace superseded pending frames; invalidate them on Stop. Measure queue waiting and SDK completion separately, without claiming visible-pixel latency. Verify delayed-send coalescing and cancellation with controlled async tests, then perform the same physical check.
