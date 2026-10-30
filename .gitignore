@@ -14,6 +14,7 @@ vendor/
 evidence/local/
 
 # Model downloads
+App/Resources/Omnilingual/
 *.onnx
 *.mlpackage/
 *.mlmodelc/
@@ -27,6 +28,7 @@ node_modules/
 Pods/
 build/
 DerivedData/
+.build/
 *.xcuserstate
 xcuserdata/
 .DS_Store
