@@ -224,3 +224,9 @@ A MainActor newest-frame sender decouples recitation processing from SDK display
 New context-window tests were observed RED with three assertions; delayed-send/cancellation tests were observed RED with five assertions. All 52 core tests and the actual PCM callback passed after implementation. The integration probe passed 52 supported transitions, with upcoming context in 49 bounded windows and expected shared-opening abstention. Signed Build 28 built, installed and matched device metadata. Launch was blocked by the locked phone.
 
 Physical context fit and relative lens lag remain unverified for Build 28. This removes a confirmed processing/display coupling; it does not establish the cause or size of any perceived physical delay. No paid API calls or audio uploads were performed by this refinement. Private receipts: build/logs/context-sender-final-tests.log, context-window-probe.log, context-sender-final-build.log and lens-lag-investigation.md.
+
+## Build 28 working confirmation, October 29
+
+The wearer confirmed the updated build is working after the context-window/newest-frame changes. Treat Build 28 as the current core-demo candidate. Do not restart broad hardware or recognition testing without a new specific failure. The confirmation is not a controlled latency measurement, a zero-clipping guarantee for every source, or a full-Quran accuracy benchmark. Detailed observations remain private.
+
+Next priority: map current judging criteria to concrete evidence, prepare the demo narrative and capture list, then assemble the video and submission materials. Reuse the current artifact and fix only demonstrated blockers. Public claims must distinguish full reference coverage, selected live checks, actual Voice/Spark roles and unvalidated long-tail performance.
