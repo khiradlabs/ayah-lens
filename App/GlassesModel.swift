@@ -28,6 +28,7 @@ final class GlassesModel: SessionHardware {
     var museActive = false
     var museConfigured = false
     var sparkEnabled = false
+    private(set) var showEnglishMeaning = UserDefaults.standard.object(forKey: "showEnglishMeaning") as? Bool ?? true
     var sparkStatus = "Muse Spark ready for ambiguity checks"
     var sparkRequests = 0
     var lastResolution = "Reference match"
@@ -89,6 +90,30 @@ final class GlassesModel: SessionHardware {
     var verse: Verse? { verses.indices.contains(selectedIndex) ? verses[selectedIndex] : nil }
     var recognitionSource: String { museActive ? "Muse Voice Transcribe" : "Local Omnilingual fallback" }
     var hasLiveMatch: Bool { matchedID != nil }
+    private var selectedLiveFrame: LiveLensFrame? {
+        guard let verse else { return nil }
+        return LensReadingWindow.frame(verseID: verse.id, cards: lensPages, index: lensPageIndex, showTranslation: showEnglishMeaning)
+    }
+
+    func setEnglishMeaning(_ enabled: Bool) {
+        guard showEnglishMeaning != enabled else { return }
+        showEnglishMeaning = enabled
+        UserDefaults.standard.set(enabled, forKey: "showEnglishMeaning")
+        if recognitionActive {
+            liveLensFrame = hasLiveMatch ? selectedLiveFrame : nil
+            updatePhraseStatus()
+        } else if let verse {
+            lensPages = VersePagination.pages(for: verse, showTranslation: enabled)
+            lensPageIndex = min(lensPageIndex, max(0, lensPages.count - 1))
+        }
+        guard displayReady else { return }
+        let epoch = recognitionEpoch
+        Task { [weak self] in
+            guard let self, self.displayReady, self.recognitionEpoch == epoch else { return }
+            do { try await self.sendVerse() }
+            catch { self.error = "The updated meaning preference could not be sent to the lens." }
+        }
+    }
 
     init() {
         museConfigured = (try? MuseCredential.read()) != nil
@@ -100,7 +125,7 @@ final class GlassesModel: SessionHardware {
             }
             verses = try JSONDecoder().decode([Verse].self, from: Data(contentsOf: url))
             versePositions = Dictionary(uniqueKeysWithValues: verses.enumerated().map { ($0.element.id, $0.offset) })
-            if let first = verses.first { lensPages = VersePagination.pages(for: first) }
+            if let first = verses.first { lensPages = VersePagination.pages(for: first, showTranslation: showEnglishMeaning) }
             loadPhraseCache()
         } catch { self.error = error.localizedDescription }
         if let selector = displaySelector {
@@ -419,11 +444,17 @@ final class GlassesModel: SessionHardware {
         try Task.checkCancellation()
         guard recognitionActive, recognitionEpoch == epoch, matchedID == id else { return }
         lensPages = result.cards; lensPageIndex = result.index
-        phraseStatus = result.paired ? "Following part \(result.index + 1)/\(result.cards.count) · Arabic + Pickthall"
-            : "Following Arabic part \(result.index + 1)/\(result.cards.count) · full translation on phone"
+        updatePhraseStatus()
         if force || result.changed {
             try await sendVerse()
         }
+    }
+
+    private func updatePhraseStatus() {
+        let part = "\(lensPageIndex + 1)/\(lensPages.count)"
+        if !showEnglishMeaning { phraseStatus = "Following part \(part) · Arabic only" }
+        else if lensPages.first?.translation != nil { phraseStatus = "Following part \(part) · Arabic + Pickthall" }
+        else { phraseStatus = "Following Arabic part \(part) · full translation on phone" }
     }
 
     private func loadPhraseCache() {
@@ -482,7 +513,7 @@ final class GlassesModel: SessionHardware {
         guard !verses.isEmpty else { return }
         selectedIndex = (selectedIndex + 1) % verses.count
         lensPageIndex = 0
-        lensPages = VersePagination.pages(for: verses[selectedIndex])
+        lensPages = VersePagination.pages(for: verses[selectedIndex], showTranslation: showEnglishMeaning)
         if displayReady { showSelectedVerse() }
     }
 
@@ -634,7 +665,7 @@ final class GlassesModel: SessionHardware {
         guard lensPages.indices.contains(lensPageIndex) else { throw PrototypeError.message("The lens page is unavailable.") }
         let page = lensPages[lensPageIndex]
         if recognitionActive {
-            guard let frame = LensReadingWindow.frame(verseID: verse.id, cards: lensPages, index: lensPageIndex) else { return }
+            guard let frame = selectedLiveFrame else { return }
             liveLensFrame = frame
             if liveLensSender == nil {
                 let epoch = recognitionEpoch
@@ -644,7 +675,7 @@ final class GlassesModel: SessionHardware {
                         MWDATDisplay.Text(frame.header, style: .meta, color: .secondary)
                         if let arabic = frame.page.arabic { MWDATDisplay.Text(arabic, style: .body) }
                         if let english = frame.page.translation { MWDATDisplay.Text(english, style: .body) }
-                        else { MWDATDisplay.Text("Translation on phone", style: .meta, color: .secondary) }
+                        else if self.showEnglishMeaning { MWDATDisplay.Text("Translation on phone", style: .meta, color: .secondary) }
                     }.padding(12))
                 }, onFailure: { [weak self] _ in
                     guard let self, self.recognitionEpoch == epoch else { return }
@@ -666,7 +697,7 @@ final class GlassesModel: SessionHardware {
                 if !page.label.isEmpty { MWDATDisplay.Text(page.label, style: .meta, color: .secondary) }
                 if let arabic = page.arabic { MWDATDisplay.Text(arabic, style: page.translation == nil ? .body : .heading) }
                 if let translation = page.translation { MWDATDisplay.Text(translation, style: .body) }
-                MWDATDisplay.Text(recognitionActive ? "Pickthall · \(lastResolution)" : "Pickthall · Manual display check", style: .meta, color: .secondary)
+                MWDATDisplay.Text(showEnglishMeaning ? "Pickthall · Manual display check" : "Tanzil Arabic · Manual display check", style: .meta, color: .secondary)
                 if lensPages.count > 1 {
                     ButtonGroup {
                         MWDATDisplay.Button(label: "Previous", onClick: { @Sendable [weak self] in

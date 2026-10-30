@@ -2,6 +2,32 @@ import XCTest
 @testable import AyahLensCore
 
 final class LensReadingWindowTests: XCTestCase {
+    func testMeaningVisibilityPreservesArabicWindowAndPositionAndCanBeRestored() throws {
+        let pages = [LensPage(arabic: "أول الكلام ", translation: "First meaning. ", label: ""),
+                     LensPage(arabic: "ثم الكلام ", translation: "Second meaning. ", label: ""),
+                     LensPage(arabic: "آخر الكلام", translation: "Last meaning.", label: "")]
+        let shown = try XCTUnwrap(LensReadingWindow.frame(verseID: "test", cards: pages, index: 1))
+        let hidden = try XCTUnwrap(LensReadingWindow.frame(verseID: "test", cards: pages, index: 1, showTranslation: false))
+        XCTAssertNil(hidden.page.translation)
+        XCTAssertEqual(hidden.page.arabic, shown.page.arabic)
+        XCTAssertEqual(hidden.header, shown.header)
+        XCTAssertEqual(hidden.firstPortion, shown.firstPortion)
+        XCTAssertEqual(hidden.lastPortion, shown.lastPortion)
+        XCTAssertEqual(hidden.totalPortions, shown.totalPortions)
+        XCTAssertEqual(LensReadingWindow.frame(verseID: "test", cards: pages, index: 1, showTranslation: true), shown)
+        XCTAssertEqual(pages[1].translation, "Second meaning. ", "Visibility must not erase source meaning")
+    }
+
+    func testArabicOnlyKeepsSameWindowEvenWhenEnglishPreventsMerging() throws {
+        let pages = [LensPage(arabic: "كلمات أولى ", translation: String(repeating: "a", count: 90), label: ""),
+                     LensPage(arabic: "كلمات ثانية", translation: String(repeating: "b", count: 90), label: "")]
+        let hidden = try XCTUnwrap(LensReadingWindow.frame(verseID: "test", cards: pages, index: 0, showTranslation: false))
+        XCTAssertNil(hidden.page.translation)
+        XCTAssertEqual(hidden.lastPortion, 0, "Changing visibility must not change the selected source span")
+        XCTAssertEqual(hidden.page.arabic, pages[0].arabic)
+        XCTAssertNil(LensReadingWindow.frame(verseID: "test", cards: [], index: 0, showTranslation: false))
+    }
+
     func testWindowIncludesUpcomingContextWithoutChangingSourceOrCurrentPosition() {
         let pages = [LensPage(arabic: "كلمات أولى ", translation: "First meaning. ", label: ""),
                      LensPage(arabic: "كلمات ثانية ", translation: "Second meaning. ", label: ""),

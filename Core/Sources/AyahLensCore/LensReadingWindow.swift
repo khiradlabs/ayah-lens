@@ -10,7 +10,7 @@ public struct LiveLensFrame: Sendable, Equatable {
     }
 }
 public enum LensReadingWindow {
-    public static func frame(verseID: String, cards: [LensPage], index: Int) -> LiveLensFrame? {
+    public static func frame(verseID: String, cards: [LensPage], index: Int, showTranslation: Bool = true) -> LiveLensFrame? {
         guard cards.indices.contains(index) else { return nil }
         let current = cards[index]
         var last = index, page = current
@@ -22,6 +22,9 @@ public enum LensReadingWindow {
                 last += 1
                 page = LensPage(arabic: arabic, translation: english, label: "Current + upcoming")
             }
+        }
+        if !showTranslation {
+            page = LensPage(arabic: page.arabic, translation: nil, label: page.label)
         }
         return LiveLensFrame(verseID: verseID, firstPortion: index, lastPortion: last, totalPortions: cards.count, page: page)
     }

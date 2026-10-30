@@ -4,11 +4,11 @@ A hackathon prototype that follows Quran recitation and displays canonical Arabi
 
 ## Submission drafts
 
-The [submission guide](submission/README.md) links the judging evidence, timed demo script, capture list and exact form answers. The current draft uses Build 28. Final footage, the video URL and entrant ratings remain open.
+The [submission guide](submission/README.md) links the judging evidence, timed demo script, capture list and exact form answers. The current draft uses Build 31. Final footage, the video URL and entrant ratings remain open.
 
 ## Current build
 
-Version 0.3.0, Build 28 contains the complete reference: 114 surahs and 6,236 aligned ayahs. Global passage lookup requires no surah selection.
+Version 0.3.0, Build 31 contains the complete reference: 114 surahs and 6,236 aligned ayahs. Global passage lookup requires no surah selection.
 
 Muse Voice Transcribe supplies realtime Arabic partial transcripts. An indexed matcher retrieves candidates outside the phone UI actor. Muse Spark 1.3 can resolve ambiguous candidates using the transcript and recent verified position. Spark returns a supplied verse ID or abstention. Only the attributed reference supplies displayed Quran text and translation.
 
@@ -22,7 +22,7 @@ The separately labelled local fallback uses Meta Omnilingual CTC-300M through a 
 
 ## Verified and pending
 
-Fifty-two core tests passed, including corpus coverage, global retrieval, shared-phrase abstention, Spark bounds and response validation, and exact page reconstruction. Actual Swift clients passed local synthetic WebSocket and HTTP integration probes. The PCM callback passed its worker-queue regression. Signed build, installation, installed-version verification and application launch passed.
+Fifty-five core tests passed, including corpus coverage, global retrieval, shared-phrase abstention, Spark bounds and response validation, and exact page reconstruction. Actual Swift clients passed local synthetic WebSocket and HTTP integration probes. The PCM callback passed its worker-queue regression. Signed build, installation, installed-version verification and application launch passed.
 
 Whole-Quran index queries were measured on a Mac. This is a host performance probe, not phone or visible-lens latency. Full corpus availability and selected passing cases do not establish accuracy for every ayah.
 
@@ -91,3 +91,7 @@ Fifty-two core tests passed, including all-corpus Arabic size/source preservatio
 Individual aligned portions remain bounded to 56 Arabic grapheme clusters and 100 English characters. The live reading window includes the current plus next portion when their combined size fits 84 Arabic grapheme clusters and 150 English characters. It has a compact header and no navigation buttons. Screen fit requires the actual glasses test. The separate prepare_phrase_alignments.py --live command makes up to three paid source-only Spark requests when authorized; cache hits make no call.
 
 Build 28 mirrors the selected window on the phone, with Full ayah separately expandable. Its newest-frame sender keeps one display send in flight and one latest pending window. Recognition processing no longer awaits each SDK send. Stop invalidates pending frames. Diagnostics separately report queue wait, SDK completion, peak SDK duration and superseded frames. These changes passed controlled async tests; actual lens delay and the larger window's physical fit require a wearer check.
+
+## English meaning visibility
+
+Build 31 adds Show English meaning above the verse card. The preference defaults on and is remembered on this phone. Turn it off for Arabic only, then back on for the published English meaning. The live source position is preserved. The phone preview, Full ayah disclosure and manual lens pages respect the preference. The wearer confirmed the switch works on phone and glasses while Arabic keeps following.

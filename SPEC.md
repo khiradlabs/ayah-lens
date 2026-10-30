@@ -10,12 +10,12 @@ The event build window is October 26 through November 4 after organizer clarific
 
 ## Current implementation
 
-- Version 0.3.0, Build 28 bundles all 6,236 aligned Arabic/Pickthall rows across 114 surahs.
+- Version 0.3.0, Build 31 bundles all 6,236 aligned Arabic/Pickthall rows across 114 surahs.
 - Muse Voice Transcribe supplies realtime Arabic transcripts. Global indexed retrieval runs outside the UI actor.
 - Muse Spark 1.3 is wired as an opt-in candidate resolver with strict supplied-ID validation, abstention and stale-response rejection.
 - Spark ambiguity resolution is limited to three requests per run; source alignment has a separate three-new-verse limit. Actual provider validation passed three synthetic cases, including one recovery after matcher abstention. Representative live benefit remains pending.
 - Long ayahs use automatic compact source portions during listening. Manual paging is restricted to separate display tests. New physical layout validation remains pending.
-- Fifty-two core tests, the actual PCM callback, synthetic WebSocket and Spark HTTP probes passed. Signed build/install/version verification passed. Consult the latest checkpoint for Build 28 device launch status.
+- Fifty-five core tests, the actual PCM callback, synthetic WebSocket and Spark HTTP probes passed. Signed build/install/version verification passed. Build 31 installed-version verification and app launch passed.
 - Full reference availability and selected regression cases do not establish recognition accuracy for every ayah.
 
 ## Delivery requirements
@@ -83,3 +83,9 @@ The live window may include the current source portion plus the next portion whe
 The phone's primary live card must mirror the same selected window; full ayah text remains separately accessible. This makes phone/lens comparison meaningful.
 
 Recitation processing must not wait for each SDK display send. Use one send in flight and one latest pending frame. Replace superseded pending frames; invalidate them on Stop. Measure queue waiting and SDK completion separately, without claiming visible-pixel latency. Verify delayed-send coalescing and cancellation with controlled async tests, then perform the same physical check.
+
+## October 29 change: English meaning visibility
+
+Show English meaning defaults on and persists on this phone. Switching it during live recitation changes the phone Lens preview and actual lens without restarting recognition, resetting the passage or changing the selected source span. Arabic remains visible. Switching back restores the same published meaning. Manual reference pages and the Full ayah disclosure respect the preference.
+
+Acceptance: reversible source-preserving live windows and Arabic-only manual pages pass tests; signed Build 31 is installed and version-verified; the wearer confirmed both outputs change while Arabic continues following. No new model inference is required by switching visibility.

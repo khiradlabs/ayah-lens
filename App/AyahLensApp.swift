@@ -21,6 +21,14 @@ struct AyahLensApp: App {
                             .font(.subheadline).foregroundStyle(.secondary)
                         Text(buildLabel).font(.caption).foregroundStyle(.secondary)
                             .accessibilityIdentifier("build_version")
+                        Toggle("Show English meaning", isOn: Binding(
+                            get: { model.showEnglishMeaning },
+                            set: { model.setEnglishMeaning($0) }
+                        ))
+                            .disabled(model.busy)
+                            .accessibilityIdentifier("show_english_meaning")
+                        Text(model.showEnglishMeaning ? "Arabic with published English meaning" : "Arabic only")
+                            .font(.caption).foregroundStyle(.secondary)
                         if let verse = model.verse, !model.recognitionActive || model.hasLiveMatch {
                             VStack(alignment: .leading, spacing: 14) {
                                 Text("Quran · \(verse.id)").font(.caption.bold()).foregroundStyle(.teal)
@@ -33,13 +41,14 @@ struct AyahLensApp: App {
                                     if let english = frame.page.translation { Text(english).font(.title3) }
                                     DisclosureGroup("Full ayah") {
                                         Text(verse.arabic).font(.title3)
-                                        Text(verse.translation).font(.body)
+                                        if model.showEnglishMeaning { Text(verse.translation).font(.body) }
                                     }
                                 } else {
                                     Text(verse.arabic).font(.system(size: 30)).frame(maxWidth: .infinity, alignment: .trailing)
-                                    Text(verse.translation).font(.title3)
+                                    if model.showEnglishMeaning { Text(verse.translation).font(.title3) }
                                 }
-                                Text("Arabic: Tanzil · Translation: Pickthall").font(.caption).foregroundStyle(.secondary)
+                                Text(model.showEnglishMeaning ? "Arabic: Tanzil · Translation: Pickthall" : "Arabic: Tanzil")
+                                    .font(.caption).foregroundStyle(.secondary)
                                 Link("Tanzil source and text updates", destination: URL(string: "https://tanzil.net/")!).font(.caption)
                             }.padding().background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20))
                         }

@@ -2,6 +2,16 @@ import XCTest
 @testable import AyahLensCore
 
 final class VersePaginationTests: XCTestCase {
+    func testManualArabicOnlyHasNoEnglishPagesAndPreservesArabicSource() {
+        let verse = Verse(id: "test", arabic: String(repeating: "كلام عربي ", count: 35), translation: String(repeating: "English meaning. ", count: 40))
+        let pages = VersePagination.pages(for: verse, showTranslation: false)
+        XCTAssertTrue(pages.allSatisfy { $0.translation == nil && $0.arabic != nil })
+        XCTAssertEqual(pages.compactMap(\.arabic).joined(), verse.arabic)
+        let short = Verse(id: "short", arabic: "نص عربي", translation: "Published meaning.")
+        XCTAssertNil(VersePagination.pages(for: short, showTranslation: false).first?.translation)
+        XCTAssertEqual(VersePagination.pages(for: short).first?.translation, short.translation)
+    }
+
     func testShortVerseKeepsArabicAndMeaningTogether() {
         let verse = Verse(id: "test", arabic: "نص قصير", translation: "A short source text.")
         let pages = VersePagination.pages(for: verse)

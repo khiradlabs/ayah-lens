@@ -8,7 +8,13 @@ public struct LensPage: Sendable, Equatable {
 }
 
 public enum VersePagination {
-    public static func pages(for verse: Verse) -> [LensPage] {
+    public static func pages(for verse: Verse, showTranslation: Bool = true) -> [LensPage] {
+        if !showTranslation {
+            let arabic = split(verse.arabic, limit: 110)
+            return arabic.enumerated().map {
+                LensPage(arabic: $0.element, translation: nil, label: arabic.count == 1 ? "" : "Arabic \($0.offset + 1)/\(arabic.count)")
+            }
+        }
         if verse.arabic.count <= 100 && verse.translation.count <= 220 {
             return [LensPage(arabic: verse.arabic, translation: verse.translation, label: "")]
         }
