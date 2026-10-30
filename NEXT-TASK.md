@@ -2,16 +2,18 @@
 
 Version 0.3.0 Build 28 is the automatic within-ayah artifact. Read SPEC.md and the latest CHECKPOINT entry. The runtime key is already in device-only Keychain; no provisioning repeat is needed.
 
-## Immediate priority: scoring evidence and presentation
+## Immediate priority: capture and complete the submission
 
-Build 28 was confirmed working after the context-window and display-sender refinements. Freeze it as the core demo candidate. Additional testing should address specific failures or missing demo evidence. Do not repeat basic setup, provisioning or general live-loop tests.
+Draft 1 is ready in submission/. Start with FORM-ANSWERS.md, DEMO-SCRIPT.md and CAPTURE-LIST.md. The 180-second timeline contains 247 spoken words. python3 tools/check_submission.py passed timeline, pacing, file-link and 13-field coverage checks.
 
-1. Verify the current official judging criteria and submission requirements; map each to a real product behavior and evidence. Do not invent scoring weights or model-count bonuses.
-2. Draft the short demo story: user problem, real glasses/external-reciter demonstration, within-ayah Arabic/Pickthall following, meaningful Muse Voice and Spark roles, impact and prototype limits. Source any demographic/need claims.
-3. Prepare a capture list for genuine phone preview and physical glasses output. Obtain suitable live footage using permitted audio. Distinguish actual lens footage from any explanatory overlay.
-4. Assemble the video and submission materials; make the public repository entry clear and reproducible. Fix concrete demonstration blockers only.
+1. Obtain a 35–45-second continuous external-reciter proof take and a 5–10-second actual-lens sample. Use the same working passage and permitted audio. Store raw footage only under ignored recordings/.
+2. Assemble the three-minute cut, preserving at least 25 seconds of continuous genuine proof. Distinguish actual lens footage, phone preview and overlays. Label cached Spark source plans accurately.
+3. Review and merge the implementation draft pull request before submitting the root public repository URL. The default branch currently has initial docs only.
+4. Have Faraz select his own two Meta API opinion ratings. Finish the accessible video URL and accepted contributor details. Do not submit the form or publish social posts without explicit authorization.
 
-The user confirmation does not establish controlled word-to-lens latency, no clipping across all content, or all-Quran recognition accuracy. Keep those limits in claims and documentation.
+Weights are from the supplied participant guide; current form fields are from October 29 screenshots. The public Meta page confirms the November 4 deadline. An authenticated guide reread was not completed. Do not treat the OTP screenshot as public material or persist its contents.
+
+The core demo candidate remains version 0.3.0 Build 28, confirmed working. Keep its feature scope frozen while producing the video.
 
 ## Current implementation
 

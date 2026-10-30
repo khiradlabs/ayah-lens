@@ -230,3 +230,13 @@ Physical context fit and relative lens lag remain unverified for Build 28. This 
 The wearer confirmed the updated build is working after the context-window/newest-frame changes. Treat Build 28 as the current core-demo candidate. Do not restart broad hardware or recognition testing without a new specific failure. The confirmation is not a controlled latency measurement, a zero-clipping guarantee for every source, or a full-Quran accuracy benchmark. Detailed observations remain private.
 
 Next priority: map current judging criteria to concrete evidence, prepare the demo narrative and capture list, then assemble the video and submission materials. Reuse the current artifact and fix only demonstrated blockers. Public claims must distinguish full reference coverage, selected live checks, actual Voice/Spark roles and unvalidated long-tail performance.
+
+## Submission drafts prepared October 29
+
+Draft 1 is in submission/. It contains the weighted judging evidence map, source claims, exact form answers, capture list, timed script and author review. The timeline is exactly 180 seconds with 247 spoken words and a 35-second continuous proof section. The script generator and submission checker passed.
+
+The four weights came from the participant guide supplied in chat: Impact 30%, Meta tooling 25%, Technical execution 20%, Demo 25%. The public Meta page was checked for deadline/themes/tracks. Current field requirements were checked against the three screenshots supplied October 29. An authenticated guide reread was not completed; the public page and supplied guide remain the sources for requirements. Account-authentication details are not part of this repository.
+
+The repository is public, but main still contains only the initial documentation. A draft implementation review is the next release step; merging remains pending. No final video exists, no form was submitted, and personal opinion ratings remain unselected. Build 28 code and device artifact were unchanged. No model calls were needed for this drafting work.
+
+The next physical dependency is a 35–45-second continuous external-reciter take and a short actual-lens sample. Raw footage belongs under ignored recordings/. Further checks should target the final cut and concrete failures, not restart the broad hardware test cycle.

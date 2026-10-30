@@ -2,6 +2,10 @@
 
 A hackathon prototype that follows Quran recitation and displays canonical Arabic and Pickthall English on Meta Ray-Ban Display glasses.
 
+## Submission drafts
+
+The [submission guide](submission/README.md) links the judging evidence, timed demo script, capture list and exact form answers. The current draft uses Build 28. Final footage, the video URL and entrant ratings remain open.
+
 ## Current build
 
 Version 0.3.0, Build 28 contains the complete reference: 114 surahs and 6,236 aligned ayahs. Global passage lookup requires no surah selection.
