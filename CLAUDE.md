@@ -28,3 +28,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Long-ayah listening cannot rely on character-only manual pages or verse-ID-only refreshes. Track the current source-word position, update within the same ayah, and keep live controls off the lens. Verify all reported 2:102 and 73:20 portion transitions with bash tools/probe_portions.sh, then check the actual lens.
 
 - Do not compare a full-ayah phone card with a portion-only lens as a latency measurement, or await every SDK send in the recognition loop. Mirror the selected reading window, keep only the newest pending frame, and separate queue/SDK timing. Verify LatestLensSenderTests plus the actual phone/lens check.
+
+- A commit command must stop when its staged diff check fails. Use fail-fast shell execution for the sequence. Verify: git diff --cached --check exits zero before git commit.

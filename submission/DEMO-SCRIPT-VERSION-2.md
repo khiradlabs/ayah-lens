@@ -151,4 +151,3 @@ Meta tooling 25%: name the hardware and both models early, then demonstrate thei
 Technical execution 20%: show within-passage tracking, source preservation, actual event work and verified tests. Keep timing and accuracy claims within measured evidence.
 
 Demo 25%: reveal working output early, retain 30 seconds of uncut proof, use readable labels and let the ending return to the human benefit.
-
