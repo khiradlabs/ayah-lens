@@ -18,6 +18,12 @@ The working product remains the centerpiece. A true 30-second continuous demonst
 
 Use the listener-choice scene at 2:18–2:32 to introduce Hifz, Quran memorization. The learner uses Arabic-only text as a reference while rehearsing. Switching English back on returns to following the meaning. This adds a third use case through the existing control without extending the film.
 
+## Future teaching support
+
+Future versions could support Quran learning and teaching after dedicated development and extensive testing. The working prototype uses pretrained Muse models. No specialized teaching model has been trained or validated.
+
+The engineering segment ends with a brief future-direction line. Teaching evaluation would need qualified teachers and varied learners, with particular attention to incorrect feedback. The present demonstration proves listening, source following and display choice.
+
 ## Optional demonstration surprise
 
 A second person chooses from prepared permitted excerpts, plays one, then keeps hands off the phone while the system acquires and follows it. This is a stretch capture after a successful physical check. The script does not depend on it. Be explicit about prepared sources and cached pairing plans.
@@ -34,4 +40,4 @@ The proposed short opening is 94:5. Verify actual device behavior before capture
 
 The translation switch is implemented and wearer-verified in Build 31. A truthful bilingual-only replacement is included in the maintained script.
 
-The footage has not been captured. This concept requires no new model integration or image-generation purchase.
+Two phone-preview takes have been captured. Actual optical and wearer footage remain pending. Capture is paused at Faraz’s request. This concept requires no new model integration or image-generation purchase.

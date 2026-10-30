@@ -292,3 +292,9 @@ Added reusable read-only capture inspection and non-overwriting excerpt tools, v
 Faraz asked to stop QuickTime. The Mac was locked, so the requested process was terminated directly. Verified QuickTime stopped and both original recordings remained saved. Capture stays paused.
 
 Faraz requested Quran Hifz as another use case. Added memorization practice to the existing Version 3 listener-choice scene at 2:18–2:32, using Arabic-only text as a reference while rehearsing. Updated the concept, impact map and form description. No new app behavior, recording or model call was introduced. Checks passed: 180 seconds, 244 spoken words, section pacing, rendered narration and local links. The continuous proof interval is preserved.
+
+## Future Quran teaching direction added, October 29
+
+Faraz proposed teaching after suitable training and extensive testing. Added a clearly future-labelled line to Version 3’s engineering segment and expanded the concept notes. Current code uses pretrained Muse models; no specialized teaching model was trained or validated. No app capability, model call or recording changed. Capture remains paused.
+
+Script checks passed: 180 seconds, 250 spoken words, section pacing and the continuous proof interval.

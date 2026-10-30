@@ -144,16 +144,16 @@ Arabic reference | Arabic with English meaning
 
 Spoken narration
 
-The reference library contains all 114 surahs. We built the glasses integration, live model clients, and automatic passage following during the hackathon. Fifty-five core tests cover matching, source preservation, and display scheduling.
+The reference covers all 114 surahs. We built the glasses integration and automatic following during this hackathon. Fifty-five tests cover matching, source preservation, and display scheduling. With further development and extensive testing, future versions could support Quran teaching.
 
 Picture
 
-Keep the working product prominent. Add brief readable inserts of the actual source library, event-dated Git history and verified test result. Complete reference coverage must not be presented as universal recognition accuracy.
+Keep the working product prominent. Show brief readable inserts of the actual source library, event-dated Git history and verified test result. Then introduce a short card labelled Future: teaching support, requires extensive testing. Complete reference coverage remains separate from recognition accuracy; the teaching card describes future work.
 
 On screen
 
-Complete reference library
-Original event work · 55 core tests passed
+Complete reference library · original event work · 55 core tests passed
+Then: Future: teaching support · requires extensive testing
 
 ## 2:48 to 3:00 Return to the opening experience
 
@@ -172,7 +172,7 @@ Hear the recitation. Follow the meaning.
 
 ## Recording notes
 
-Total narration: 244 words. The timeline reserves 46 seconds for unvoiced live recitation proof. Aim for a calm delivery and preserve those proof sections.
+Total narration: 250 words. The timeline reserves 46 seconds for unvoiced live recitation proof. Aim for a calm delivery and preserve those proof sections.
 
 The first 16 seconds are an edited before-and-after reveal. The separate 1:00–1:30 proof section is a genuine uninterrupted recording.
 
@@ -199,6 +199,8 @@ Any enlarged phone preview or explanatory graphic remains labelled. Show the act
 Optional stretch reveal: a second person selects a prepared recitation excerpt while hands stay off the phone. Film only after successful acquisition/recovery checks. Do not call this any-verse or blind full-Quran accuracy proof.
 
 Present Hifz as using an Arabic reference while rehearsing. Demonstrate the existing visibility switch and recitation-following behavior.
+
+Quran teaching is a future direction requiring dedicated development and extensive evaluation with qualified teachers. The current implementation uses pretrained Muse models; no specialized teaching model has been trained or validated.
 
 ## Rubric priorities
 

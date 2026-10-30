@@ -19,7 +19,8 @@
     "Create text, diagrams and labels in post. Do not generate scripture text inside imagery. Preserve the original published wording.",
     "Any enlarged phone preview or explanatory graphic remains labelled. Show the actual compact glasses display accurately.",
     "Optional stretch reveal: a second person selects a prepared recitation excerpt while hands stay off the phone. Film only after successful acquisition/recovery checks. Do not call this any-verse or blind full-Quran accuracy proof.",
-    "Present Hifz as using an Arabic reference while rehearsing. Demonstrate the existing visibility switch and recitation-following behavior."
+    "Present Hifz as using an Arabic reference while rehearsing. Demonstrate the existing visibility switch and recitation-following behavior.",
+    "Quran teaching is a future direction requiring dedicated development and extensive evaluation with qualified teachers. The current implementation uses pretrained Muse models; no specialized teaching model has been trained or validated."
   ],
   "rubric_notes": [
     "Impact 30%: turn an unfamiliar-language listening experience into something the viewer can personally recognize, then establish population scale and prayer/home use.",
@@ -113,9 +114,9 @@
       "start": 152,
       "end": 168,
       "title": "Establish the working foundation",
-      "narration": "The reference library contains all 114 surahs. We built the glasses integration, live model clients, and automatic passage following during the hackathon. Fifty-five core tests cover matching, source preservation, and display scheduling.",
-      "visual": "Keep the working product prominent. Add brief readable inserts of the actual source library, event-dated Git history and verified test result. Complete reference coverage must not be presented as universal recognition accuracy.",
-      "overlay": "Complete reference library\nOriginal event work · 55 core tests passed",
+      "narration": "The reference covers all 114 surahs. We built the glasses integration and automatic following during this hackathon. Fifty-five tests cover matching, source preservation, and display scheduling. With further development and extensive testing, future versions could support Quran teaching.",
+      "visual": "Keep the working product prominent. Show brief readable inserts of the actual source library, event-dated Git history and verified test result. Then introduce a short card labelled Future: teaching support, requires extensive testing. Complete reference coverage remains separate from recognition accuracy; the teaching card describes future work.",
+      "overlay": "Complete reference library · original event work · 55 core tests passed\nThen: Future: teaching support · requires extensive testing",
       "capture": "engineering_proof"
     },
     {
