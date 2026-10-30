@@ -4,15 +4,21 @@ Version 0.3.0 Build 31 is installed and wearer-verified for the English-meaning 
 
 ## Current script direction
 
-Faraz named the impact-led proposal Version 1, requested rubric-led Version 2, then requested an attention-grabbing Version 3. All three are preserved in submission/. DEMO-SCRIPT.md and demo-timeline.json contain Version 3. VERSION-3-CONCEPT.md explains the opening meaning reveal, matched scenes and within-passage reveal. The 180-second timeline contains 247 spoken words and a separate 30-second continuous proof section.
+Faraz named the impact-led proposal Version 1, requested rubric-led Version 2, then requested an attention-grabbing Version 3. All three are preserved in submission/. DEMO-SCRIPT.md and demo-timeline.json contain Version 3. VERSION-3-CONCEPT.md explains the opening meaning reveal, matched scenes and within-passage reveal. The 180-second timeline contains 244 spoken words and a separate 30-second continuous proof section.
 
 Version 3 proposes 94:5 as the short emotional opening. Its published translation was source-checked. Actual device recognition/output for that opening has not been verified. Use the proven passage if needed. An optional prepared-excerpt selection surprise remains conditional on successful physical acquisition checks.
 
 The requested Show English meaning switch is implemented in Build 31. All 55 core tests and the audio-callback probe passed. The wearer confirmed English hides/restores on phone and glasses while Arabic keeps following. Version 3 capture is now the priority.
 
+## Capture paused
+
+Faraz asked to stop QuickTime. The app was terminated and both saved originals were verified present. Keep capture paused until Faraz asks to resume. The settled third take remains outstanding.
+
+Version 3 now introduces Hifz, Quran memorization practice, in the 2:18–2:32 Arabic-only scene. The switch provides a source reference while rehearsing.
+
 ## Immediate priority: capture and complete the submission
 
-Draft 1 is ready in submission/. Start with FORM-ANSWERS.md, DEMO-SCRIPT.md and CAPTURE-LIST.md. The 180-second timeline contains 247 spoken words. python3 tools/check_submission.py passed timeline, pacing, file-link and 13-field coverage checks.
+Draft 1 is ready in submission/. Start with FORM-ANSWERS.md, DEMO-SCRIPT.md and CAPTURE-LIST.md. The 180-second timeline contains 244 spoken words. python3 tools/check_submission.py passed timeline, pacing, file-link and 13-field coverage checks.
 
 1. Finish and save the first QuickTime phone-screen recording under recordings/version-3/. Then obtain a 35–45-second continuous external-reciter proof take and a 5–10-second actual-lens sample. Use the same working passage and permitted audio. Store raw footage only under ignored recordings/.
 2. Assemble the three-minute cut, preserving at least 25 seconds of continuous genuine proof. Distinguish actual lens footage, phone preview and overlays. Label cached Spark source plans accurately.

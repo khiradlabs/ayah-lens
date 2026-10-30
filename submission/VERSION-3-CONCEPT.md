@@ -14,6 +14,10 @@ The working product remains the centerpiece. A true 30-second continuous demonst
 2. The same wearer composition carries across proposed prayer listening and television listening. A brief disclaimer accompanies the prayer scene.
 3. After the uninterrupted take, the camera directs attention to the unchanged passage identifier. The display has been moving within it throughout the scene.
 
+## Memorization practice
+
+Use the listener-choice scene at 2:18–2:32 to introduce Hifz, Quran memorization. The learner uses Arabic-only text as a reference while rehearsing. Switching English back on returns to following the meaning. This adds a third use case through the existing control without extending the film.
+
 ## Optional demonstration surprise
 
 A second person chooses from prepared permitted excerpts, plays one, then keeps hands off the phone while the system acquires and follows it. This is a stretch capture after a successful physical check. The script does not depend on it. Be explicit about prepared sources and cached pairing plans.

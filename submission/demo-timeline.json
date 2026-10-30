@@ -18,7 +18,8 @@
     "The population estimate comes from Pew Research Center: https://www.pewresearch.org/short-reads/2025/06/10/islam-was-the-worlds-fastest-growing-religion-from-2010-to-2020/",
     "Create text, diagrams and labels in post. Do not generate scripture text inside imagery. Preserve the original published wording.",
     "Any enlarged phone preview or explanatory graphic remains labelled. Show the actual compact glasses display accurately.",
-    "Optional stretch reveal: a second person selects a prepared recitation excerpt while hands stay off the phone. Film only after successful acquisition/recovery checks. Do not call this any-verse or blind full-Quran accuracy proof."
+    "Optional stretch reveal: a second person selects a prepared recitation excerpt while hands stay off the phone. Film only after successful acquisition/recovery checks. Do not call this any-verse or blind full-Quran accuracy proof.",
+    "Present Hifz as using an Arabic reference while rehearsing. Demonstrate the existing visibility switch and recitation-following behavior."
   ],
   "rubric_notes": [
     "Impact 30%: turn an unfamiliar-language listening experience into something the viewer can personally recognize, then establish population scale and prayer/home use.",
@@ -102,10 +103,10 @@
     {
       "start": 138,
       "end": 152,
-      "title": "Demonstrate personal choice",
-      "narration": "Listeners who want just the Arabic can turn the meaning off. Others can keep both in view. The choice stays with the person wearing the glasses.",
-      "visual": "Use the verified Show English meaning control in Build 31. Capture Arabic-only and bilingual actual output with a stable reading position. Show the actual phone control once, and label any enlarged preview.",
-      "overlay": "Arabic only | Arabic with English meaning",
+      "title": "Show memorization practice and listener choice",
+      "narration": "Hifz means memorizing the Quran. Arabic-only mode offers a reference while rehearsing. Turn English back on whenever you want to follow the meaning.",
+      "visual": "Show the verified Show English meaning switch in Build 31. A learner rehearses with Arabic-only source text, then switches English on to follow its meaning. Use actual phone control and output, keeping the selected reading position stable. Label the phone preview separately from optical footage.",
+      "overlay": "Hifz · Quran memorization practice\nArabic reference | Arabic with English meaning",
       "capture": "listener_choice"
     },
     {

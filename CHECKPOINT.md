@@ -286,3 +286,9 @@ Take 01 is 111.509 seconds at 1206×2622 with a 48 kHz mono audio track. Reviewe
 Take 02 is 73.7755 seconds. Visual review found clean 73:20 bilingual following from 48.5–72.5 seconds, with six automatic window changes and no observed phone-card clipping. Exported that continuous 24-second candidate. It is shorter than the planned 30-second proof; requested a settled third take after the passage is already visible. Both original videos and source receipts remain in recordings/version-3/. These are phone captures, not actual optical lens footage.
 
 Added reusable read-only capture inspection and non-overwriting excerpt tools, verified against actual saved clips. The English-switch implementation is committed locally. No raw footage was staged or published.
+
+## Capture stopped and Hifz use case added, October 29
+
+Faraz asked to stop QuickTime. The Mac was locked, so the requested process was terminated directly. Verified QuickTime stopped and both original recordings remained saved. Capture stays paused.
+
+Faraz requested Quran Hifz as another use case. Added memorization practice to the existing Version 3 listener-choice scene at 2:18–2:32, using Arabic-only text as a reference while rehearsing. Updated the concept, impact map and form description. No new app behavior, recording or model call was introduced. Checks passed: 180 seconds, 244 spoken words, section pacing, rendered narration and local links. The continuous proof interval is preserved.

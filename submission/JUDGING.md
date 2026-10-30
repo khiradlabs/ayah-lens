@@ -33,7 +33,7 @@ Faraz approved Version 3 as the creative direction. Keep the existing four-crite
 
 | Criterion | Weight | Version 3 evidence |
 |---|---:|---|
-| Impact | 30% | The opening lets unfamiliar-language listeners experience the need. Population context and prayer/home scenes establish scale and use. |
+| Impact | 30% | The opening lets unfamiliar-language listeners experience the need. Population context, prayer/home scenes and memorization practice establish scale and use. |
 | Use of Meta AI Tooling | 25% | The product reveal names Meta glasses, Muse Voice and Muse Spark. The implementation scene explains live transcription, source pairing and bounded ambiguity assistance. |
 | Technical Depth and Execution | 20% | The second reveal demonstrates tracking within one long passage. Source validation, actual event work and verified tests support the working behavior. |
 | Demo | 25% | The opening meaning reveal, matched scenes, readable device output and 30-second continuous take make the experience visible. |

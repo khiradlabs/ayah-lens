@@ -125,19 +125,20 @@ Muse Voice · live transcription
 Muse Spark · source pairing and ambiguity assistance
 Filmed phrase plans cached
 
-## 2:18 to 2:32 Demonstrate personal choice
+## 2:18 to 2:32 Show memorization practice and listener choice
 
 Spoken narration
 
-Listeners who want just the Arabic can turn the meaning off. Others can keep both in view. The choice stays with the person wearing the glasses.
+Hifz means memorizing the Quran. Arabic-only mode offers a reference while rehearsing. Turn English back on whenever you want to follow the meaning.
 
 Picture
 
-Use the verified Show English meaning control in Build 31. Capture Arabic-only and bilingual actual output with a stable reading position. Show the actual phone control once, and label any enlarged preview.
+Show the verified Show English meaning switch in Build 31. A learner rehearses with Arabic-only source text, then switches English on to follow its meaning. Use actual phone control and output, keeping the selected reading position stable. Label the phone preview separately from optical footage.
 
 On screen
 
-Arabic only | Arabic with English meaning
+Hifz · Quran memorization practice
+Arabic reference | Arabic with English meaning
 
 ## 2:32 to 2:48 Establish the working foundation
 
@@ -171,7 +172,7 @@ Hear the recitation. Follow the meaning.
 
 ## Recording notes
 
-Total narration: 247 words. The timeline reserves 46 seconds for unvoiced live recitation proof. Aim for a calm delivery and preserve those proof sections.
+Total narration: 244 words. The timeline reserves 46 seconds for unvoiced live recitation proof. Aim for a calm delivery and preserve those proof sections.
 
 The first 16 seconds are an edited before-and-after reveal. The separate 1:00–1:30 proof section is a genuine uninterrupted recording.
 
@@ -196,6 +197,8 @@ Create text, diagrams and labels in post. Do not generate scripture text inside 
 Any enlarged phone preview or explanatory graphic remains labelled. Show the actual compact glasses display accurately.
 
 Optional stretch reveal: a second person selects a prepared recitation excerpt while hands stay off the phone. Film only after successful acquisition/recovery checks. Do not call this any-verse or blind full-Quran accuracy proof.
+
+Present Hifz as using an Arabic reference while rehearsing. Demonstrate the existing visibility switch and recitation-following behavior.
 
 ## Rubric priorities
 

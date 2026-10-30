@@ -30,7 +30,7 @@ Ayah Lens brings Quran recitation and its meaning into view on Meta Ray-Ban Disp
 
 Quran recitation is part of daily worship. Five daily prayers give this a recurring context. The wider community includes about two billion Muslims, using Pew’s 2020 estimate. Our initial audience is people with compatible glasses who want English meaning.
 
-The prototype listens through the glasses microphone, identifies the passage and follows supported phrases within an ayah. Compact Arabic and published Pickthall English windows advance automatically, including within long ayahs, without a Next button.
+The prototype listens through the glasses microphone, identifies the passage and follows supported phrases within an ayah. Compact Arabic and published Pickthall English windows advance automatically, including within long ayahs, without a Next button. Arabic-only mode also offers a reference for Hifz, Quran memorization practice.
 
 During the hackathon, we built the native iPhone/glasses integration, live Muse client, retrieval, phrase tracking and display scheduling. The full reference includes 114 surahs and 6,236 ayahs. Selected physical demonstrations worked with an external reciter. Broader reciter accuracy and comprehension benefits remain to be evaluated.
 
