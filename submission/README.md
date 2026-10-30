@@ -12,3 +12,5 @@ Draft 1 prepares the judging evidence, three-minute narrative, capture plan and 
 The maintained timing source is demo-timeline.json. Regenerate the script with python3 tools/render_demo_script.py, then run python3 tools/check_submission.py.
 
 The three-minute video is not yet assembled. The public repository default branch still needs the reviewed implementation. Personal opinion ratings and final submission remain with the entrant.
+
+The [implementation draft review](https://github.com/khiradlabs/ayah-lens/pull/1) targets main and remains unmerged.

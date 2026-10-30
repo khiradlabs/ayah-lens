@@ -8,7 +8,7 @@ Draft 1 is ready in submission/. Start with FORM-ANSWERS.md, DEMO-SCRIPT.md and 
 
 1. Obtain a 35–45-second continuous external-reciter proof take and a 5–10-second actual-lens sample. Use the same working passage and permitted audio. Store raw footage only under ignored recordings/.
 2. Assemble the three-minute cut, preserving at least 25 seconds of continuous genuine proof. Distinguish actual lens footage, phone preview and overlays. Label cached Spark source plans accurately.
-3. Review and merge the implementation draft pull request before submitting the root public repository URL. The default branch currently has initial docs only.
+3. Review the draft at https://github.com/khiradlabs/ayah-lens/pull/1 and merge only after authorization, before submitting the root public repository URL. The default branch currently has initial docs only.
 4. Have Faraz select his own two Meta API opinion ratings. Finish the accessible video URL and accepted contributor details. Do not submit the form or publish social posts without explicit authorization.
 
 Weights are from the supplied participant guide; current form fields are from October 29 screenshots. The public Meta page confirms the November 4 deadline. An authenticated guide reread was not completed. Do not treat the OTP screenshot as public material or persist its contents.

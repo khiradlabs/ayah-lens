@@ -240,3 +240,5 @@ The four weights came from the participant guide supplied in chat: Impact 30%, M
 The repository is public, but main still contains only the initial documentation. A draft implementation review is the next release step; merging remains pending. No final video exists, no form was submitted, and personal opinion ratings remain unselected. Build 28 code and device artifact were unchanged. No model calls were needed for this drafting work.
 
 The next physical dependency is a 35–45-second continuous external-reciter take and a short actual-lens sample. Raw footage belongs under ignored recordings/. Further checks should target the final cut and concrete failures, not restart the broad hardware test cycle.
+
+Draft implementation review created and verified open: https://github.com/khiradlabs/ayah-lens/pull/1, targeting main. It remains a draft and was not merged. Submission draft checks passed after the final save. The form-answer editor open request was queued by the desktop app; direct file links remain available.
