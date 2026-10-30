@@ -46,4 +46,4 @@ Use the population estimate for scale. Keep the initial hardware and English-lan
 
 ## Evidence status
 
-Working selected behavior and source preservation have evidence. Final video footage, a public video URL and a signed-out submission-link check remain outstanding. Source checking covered the public Meta page and Faraz's supplied participant guide. The authenticated guide still needs reconfirmation.
+Working selected behavior and source preservation have evidence. Final video footage, a public video URL and a signed-out submission-link check remain outstanding. Source checking covered the public Meta page, supplied form screenshots and authenticated participant guide on October 29. The live guide confirms the rubric weights, public repository requirement, three-minute video and November 4 deadline.

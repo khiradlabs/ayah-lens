@@ -242,3 +242,11 @@ The repository is public, but main still contains only the initial documentation
 The next physical dependency is a 35–45-second continuous external-reciter take and a short actual-lens sample. Raw footage belongs under ignored recordings/. Further checks should target the final cut and concrete failures, not restart the broad hardware test cycle.
 
 Draft implementation review created and verified open: https://github.com/khiradlabs/ayah-lens/pull/1, targeting main. It remains a draft and was not merged. Submission draft checks passed after the final save. The form-answer editor open request was queued by the desktop app; direct file links remain available.
+
+## Live participant guide verified October 29
+
+Authenticated access succeeded and the guide was read at https://cerebralvalley.ai/e/meta-ai-developer-hackathon/details. The current rubric matches the drafts: Impact 30%, Use of Meta AI Tooling 25%, Technical Depth and Execution 20%, Demo 25%. The guide confirms a three-minute demo, publicly accessible repository/video, one project submission per team, and November 4 at 9 PM Eastern. In America/Chicago that is November 4 at 8 PM.
+
+Minor changes from the supplied snapshot include 30-minute workshop listings and a $100 Fireworks credit request instead of $25. These do not change the current direct-Meta prototype or submission draft. The guide still prints October 27–November 4 for building; retain the existing organizer/kickoff October 26 clarification and provenance in CONTRIBUTIONS.md. Do not imply that line changed.
+
+Submission source notes and review status were updated from pending to verified. No form fields were entered, no project was submitted, and no app/model code changed. Authentication values were not saved in project files.

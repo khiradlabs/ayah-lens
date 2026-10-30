@@ -6,7 +6,7 @@ The submitted application names the Indie Developer track and Build for Your Wor
 
 ## Judging weights and proof
 
-The weights below come from the participant guide supplied in this chat. The authenticated guide still needs a current check. The public Meta page was checked on October 29.
+The weights below were verified against the authenticated participant guide on October 29. They match the supplied guide. The public Meta page was also checked.
 
 | Criterion | Weight | What Ayah Lens demonstrates | Evidence to show | Remaining gap |
 |---|---:|---|---|---|
@@ -49,11 +49,11 @@ A brief human reaction can strengthen Impact if readily available. Describe what
 
 ## Bonus prizes
 
-The supplied guide names separate open-weight, creative, agentic and community awards. Omnilingual fallback alone does not establish eligibility for its Muse Glimmer or Muse Spark Open bonus. The current product does not establish the Muse Image or Muse Wonder creative-build requirement. Main-rubric evidence takes priority over new integrations. Social posting remains a separate approval step.
+The live guide names separate open-weight, creative, agentic and community awards. Omnilingual fallback alone does not establish eligibility for its Muse Glimmer or Muse Spark Open bonus. The current product does not establish the Muse Image or Muse Wonder creative-build requirement. Main-rubric evidence takes priority over new integrations. Social posting remains a separate approval step.
 
 ## Sources
 
-- Participant guide supplied by Faraz, sections 7–9, linked at [Cerebral Valley event details](https://cerebralvalley.ai/e/meta-ai-developer-hackathon/details). Authenticated October 29 reread remains pending.
+- [Cerebral Valley participant guide](https://cerebralvalley.ai/e/meta-ai-developer-hackathon/details), sections 7–9, verified while signed in on October 29.
 - [Meta event page](https://dev.meta.ai/events/global-hackathon), checked October 29, for track descriptions, themes and deadline.
 - [CLAIMS.md](CLAIMS.md) for the impact sources and implementation limits.
 - [CONTRIBUTIONS.md](../CONTRIBUTIONS.md) and [CHECKPOINT.md](../CHECKPOINT.md) for provenance and technical evidence.

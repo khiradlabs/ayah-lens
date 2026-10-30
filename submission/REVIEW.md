@@ -6,7 +6,7 @@ Draft 1 is ready for script and form-copy review. The final video and form submi
 
 | Check | Result | Next action |
 |---|---|---|
-| Rubric weights | 30, 25, 20 and 25 total 100, from the supplied participant guide. | Recheck authenticated guide before final submission if access is available. |
+| Rubric weights | 30, 25, 20 and 25 total 100, verified against the live authenticated guide on October 29. | Recheck for late organizer announcements before submitting. |
 | Current form fields | Matched to the three October 29 screenshots. | Copy the accepted values and entrant’s own ratings into the final form. |
 | Theme and track | Indie Developer and Build for Your World match the recorded application. | Confirm the entrant profile during submission. |
 | Opening | The first eight seconds require the working product. | Capture a genuine readable take. |

@@ -11,7 +11,7 @@ Draft 1 is ready in submission/. Start with FORM-ANSWERS.md, DEMO-SCRIPT.md and 
 3. Review the draft at https://github.com/khiradlabs/ayah-lens/pull/1 and merge only after authorization, before submitting the root public repository URL. The default branch currently has initial docs only.
 4. Have Faraz select his own two Meta API opinion ratings. Finish the accessible video URL and accepted contributor details. Do not submit the form or publish social posts without explicit authorization.
 
-Weights are from the supplied participant guide; current form fields are from October 29 screenshots. The public Meta page confirms the November 4 deadline. An authenticated guide reread was not completed. Do not treat the OTP screenshot as public material or persist its contents.
+The authenticated participant guide was verified October 29. Weights remain Impact 30%, Meta tooling 25%, Technical execution 20%, Demo 25%. Current form fields are from October 29 screenshots. The deadline remains November 4, 9 PM Eastern, or 8 PM America/Chicago. No authentication details belong in project files.
 
 The core demo candidate remains version 0.3.0 Build 28, confirmed working. Keep its feature scope frozen while producing the video.
 

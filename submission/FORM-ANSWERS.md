@@ -1,6 +1,6 @@
 # Ayah Lens form answers Draft 1
 
-Paste-ready copy for the fields shown in the October 29 submission screenshots. The final video link and two personal ratings remain open.
+Paste-ready copy for the fields shown in the October 29 submission screenshots. The live participant guide was also verified October 29. The final video link and two personal ratings remain open.
 
 ## Team Name
 
