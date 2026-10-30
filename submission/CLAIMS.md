@@ -28,7 +28,7 @@ Sources:
 | Display text comes from attributed sources | Original Tanzil Arabic, Pickthall English, strict source slicing and attribution notices. | Do not call displayed translations newly generated or claim a religious interpretation service. |
 | Full reference contains 114 surahs and 6,236 ayahs | Corpus and alignment tests. | This is reference coverage, not verified recognition of every ayah. |
 | Within-ayah following works in selected tests | LivePortionFollower, integration replay and physical confirmation. | No claim of perfect reciter, noise, dialect or passage coverage. |
-| 52 automated tests passed | Build 28 verification receipts and source tests. | Automated tests are not 52 users or a field accuracy study. |
+| 55 automated tests passed | Build 28 verification receipts and source tests. | Automated tests are not 55 users or a field accuracy study. |
 | Display delivery avoids waiting-frame buildup | LatestLensSender and controlled async tests. | SDK send completion does not establish the instant pixels became visible. |
 | Implementation was built during the event | Event Git history and CONTRIBUTIONS.md. | Models, SDKs, reference texts, research and prior preparation are existing inputs. |
 

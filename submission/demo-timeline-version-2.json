@@ -1,0 +1,97 @@
+{
+  "title": "Ayah Lens demo script Version 2",
+  "duration_seconds": 180,
+  "baseline_version": "0.3.0",
+  "baseline_build": 28,
+  "source_branch": "feat/within-ayah-following",
+  "status": "Rubric-led script revision; footage pending; translation switch pending implementation",
+  "opening_note": "Lead with the population and listening need while showing the real glasses. Make automatic following visible before explaining the implementation.",
+  "production_notes": [
+    "The prayer scene presents a possible use. Keep its religious-permissibility disclaimer readable beside the scene and repeat it in the final video description.",
+    "The listener-choice scene requires the requested translation switch to work on both phone preview and lens. It has not been implemented in Build 28.",
+    "If the switch is unavailable, use this replacement narration for 2:27–2:45: \"Here, the phone preview mirrors the selected lens window. The full passage remains available on the phone. The glasses keep a compact portion in view while the listener follows the recitation hands free.\"",
+    "The source text is published Tanzil Arabic and Pickthall English. Spark supplies paired source boundaries; it does not author the displayed translation.",
+    "The filmed long-passage plans are cached. Voice transcription is live. Complete reference coverage is not a full-Quran accuracy result.",
+    "The population estimate comes from Pew Research Center: https://www.pewresearch.org/short-reads/2025/06/10/islam-was-the-worlds-fastest-growing-religion-from-2010-to-2020/"
+  ],
+  "rubric_notes": [
+    "Impact 30%: establish the recurring listening need, show two understandable situations, and return to the wearer. Do not equate population with adoption.",
+    "Meta tooling 25%: name the hardware and both models early, then demonstrate their distinct contributions. Hardware complements model use; model count earns no stated automatic bonus.",
+    "Technical execution 20%: show within-passage tracking, source preservation, actual event work and verified tests. Keep timing and accuracy claims within measured evidence.",
+    "Demo 25%: reveal working output early, retain 30 seconds of uncut proof, use readable labels and let the ending return to the human benefit."
+  ],
+  "segments": [
+    {
+      "start": 0,
+      "end": 24,
+      "title": "Establish the listening need",
+      "narration": "About two billion people are Muslim. Recitation is part of five daily prayers. For many of us, Arabic is not our everyday language. We hear the recitation, but following its meaning takes another step. What if that meaning could stay in view, while we listen?",
+      "visual": "Begin with a person wearing the real glasses while recitation plays softly beneath narration. Show the population caption briefly. Reveal a legible actual-lens sample before the product introduction. Keep the phone preview separately labelled.",
+      "overlay": "About 2 billion Muslims\nPew Research Center · 2020 estimate, published 2025",
+      "capture": "founder_intro"
+    },
+    {
+      "start": 24,
+      "end": 43,
+      "title": "Introduce the Meta experience",
+      "narration": "Meet Ayah Lens. Built for Meta Ray-Ban Display glasses, powered by Muse Voice and Muse Spark. It listens to Quran recitation and brings the Arabic and published English meaning into view. Start listening, then follow hands free.",
+      "visual": "Show the actual glasses, then the real app starting a Muse session. Establish the external recitation source. Put the real optical sample beside a readable phone preview, with labels attached to each.",
+      "overlay": "Ayah Lens\nMeta glasses + Muse Voice + Muse Spark",
+      "capture": "start_session"
+    },
+    {
+      "start": 43,
+      "end": 58,
+      "title": "Connect prayer and home listening",
+      "narration": "One possibility is following the recitation during Salat, Muslim prayer. Another is listening to a reciter on television. In either setting, the goal is to follow the meaning without holding a phone.",
+      "visual": "Show a proposed prayer-listening scene with the disclaimer readable for the full scene. Then show actual external-reciter listening from a television or second device, using footage and audio cleared for publication. The scene proposes a use, without asserting religious approval.",
+      "overlay": "Technology demonstration only. This does not establish religious permissibility for use during prayer.",
+      "capture": "use_cases"
+    },
+    {
+      "start": 58,
+      "end": 88,
+      "title": "Prove automatic following",
+      "narration": "",
+      "visual": "Keep 30 seconds continuous with real recitation audible and no voiceover or music. Show at least three automatic changes inside the same long passage. Hands stay away from the phone after Start. Use the proven 73:20 or 2:102 setup and label the optical view and phone preview separately.",
+      "overlay": "Actual glasses display | Live phone preview\nContinuous recording · automatic passage following",
+      "capture": "hero_live"
+    },
+    {
+      "start": 88,
+      "end": 119,
+      "title": "Explain what Meta AI contributes",
+      "narration": "Muse Voice turns audio from the glasses into Arabic text. Muse Spark helps pair Arabic phrases with corresponding portions of a published English translation. That makes long passages manageable on a small display. Spark can also help resolve uncertain passage matches. The glasses, speech model, and reasoning model each serve the same experience: following the meaning as you listen.",
+      "visual": "Animate the actual pipeline: glasses audio, live Muse Voice transcript, local passage tracker, Spark-assisted paired portions, lens. Show real source-boundary evidence. Label Spark plans Cached for the filmed passages. Distinguish bounded candidate assistance from the normal direct-match path. Avoid a fake live request counter.",
+      "overlay": "Muse Voice · live transcription\nMuse Spark · bilingual pairing and ambiguity assistance\nFilmed phrase plans cached",
+      "capture": "model_roles"
+    },
+    {
+      "start": 119,
+      "end": 147,
+      "title": "Make the engineering visible",
+      "narration": "A long passage cannot fit on the lens at once. Our software tracks the recitation within that passage and updates the relevant portion automatically. It validates source boundaries and preserves the published wording. The reference library contains the complete Quran. Fifty-two automated tests cover core matching, source preservation, and display scheduling.",
+      "visual": "Use a readable close-up of the same passage changing portions. Show the phone Lens preview beside the optical sample, then a short source-validation graphic, the actual test result and event-dated implementation history. Keep full reference coverage separate from recognition accuracy.",
+      "overlay": "Automatic movement within long passages\n114 surahs · 6,236 reference ayahs\n52 core tests passed · original event implementation",
+      "capture": "engineering_proof"
+    },
+    {
+      "start": 147,
+      "end": 165,
+      "title": "Show listener choice",
+      "narration": "Listeners can choose Arabic alone, or keep the English meaning beside it. The goal is to let each person follow in the way that helps them. This prototype brings that choice into a wearable listening experience.",
+      "visual": "After the translation switch is implemented and verified, film the actual control changing the lens and phone preview. Keep the recognized position unchanged. Until then, replace this segment with the supplied fallback narration and genuine working bilingual footage.",
+      "overlay": "Arabic only | Arabic with English meaning",
+      "capture": "listener_choice"
+    },
+    {
+      "start": 165,
+      "end": 180,
+      "title": "Close on the benefit",
+      "narration": "The next step is broader testing across reciters and listening environments. The ambition is simple: help people connect what they hear with what it means. Ayah Lens. Hear the recitation. Follow the meaning.",
+      "visual": "Return to the real wearer and working glasses. End with the project name and public repository address. Keep any future-language claims out of the working-feature footage.",
+      "overlay": "Ayah Lens\nHear the recitation. Follow the meaning.",
+      "capture": "closing_card"
+    }
+  ]
+}

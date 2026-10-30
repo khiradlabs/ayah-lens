@@ -1,12 +1,12 @@
-# Ayah Lens demo script Draft 1
+# Ayah Lens demo script Version 3
 
-Three-minute submission video. Baseline: version 0.3.0, Build 28. Narration is ready for review; live footage remains to be captured.
+Three-minute submission video. Device baseline: version 0.3.0, Build 31. Version 3 approved; English switch implemented and wearer-verified in Build 31; footage capture starting.
 
-Lead with the working glasses. Keep the main recitation proof continuous. Use the matching phone Lens preview for legibility and label it separately from actual lens footage.
+Let viewers experience unfamiliar recitation, then reveal its meaning through genuine output. Explain the population and Meta implementation after that experience. Keep the uninterrupted proof section intact.
 
 The source timeline is demo-timeline.json. Run python3 tools/render_demo_script.py after changing timing or narration. Production checks and source claims are in CAPTURE-LIST.md and CLAIMS.md.
 
-## 0:00 to 0:08 Show the working glasses first
+## 0:00 to 0:08 Let the viewer hear before explaining
 
 Spoken narration
 
@@ -14,42 +14,13 @@ No voiceover. Keep the real recitation audible.
 
 Picture
 
-Actual glasses output and the live phone Lens preview, with the same recitation audible. Keep this opening continuous.
+Open on black for one beat, then a close view of a listener and the real glasses. A permitted reciter delivers a short passage. Use 94:5 as the proposed emotionally accessible opener, subject to actual-device verification. Let the recitation stand alone. No music or narrator competes with it.
 
 On screen
 
-Ayah Lens · Follow the meaning
+Just listen.
 
-## 0:08 to 0:34 Establish the human need
-
-Spoken narration
-
-About two billion people are Muslim, roughly a quarter of humanity. Five daily prayers make recitation a recurring part of worship. Three include passages recited aloud in congregation. For listeners who do not understand Arabic, following the meaning can mean looking away from the recitation.
-
-Picture
-
-Faraz on camera, then a simple population card and a listener wearing the glasses. Use everyday listening footage, without staging a claim of formal-prayer approval.
-
-On screen
-
-About 2 billion Muslims · Pew 2020 estimate, published 2025
-Five daily prayers · recurring listening context
-
-## 0:34 to 0:48 Introduce the product
-
-Spoken narration
-
-Ayah Lens listens through Meta Ray-Ban Display glasses and brings the Arabic and published English meaning into view. Start listening once, then follow hands free.
-
-Picture
-
-Show version 0.3.0 Build 28, the external recitation source and Start Muse live Quran. Establish that the phone stays foregrounded.
-
-On screen
-
-Glasses microphone → live recitation following
-
-## 0:48 to 1:23 Prove automatic following
+## 0:08 to 0:16 Reveal the meaning
 
 Spoken narration
 
@@ -57,97 +28,141 @@ No voiceover. Keep the real recitation audible.
 
 Picture
 
-One continuous external-reciter take of 73:20 or 2:102. Show actual lens output and the matching Lens preview. Keep at least 25 seconds uncut and retain recitation audio. Capture at least three automatic window changes without touching Next.
+Match cut as the wearer raises the glasses. Show a real optical sample beside an enlarged genuine phone Lens preview, each labelled. Keep the same recorded phrase for the before-and-after comparison, with the edit apparent. The proposed 94:5 English is the exact Pickthall text: “But lo! with hardship goeth ease,”. Do not invent an immersive display or fill the room with apparently device-rendered text. If the opener does not pass the actual-device check, use a readable segment from the proven passage.
 
 On screen
 
-Actual glasses display | Live phone preview
-Keep each label attached to its own view.
+Now follow the meaning.
+Actual glasses display | Enlarged live phone preview
 
-## 1:23 to 1:41 Explain within ayah following
+## 0:16 to 0:36 Make the experience universal
 
 Spoken narration
 
-The hard part is following a long ayah. The display moves through the relevant portion automatically, with a little upcoming context. No page turning is needed as the recitation continues.
+If Arabic is unfamiliar, you just felt the gap between hearing words and following their meaning. About two billion people are Muslim. For many of us, that gap is part of everyday listening. What if the meaning could stay with us?
 
 Picture
 
-Continue the same passage. Point out the same verse ID while the source portion changes. An explanatory close-up can follow the continuous proof take.
+Return to the same listener. Let the population figure appear briefly beside real human footage. The number gives scale after the viewer has experienced the need. Keep the small population source caption readable.
 
 On screen
 
-Same ayah · automatic portion changes
+About 2 billion Muslims
+Pew Research Center · 2020 estimate, published 2025
 
-## 1:41 to 2:11 Show what Muse contributes
+## 0:36 to 0:48 Name the product and Meta stack
 
 Spoken narration
 
-Muse Voice Transcribe supplies the live Arabic transcript. Muse Spark helps resolve uncertain verse candidates, and pairs Arabic phrases with ranges from the published Pickthall translation. We validate those boundaries and cache them. Local code tracks the position and selects the source text. Spark’s contribution is visible here: usable meaning alongside a moving recitation.
+Meet Ayah Lens. Meta glasses, Muse Voice, and Muse Spark, working together to bring Quran recitation and its English meaning into view.
 
 Picture
 
-Use a simple architecture diagram, then show one real paired source window. Label cached phrase plans accurately. If showing candidate-resolution evidence, identify the selected synthetic diagnostic separately from the live take.
+A crisp product shot of the actual glasses. Introduce each Meta component as its name is spoken, then return to the working phone and glasses. Add all words in post.
 
 On screen
 
-Muse Voice Transcribe · live Arabic
-Muse Spark 1.3 · candidate decisions and paired source portions
-Phrase plan cached · displayed text from attributed sources
+Ayah Lens
+Meta glasses + Muse Voice + Muse Spark
 
-## 2:11 to 2:30 Explain source trust and scope
+## 0:48 to 1:00 Carry one listening experience between settings
 
 Spoken narration
 
-The display uses unchanged Tanzil Arabic and Pickthall English. The full reference covers 114 surahs and 6,236 ayahs. This prototype identifies passages and follows supported phrases; shared openings can wait for more evidence.
+During Salat, Muslim prayer, it could help listeners follow the recitation. At home, it can follow a reciter playing on television. Hands free.
 
 Picture
 
-Show the source attribution, one canonical-reference lookup and an unchanged source slice. Distinguish full reference coverage from measured recognition accuracy.
+Match the wearer’s position across a proposed prayer scene and the television listening scene. Let the same frame composition connect the settings. Keep the religious-permissibility disclaimer visible for the entire prayer scene. Use cleared recitation footage and audio.
 
 On screen
 
-114 surahs · 6,236 reference ayahs
-Arabic: Tanzil · English: Pickthall
+Technology demonstration only. This does not establish religious permissibility for use during prayer.
 
-## 2:30 to 2:44 Make the new work visible
+## 1:00 to 1:30 Prove the live experience without cuts
 
 Spoken narration
 
-Built during the hackathon: the glasses integration, live Muse client, verse retrieval, phrase tracking, and automatic display. Fifty-two automated tests cover core matching, source preservation, and display scheduling.
+No voiceover. Keep the real recitation audible.
 
 Picture
 
-Show real event-dated Git history, original source modules and the existing 52-test result. Keep credentials and private test receipts out of this view.
+A 30-second continuous recording. The reciter source, phone preview and untouched hands remain in view. Retain the actual recitation and at least three automatic window changes inside the proven 73:20 or 2:102 passage. Use a stable split view; any optical inset must be genuine and from the same take if presented as simultaneous. A simple label says Continuous recording.
 
 On screen
 
-Original event implementation · October 26–29
-52 automated tests passed
+Continuous recording
+Live phone preview · automatic passage following
 
-## 2:44 to 2:55 State the next milestone
+## 1:30 to 1:52 Reveal the difficult part hiding in plain sight
 
 Spoken narration
 
-Today, the prototype supports selected hands-free listening demonstrations. Next comes broader reciter testing and language support, with reliable meaning in view as the goal.
+Now look closer. We are still inside the same passage. A long verse cannot fit on this lens. Ayah Lens follows the recitation through it, showing the relevant portion as the words continue. Nobody is turning a page.
 
 Picture
 
-Return to Faraz and the working device. Treat broader reciters and additional languages as future work.
+Freeze the passage identifier for emphasis while the genuine captured portions continue to change. Briefly show a full-source reference beside the compact display window, labelled Explanatory graphic. Keep the real device footage visible. Show the challenge at a glance rather than teaching verse numbering.
 
 On screen
 
-Working prototype · English meaning
-Next: broader reciter evaluation
+Same passage · changing portions
+No manual paging
 
-## 2:55 to 3:00 Close on the user benefit
+## 1:52 to 2:18 Explain the actual AI and tracking work
 
 Spoken narration
 
-Ayah Lens. Hear the recitation. Follow the meaning.
+Muse Voice converts the glasses’ audio into Arabic text. Muse Spark helps pair Arabic phrases with portions of a published English translation. It can also assist with uncertain passage matches. Our software tracks the position, validates the source boundaries, and sends the current portion to the glasses.
 
 Picture
 
-End with the working glasses and a readable project/repository address. Add the final accessible video/submission link only when available.
+Build a clean exploded diagram around a product shot. Audio enters Muse Voice; the live transcript reaches our passage tracker; Spark-assisted paired source spans supply the display portions. Show cached plans on a separate branch, with bounded ambiguity assistance as another branch. Reassemble the diagram into the actual lens/preview footage.
+
+On screen
+
+Muse Voice · live transcription
+Muse Spark · source pairing and ambiguity assistance
+Filmed phrase plans cached
+
+## 2:18 to 2:32 Demonstrate personal choice
+
+Spoken narration
+
+Listeners who want just the Arabic can turn the meaning off. Others can keep both in view. The choice stays with the person wearing the glasses.
+
+Picture
+
+Use the verified Show English meaning control in Build 31. Capture Arabic-only and bilingual actual output with a stable reading position. Show the actual phone control once, and label any enlarged preview.
+
+On screen
+
+Arabic only | Arabic with English meaning
+
+## 2:32 to 2:48 Establish the working foundation
+
+Spoken narration
+
+The reference library contains all 114 surahs. We built the glasses integration, live model clients, and automatic passage following during the hackathon. Fifty-five core tests cover matching, source preservation, and display scheduling.
+
+Picture
+
+Keep the working product prominent. Add brief readable inserts of the actual source library, event-dated Git history and verified test result. Complete reference coverage must not be presented as universal recognition accuracy.
+
+On screen
+
+Complete reference library
+Original event work · 55 core tests passed
+
+## 2:48 to 3:00 Return to the opening experience
+
+Spoken narration
+
+The words were already there. Ayah Lens brings their meaning into view. Hear the recitation. Follow the meaning.
+
+Picture
+
+Return to the exact opening composition, now with the genuine readable display sample. End on the project name and public repository address. Give the final line room to land.
 
 On screen
 
@@ -156,8 +171,38 @@ Hear the recitation. Follow the meaning.
 
 ## Recording notes
 
-Total narration: 247 words. The timeline reserves 43 seconds for unvoiced live recitation proof. Aim for a calm delivery and preserve those proof sections.
+Total narration: 247 words. The timeline reserves 46 seconds for unvoiced live recitation proof. Aim for a calm delivery and preserve those proof sections.
 
-Use source-labelled population figures. Five daily prayers describes the recurring context; it is not a claim that every Muslim would use this product. Keep all-day operation, universal accuracy and measured latency out of the narration.
+The first 16 seconds are an edited before-and-after reveal. The separate 1:00–1:30 proof section is a genuine uninterrupted recording.
 
-Do not imply that every live frame triggers Spark. The paired plans for the filmed long ayahs are cached. The footage should demonstrate the resulting behavior, with the model role explained accurately.
+The proposed opening reference is 94:5. Its exact Pickthall English is “But lo! with hardship goeth ease,”. Capture a real successful run before using it. Use a proven passage if this opener is unreliable.
+
+The viewer condition matters: say “If Arabic is unfamiliar.” Do not assume that every judge is unfamiliar with Arabic or claim that all Muslims lack understanding.
+
+The prayer scene presents a possible use. Keep its religious-permissibility disclaimer readable beside the scene and repeat it in the final video description.
+
+The Show English meaning switch is implemented in Build 31. The wearer confirmed English disappears and returns on phone and glasses while Arabic keeps following. Capture the actual control in a separate take.
+
+If the translation switch is unavailable, replace the 2:18–2:32 narration with: “The phone preview mirrors the selected lens window. The full passage remains available on the phone. The glasses keep a compact portion in view as the recitation continues.”
+
+The source text is published Tanzil Arabic and Pickthall English. Spark supplies paired source boundaries; it does not author the displayed translation.
+
+The filmed long-passage plans are cached. Voice transcription is live. Complete reference coverage is not a full-Quran accuracy result.
+
+The population estimate comes from Pew Research Center: https://www.pewresearch.org/short-reads/2025/06/10/islam-was-the-worlds-fastest-growing-religion-from-2010-to-2020/
+
+Create text, diagrams and labels in post. Do not generate scripture text inside imagery. Preserve the original published wording.
+
+Any enlarged phone preview or explanatory graphic remains labelled. Show the actual compact glasses display accurately.
+
+Optional stretch reveal: a second person selects a prepared recitation excerpt while hands stay off the phone. Film only after successful acquisition/recovery checks. Do not call this any-verse or blind full-Quran accuracy proof.
+
+## Rubric priorities
+
+Impact 30%: turn an unfamiliar-language listening experience into something the viewer can personally recognize, then establish population scale and prayer/home use.
+
+Meta tooling 25%: connect the glasses, live speech model and Spark-assisted source pairing to the visible experience. Explain cached plans honestly.
+
+Technical execution 20%: make within-passage movement the second reveal, followed by source preservation, actual implementation evidence and tests.
+
+Demo 25%: use the edited opening reveal, a genuine 30-second continuous take, matched scenes and a closing return to the original image.

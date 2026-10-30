@@ -34,7 +34,7 @@ For a cached demonstration passage, the display uses that accepted plan while lo
 
 ## Technical execution
 
-The app preserves the glasses microphone route, processes bounded evidence, discards stale decisions, and keeps only the newest pending display frame. Fifty-two automated tests cover core matching, source preservation, portions and scheduling. This is a foreground prototype; broader reciter accuracy and visible-lens latency remain unmeasured.
+The app preserves the glasses microphone route, processes bounded evidence, discards stale decisions, and keeps only the newest pending display frame. Fifty-five automated tests cover core matching, source preservation, portions and scheduling. This is a foreground prototype; broader reciter accuracy and visible-lens latency remain unmeasured.
 
 ## Original work and existing inputs
 

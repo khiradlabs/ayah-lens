@@ -250,3 +250,39 @@ Authenticated access succeeded and the guide was read at https://cerebralvalley.
 Minor changes from the supplied snapshot include 30-minute workshop listings and a $100 Fireworks credit request instead of $25. These do not change the current direct-Meta prototype or submission draft. The guide still prints October 27–November 4 for building; retain the existing organizer/kickoff October 26 clarification and provenance in CONTRIBUTIONS.md. Do not imply that line changed.
 
 Submission source notes and review status were updated from pending to verified. No form fields were entered, no project was submitted, and no app/model code changed. Authentication values were not saved in project files.
+
+## Script Version 1 and rubric revision Version 2, October 29
+
+Faraz named the preceding impact-led direction Version 1. It is preserved in submission/DEMO-SCRIPT-VERSION-1.md. The earlier initial submission draft is preserved separately. The maintained DEMO-SCRIPT.md and demo-timeline.json now contain Version 2, with the population/listening opening, proposed prayer and home-listening scenes, a continuous proof section, explicit Meta roles and visible engineering evidence.
+
+Version 2 remains 180 seconds, including 30 seconds of unvoiced continuous proof. The prayer disclaimer sits beside its proposed scene. The requested Arabic-only switch is pending; its choice scene includes a working-build narration alternative. No app code, installed artifact, model call or publication changed. The renderer now calculates silent proof duration from the timeline rather than retaining the original draft's fixed value.
+
+The submission checker passed timeline continuity, narration pacing, sentence length, rendered text, local links and all 13 form fields. Final footage and physical behavior of the requested switch remain unverified.
+
+## Cinematic script Version 3, October 29
+
+Faraz requested an attention-grabbing third version. Preserved Version 2 as submission/DEMO-SCRIPT-VERSION-2.md and demo-timeline-version-2.json. The maintained script now uses an unfamiliar-language listening opening, a genuine-output meaning reveal, matched prayer/home scenes, a 30-second continuous demonstration and a second reveal of within-passage following. VERSION-3-CONCEPT.md records the visual direction and optional prepared-excerpt selection surprise.
+
+The proposed 94:5 opener's Arabic/English reference was checked against the prepared source. Its actual phone/glasses behavior remains unverified. The translation switch remains pending. No new app implementation, footage, model call, generation spend or publication occurred.
+
+Checks passed: 180 contiguous seconds, 247 spoken words, section pacing below 160 words per minute, a separate 30-second continuous proof interval, rendered narration and local document links. Opening no-voiceover sections add 16 seconds; total unvoiced recitation time is 46 seconds.
+
+## Version 3 creative direction approved, October 29
+
+Faraz approved Version 3 and asked to ensure scoring coverage. Checked the maintained timeline against Impact 30%, Meta tooling 25%, Technical execution 20% and Demo 25%. Added the explicit Version 3 scene-to-rubric map to submission/JUDGING.md. The creative direction is approved; the physical opening check, requested translation switch, footage capture and final cut remain outstanding. No app implementation or publication changed.
+
+## English meaning switch and Version 3 capture started, October 29
+
+Implemented Show English meaning above the verse card. It defaults on, persists locally and changes both live preview and lens without resetting recognition or the selected source span. Full ayah and manual display also honor it. Three new tests produced four expected assertion failures before implementation. All 55 tests and the actual worker-queue audio callback passed afterward. Signed version 0.3.0 Build 31 succeeded, installed, matched device metadata and launched. The wearer confirmed English disappears and returns on both displays while Arabic keeps following.
+
+Version 3 current metadata and test counts now use Build 31 and 55 tests. Archived script versions are unchanged. The submission checker and diff whitespace check passed. Physical capture setup initially found Wi-Fi only, then the wearer connected USB. QuickTime now exposes the iPhone screen, with Mac microphone selected for room recitation. A read-only visual check confirmed an actual iPhone screen rather than a camera preview. Reopened Ayah Lens and started the first phone-screen take. It remains unsaved until recording ends. Actual optical/wearer footage remains outstanding.
+
+Source-only opening preflight matched 94:5 and preserved its reversible meaning. In a follow-on 94:6 query, retrieval retained 94:5; these near-identical verses need a later focused regression. Use only the verified single 94:5 source opening or the already proven long passage for capture; do not claim the two-verse transition passed. No new paid inference was initiated by these host checks.
+
+## First two Version 3 phone-screen takes saved, October 29
+
+Take 01 is 111.509 seconds at 1206×2622 with a 48 kHz mono audio track. Reviewed portions provide short-passage recognition and switch footage. Exported a 12-second choice candidate from source 65.5–77.5 seconds. Exclude setup and unrelated personal UI from any edit; originals remain private and ignored.
+
+Take 02 is 73.7755 seconds. Visual review found clean 73:20 bilingual following from 48.5–72.5 seconds, with six automatic window changes and no observed phone-card clipping. Exported that continuous 24-second candidate. It is shorter than the planned 30-second proof; requested a settled third take after the passage is already visible. Both original videos and source receipts remain in recordings/version-3/. These are phone captures, not actual optical lens footage.
+
+Added reusable read-only capture inspection and non-overwriting excerpt tools, verified against actual saved clips. The English-switch implementation is committed locally. No raw footage was staged or published.

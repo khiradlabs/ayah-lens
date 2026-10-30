@@ -1,8 +1,16 @@
 # Ayah Lens demo footage capture list
 
-Capture Build 28 working with a permitted recitation source. Use the same setup and passage that already worked. The main take should prove automatic following inside one long ayah.
+Capture Build 31 working with a permitted recitation source. Use the same setup and passage that already worked. The main take should prove automatic following inside one long ayah.
 
 Save raw footage under the ignored recordings folder in the Ayah Lens repository. Raw footage stays out of public Git.
+
+## Version 3 scenes
+
+Version 3 opens with eight seconds of recitation and an eight-second meaning reveal. The population/listening narration follows. The proposed 94:5 opener requires an actual-device check; use a proven passage if needed. The opening is edited, while the later 30-second proof remains continuous. The prayer scene presents a possible use and carries this readable caption: Technology demonstration only. This does not establish religious permissibility for use during prayer. Repeat it in the final video description.
+
+Build 31 contains the Show English meaning switch. The wearer confirmed it hides and restores English on phone and glasses while Arabic keeps following. Capture the on/off/on behavior separately from the continuous proof take.
+
+The final Version 3 timeline keeps 30 seconds of continuous proof. Capture the full 35–45-second take for editing margin.
 
 ## Minimum footage
 
@@ -19,7 +27,7 @@ If optical text cannot be captured legibly, use the phone preview labelled Live 
 
 ## Main take
 
-1. Open Ayah Lens and show version 0.3.0 Build 28 briefly.
+1. Open Ayah Lens and show version 0.3.0 Build 31 briefly.
 2. Use your own recorded recitation, or another source cleared for inclusion in the public video. Play it from a second device.
 3. Enable Muse Spark assistance and tap Start Muse live Quran once.
 4. Play 73:20 from its start, or reuse the proven 2:102 passage. Keep the source volume and device position consistent with the working test.
@@ -44,10 +52,16 @@ Label Spark phrase plans Cached when explaining the filmed precomputed plans. Sh
 
 ## Additional proof already available
 
-The editor can show event-dated Git commits, the source modules, corpus coverage and the existing 52-test result. Use public technical files or fresh offline checks. Keep private receipts, consent notes, credentials and personal diagnostics out of the footage.
+The editor can show event-dated Git commits, the source modules, corpus coverage and the existing 55-test result. Use public technical files or fresh offline checks. Keep private receipts, consent notes, credentials and personal diagnostics out of the footage.
 
 ## Capture acceptance
 
 The hero take has audible external recitation and at least three automatic window changes. Arabic and English remain legible. No Next control is used. The same ayah stays identified during the within-ayah sequence. Actual lens and preview labels are truthful.
 
 The final cut targets 180 seconds. Preserve a continuous proof interval before trimming decorative shots. Use the final media checker described in REVIEW.md after assembling the video.
+
+## Capture session progress
+
+Build 31 passed the wearer’s English-switch check. Two private phone-screen originals have been saved. A 12-second switch candidate and a 24-second within-73:20 candidate are available under recordings/version-3/. The latter shows six automatic window changes and no observed phone-card clipping, but does not meet the planned 30-second continuous proof interval. A settled retake is next. These are phone-preview captures; actual optical and wearer shots remain pending.
+
+Run bash tools/inspect_capture.sh /absolute/path/to/take.mov for read-only duration, stream and audio-level checks. Use bash tools/extract_capture.sh INPUT START_SECONDS DURATION_SECONDS OUTPUT.mp4 to export a continuous phone-preview interval without replacing the original. Save private per-take reviews and source intervals in the ignored capture manifest.
