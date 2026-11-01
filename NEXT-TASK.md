@@ -16,12 +16,20 @@ Faraz asked to stop QuickTime. Keep it stopped unless he asks to resume it. He l
 
 Version 3 now introduces Hifz, Quran memorization practice, in the 2:18–2:32 Arabic-only scene. The switch provides a source reference while rehearsing. The engineering segment now mentions Quran teaching as future work requiring further development and extensive testing.
 
-## Immediate priority: capture and complete the submission
+## Current review video
+
+The Version 3 review cut is ready at build/video-review/Ayah-Lens-Version-3-Review.mp4. It is 179.900 seconds at 1920×1080, with stereo audio and a temporary local Daniel guide voice. Picture and audio both span the full duration. The final visual review passed.
+
+One masjid replacement slot is reserved at 1:00–1:30. Its current fill is a labelled placeholder plus 24 seconds of existing phone footage. Replace this block when Faraz supplies the masjid recording. Keep QuickTime stopped. The Hifz choices are explained with a graphic; the old alleged switch clip does not show toggle interaction and must not be used as switch proof.
+
+Reproduce with python3 tools/render_demo_video.py. Source plan: submission/video-edit.json. Guide captions and viewing notes sit beside the MP4. Review artifacts and source media remain ignored by Git.
+
+## Immediate priority: review and complete the submission
 
 Draft 1 is ready in submission/. Start with FORM-ANSWERS.md, DEMO-SCRIPT.md and CAPTURE-LIST.md. The 180-second timeline contains 250 spoken words. python3 tools/check_submission.py passed timeline, pacing, file-link and 13-field coverage checks.
 
-1. Review the remaining glasses clips when imported. IMG_4525.MP4 supplied a 12.5-second native display-composite candidate showing112:1–4. The earlier phone takes and a 24-second 73:20 candidate are saved. Keep all originals private under recordings/version-3/. Select a longer continuous within-ayah proof from the remaining clips if available.
-2. Assemble the three-minute cut, preserving at least 25 seconds of continuous genuine proof. Distinguish actual lens footage, phone preview and overlays. Label cached Spark source plans accurately.
+1. Review the assembled Version 3 cut and adjust pacing/narration as directed. Keep the masjid slot reserved.
+2. Replace the 1:00–1:30 block with the selected masjid recording. Recheck source labels, audio, full picture duration and slot boundaries. Do not present the reference fill as finished continuous masjid proof.
 3. Review the draft at https://github.com/khiradlabs/ayah-lens/pull/1 and merge only after authorization, before submitting the root public repository URL. The default branch currently has initial docs only.
 4. Have Faraz select his own two Meta API opinion ratings. Finish the accessible video URL and accepted contributor details. Do not submit the form or publish social posts without explicit authorization.
 

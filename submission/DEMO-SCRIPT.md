@@ -1,6 +1,6 @@
 # Ayah Lens demo script Version 3
 
-Three-minute submission video. Device baseline: version 0.3.0, Build 31. Version 3 approved; English switch implemented and wearer-verified in Build 31; footage capture starting.
+Three-minute submission video. Device baseline: version 0.3.0, Build 31. Version 3 review cut assembled; temporary guide narration and one reserved masjid replacement slot.
 
 Let viewers experience unfamiliar recitation, then reveal its meaning through genuine output. Explain the population and Meta implementation after that experience. Keep the uninterrupted proof section intact.
 
@@ -14,7 +14,7 @@ No voiceover. Keep the real recitation audible.
 
 Picture
 
-Open on black for one beat, then a close view of a listener and the real glasses. A permitted reciter delivers a short passage. Use 94:5 as the proposed emotionally accessible opener, subject to actual-device verification. Let the recitation stand alone. No music or narrator competes with it.
+Open on a dark designed frame with Just listen. Play eight seconds of the actual supplied recitation. No narrator or music competes with the source audio.
 
 On screen
 
@@ -28,12 +28,12 @@ No voiceover. Keep the real recitation audible.
 
 Picture
 
-Match cut as the wearer raises the glasses. Show a real optical sample beside an enlarged genuine phone Lens preview, each labelled. Keep the same recorded phrase for the before-and-after comparison, with the edit apparent. The proposed 94:5 English is the exact Pickthall text: “But lo! with hardship goeth ease,”. Do not invent an immersive display or fill the room with apparently device-rendered text. If the opener does not pass the actual-device check, use a readable segment from the proven passage.
+Replay the same eight-second excerpt as a native camera-plus-display recording, beside an enlargement from the same frames. Label both views accurately. Keep the edit apparent; this is not optical camera-through-lens footage.
 
 On screen
 
 Now follow the meaning.
-Actual glasses display | Enlarged live phone preview
+Native glasses recording | Enlarged display from the same recording
 
 ## 0:16 to 0:36 Make the experience universal
 
@@ -87,12 +87,12 @@ No voiceover. Keep the real recitation audible.
 
 Picture
 
-A 30-second continuous recording. The reciter source, phone preview and untouched hands remain in view. Retain the actual recitation and at least three automatic window changes inside the proven 73:20 or 2:102 passage. Use a stable split view; any optical inset must be genuine and from the same take if presented as simultaneous. A simple label says Continuous recording.
+Reserve this30-second block for the forthcoming masjid recording. The review cut uses a six-second placeholder card and24 seconds of existing within-73:20 phone footage, persistently labelled as reference footage awaiting replacement. The final masjid take should preserve genuine continuous recitation and automatic following.
 
 On screen
 
-Continuous recording
-Live phone preview · automatic passage following
+MASJID RECORDING / RESERVED
+Reference footage / replace with masjid take
 
 ## 1:30 to 1:52 Reveal the difficult part hiding in plain sight
 
@@ -133,7 +133,7 @@ Hifz means memorizing the Quran. Arabic-only mode offers a reference while rehea
 
 Picture
 
-Show the verified Show English meaning switch in Build 31. A learner rehearses with Arabic-only source text, then switches English on to follow its meaning. Use actual phone control and output, keeping the selected reading position stable. Label the phone preview separately from optical footage.
+Use a labelled explanatory graphic showing Arabic-only reference mode for Hifz and Arabic with English for following meaning. The feature passed the wearer test, but no supplied clip shows an actual toggle interaction. Do not substitute the brief unpaired-translation gap as switch proof.
 
 On screen
 
@@ -174,9 +174,9 @@ Hear the recitation. Follow the meaning.
 
 Total narration: 250 words. The timeline reserves 46 seconds for unvoiced live recitation proof. Aim for a calm delivery and preserve those proof sections.
 
-The first 16 seconds are an edited before-and-after reveal. The separate 1:00–1:30 proof section is a genuine uninterrupted recording.
+The opening is an edited listen/reveal replay. The review cut reserves1:00–1:30 for masjid footage; its current fill is explicitly labelled reference footage, not completed30-second masjid proof.
 
-The proposed opening reference is 94:5. Its exact Pickthall English is “But lo! with hardship goeth ease,”. Capture a real successful run before using it. Use a proven passage if this opener is unreliable.
+The review opening uses the supplied native112:1–4 excerpt. Its first eight seconds are replayed in the meaning reveal. Keep real source audio and display labels accurate.
 
 The viewer condition matters: say “If Arabic is unfamiliar.” Do not assume that every judge is unfamiliar with Arabic or claim that all Muslims lack understanding.
 

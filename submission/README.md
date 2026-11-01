@@ -12,10 +12,11 @@ Script Version 3 uses a cinematic before-and-after reveal, followed by a genuine
 - [FORM-ANSWERS.md](FORM-ANSWERS.md) matches the supplied submission form.
 - [CLAIMS.md](CLAIMS.md) records source wording and implementation limits.
 - [REVIEW.md](REVIEW.md) records checks and remaining release work.
+- [VIDEO-REVIEW.md](VIDEO-REVIEW.md) describes the local Version 3 review cut and reserved masjid slot.
 
 The maintained timing source is demo-timeline.json. Regenerate the script with python3 tools/render_demo_script.py, then run python3 tools/check_submission.py.
 
-The three-minute video is not yet assembled. The public repository default branch still needs the reviewed implementation. Personal opinion ratings and final submission remain with the entrant.
+A three-minute local review cut is assembled with temporary guide narration and one reserved masjid slot. It is not the final submission video. The public repository default branch still needs the reviewed implementation. Personal opinion ratings and final submission remain with the entrant.
 
 Version 3 includes a proposed listener-choice scene and an opening passage requiring a physical check. The Arabic-only switch is implemented and wearer-verified in Build 31. A working-build narration alternative is included.
 

@@ -32,3 +32,7 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - A commit command must stop when its staged diff check fails. Use fail-fast shell execution for the sequence. Verify: git diff --cached --check exits zero before git commit.
 
 - Meta Ray-Ban Display has native Record display for DAT content. Check the current official Wearables FAQ before requiring an external lens camera. Verify: a short native capture includes actual app text while live recognition continues.
+
+- Missing English alone does not prove the meaning switch was used: unpaired portions also omit English. Verify the actual toggle changes before calling footage a switch demonstration.
+
+- Concat segments with changing color metadata can reset FFmpeg filter timestamps and shorten picture while audio stays full length. Normalize segment tags and preserve filter state. Verify picture duration and late-frame extraction, not container duration alone.

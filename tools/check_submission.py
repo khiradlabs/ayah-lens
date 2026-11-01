@@ -50,6 +50,8 @@ if args.video:
     assert 179<=duration<=180, f'Expected final export of 179–180 seconds, got {duration:.3f}'
     kinds={stream['codec_type'] for stream in media['streams']}
     assert {'video','audio'}<=kinds, 'Final cut needs both video and audio streams'
+    picture=next(stream for stream in media['streams'] if stream['codec_type']=='video')
+    assert float(picture['duration'])>=duration-.1, 'Picture ends before the full video duration'
     print(f'PASS: exported video is {duration:.3f} seconds with audio and video')
 else:
     print('NOT CHECKED: final video, footage authenticity, published links or entrant ratings')

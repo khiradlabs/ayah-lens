@@ -70,7 +70,7 @@ The final cut targets 180 seconds. Preserve a continuous proof interval before t
 
 ## Capture session progress
 
-Build 31 passed the wearer’s English-switch check. Two private phone-screen originals have been saved. A 12-second switch candidate and a 24-second within-73:20 candidate are available under recordings/version-3/. The latter shows six automatic window changes and no observed phone-card clipping, but does not meet the planned 30-second continuous proof interval. A settled retake is next. These are phone-preview captures; actual optical and wearer shots remain pending.
+Build 31 passed the wearer’s English-switch check. Two private phone-screen originals have been saved. A 24-second within-73:20 candidate is available under recordings/version-3/. Closer review found that the earlier 12-second candidate never showed the English toggle changing; it must not be used as switch proof. The latter shows six automatic window changes and no observed phone-card clipping, but does not meet the planned 30-second continuous proof interval. A settled retake is next. These are phone-preview captures; actual optical and wearer shots remain pending.
 
 Run bash tools/inspect_capture.sh /absolute/path/to/take.mov for read-only duration, stream and audio-level checks. Use bash tools/extract_capture.sh INPUT START_SECONDS DURATION_SECONDS OUTPUT.mp4 to export a continuous phone-preview interval without replacing the original. Save private per-take reviews and source intervals in the ignored capture manifest.
 
