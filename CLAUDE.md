@@ -36,3 +36,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Missing English alone does not prove the meaning switch was used: unpaired portions also omit English. Verify the actual toggle changes before calling footage a switch demonstration.
 
 - Concat segments with changing color metadata can reset FFmpeg filter timestamps and shorten picture while audio stays full length. Normalize segment tags and preserve filter state. Verify picture duration and late-frame extraction, not container duration alone.
+
+- Swift6 diagnostic tasks must return Sendable typed records, not arrays of dictionaries containing Any. Verify the harness compiles before loading credentials or starting a live replay.

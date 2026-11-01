@@ -318,3 +318,11 @@ Exactly one 30-second masjid slot remains at 1:00–1:30. The review fill is a c
 A closer source check corrected the earlier switch-footage interpretation: the toggle stayed on while English briefly disappeared. This is not switch proof. The wearer-verified app feature is unchanged; the video uses a labelled modes graphic instead. Masked only surrounding phone status UI below the changing verse card; visual checks retained Arabic, English, references, portion labels and attribution.
 
 The first assembled export exposed an FFmpeg color-metadata reconfiguration that reset filter timestamps. Picture ended early despite a full-length audio/container. Added a picture-duration check, observed it reject that file, then preserved filter state and normalized future segment tags. Final checks passed 179.900-second picture and audio,5397 frames, a frame at177 seconds and visual60–90-second slot boundaries. All source recordings remain unchanged and ignored.
+
+## New missed-ayah report investigated, October 31
+
+Faraz supplied another native recording and said recognition missed ayahs. Preserved the Downloads original and a matching private copy. Visual review confirmed ordered short-verse updates followed by a long unchanged display and eventual overlay disappearance. Do not present the complete recording as reliable following. Detailed references, audio clues and timing tables stay in private receipts.
+
+Exact canonical-text controls passed 16/16 through the current matcher. A local offline audio check found later recitation during the displayed hold. One bounded actual Muse replay recovered those later references before endStream, using the existing client and matcher. This does not reproduce or fix the original live failure: the native video audio differs from the original HFP stream, and original provider partials were not saved.
+
+Retrieved a numeric-only phone snapshot without starting a session. It cannot be conclusively tied to the recording and includes possible Stop-cleanup state. Asked for the exact red app error, which the video does not show legibly. No app behavior or thresholds changed. The video master remains a draft, with the masjid slot reserved. QuickTime remained stopped.

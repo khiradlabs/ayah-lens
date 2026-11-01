@@ -24,7 +24,13 @@ One masjid replacement slot is reserved at 1:00–1:30. Its current fill is a la
 
 Reproduce with python3 tools/render_demo_video.py. Source plan: submission/video-edit.json. Guide captions and viewing notes sit beside the MP4. Review artifacts and source media remain ignored by Git.
 
-## Immediate priority: review and complete the submission
+## Current accuracy investigation
+
+Faraz supplied another recording and reported missed ayahs. Private evidence is in build/accuracy-review/ and recordings/version-3/take-04-receipt.json. A long live hold is confirmed. Exact-text matching and a recorded-audio Muse replay both passed the later references, so the original failure is not yet reproduced. Do not tune thresholds or claim a fix.
+
+A question is pending for the exact red error shown at the end of the clip. The original live Muse partials were not retained. A controlled same-passage comparison with native display recording off/on is the next useful physical check if the error does not localize it. QuickTime stays stopped. Keep the review cut as a draft and the masjid slot reserved.
+
+## Immediate priority: investigate live reliability, then complete the submission
 
 Draft 1 is ready in submission/. Start with FORM-ANSWERS.md, DEMO-SCRIPT.md and CAPTURE-LIST.md. The 180-second timeline contains 250 spoken words. python3 tools/check_submission.py passed timeline, pacing, file-link and 13-field coverage checks.
 
