@@ -298,3 +298,13 @@ Faraz requested Quran Hifz as another use case. Added memorization practice to t
 Faraz proposed teaching after suitable training and extensive testing. Added a clearly future-labelled line to Version 3’s engineering segment and expanded the concept notes. Current code uses pretrained Muse models; no specialized teaching model was trained or validated. No app capability, model call or recording changed. Capture remains paused.
 
 Script checks passed: 180 seconds, 250 spoken words, section pacing and the continuous proof interval.
+
+## Native glasses display recording discovered, October 30
+
+Official Meta Wearables FAQ confirms Record display can capture DAT content. The setting is available on glasses or in Meta AI’s cards below the glasses overview. Previous capture advice missed this native feature and overemphasized external optical filming. Corrected capture guidance and added a gotcha/check. Current documentation verification establishes feature support, not successful recording with this exact Ayah Lens microphone/display session. A ten-second physical check is next; no app or QuickTime action was taken. Source: https://developers.meta.com/wearables/faq/
+
+## First supplied native glasses recording reviewed, October 31
+
+Located IMG_4525.MP4 in Downloads. Copied it into ignored recordings/version-3/ and verified matching SHA-256 without altering the source. Technical checks: 36.233-second H264 video, 976×1296, 44.1kHz stereo AAC, non-silent but quiet audio. A separate visual review identified a readable camera-plus-display composite, with Arabic/English updates across 112:1–4.
+
+Exported native-display-recognition-candidate.mp4 from source 17.5–30.0 seconds, preserving native resolution and stripping container metadata. The 12.5-second candidate excludes setup/error/menu sections and ending handling. It supports a short native-display demonstration, not 30-second proof, long-ayah tracking, or measured latency. Per-take review and source receipts remain private. No raw media was staged or published. QuickTime remains stopped.

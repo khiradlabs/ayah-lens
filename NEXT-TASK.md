@@ -10,9 +10,9 @@ Version 3 proposes 94:5 as the short emotional opening. Its published translatio
 
 The requested Show English meaning switch is implemented in Build 31. All 55 core tests and the audio-callback probe passed. The wearer confirmed English hides/restores on phone and glasses while Arabic keeps following. Version 3 capture is now the priority.
 
-## Capture paused
+## QuickTime stopped and native clips under review
 
-Faraz asked to stop QuickTime. The app was terminated and both saved originals were verified present. Keep capture paused until Faraz asks to resume. The settled third take remains outstanding.
+Faraz asked to stop QuickTime. Keep it stopped unless he asks to resume it. He later supplied a native glasses recording through Downloads. A private copy and a clean 12.5-second display-composite candidate are saved under recordings/version-3/. Review the remaining native recordings before requesting more filming. The longer continuous within-ayah proof remains outstanding.
 
 Version 3 now introduces Hifz, Quran memorization practice, in the 2:18–2:32 Arabic-only scene. The switch provides a source reference while rehearsing. The engineering segment now mentions Quran teaching as future work requiring further development and extensive testing.
 
@@ -20,7 +20,7 @@ Version 3 now introduces Hifz, Quran memorization practice, in the 2:18–2:32 A
 
 Draft 1 is ready in submission/. Start with FORM-ANSWERS.md, DEMO-SCRIPT.md and CAPTURE-LIST.md. The 180-second timeline contains 250 spoken words. python3 tools/check_submission.py passed timeline, pacing, file-link and 13-field coverage checks.
 
-1. Finish and save the first QuickTime phone-screen recording under recordings/version-3/. Then obtain a 35–45-second continuous external-reciter proof take and a 5–10-second actual-lens sample. Use the same working passage and permitted audio. Store raw footage only under ignored recordings/.
+1. Review the remaining glasses clips when imported. IMG_4525.MP4 supplied a 12.5-second native display-composite candidate showing112:1–4. The earlier phone takes and a 24-second 73:20 candidate are saved. Keep all originals private under recordings/version-3/. Select a longer continuous within-ayah proof from the remaining clips if available.
 2. Assemble the three-minute cut, preserving at least 25 seconds of continuous genuine proof. Distinguish actual lens footage, phone preview and overlays. Label cached Spark source plans accurately.
 3. Review the draft at https://github.com/khiradlabs/ayah-lens/pull/1 and merge only after authorization, before submitting the root public repository URL. The default branch currently has initial docs only.
 4. Have Faraz select his own two Meta API opinion ratings. Finish the accessible video URL and accepted contributor details. Do not submit the form or publish social posts without explicit authorization.
@@ -42,3 +42,11 @@ Current artifact: version 0.3.0 Build 31. Fifty-five tests, callback probe and s
 ## Focused later regression
 
 Source-only preflight: 94:5 identifies correctly, but a subsequent exact 94:6 query retained 94:5. Do not present that transition as verified. Keep the current capture on the proven long passage; investigate the near-identical pair after capture without broad feature changes.
+
+## Native display capture correction, October 30
+
+Faraz asked to record directly from the glasses with Arabic visible. Verified Meta’s current official Wearables FAQ: Record display supports DAT content. Prefer a ten-second native display-recording check before arranging external optical filming. The button is in glasses settings or the Meta AI action cards below the glasses overview. Actual recording with Ayah Lens live audio remains unverified. QuickTime stays stopped.
+
+## First native clip reviewed, October 31
+
+Downloads/IMG_4525.MP4 is 36.233 seconds, 976×1296, with stereo audio. The clean 17.5–30.0-second interval shows readable Arabic and English across 112:1–4 in a camera-plus-display composite. It does not show 30 seconds or long-ayah tracking. The candidate is native-display-recognition-candidate.mp4. Native capture is now observed in supplied footage; it is not an optical camera-through-lens recording. Audio signal is present and quiet; synchronization and perceptual clarity remain unchecked.

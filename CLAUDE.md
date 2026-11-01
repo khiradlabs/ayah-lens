@@ -30,3 +30,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Do not compare a full-ayah phone card with a portion-only lens as a latency measurement, or await every SDK send in the recognition loop. Mirror the selected reading window, keep only the newest pending frame, and separate queue/SDK timing. Verify LatestLensSenderTests plus the actual phone/lens check.
 
 - A commit command must stop when its staged diff check fails. Use fail-fast shell execution for the sequence. Verify: git diff --cached --check exits zero before git commit.
+
+- Meta Ray-Ban Display has native Record display for DAT content. Check the current official Wearables FAQ before requiring an external lens camera. Verify: a short native capture includes actual app text while live recognition continues.

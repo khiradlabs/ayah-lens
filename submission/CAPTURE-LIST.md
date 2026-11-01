@@ -12,6 +12,14 @@ Build 31 contains the Show English meaning switch. The wearer confirmed it hides
 
 The final Version 3 timeline keeps 30 seconds of continuous proof. Capture the full 35–45-second take for editing margin.
 
+## Native display recording
+
+Meta’s current Wearables FAQ confirms native recording of Device Access Toolkit content. On the glasses, use the Record display button in settings. In Meta AI, find Record display in the action cards below the glasses overview. Source: https://developers.meta.com/wearables/faq/
+
+Try a ten-second recording with Ayah Lens active and Arabic visible. Check the saved clip for the actual displayed text, usable audio and continuing recognition. A supplied native recording now shows Ayah Lens with bilingual verse updates. Verify each new take rather than assuming the whole source is usable. Keep Ayah Lens foregrounded; using the glasses settings avoids switching the phone app. Once verified, native display recording is the preferred way to obtain the displayed-Arabic shot. External optical filming remains a fallback.
+
+The native display recording and ordinary outward-camera video are different capture modes. Label the saved native output accurately, including any device-generated composite view.
+
 ## Minimum footage
 
 | Take | What to capture | Length | Save as |
@@ -65,3 +73,7 @@ The final cut targets 180 seconds. Preserve a continuous proof interval before t
 Build 31 passed the wearer’s English-switch check. Two private phone-screen originals have been saved. A 12-second switch candidate and a 24-second within-73:20 candidate are available under recordings/version-3/. The latter shows six automatic window changes and no observed phone-card clipping, but does not meet the planned 30-second continuous proof interval. A settled retake is next. These are phone-preview captures; actual optical and wearer shots remain pending.
 
 Run bash tools/inspect_capture.sh /absolute/path/to/take.mov for read-only duration, stream and audio-level checks. Use bash tools/extract_capture.sh INPUT START_SECONDS DURATION_SECONDS OUTPUT.mp4 to export a continuous phone-preview interval without replacing the original. Save private per-take reviews and source intervals in the ignored capture manifest.
+
+## Native clip available
+
+The first supplied native glasses recording contains a clean 12.5-second camera-plus-display excerpt with Arabic and English across 112:1–4. Use the label Native glasses display recording. It can support the reveal or short device demonstration. It is not long-ayah following or a 30-second proof. Originals and private per-take reviews remain under recordings/version-3/. Review remaining supplied clips before requesting another shoot.
