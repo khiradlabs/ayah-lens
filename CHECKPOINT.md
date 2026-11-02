@@ -350,3 +350,7 @@ Signed build succeeded. Signature/profile verification, installation, installed-
 An independent read of the newest supplied screenshot identified the local audio-backpressure error: Muse could not keep up with live audio. Stopped instead of building a delayed queue. Source inspection traced this to a dropped yield in the eight-chunk oldest-first audio stream. A local Swift probe reproduced that policy dropping the ninth pending item.
 
 The numeric Build 40 phone snapshot showed more than three minutes of sent audio, transcript updates and completed lens sends. The ten-minute cap was not reached. Private numeric details, screenshot and hypotheses are under ignored build/accuracy-review/build40-backpressure/. The producer/send timing does not yet distinguish a WebSocket upload stall from a scheduling burst after suspension. Asked whether Ayah Lens stayed foreground and unlocked. No buffer enlargement, audio dropping, model change, paid inference or new capture was performed. Lens readability remains pending.
+
+## Audio-buffer investigation deferred, November 2
+
+Faraz explicitly chose to skip this investigation for now. The foreground/unlocked question and further reproduction are deferred; do not prompt again unless work on this issue resumes. Keep the known stopping condition documented as unresolved. Build 40 remains installed. Resume the Version 3 video work with the masjid slot reserved. No app code, tests, recordings or video files changed during this deferral.

@@ -73,6 +73,10 @@ Build 39 extends only the prototype audio allowance and adds its phone countdown
 
 Build 40 uses larger heading-style Arabic and English in the live lens, with denser windows kept to one source portion. Wear glasses and tap Start Muse live Quran with English on. Confirm both languages are readable and fully visible during a short passage and 73:20. The ten-minute cap from Build 39 remains; combine this with the pending three-minute test if convenient. Actual font readability and the original missed-ayah stall are not established by automated checks.
 
-## Current error investigation
+## Deferred error investigation
 
-The latest screenshot shows the local audio-buffer overflow guard, not the session allowance. Use the private Build 40 investigation under build/accuracy-review/build40-backpressure/. Await the foreground/unlocked observation to distinguish upload stalls from resumed callback bursts. Preserve the bounded audio queue until evidence justifies a specific change. Build 40 remains installed; no speculative fix has been made.
+The latest screenshot shows the local audio-buffer overflow guard, not the session allowance. Use the private Build 40 investigation under build/accuracy-review/build40-backpressure/. Faraz deferred this investigation on November 2. Do not request the foreground/unlocked observation or further reproduction unless this issue is resumed. Preserve the bounded audio queue until evidence justifies a specific change. Build 40 remains installed; no speculative fix has been made.
+
+## Active priority after deferral
+
+Return to Version 3 demo-video review and finalization. Keep the single 1:00–1:30 masjid slot reserved. The audio-buffer issue remains unresolved and does not block editing. Do not describe the full failed take as reliable following.
