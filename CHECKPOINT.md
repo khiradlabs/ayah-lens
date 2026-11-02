@@ -354,3 +354,7 @@ The numeric Build 40 phone snapshot showed more than three minutes of sent audio
 ## Audio-buffer investigation deferred, November 2
 
 Faraz explicitly chose to skip this investigation for now. The foreground/unlocked question and further reproduction are deferred; do not prompt again unless work on this issue resumes. Keep the known stopping condition documented as unresolved. Build 40 remains installed. Resume the Version 3 video work with the masjid slot reserved. No app code, tests, recordings or video files changed during this deferral.
+
+## Foreground observation received after deferral, November 2
+
+Faraz answered the earlier question: Ayah Lens stayed open on the unlocked iPhone when the audio-buffer error occurred. This weakens the lock/background interruption hypothesis but does not identify the send or scheduling delay. His prior instruction to defer investigation remains in force. No further test or code change was made.

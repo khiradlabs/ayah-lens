@@ -80,3 +80,5 @@ The latest screenshot shows the local audio-buffer overflow guard, not the sessi
 ## Active priority after deferral
 
 Return to Version 3 demo-video review and finalization. Keep the single 1:00–1:30 masjid slot reserved. The audio-buffer issue remains unresolved and does not block editing. Do not describe the full failed take as reliable following.
+
+The earlier foreground question was answered after deferral: Ayah Lens stayed open and unlocked at the error. Keep the investigation deferred; do not ask this question again.
