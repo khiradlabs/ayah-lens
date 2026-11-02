@@ -344,3 +344,9 @@ Faraz reported the glasses text was barely readable. Live Arabic and English use
 The new dense-window test failed with five assertions before implementation. All 59 core tests passed with zero failures after it. The actual audio callback passed. The long-ayah integration probe enforced the new bounds and passed 52 transitions, including 44 windows with upcoming context. The shared opening holds remained explicit. No paid inference occurred.
 
 Signed build succeeded. Signature/profile verification, installation, installed-metadata comparison and launch passed for version 0.3.0 Build 40. Readability and clipping in the physical lens remain pending wearer confirmation. No new recording began. QuickTime remained stopped, and the review video/masjid slot were unchanged.
+
+## Build 40 reported error identified, November 2
+
+An independent read of the newest supplied screenshot identified the local audio-backpressure error: Muse could not keep up with live audio. Stopped instead of building a delayed queue. Source inspection traced this to a dropped yield in the eight-chunk oldest-first audio stream. A local Swift probe reproduced that policy dropping the ninth pending item.
+
+The numeric Build 40 phone snapshot showed more than three minutes of sent audio, transcript updates and completed lens sends. The ten-minute cap was not reached. Private numeric details, screenshot and hypotheses are under ignored build/accuracy-review/build40-backpressure/. The producer/send timing does not yet distinguish a WebSocket upload stall from a scheduling burst after suspension. Asked whether Ayah Lens stayed foreground and unlocked. No buffer enlargement, audio dropping, model change, paid inference or new capture was performed. Lens readability remains pending.
