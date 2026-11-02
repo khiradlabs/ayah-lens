@@ -38,3 +38,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Concat segments with changing color metadata can reset FFmpeg filter timestamps and shorten picture while audio stays full length. Normalize segment tags and preserve filter state. Verify picture duration and late-frame extraction, not container duration alone.
 
 - Swift6 diagnostic tasks must return Sendable typed records, not arrays of dictionaries containing Any. Verify the harness compiles before loading credentials or starting a live replay.
+
+- The prototype audio cap and native glasses Display Recording limit are separate. A cap change does not fix an earlier recognition hold. Verify the real-client synthetic budget probe, then a physical session beyond two minutes before claiming live validation.

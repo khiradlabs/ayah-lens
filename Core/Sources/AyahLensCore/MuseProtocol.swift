@@ -1,6 +1,17 @@
 import AVFoundation
 import Foundation
 
+public enum MuseSessionBudget {
+    public static let maximumAudioSeconds = 600
+    public static func accepts(sentBytes: Int, nextBytes: Int) -> Bool {
+        sentBytes + nextBytes <= 24000 * 2 * maximumAudioSeconds
+    }
+    public static func remainingLabel(sentAudioSeconds: Double) -> String {
+        let seconds = max(0, maximumAudioSeconds - Int(sentAudioSeconds))
+        return String(format: "%d:%02d", seconds / 60, seconds % 60)
+    }
+}
+
 public enum MuseAudioProgress {
     public static func gapMilliseconds(sentBytes: Int, processedMilliseconds: Int) -> Double? {
         guard sentBytes >= 0, processedMilliseconds >= 0 else { return nil }
@@ -16,7 +27,7 @@ public enum MuseError: Error, LocalizedError {
         case .invalidAudio: "Muse received an invalid microphone format."
         case .rejected: "Muse rejected the session. Check API access and billing."
         case .notConnected: "Muse is not connected."
-        case .testLimit: "The two-minute Muse test limit was reached."
+        case .testLimit: "Ten-minute audio session complete. Tap Start Muse live Quran to begin another session."
         case .connection: "The Muse connection ended unexpectedly."
         }
     }

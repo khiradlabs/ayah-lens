@@ -76,8 +76,15 @@ class Server(BaseHTTPRequestHandler):
             self.event({"type": "speechStart", "turnId": 1})
             self.event({"type": "transcript", "transcript": "الحمد", "final": False})
             self.event({"type": "transcript", "transcript": "الحمد لله رب العالمين", "final": False})
-            opcode, data = self.read_frame()
-            assert opcode == 1 and json.loads(data) == {"type": "endStream"}
+            total_audio = len(audio)
+            while True:
+                opcode, data = self.read_frame()
+                if opcode == 1:
+                    assert json.loads(data) == {"type": "endStream"}
+                    break
+                assert opcode == 2 and len(data) % 2 == 0
+                total_audio += len(data)
+            assert 48000 * 599 < total_audio <= 48000 * 600, "Unexpected audio session budget"
             self.send_frame(8, struct.pack("!H", 1000))
         except Exception as exc:
             failures.append(type(exc).__name__ + ": " + str(exc))

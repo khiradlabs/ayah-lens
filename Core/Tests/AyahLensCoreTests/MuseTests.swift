@@ -2,6 +2,25 @@ import XCTest
 @testable import AyahLensCore
 
 final class MuseTests: XCTestCase {
+    func testPrototypeSessionContinuesBeyondTwoMinutesButStopsAtTen() {
+        XCTAssertTrue(MuseSessionBudget.accepts(sentBytes: 48000 * 120, nextBytes: 48000))
+        XCTAssertTrue(MuseSessionBudget.accepts(sentBytes: 48000 * 600 - 2, nextBytes: 2))
+        XCTAssertFalse(MuseSessionBudget.accepts(sentBytes: 48000 * 600, nextBytes: 2))
+    }
+
+    func testRemainingAudioTimeCountsDownToZero() {
+        XCTAssertEqual(MuseSessionBudget.remainingLabel(sentAudioSeconds: 0), "10:00")
+        XCTAssertEqual(MuseSessionBudget.remainingLabel(sentAudioSeconds: 121.4), "7:59")
+        XCTAssertEqual(MuseSessionBudget.remainingLabel(sentAudioSeconds: 599.9), "0:01")
+        XCTAssertEqual(MuseSessionBudget.remainingLabel(sentAudioSeconds: 600), "0:00")
+        XCTAssertEqual(MuseSessionBudget.remainingLabel(sentAudioSeconds: 601), "0:00")
+    }
+
+    func testSessionLimitExplainsHowToRestart() {
+        XCTAssertEqual(MuseError.testLimit.localizedDescription,
+                       "Ten-minute audio session complete. Tap Start Muse live Quran to begin another session.")
+    }
+
     func testHandshakeSelectsMuseArabicAndCumulativeRealtimePCM() throws {
         let data = try MuseProtocol.handshake(apiKey: "synthetic-test-key")
         let object = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])

@@ -36,6 +36,17 @@ struct MuseProbe {
         precondition(gap != nil && gap! >= 50 && gap! <= 200)
         print("PASS: real WebSocket client exposed audio processing progress")
         print("PASS: real WebSocket client received cumulative partials and selected canonical verse 1:2")
+        var reachedLimit = false
+        for _ in 0..<601 {
+            do {
+                try await client.sendAudio(MuseAudioChunk(samples: [Float](repeating: 0, count: 24000), sampleRate: 24000), sessionID: id)
+            } catch MuseError.testLimit {
+                reachedLimit = true
+                break
+            }
+        }
+        precondition(reachedLimit, "Audio must stop at the ten-minute budget")
+        print("PASS: real client streamed beyond two minutes and enforced the ten-minute PCM budget")
         await client.finish(sessionID: id)
         try await Task.sleep(for: .milliseconds(150))
         let failure = await results.failure

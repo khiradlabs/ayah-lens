@@ -59,7 +59,7 @@ public actor MuseVoiceClient {
     public func sendAudio(_ chunk: MuseAudioChunk, sessionID: UUID) async throws {
         guard ready, !ending, epoch == sessionID, let socket else { throw MuseError.notConnected }
         let data = try encoder.encode(chunk.samples, sampleRate: chunk.sampleRate)
-        guard sentBytes + data.count <= 24000 * 2 * 120 else { throw MuseError.testLimit }
+        guard MuseSessionBudget.accepts(sentBytes: sentBytes, nextBytes: data.count) else { throw MuseError.testLimit }
         sentBytes += data.count
         if !data.isEmpty { try await socket.send(.data(data)) }
     }

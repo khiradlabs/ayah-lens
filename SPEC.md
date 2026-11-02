@@ -89,3 +89,9 @@ Recitation processing must not wait for each SDK display send. Use one send in f
 Show English meaning defaults on and persists on this phone. Switching it during live recitation changes the phone Lens preview and actual lens without restarting recognition, resetting the passage or changing the selected source span. Arabic remains visible. Switching back restores the same published meaning. Manual reference pages and the Full ayah disclosure respect the preference.
 
 Acceptance: reversible source-preserving live windows and Arabic-only manual pages pass tests; signed Build 31 is installed and version-verified; the wearer confirmed both outputs change while Arabic continues following. No new model inference is required by switching visibility.
+
+## November 2: recording session allowance
+
+Extend the foreground Muse audio budget from two to ten minutes. The phone shows remaining sent-audio time near the build label. The cap ends normally with an explicit restart instruction. Keep microphone routing, model, matching and lens behavior unchanged. This does not extend native display recording or establish a fix for the reported earlier display hold.
+
+Verify boundary and countdown regressions, the actual client against a synthetic local WebSocket through the cap, the audio callback and a signed build/install/version check. A physical session beyond two minutes remains necessary before claiming live validation.

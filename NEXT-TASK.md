@@ -1,6 +1,6 @@
 # Next Ayah Lens task
 
-Version 0.3.0 Build 31 is installed and wearer-verified for the English-meaning switch. Read SPEC.md and the latest CHECKPOINT entry. The runtime key is already in device-only Keychain; no provisioning repeat is needed.
+Version 0.3.0 Build 39 is installed, metadata-verified and launched. The English-meaning switch was wearer-verified in Build 31. Read SPEC.md and the latest CHECKPOINT entry. The runtime key is already in device-only Keychain; no provisioning repeat is needed.
 
 ## Current script direction
 
@@ -64,3 +64,7 @@ Faraz asked to record directly from the glasses with Arabic visible. Verified Me
 ## First native clip reviewed, October 31
 
 Downloads/IMG_4525.MP4 is 36.233 seconds, 976×1296, with stereo audio. The clean 17.5–30.0-second interval shows readable Arabic and English across 112:1–4 in a camera-plus-display composite. It does not show 30 seconds or long-ayah tracking. The candidate is native-display-recognition-candidate.mp4. Native capture is now observed in supplied footage; it is not an optical camera-through-lens recording. Audio signal is present and quiet; synchronization and perceptual clarity remain unchecked.
+
+## Immediate physical check, November 2
+
+Build 39 extends only the prototype audio allowance and adds its phone countdown. Run Start Muse live Quran for at least three minutes with the phone unlocked and glasses worn. Confirm Audio time remaining appears near the build label and verses continue beyond the old two-minute boundary. Use native Display Recording off for this first comparison. Report any stall separately with the exact phone status/error. Do not claim the previous hold is fixed from a successful cap check alone. The masjid slot stays reserved.

@@ -276,6 +276,10 @@ final class GlassesModel: SessionHardware {
                         self.streamTrace.sent(samples: chunk.samples.count, rate: chunk.sampleRate, at: ProcessInfo.processInfo.systemUptime)
                         self.persistStreamTrace()
                     }
+                } catch MuseError.testLimit {
+                    guard let self, self.recognitionEpoch == epoch else { return }
+                    self.stop()
+                    self.status = MuseError.testLimit.localizedDescription
                 } catch is CancellationError { }
                 catch {
                     guard let self, self.recognitionEpoch == epoch else { return }
@@ -283,7 +287,7 @@ final class GlassesModel: SessionHardware {
                 }
             }
             try await SessionSequence(hardware: self).start()
-            self.status = "Muse live recognition active · two-minute test limit"
+            self.status = "Muse live recognition active · ten-minute audio session"
         }
     }
 

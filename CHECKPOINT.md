@@ -326,3 +326,13 @@ Faraz supplied another native recording and said recognition missed ayahs. Prese
 Exact canonical-text controls passed 16/16 through the current matcher. A local offline audio check found later recitation during the displayed hold. One bounded actual Muse replay recovered those later references before endStream, using the existing client and matcher. This does not reproduce or fix the original live failure: the native video audio differs from the original HFP stream, and original provider partials were not saved.
 
 Retrieved a numeric-only phone snapshot without starting a session. It cannot be conclusively tied to the recording and includes possible Stop-cleanup state. Asked for the exact red app error, which the video does not show legibly. No app behavior or thresholds changed. The video master remains a draft, with the masjid slot reserved. QuickTime remained stopped.
+
+## Ten-minute prototype audio allowance, November 2
+
+The terminal error remains uncertain. The client had a hard two-minute PCM budget, which could explain the eventual stop. This does not establish the cause of the preceding display hold.
+
+Extended the budget to ten minutes. The phone shows remaining sent-audio time below the build identity during a Muse run. Reaching the cap uses normal Stop cleanup and a restart instruction instead of a red failure. Native display recording remains separate. Microphone routing, models, matching and lens cadence were unchanged.
+
+Three new tests first failed with six assertions against the old behavior. All 58 core tests then passed with zero failures; the actual worker-queue audio callback passed. The maintained real-client local WebSocket probe streamed synthetic PCM beyond two minutes, enforced the ten-minute byte budget and verified endStream/normal closure. No Meta connection, credentials or paid inference were used in these checks.
+
+Signed build succeeded. Installation, signature/profile checks, installed-metadata comparison and launch passed for version 0.3.0 Build 39. This establishes installation and opening, not a physical ten-minute recitation pass. Wearer testing beyond two minutes remains pending. The earlier missed-ayah failure is not claimed fixed. QuickTime stayed stopped; the video review and reserved masjid slot remain unchanged.

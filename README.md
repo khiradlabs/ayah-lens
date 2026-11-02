@@ -64,7 +64,7 @@ The build helper increments the build number. The app shows version/build in its
 
 ## Live testing
 
-Register glasses inside Ayah Lens. Use the manual display and microphone checks to verify hardware first. With the runtime credential installed and a bounded paid test approved, tap **Start Muse live Quran**. Each Muse stream permits two minutes of audio. Spark has a separate opt-in toggle and sends transcript fragments to Meta.
+Register glasses inside Ayah Lens. Use the manual display and microphone checks to verify hardware first. With the runtime credential installed and a bounded paid test approved, tap **Start Muse live Quran**. Each Muse stream permits ten minutes of audio. Remaining sent-audio time appears near the build label. Reaching the limit ends the session with a restart instruction. Spark has a separate opt-in toggle and sends transcript fragments to Meta.
 
 Observe the phone transcript, selected verse and actual lens. Try distinctive passages, pauses and a passage change. Short shared phrases may require more context. Use an external reciter source only with permission.
 

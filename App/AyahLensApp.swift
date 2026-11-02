@@ -21,6 +21,14 @@ struct AyahLensApp: App {
                             .font(.subheadline).foregroundStyle(.secondary)
                         Text(buildLabel).font(.caption).foregroundStyle(.secondary)
                             .accessibilityIdentifier("build_version")
+                        if model.museActive {
+                            TimelineView(.periodic(from: .now, by: 1)) { _ in
+                                let trace = model.streamTrace.snapshot(at: ProcessInfo.processInfo.systemUptime)
+                                Text("Audio time remaining: \(MuseSessionBudget.remainingLabel(sentAudioSeconds: trace.sentAudioSeconds))")
+                                    .font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                                    .accessibilityIdentifier("audio_time_remaining")
+                            }
+                        }
                         Toggle("Show English meaning", isOn: Binding(
                             get: { model.showEnglishMeaning },
                             set: { model.setEnglishMeaning($0) }
