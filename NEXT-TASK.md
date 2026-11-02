@@ -1,6 +1,6 @@
 # Next Ayah Lens task
 
-Version 0.3.0 Build 39 is installed, metadata-verified and launched. The English-meaning switch was wearer-verified in Build 31. Read SPEC.md and the latest CHECKPOINT entry. The runtime key is already in device-only Keychain; no provisioning repeat is needed.
+Version 0.3.0 Build 40 is installed, metadata-verified and launched. The English-meaning switch was wearer-verified in Build 31. Read SPEC.md and the latest CHECKPOINT entry. The runtime key is already in device-only Keychain; no provisioning repeat is needed.
 
 ## Current script direction
 
@@ -68,3 +68,7 @@ Downloads/IMG_4525.MP4 is 36.233 seconds, 976×1296, with stereo audio. The clea
 ## Immediate physical check, November 2
 
 Build 39 extends only the prototype audio allowance and adds its phone countdown. Run Start Muse live Quran for at least three minutes with the phone unlocked and glasses worn. Confirm Audio time remaining appears near the build label and verses continue beyond the old two-minute boundary. Use native Display Recording off for this first comparison. Report any stall separately with the exact phone status/error. Do not claim the previous hold is fixed from a successful cap check alone. The masjid slot stays reserved.
+
+## Immediate readability check, November 2
+
+Build 40 uses larger heading-style Arabic and English in the live lens, with denser windows kept to one source portion. Wear glasses and tap Start Muse live Quran with English on. Confirm both languages are readable and fully visible during a short passage and 73:20. The ten-minute cap from Build 39 remains; combine this with the pending three-minute test if convenient. Actual font readability and the original missed-ayah stall are not established by automated checks.

@@ -677,8 +677,8 @@ final class GlassesModel: SessionHardware {
                     guard let self, self.recognitionEpoch == epoch, self.displayReady else { throw CancellationError() }
                     try await display.send(FlexBox(direction: .column, spacing: 8) {
                         MWDATDisplay.Text(frame.header, style: .meta, color: .secondary)
-                        if let arabic = frame.page.arabic { MWDATDisplay.Text(arabic, style: .body) }
-                        if let english = frame.page.translation { MWDATDisplay.Text(english, style: .body) }
+                        if let arabic = frame.page.arabic { MWDATDisplay.Text(arabic, style: .heading) }
+                        if let english = frame.page.translation { MWDATDisplay.Text(english, style: .heading) }
                         else if self.showEnglishMeaning { MWDATDisplay.Text("Translation on phone", style: .meta, color: .secondary) }
                     }.padding(12))
                 }, onFailure: { [weak self] _ in

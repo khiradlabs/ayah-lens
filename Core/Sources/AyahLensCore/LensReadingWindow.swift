@@ -18,7 +18,8 @@ public enum LensReadingWindow {
            (current.translation == nil) == (cards[index + 1].translation == nil) {
             let arabic = firstArabic + nextArabic
             let english = current.translation.map { $0 + (cards[index + 1].translation ?? "") }
-            if arabic.count <= 84 && (english?.count ?? 0) <= 150 {
+            // Keep larger heading text within a compact source window.
+            if arabic.count <= 56 && (english?.count ?? 0) <= 100 {
                 last += 1
                 page = LensPage(arabic: arabic, translation: english, label: "Current + upcoming")
             }

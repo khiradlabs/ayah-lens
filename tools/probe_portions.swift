@@ -30,7 +30,7 @@ import Foundation
                 precondition(update.index == expected && update.paired)
                 guard let window = LensReadingWindow.frame(verseID: verse.id, cards: update.cards, index: update.index) else { fatalError("Missing live window") }
                 precondition(window.firstPortion == expected)
-                precondition((window.page.arabic?.count ?? 0) <= 84 && (window.page.translation?.count ?? 0) <= 150)
+                precondition((window.page.arabic?.count ?? 0) <= 56 && (window.page.translation?.count ?? 0) <= 100)
                 precondition(window.page.arabic == update.cards[expected...window.lastPortion].compactMap(\.arabic).joined())
                 precondition(window.page.translation == update.cards[expected...window.lastPortion].compactMap(\.translation).joined())
                 if window.lastPortion > expected { contextWindows += 1 }

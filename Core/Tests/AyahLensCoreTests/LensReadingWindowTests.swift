@@ -2,6 +2,19 @@ import XCTest
 @testable import AyahLensCore
 
 final class LensReadingWindowTests: XCTestCase {
+    func testLargerTextKeepsDensePairedWindowsToOneSourcePortion() throws {
+        let first = LensPage(arabic: String(repeating: "ك", count: 30), translation: String(repeating: "a", count: 60), label: "")
+        let second = LensPage(arabic: String(repeating: "ل", count: 30), translation: String(repeating: "b", count: 60), label: "")
+        for showTranslation in [true, false] {
+            let frame = try XCTUnwrap(LensReadingWindow.frame(verseID: "test", cards: [first, second], index: 0, showTranslation: showTranslation))
+            XCTAssertEqual(frame.lastPortion, 0)
+            XCTAssertEqual(frame.page.arabic, first.arabic)
+            XCTAssertEqual(frame.page.translation, showTranslation ? first.translation : nil)
+            let next = try XCTUnwrap(LensReadingWindow.frame(verseID: "test", cards: [first, second], index: 1, showTranslation: showTranslation))
+            XCTAssertEqual(next.page.arabic, second.arabic)
+        }
+    }
+
     func testMeaningVisibilityPreservesArabicWindowAndPositionAndCanBeRestored() throws {
         let pages = [LensPage(arabic: "أول الكلام ", translation: "First meaning. ", label: ""),
                      LensPage(arabic: "ثم الكلام ", translation: "Second meaning. ", label: ""),

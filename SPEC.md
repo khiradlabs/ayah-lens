@@ -78,7 +78,7 @@ This is phrase-level following from transcript evidence, not acoustic word times
 
 ## October 29 refinement: reading context and display scheduling
 
-The live window may include the current source portion plus the next portion when their combined Arabic is at most 84 grapheme clusters and English at most 150 characters. Preserve contiguous source spans. This is visible upcoming context, not a claim those words were already recognized. Keep individual alignment bounds unchanged.
+The live window may include the current source portion plus the next portion when their combined Arabic is at most 56 grapheme clusters and English at most 100 characters with larger heading typography. Preserve contiguous source spans. This is visible upcoming context, not a claim those words were already recognized. Keep individual alignment bounds unchanged.
 
 The phone's primary live card must mirror the same selected window; full ayah text remains separately accessible. This makes phone/lens comparison meaningful.
 
@@ -95,3 +95,9 @@ Acceptance: reversible source-preserving live windows and Arabic-only manual pag
 Extend the foreground Muse audio budget from two to ten minutes. The phone shows remaining sent-audio time near the build label. The cap ends normally with an explicit restart instruction. Keep microphone routing, model, matching and lens behavior unchanged. This does not extend native display recording or establish a fix for the reported earlier display hold.
 
 Verify boundary and countdown regressions, the actual client against a synthetic local WebSocket through the cap, the audio callback and a signed build/install/version check. A physical session beyond two minutes remains necessary before claiming live validation.
+
+## November 2: larger live lens text
+
+Use the SDK heading style for live Arabic and English after a wearer reported barely readable body text. Retain compact source windows: merge upcoming context only within 56 Arabic graphemes and 100 English characters. Keep exact source text, automatic following and the meaning switch. The phone preview mirrors the same source window.
+
+Verify the dense-window regression fails before the change, then passes with all core tests and the within-ayah integration probe. Signed build/install/version/launch checks establish delivery; actual lens readability and clipping require wearer confirmation.

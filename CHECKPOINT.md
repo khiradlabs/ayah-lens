@@ -336,3 +336,11 @@ Extended the budget to ten minutes. The phone shows remaining sent-audio time be
 Three new tests first failed with six assertions against the old behavior. All 58 core tests then passed with zero failures; the actual worker-queue audio callback passed. The maintained real-client local WebSocket probe streamed synthetic PCM beyond two minutes, enforced the ten-minute byte budget and verified endStream/normal closure. No Meta connection, credentials or paid inference were used in these checks.
 
 Signed build succeeded. Installation, signature/profile checks, installed-metadata comparison and launch passed for version 0.3.0 Build 39. This establishes installation and opening, not a physical ten-minute recitation pass. Wearer testing beyond two minutes remains pending. The earlier missed-ayah failure is not claimed fixed. QuickTime stayed stopped; the video review and reserved masjid slot remain unchanged.
+
+## Larger live lens typography, November 2
+
+Faraz reported the glasses text was barely readable. Live Arabic and English used SDK body style. Changed both to heading style. Reduced the combined current/upcoming window from 84/150 to 56 Arabic graphemes and 100 English characters. Short context can still merge; dense context stays on the current source portion and follows automatically. Canonical text, recognition, timing, the English switch and ten-minute cap are unchanged.
+
+The new dense-window test failed with five assertions before implementation. All 59 core tests passed with zero failures after it. The actual audio callback passed. The long-ayah integration probe enforced the new bounds and passed 52 transitions, including 44 windows with upcoming context. The shared opening holds remained explicit. No paid inference occurred.
+
+Signed build succeeded. Signature/profile verification, installation, installed-metadata comparison and launch passed for version 0.3.0 Build 40. Readability and clipping in the physical lens remain pending wearer confirmation. No new recording began. QuickTime remained stopped, and the review video/masjid slot were unchanged.
