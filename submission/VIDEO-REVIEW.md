@@ -1,6 +1,6 @@
-# Ayah Lens demo video v0.2
+# Ayah Lens demo video v0.2.1
 
-Video v0.2 rebuilds approved script Version 3 with warm-paper editorial motion. The video version is separate from installed app 0.3.0 Build 40.
+Video v0.2.1 reorders the opening of the accepted v0.2 editorial master. The video version is separate from installed app 0.3.0 Build 40.
 
 The review cut retains genuine native glasses and phone-preview footage. Its narrator is the temporary local macOS Daniel voice. It is a private review artifact.
 
@@ -20,11 +20,11 @@ The opening replays the same recorded audio with its genuine display content. Th
 
 ## Local artifacts and reproduction
 
-The master is build/video-v0.2/Ayah-Lens-Demo-v0.2.mp4. Approximate guide captions, viewing notes, technical receipt and private QA samples live beside it. The previous v0.1 master remains unchanged.
+The current master is build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4. Approximate guide captions, viewing notes, technical receipt and private QA samples live beside it. The previous v0.1 and accepted v0.2 masters remain unchanged.
 
-Run python3 tools/render_demo_video.py to render motion bases and assemble the review cut. Run with --assemble-only to use existing motion bases. Run with --storyboard-only for the full assembled storyboard, including an actual 3D frame. Run with --audio-only to prepare guide and source audio. Speech generation requires access to the local macOS speech service; positive audio duration must be verified. No paid or cloud narration is required.
+Run python3 tools/render_demo_video.py --reuse-audio-from build/video-v0.2/audio to render motion bases and reuse the accepted audio. Run with --assemble-only to use existing motion bases. Run with --storyboard-only for the full assembled storyboard, including an actual 3D frame. Run with --audio-only to prepare guide and source audio. Speech generation requires access to the local macOS speech service; positive audio duration must be verified. No paid or cloud narration is required.
 
-Run python3 tools/check_submission.py --video build/video-v0.2/Ayah-Lens-Demo-v0.2.mp4 for timeline, document and picture/audio checks. Independent visual review covers the assembled storyboard and master in motion. Technical checks cover 1920×1080/30fps, 179–180 seconds, at least 5,397 picture frames, stereo 48 kHz audio, late picture and numerical audio level.
+Run python3 tools/check_submission.py --video build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4 for timeline, document and picture/audio checks. Independent visual review covers the assembled storyboard and master in motion. Technical checks cover 1920×1080/30fps, 179–180 seconds, at least 5,397 picture frames, stereo 48 kHz audio, late picture and numerical audio level.
 
 ## v0.2 verification and remaining review
 
@@ -35,10 +35,13 @@ The independent reviewer inspected all 31 supplied full-HD samples, decoded seve
 
 ## v0.2.1 opening-order revision
 
-The v0.2.1 master was rendered. Full technical and independent visual review are pending. The revised master target is build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4. The accepted v0.2 master remains unchanged.
+The v0.2.1 master passed full technical and independent source-quality checks. Independent sampled visual review passed. It covered the 33-frame master contact sheet, full-HD opening boundaries and 18 decoded opening-preview samples. It did not assess perceived audio or uninterrupted playback. The revised master target is build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4. The accepted v0.2 master remains unchanged.
 
 The opening order is Just listen at 0:00–0:08, the population and understanding gap at 0:08–0:28, then Now follow the meaning at 0:28–0:36. Narration, scene durations, source text, crops, masking and playback speed remain the same. The product reveal remains at 0:36–0:48. The reserved masjid slot remains exactly 1:00–1:30.
 
 Each moved scene retains its visual identity, native overlays and audio. Footer chapters follow the physical order. The badge reads v0.2.1. The existing 3D illustration and every scene after the opening retain their approved content.
 
 Reproduce with python3 tools/render_demo_video.py --reuse-audio-from build/video-v0.2/audio after copying the accepted assets/glasses-turntable.mp4, assets/within-card-clean.mp4 and assets/card-mask.json into build/video-v0.2.1/assets/. The reused WAVs are copied by original scene identity. They preserve the accepted local narration and source recitation. Run python3 tools/test_video_opening_order.py and python3 tools/editorial_motion.py --check for the semantic regression checks.
+
+
+Technical verification decoded the complete master without errors. Picture and audio cover 179.900 seconds. The export has 5,397 frames at 1920×1080 and 30 fps, with stereo 48 kHz audio. Exact picture transitions at 0:08, 0:28 and 0:36 passed. The peak was −2.978 dBFS with zero clipped samples. All 11 WAVs, the accepted 3D clip and the masked phone asset remained byte-identical. The encoded 0:28–0:36 source recitation matched the old 0:08–0:16 replay with correlation 0.99994. The accepted v0.2 master retained its original SHA-256. The 33-frame contact sheet, technical receipt and 36-second opening preview live beside the new master. Independent source-quality review found no material findings.

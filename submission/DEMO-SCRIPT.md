@@ -1,6 +1,6 @@
 # Ayah Lens demo script Version 3
 
-Three-minute submission video. Device baseline: version 0.3.0, Build 31. v0.2.1 rendered; full technical and independent visual review pending; temporary guide narration; masjid slot reserved.
+Three-minute submission video. Device baseline: version 0.3.0, Build 31. v0.2.1 rendered; full technical, independent source-quality and sampled visual checks passed for user review; temporary guide narration; original approximate 3D illustration; masjid slot reserved.
 
 Let viewers hear the recitation, explain the population and understanding gap, then reveal the same recorded passage with its meaning. Keep the uninterrupted proof section intact.
 

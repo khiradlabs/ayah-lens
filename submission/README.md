@@ -12,7 +12,7 @@ Script Version 3 uses a cinematic before-and-after reveal, followed by a genuine
 - [FORM-ANSWERS.md](FORM-ANSWERS.md) matches the supplied submission form.
 - [CLAIMS.md](CLAIMS.md) records source wording and implementation limits.
 - [REVIEW.md](REVIEW.md) records checks and remaining release work.
-- [VIDEO-REVIEW.md](VIDEO-REVIEW.md) describes editorial demo video v0.2, based on script Version 3, and its reserved masjid slot.
+- [VIDEO-REVIEW.md](VIDEO-REVIEW.md) describes editorial demo video v0.2.1, based on script Version 3, and its reserved masjid slot.
 
 The maintained timing source is demo-timeline.json. Regenerate the script with python3 tools/render_demo_script.py, then run python3 tools/check_submission.py.
 
@@ -28,3 +28,6 @@ Video v0.2 was rendered and independently passed sampled visual review for user 
 
 
 The v0.2.1 opening-order revision was rendered for review under build/video-v0.2.1/. It plays Just listen at 0:00–0:08, population scale at 0:08–0:28, then Now follow the meaning at 0:28–0:36. The product reveal still begins at 0:36. Every later boundary remains unchanged. The accepted v0.2 master is preserved. This revision reuses its narration and source audio without changing the words or speed. Run python3 tools/test_video_opening_order.py to check order, semantic content, native overlays and audio association.
+
+
+The v0.2.1 master passed full decoding, exact opening-boundary checks and the maintained submission and semantic regression checks. It contains 5,397 full-HD frames at 30 fps, 179.900 seconds of full picture and stereo 48 kHz audio. All 11 source and guide WAVs remain byte-identical to their original scene tracks. The moved source replay matched the original encoded audio with correlation 0.99994. Independent source-quality review passed. Independent sampled visual review passed. It covered the 33-frame master contact sheet, full-HD opening boundaries and 18 decoded opening-preview samples. It did not assess perceived audio or uninterrupted playback.
