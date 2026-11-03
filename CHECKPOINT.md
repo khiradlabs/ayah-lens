@@ -1,6 +1,18 @@
 # Ayah Lens implementation checkpoint
 
-## Current status, November 3: Muse-illustrated opening proof v0.4 built
+## Current status, November 3: approved hook and animated benefits in v0.5
+
+Faraz approved the personal Quran translator hook and requested the video update. Built build/video-v0.5-opening/Ayah-Lens-Opening-v0.5.mp4. The focused opening is 38 seconds. Earlier v0.4, v0.3 and full v0.2.1 exports retained their hashes.
+
+The approved hook appears verbatim. The setup is shorter, and benefits animate on their spoken cues: meaning in view, automatic following, no scrolling and no tapping. The closing Just listen / And understand leads through a genuine source preview from 29.2 seconds into moving replay at 30 seconds. The source replay retains its original speed and accepted audio. No conceptual phone or native inset returned.
+
+Nine guide speech segments were measured at the local Daniel setting of 165. Narration ends at 29.257 seconds, leaving 0.743 seconds before replay. Dynamic sentence-count and source-offset checks replaced the earlier five-sentence assumptions. Existing Muse artwork was reused with zero new generation spend.
+
+Implementation commit: fc9c30e. Six focused tests passed. Controller verification, independent specification review, final quality review and encoded visual review passed. The visual reviewer inspected 28 independently decoded frames. Full decode, source/crop correspondence, voice cache and earlier-export hashes passed. Export: 1,140 frames, 1920×1080 at 30fps, 48kHz stereo, peak -3dBFS. Opening/replay audio correlation: 0.999982. Source-crop comparisons exceeded 0.9626. Final SHA256: 0ee67a247163bb5d01176c1bc6722ed28a9db7e338beee0d48912d7d869e9d2e. Reports and receipts are private under build/video-v0.5-opening/qa/ and receipts/.
+
+Narration remains temporary. Reviewers sampled encoded frames rather than uninterrupted human playback. No physical glasses, recognition accuracy or comprehension study was retested. No app change, new recording, publication or additional image generation occurred. QuickTime stayed stopped. The masjid replacement and full-video integration remain. Integrating this 38-second opening requires reclaiming two seconds elsewhere to retain the three-minute limit. Meta website-asset permission remains pending; audio-buffer investigation remains deferred.
+
+## Earlier status, November 3: Muse-illustrated opening proof v0.4 built
 
 Faraz rejected the conceptual phone-translation scene and requested a stronger recitation transition with Muse-generated images. Built a new standalone 36-second opening at build/video-v0.4-opening/Ayah-Lens-Opening-v0.4.mp4. Earlier v0.3 and full v0.2.1 exports retained their hashes.
 
