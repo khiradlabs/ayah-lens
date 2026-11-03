@@ -1,5 +1,48 @@
 # Next Ayah Lens task
 
+## Voice selected, November 3: B engaged Cedar
+
+Faraz selected B from A, B and C. Use its delivery direction; stop generating alternatives unless the next actual scene exposes a specific problem. Selection is saved in submission/narration-v0.7.json with the exact model, voice, instructions, speed and source hash. The original13.65-second take remains build/video-v0.7-study/realtime-audition/B-engaged.wav. Its hash and full WAV decode were checked again; the independent waveform transcription verified all40 words.
+
+B is the selected voice direction. The full v0.6 video remains creatively rejected. The next production artifact is a short picture-and-voice proof, edited to the chosen performance rather than old animation slots. No new API call, video render, recording or publication occurred during selection. All three samples remain preserved.
+
+
+## Latest voice direction, November 3: blended take C
+
+Faraz said A sounds better while B is more impactful. This is feedback on each quality, not final approval of either. Generated one continuous Cedar take with A-style conversational flow and targeted energy on the opening question and meaning reveal. Same model,40-word script and speed1.0. Output: build/video-v0.7-study/realtime-audition/C-blended.wav,13.25seconds. Separate waveform transcription verified40 of40 words. Full WAV decode and source hash passed. Estimated speech plus transcription USD0.021592, not invoice actuals. No editing or speed changes occurred. Human judgment of this blend remains pending. Earlier samples and full masters are preserved.
+
+Next: Faraz reviews the blended audition. Use the chosen direction in a short voice-and-picture proof before a full-cut replacement. Technical checks do not establish emotional success.
+
+
+## Latest voice tuning, November 3: two Cedar variations ready
+
+Faraz preferred the Realtime Cedar audition and requested further naturalness and conversational tuning. Generated two continuous takes of the same40-word script using the same model and voice. A uses relaxed conversational direction; B uses engaged informal direction. Only delivery instructions changed. Both explicitly use playback speed1.0. No slicing or tempo changes occurred.
+
+Outputs: build/video-v0.7-study/realtime-audition/A-relaxed.wav at12.55seconds, and B-engaged.wav at13.65seconds. Independent waveform transcription verified40 of40 words in both. Full WAV decode and repeat-charge prevention passed. The requested speaking-rate targets were not matched exactly; A was faster despite the relaxed direction. Do not claim the labels establish measured emotional performance. Faraz's listening choice remains pending. The earlier13.8-second baseline is preserved.
+
+Maintained runner: tools/realtime_narration.cjs. Scope and acceptance: submission/VOICE-AUDITION-V0.7-SPEC.md. Private manifests, generated audio, usage, cost ledger and tuning-verification.json are adjacent. Speech plus transcription planning estimate for these two variations: USD0.04246, not invoice actuals. No full-video replacement, source recitation upload, microphone capture or app change occurred.
+
+Next: Faraz chooses A, B or the previous baseline by listening. Apply the chosen performance direction to a short voice-and-picture proof before the full cut. Prior technical reviews do not establish creative approval.
+
+
+## Latest voice feedback, November 3: Ballad also rejected; Realtime audition
+
+Faraz found Ballad better but still machine-like. Do not treat it as approved or reuse its prior pending-review question. A single new OpenAI gpt-realtime-2.1 Cedar take uses more conversational wording, connected phrasing and restrained delivery. File: build/video-v0.7-study/realtime-audition/OpenAI-Realtime-Cedar-conversational-v0.7.wav. Duration13.8seconds. No slicing or speed changes occurred. Realtime returned all supplied words and562 total tokens. Speech estimate USD0.020588, not invoice actuals. Separate waveform verification is recorded beside the WAV. Human naturalness judgment remains pending. No full video changed.
+
+The new wording preserves the personal Quran translator hook, then describes listening and keeping the phone aside. This wording is an audition draft, not a newly approved full script. The official OpenAI guide identifies Realtime2.1-mini as the replacement workflow for older speech models. This test uses full Realtime2.1 as a bounded quality experiment; model novelty does not establish superior naturalness. Current voice helper is private build/video-v0.7-study/realtime-audition/generate.cjs. It never sends microphone input and does not retry automatically.
+
+
+## Current priority: creative revision after Faraz rejected v0.6
+
+Ballad audition take2 is ready: build/video-v0.7-study/OpenAI-Ballad-voice-audition-v0.7.wav. It is one continuous 15.8-second take without slicing or tempo changes. Transcription verified all31 approved words after normalizing the spelling Qur'an to Quran. First take omitted the last clause and was rejected. Human emotional approval remains pending. Both speech calls and transcript checks cost approximately USD0.023 by planning estimates. No full video changed.
+
+Faraz found v0.6 emotionally flat, machine generated and roughly edited. Treat prior technical QA as technical evidence only. The requested next step is a continuous Ballad emotional voice audition, followed by human feedback. The earlier own-voice choice question is superseded. Do not rebuild another three-minute cut before a convincing short voice-and-picture proof.
+
+Private visual diagnosis and a proposed 26-second actual-footage proof are in build/video-v0.7-study/. Existing source can show genuine output changes; no verified wearer beauty shot is available. Keep picture timing responsive to the selected continuous performance. Avoid slicing the performance into old fixed narration slots.
+
+## Earlier technical state and persistent constraints
+
+
 Status: Full video v0.6 now contains completed OpenAI Marin narration. Current review master: build/video-v0.6/Ayah-Lens-Demo-v0.6.mp4.
 
 ## Remaining production work

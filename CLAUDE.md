@@ -56,3 +56,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Speech-generation inputs do not prove every supplied word was spoken. Verify the actual synthetic-English stems with transcription before mixing; reject omitted closing phrases or clauses. Verify tools/test_openai_narration.py rejects incomplete hook words and inspect the final English-only transcript receipt.
 
 - Video disclosures can cover burned-in source labels. Keep the v0.6 disclosure inside the existing version header and verify its bounded asset with tools/test_openai_narration.py plus sampled source-label inspection.
+
+- Technical checks and automatic audio reviews do not establish emotional delivery or editorial quality. Faraz rejected v0.6 despite those checks. Verify a short continuous voice-and-picture proof with human feedback before rebuilding the full master.

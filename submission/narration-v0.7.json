@@ -1,0 +1,16 @@
+{
+  "version": "0.7",
+  "status": "voice direction selected by Faraz",
+  "provider": "OpenAI",
+  "model": "gpt-realtime-2.1",
+  "voice": "cedar",
+  "instructions": "Read only the supplied script exactly once, all words through the final word moment. One continuous English take. Quran is pronounced kuh-raan. No introduction, added words, music or effects. Tell one friend about a possibility that you find exciting. Conversational, present, grounded, with light energy. Around175 words per minute, with an easy flow. Start the question with sincere curiosity, then let the explanation become a little quicker and more animated. Ease off naturally near stay with the moment. Use subtle pitch movement, soft links between words, selective emphasis and a few tiny thinking pauses. Deliver connected thoughts rather than separate slogans. Keep the voice personal and informal, without a presenter cadence or theatrical emphasis.",
+  "speed": 1,
+  "approved_audition": "build/video-v0.7-study/realtime-audition/B-engaged.wav",
+  "audition_sha256": "56990ee9c2a2d8e0e6233fefa6895f8aaebdf356e3d6e9def412905b5054c64f",
+  "audition_text": "What if your glasses became your personal Quran translator? You hear the recitation, and the meaning appears right in front of you. It follows along as you listen, so you can leave your phone alone and stay with the moment.",
+  "duration_seconds": 13.65,
+  "decision": "Faraz selected B after comparing A, B and C. Preserve B direction; no further audition requested.",
+  "next_artifact": "Short video proof edited to the selected performance, before another full master.",
+  "full_video_approved": false
+}
