@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render local editorial motion bases. All generated files stay under build/video-v0.2."""
+"""Render local editorial motion bases. Generated files stay under the plan’s versioned output directory."""
 import argparse
 from functools import lru_cache
 import json
@@ -9,7 +9,6 @@ import subprocess
 from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageStat
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'build/video-v0.2'
 W, H, FPS = 1920, 1080, 30
 PAPER, INK, RED, BLUE, YELLOW = '#F3EFE5', '#1A1A18', '#D34B38', '#53749B', '#EDC84B'
 MUTED, RULE = '#69675F', '#D4D0C6'
@@ -18,6 +17,14 @@ FONTROOT = Path('/System/Library/Fonts/Supplemental')
 
 def load_plan():
     return json.loads((ROOT / 'submission/video-edit.json').read_text())
+
+
+def scene_id(index, plan):
+    return plan['segments'][index].get('visual_scene', index)
+
+
+def scene_position(identity, plan):
+    return next(i for i in range(len(plan['segments'])) if scene_id(i, plan) == identity)
 
 
 def population_count(t):
@@ -95,11 +102,11 @@ def wave(d, x, y, t, width=550, color=RED, height=70, speed=1):
         d.line((x+n*16,y-h,x+n*16,y+h), fill=color,width=5)
 
 
-def base(index,t,duration,background=None):
+def base(index,t,duration,version,background=None):
     img = background.copy().convert('RGB') if background else Image.new('RGB',(W,H),PAPER)
     d = ImageDraw.Draw(img)
     text(d,(90,40),'AYAH LENS',24,bold=True)
-    text(d,(1430,40),'VIDEO v0.2 / GUIDE VOICE',23,color=MUTED)
+    text(d,(1430,40),f'VIDEO v{version} / GUIDE VOICE',23,color=MUTED)
     d.line((90,88,1830,88),fill=INK,width=2)
     d.line((90,1014,1830,1014),fill=RULE,width=2)
     d.line((90,1014,90+1740*max(0,min(1,t/duration)),1014),fill=RED,width=3)
@@ -237,7 +244,9 @@ def keyframe(index,t,plan=None,product_frame=None):
     plan=plan or load_plan()
     duration=plan['segments'][index]['end']-plan['segments'][index]['start']
     t=max(0,min(float(t),duration-1/FPS))
-    img=base(index,t,duration,product_frame if index==3 else None)
+    identity=scene_id(index,plan)
+    img=base(index,t,duration,plan['video_version'],product_frame if identity==3 else None)
+    index=identity
     d=ImageDraw.Draw(img)
     if index==0:
         reveal(img,(90,230),'Just listen.',168,t,.15,bold=True)
@@ -365,9 +374,9 @@ def render_scene(index,destination,plan=None,*,start=0,duration=None,fps=FPS):
     length=min(duration if duration is not None else total-start,total-start)
     destination=Path(destination)
     destination.parent.mkdir(parents=True,exist_ok=True)
-    product=OUT/'assets/glasses-turntable.mp4'
+    product=ROOT/plan['output_directory']/'assets/glasses-turntable.mp4'
     decoder=None
-    if index==3 and product.exists():
+    if scene_id(index,plan)==3 and product.exists():
         decoder=subprocess.Popen(['ffmpeg','-v','error','-ss',str(start),'-i',str(product),'-vf',f'scale={W}:{H},fps={fps}','-f','rawvideo','-pix_fmt','rgb24','-'],stdout=subprocess.PIPE)
     args=['ffmpeg','-hide_banner','-loglevel','error','-y','-f','rawvideo','-pix_fmt','rgb24','-s',f'{W}x{H}','-r',str(fps),'-i','-','-an','-c:v','libx264','-preset','veryfast','-crf','19','-pix_fmt','yuv420p','-threads','2','-color_range','tv','-colorspace','bt709','-color_primaries','bt709','-color_trc','bt709','-movflags','+faststart',str(destination)]
     encoder=subprocess.Popen(args,stdin=subprocess.PIPE)
@@ -395,17 +404,18 @@ def render_scene(index,destination,plan=None,*,start=0,duration=None,fps=FPS):
 def preview_keyframes(plan=None):
     """Save all-scene storyboard plus population and technical semantic stage sheets."""
     plan=plan or load_plan()
-    folder=OUT/'preview'
+    folder=ROOT/plan['output_directory']/'preview'
     folder.mkdir(parents=True,exist_ok=True)
     sheet=Image.new('RGB',(1920,1440),PAPER)
     for i,segment in enumerate(plan['segments']):
-        t={2:15,7:15,8:9,9:12}.get(i,4)
+        t={2:15,7:15,8:9,9:12}.get(scene_id(i,plan),4)
         img=keyframe(i,t,plan)
         img.save(folder/f'scene-{i:02}.png')
         thumb=img.resize((640,360),Image.Resampling.LANCZOS)
         sheet.paste(thumb,((i%3)*640,(i//3)*360))
     sheet.save(folder/'storyboard.jpg',quality=94)
-    for index,times in [(2,[1,5,9,15]),(7,[1,5,10,15,20,25])]:
+    for identity,times in [(2,[1,5,9,15]),(7,[1,5,10,15,20,25])]:
+        index=scene_position(identity,plan)
         stage_sheet=Image.new('RGB',(1920,540*math.ceil(len(times)/2)),PAPER)
         for n,t in enumerate(times):
             img=keyframe(index,t,plan)
@@ -429,7 +439,9 @@ def check(plan=None):
     assert source_example()['translation']=='The Beneficent, the Merciful.'
     differences={}
     # Content-region difference excludes progress rails/badges. Measures semantic stages.
-    for index,times in [(2,[1,5,9,15]),(7,[1,5,10,15,20])]:
+    for identity,times in [(2,[1,5,9,15]),(7,[1,5,10,15,20])]:
+        index=scene_position(identity,plan)
+        assert max(times)<plan['segments'][index]['end']-plan['segments'][index]['start']
         frames=[keyframe(index,t,plan).crop((90,125,1830,990)) for t in times]
         means=[sum(ImageStat.Stat(ImageChops.difference(a,b)).mean)/3 for a,b in zip(frames,frames[1:])]
         assert min(means)>2.0,(index,means)
@@ -454,12 +466,13 @@ if __name__=='__main__':
     parser.add_argument('--scene',type=int,help='Render only one zero-based scene')
     args=parser.parse_args()
     plan=load_plan()
+    OUT=ROOT/plan['output_directory']
     if args.check or not(args.preview or args.render):
         check(plan)
     if args.preview:
         preview_keyframes(plan)
         # Short isolated motion proofs preserve source-time progression at 30fps.
-        render_scene(2,OUT/'preview/population-motion.mp4',plan,start=3,duration=12)
+        render_scene(scene_position(2,plan),OUT/'preview/population-motion.mp4',plan,start=3,duration=12)
         render_scene(7,OUT/'preview/technical-motion.mp4',plan,start=0,duration=24)
     if args.render:
         for i in ([args.scene] if args.scene is not None else range(11)):

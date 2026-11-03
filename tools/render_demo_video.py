@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import math
+import shutil
 from pathlib import Path
 import subprocess
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -110,6 +111,7 @@ def background(index):
 
 def scene_image(index, phase=0):
     img = background(index)
+    index = editorial_motion.scene_id(index, PLAN)
     d = ImageDraw.Draw(img)
     if index == 0:
         text(d, (625, 370), 'Just listen.', 126, WHITE, display=True)
@@ -230,6 +232,7 @@ def scene_image(index, phase=0):
 
 
 def sources(index):
+    index = editorial_motion.scene_id(index, PLAN)
     assets = PLAN['source_assets']
     native = ROOT / assets['native']
     within = OUT / 'assets/within-card-clean.mp4'
@@ -296,7 +299,7 @@ def storyboard():
         if EDITORIAL:
             moment = min(9, segment['end'] - segment['start'] - 1)
             product = None
-            if i == 3:
+            if editorial_motion.scene_id(i, PLAN) == 3:
                 clip = OUT / 'assets/glasses-turntable.mp4'
                 assert clip.exists(), 'Accepted 3D product asset is required for the assembled storyboard'
                 still = OUT / 'assets/product-story.png'
@@ -332,12 +335,21 @@ def storyboard():
     print(f'STORYBOARD: {OUT / "storyboard.jpg"}', flush=True)
 
 
-def guide_audio():
+def guide_audio(reuse_from=None):
     audio = OUT / 'audio'
     audio.mkdir(exist_ok=True)
     for i, segment in enumerate(PLAN['segments']):
         duration = segment['end'] - segment['start']
         target = audio / f'{i:02}.wav'
+        identity = editorial_motion.scene_id(i, PLAN)
+        if reuse_from is not None:
+            source = Path(reuse_from) / f'{identity:02}.wav'
+            assert source.resolve() != target.resolve(), 'Reuse must preserve a separate source export'
+            length = float(probe(source)['format']['duration'])
+            assert 0 < length <= duration + .01, f'Wrong reused audio duration: {source}'
+            shutil.copy2(source, target)
+            print(f'AUDIO: {i:02} / {duration}s / reused semantic scene {identity:02}', flush=True)
+            continue
         if segment['narration']:
             script = audio / f'{i:02}.txt'
             script.write_text(segment['narration'].replace('Quran', 'Koran').replace('Ayah Lens', 'Eye-ah Lens').replace('Hifz', 'Hiffs'))
@@ -348,9 +360,9 @@ def guide_audio():
             speed = max(1, length / (duration - 1.0))
             filters = f'atempo={speed:.5f},loudnorm=I=-17:TP=-2:LRA=9,adelay=400:all=1,apad,atrim=duration={duration}'
             run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', raw, '-af', filters, '-ar', '48000', '-ac', '2', target])
-        elif i in (0, 1):
+        elif identity in (0, 1):
             run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', ROOT / PLAN['source_assets']['native'], '-vn', '-af', f'volume=20dB,highpass=f=90,lowpass=f=7000,afade=t=in:d=0.08,afade=t=out:st=7.8:d=0.2,apad,atrim=duration={duration}', '-ar', '48000', '-ac', '2', target])
-        elif i == 5:
+        elif identity == 5:
             run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', ROOT / PLAN['source_assets']['within'], '-vn', '-af', f'volume=12dB,adelay=6000:all=1,apad,atrim=duration={duration}', '-ar', '48000', '-ac', '2', target])
         else:
             run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-f', 'lavfi', '-i', 'anullsrc=r=48000:cl=stereo', '-t', duration, target])
@@ -400,8 +412,8 @@ def render_segment(index):
     print(f'RENDERED: {index:02} / {segment["title"]}', flush=True)
 
 
-def render(render_motion=True):
-    guide_audio()
+def render(render_motion=True, reuse_audio_from=None):
+    guide_audio(reuse_audio_from)
     if EDITORIAL and render_motion:
         for index in range(len(PLAN['segments'])):
             editorial_motion.render_scene(index, OUT / f'motion/scene-{index:02}.mp4', PLAN)
@@ -435,6 +447,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--storyboard-only', action='store_true')
     parser.add_argument('--assemble-only', action='store_true', help='Use already-rendered motion bases')
+    parser.add_argument('--reuse-audio-from', type=Path, help='Reuse approved guide/source WAVs by stable visual scene identity')
     parser.add_argument('--audio-only', action='store_true', help='Prepare local guide/source audio only')
     args = parser.parse_args()
     assert PLAN['duration_seconds'] == 180
@@ -442,8 +455,8 @@ if __name__ == '__main__':
     for key in ('native', 'within'):
         assert (ROOT / PLAN['source_assets'][key]).is_file()
     if args.audio_only:
-        guide_audio()
+        guide_audio(args.reuse_audio_from)
     else:
         storyboard()
         if not args.storyboard_only:
-            render(render_motion=not args.assemble_only)
+            render(render_motion=not args.assemble_only, reuse_audio_from=args.reuse_audio_from)

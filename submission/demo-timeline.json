@@ -4,8 +4,8 @@
   "baseline_version": "0.3.0",
   "baseline_build": 31,
   "source_branch": "feat/within-ayah-following",
-  "status": "v0.2 rendered and independently visually passed for user review; temporary guide narration; original approximate 3D illustration; masjid slot reserved",
-  "opening_note": "Let viewers experience unfamiliar recitation, then reveal its meaning through genuine output. Explain the population and Meta implementation after that experience. Keep the uninterrupted proof section intact.",
+  "status": "v0.2.1 opening-order revision; render and independent visual review pending; temporary guide narration; masjid slot reserved",
+  "opening_note": "Let viewers hear the recitation, explain the population and understanding gap, then reveal the same recorded passage with its meaning. Keep the uninterrupted proof section intact.",
   "production_notes": [
     "The opening is an edited listen/reveal replay. The review cut reserves1:00–1:30 for masjid footage; its current fill is explicitly labelled reference footage, not completed30-second masjid proof.",
     "The review opening uses the supplied native112:1–4 excerpt. Its first eight seconds are replayed in the meaning reveal. Keep real source audio and display labels accurate.",
@@ -36,25 +36,28 @@
       "narration": "",
       "visual": "Warm paper opens with a clipped headline and travelling explanatory sound envelope. Play the original eight-second recitation without narration.",
       "overlay": "Just listen.",
-      "capture": "opening_recitation"
+      "capture": "opening_recitation",
+      "visual_scene": 0
     },
     {
       "start": 8,
-      "end": 16,
-      "title": "Reveal the meaning",
-      "narration": "",
-      "visual": "Traced rules introduce the native glasses recording and an enlarged crop from the same frames. Both source labels remain visible.",
-      "overlay": "Now follow the meaning.\nNative glasses recording | Enlarged display from the same recording",
-      "capture": "opening_reveal"
-    },
-    {
-      "start": 16,
-      "end": 36,
+      "end": 28,
       "title": "Make the experience universal",
       "narration": "If Arabic is unfamiliar, you just felt the gap between hearing words and following their meaning. About two billion people are Muslim, roughly one quarter of the world’s population. For many of us, that gap is part of everyday listening. What if meaning could stay with us?",
       "visual": "One hundred marks arrive, twenty-five turn red, and the marks regroup into four equal groups. About 2 billion and about one quarter land beside the dated Pew source caption.",
       "overlay": "About 2 billion Muslims · about one quarter of the world’s population\nPew Research Center · 2020 estimate, published 2025 · underlying share 25.6%",
-      "capture": "founder_intro"
+      "capture": "founder_intro",
+      "visual_scene": 2
+    },
+    {
+      "start": 28,
+      "end": 36,
+      "title": "Reveal the meaning",
+      "narration": "",
+      "visual": "Traced rules introduce the native glasses recording and an enlarged crop from the same frames. Both source labels remain visible.",
+      "overlay": "Now follow the meaning.\nNative glasses recording | Enlarged display from the same recording",
+      "capture": "opening_reveal",
+      "visual_scene": 1
     },
     {
       "start": 36,
@@ -129,5 +132,5 @@
       "capture": "closing_card"
     }
   ],
-  "video_version": "0.2"
+  "video_version": "0.2.1"
 }

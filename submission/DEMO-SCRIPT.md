@@ -1,8 +1,8 @@
 # Ayah Lens demo script Version 3
 
-Three-minute submission video. Device baseline: version 0.3.0, Build 31. v0.2 rendered and independently visually passed for user review; temporary guide narration; original approximate 3D illustration; masjid slot reserved.
+Three-minute submission video. Device baseline: version 0.3.0, Build 31. v0.2.1 opening-order revision; render and independent visual review pending; temporary guide narration; masjid slot reserved.
 
-Let viewers experience unfamiliar recitation, then reveal its meaning through genuine output. Explain the population and Meta implementation after that experience. Keep the uninterrupted proof section intact.
+Let viewers hear the recitation, explain the population and understanding gap, then reveal the same recorded passage with its meaning. Keep the uninterrupted proof section intact.
 
 The source timeline is demo-timeline.json. Run python3 tools/render_demo_script.py after changing timing or narration. Production checks and source claims are in CAPTURE-LIST.md and CLAIMS.md.
 
@@ -20,22 +20,7 @@ On screen
 
 Just listen.
 
-## 0:08 to 0:16 Reveal the meaning
-
-Spoken narration
-
-No voiceover. Keep the real recitation audible.
-
-Picture
-
-Traced rules introduce the native glasses recording and an enlarged crop from the same frames. Both source labels remain visible.
-
-On screen
-
-Now follow the meaning.
-Native glasses recording | Enlarged display from the same recording
-
-## 0:16 to 0:36 Make the experience universal
+## 0:08 to 0:28 Make the experience universal
 
 Spoken narration
 
@@ -49,6 +34,21 @@ On screen
 
 About 2 billion Muslims · about one quarter of the world’s population
 Pew Research Center · 2020 estimate, published 2025 · underlying share 25.6%
+
+## 0:28 to 0:36 Reveal the meaning
+
+Spoken narration
+
+No voiceover. Keep the real recitation audible.
+
+Picture
+
+Traced rules introduce the native glasses recording and an enlarged crop from the same frames. Both source labels remain visible.
+
+On screen
+
+Now follow the meaning.
+Native glasses recording | Enlarged display from the same recording
 
 ## 0:36 to 0:48 Name the product and Meta stack
 

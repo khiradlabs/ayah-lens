@@ -25,3 +25,6 @@ The [implementation draft review](https://github.com/khiradlabs/ayah-lens/pull/1
 The installed app remains version 0.3.0 Build 40. Source footage predates its typography changes. Video v0.1 remains unchanged under build/video-v0.1/. The v0.2 master and private review receipts live under build/video-v0.2/. See [VIDEO-V0.2-SPEC.md](VIDEO-V0.2-SPEC.md), [EDITORIAL-DESIGN.md](EDITORIAL-DESIGN.md) and [GLASSES-3D.md](GLASSES-3D.md).
 
 Video v0.2 was rendered and independently passed sampled visual review for user review. Technical checks verified 179.900 seconds of full picture, 5,397 frames, stereo 48 kHz audio and zero clipped samples. Local guide narration, approximate original 3D geometry and the reserved masjid replacement remain disclosed.
+
+
+The v0.2.1 opening-order revision is rendering for review under build/video-v0.2.1/. It plays Just listen at 0:00–0:08, population scale at 0:08–0:28, then Now follow the meaning at 0:28–0:36. The product reveal still begins at 0:36. Every later boundary remains unchanged. The accepted v0.2 master is preserved. This revision reuses its narration and source audio without changing the words or speed. Run python3 tools/test_video_opening_order.py to check order, semantic content, native overlays and audio association.
