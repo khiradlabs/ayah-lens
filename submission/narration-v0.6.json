@@ -1,0 +1,67 @@
+{
+  "version": "0.6",
+  "provider": "OpenAI",
+  "model": "gpt-4o-mini-tts",
+  "voice": "marin",
+  "base": "build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4",
+  "duration_seconds": 179.9,
+  "max_fitting_tempo": 1.15,
+  "protected_audio": [
+    [
+      0,
+      8
+    ],
+    [
+      30,
+      38
+    ],
+    [
+      60,
+      90
+    ]
+  ],
+  "speech_api_note": "One-off video generation before the documented January 2027 Speech API shutdown; generated media remains usable.",
+  "no_cloned_voice": true,
+  "synthetic_scripture": false,
+  "style_revision": 2,
+  "coherent_hook": "build/video-v0.6/OpenAI-Marin-hook-sample-expressive-v3.wav",
+  "coherent_hook_sha256": "1e4005e050a448e2c9eb8b8ade9e0b6291c54e2a6314a0ef3cba592efc204f94",
+  "historical_short_beat_overrides": {
+    "opening-05": {
+      "take": 2,
+      "speed": 1.08,
+      "instructions": "This is a very short two-word benefit. Say it crisply in one compact beat, about 0.8 seconds, without a leading breath or drawn-out final syllable. Keep the calm confident voice.",
+      "extra_fit_seconds": 0.02
+    },
+    "opening-06": {
+      "take": 2,
+      "speed": 1.08,
+      "instructions": "This is a very short two-word benefit. Say it crisply in one compact beat, about 0.8 seconds, without a leading breath or drawn-out final syllable. Keep the calm confident voice."
+    }
+  },
+  "generation_overrides": {
+    "scene-09": {
+      "take": 2,
+      "speed": 1.05,
+      "instructions": "Brisk, crisp and engaged. Complete this paragraph in about15 seconds while preserving every word, including future teaching and testing. Do not insert extra dramatic pauses."
+    },
+    "scene-04": {
+      "take": 2,
+      "speed": 1,
+      "instructions": "Preserve every supplied word. The final short sentence Hands free is essential: say it audibly after television, with confident satisfaction. Do not stop at television.",
+      "append_ending": "Hands free."
+    },
+    "scene-06": {
+      "take": 2,
+      "speed": 1,
+      "instructions": "Preserve the entire paragraph including its final sentence Nobody is turning a page. That last sentence is a key benefit and must be audibly spoken. Do not stop after words continue.",
+      "append_ending": "Nobody is turning a page."
+    }
+  },
+  "editorial_header_rectangle": [
+    1420,
+    30,
+    460,
+    48
+  ]
+}

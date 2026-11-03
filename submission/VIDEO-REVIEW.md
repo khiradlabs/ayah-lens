@@ -1,4 +1,25 @@
-# Ayah Lens full demo video v0.5
+# Ayah Lens full demo video v0.6
+
+The current review master is build/video-v0.6/Ayah-Lens-Demo-v0.6.mp4. It replaces the local guide with OpenAI-generated English narration using gpt-4o-mini-tts and built-in Marin. Full v0.5 remains preserved.
+
+## Narration and disclosure
+
+The approved words are unchanged. The expressive hook reuses one coherent generated performance, sliced at verified phrase timestamps and fitted to the existing animation cues. Remaining sections use consistent Marin narration with warmer delivery directions. The AI-generated English narration disclosure appears during synthetic-English ranges. It shares the original version header at x1420, y30, width460, height48. Recorded-source labels below it remain unobstructed. Genuine Quran recitation is neither generated nor labelled synthetic.
+
+The generation pipeline caught a real omission of short final clauses. Two raw paragraph generations omitted Hands free and Nobody is turning a page. Their separately generated same-voice endings were appended with a short natural gap. The final fitted-English-only transcript matches all260 normalized approved words. Proper-name spelling normalization is documented. Human pronunciation and emotional approval remain unverified. OpenAI audio-model analysis assessed the actual final English-only waveform. It found a clear consistent voice, natural transitions, complete clauses and no material defects. Emotion was restrained rather than dramatic.
+
+Genuine audio at0–8,30–38 and60–90 retains its source timing and speed. Old English guide audio is removed from narration ranges. The video remains179.900seconds, with the same scenes and the reserved masjid fill at1:00–1:30. The masjid slot is still a labelled placeholder/reference fill, not completed masjid proof.
+
+## Reproduction and evidence
+
+Use python3 tools/test_openai_narration.py and python3 tools/openai_narration.py --check. Generation and rebuilding use --prepare --render --note, with the private key loaded inside the process. The input script and overrides are in submission/narration-v0.6.json. No credential or media file is tracked. An instruction-aware cache prevents unintended repeat charges.
+
+Provider, model, voice, actual waveform hashes, phrase sources, timings and cost estimates are recorded privately under build/video-v0.6/. Speech WAV streaming headers are normalized using actual PCM bytes, not advertised placeholder lengths. Estimates include unused auditions, narration takes, transcription and audio-model QA; they are not invoice actuals. One raw-audit request timed out and its billing status remains unknown, with a conservative reserve recorded. There were no automatic network retries.
+
+The old master, source recordings and app remain unchanged. No new capture, official Meta website asset or publication occurred. The Speech API is used only for this one-off media generation before its documented shutdown date.
+
+## Preserved full v0.5 history
+
 
 Faraz approved the v0.5 opening and its integration into the full video. The current review master is build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4. Video numbering is separate from installed app 0.3.0 Build 40.
 
