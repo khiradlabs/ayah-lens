@@ -1,0 +1,13 @@
+{
+  "name": "ayah-lens-problem-opening",
+  "version": "0.3.0",
+  "private": true,
+  "scripts": {"render": "node render.mjs", "check": "python3 test_timing.py"},
+  "dependencies": {
+    "@remotion/bundler": "4.0.373",
+    "@remotion/renderer": "4.0.373",
+    "remotion": "4.0.373",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  }
+}
