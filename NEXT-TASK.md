@@ -1,14 +1,14 @@
 # Next Ayah Lens task
 
-Status: NOT STARTED. Review opening-reordered video v0.2.1 and collect its replacement masjid recording.
+Status: NOT STARTED. Review the problem-led opening proof v0.3, then integrate accepted changes into the full video.
 
 ## First action
 
-Open build/video-v0.2.1/opening-preview.mp4 for the36-secondopening, or Ayah-Lens-Demo-v0.2.1.mp4 for thefullcut. Confirm the requested Justlisten→population→meaningreveal flow. Read the adjacent viewing notes. Both earlier masters remain preserved.
+Open build/video-v0.3-opening/Ayah-Lens-Opening-v0.3.mp4 and its script.txt. Ask for feedback on problem clarity and the direct invitation into the meaning reveal. This is a standalone 36-second Remotion proof. The full master remains build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4. Preserve all earlier masters.
 
 ## Definition of done
 
-Apply requested edits, replace exactly the 1:00–1:30 masjid block with approved footage, complete narration, and recheck full picture/audio duration and source labels. Final public video/repository links and submission require separate approval. The current build retains a labelled placeholder and temporary local guide narration.
+Apply the opening feedback, integrate the accepted 36-second proof, replace the 1:00–1:30 masjid block with approved footage, and complete narration. Recheck full picture/audio duration and source labels. Final public video/repository links and submission require separate approval. The current build retains a labelled placeholder and temporary local guide narration.
 
 ## Cold-start facts
 

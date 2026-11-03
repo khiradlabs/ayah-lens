@@ -1,16 +1,16 @@
 # Ayah Lens implementation checkpoint
 
-## Current status, November 2: opening revision v0.2.1 built
+## Current status, November 2: problem-led opening proof v0.3 built
 
-Faraz requested the original slides in order 1 → 3 → 2. The opening now runs Just listen at 0–8 seconds, population at 8–28, and meaning reveal at 28–36. The product starts at 36 seconds. Later timing and source content stayed in place, including the reserved 60–90-second masjid slot. The v0.2 master remains byte-identical.
+Faraz said the first two sections did not explain the problem clearly and the transition into the third was weak. Built a standalone 36-second Remotion proof at build/video-v0.3-opening/Ayah-Lens-Opening-v0.3.mp4. The full three-minute master remains v0.2.1 and stayed byte-identical.
 
-Deliverables are build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4 and its 36-second opening-preview.mp4. The master contains 179.900 seconds of picture and audio, 1920×1080 at 30 fps, 5,397 frames and 48 kHz stereo. The adjacent render receipt records its hash and review evidence.
+The proof keeps real recitation at 0–8 seconds, adds the meaning question, and explains the lived problem before the population statistic. Original layered artwork shows a listener, supporting 2B/about-one-quarter context and a phone pulling the listener’s gaze down. The final spoken cue ends at 27.6398 seconds. At 28 seconds, the same genuine passage replays with its recorded glasses display. The unchanged display crop is the hero; a smaller labelled native composite preserves provenance. This resolved the cold reviewer’s initial phone-workaround confusion.
 
-Stable semantic scene identities keep visuals, overlays and audio attached when timeline positions change. Five opening regressions passed after observed RED and reverse-RED. Independent specification, quality and sampled visual reviews passed. Video, semantic and full-decode checks passed. Reviewers verified exact opening and later boundaries. Moved recitation audio correlated 0.999959 with its accepted source. All eleven accepted audio files and reused source assets retained their hashes. Caption texts stayed identical; only the population cues moved eight seconds earlier.
+Source through 8658a67 includes the new Remotion composition, pinned local dependencies, reproducible wrapper and timing/source/voice-cache checks. Four focused tests passed after observed RED/GREEN. A stale-cache issue and actual narration overlap were fixed and independently rechecked. Independent specification, final quality and sampled visual reviews passed. Review reports are in build/video-v0.3-opening/qa/ and numeric receipts in receipts/.
 
-The existing editorial design, original reference-guided 3D illustration and animated pipeline remain. App version stays 0.3.0 Build 40. Recorded footage predates that build. No Meta website animation was used; its reuse status remains unresolved. Temporary guide narration, approximate captions and reserved masjid footage remain disclosed. No app tests, new capture, cloud calls, paid generation or publication occurred. QuickTime stayed stopped. The audio-buffer investigation remains deferred.
+Fresh verification: python3 tools/render_problem_opening.py --check passed. Export is exactly 36 seconds, 1920×1080 at 30 fps, 1,080 frames and 48 kHz stereo. Full decode passed; peak is −3.0 dBFS. Opening and replay audio correlated 0.999986. Encoded hero crops matched source frames at the expected times. Accepted recitation files and the existing full master retained their hashes. Private media and installed dependencies were not tracked by Git.
 
-Next: Faraz reviews the revised opening and supplies the replacement masjid recording.
+Temporary local Daniel narration and approximate captions remain. No continuous human playback, pronunciation assessment or comprehension study was performed. No paid service, cloud narration, Meta website animation, app change, new recording or publication occurred. Meta’s asset exception request remains pending; the audio-buffer investigation remains deferred. QuickTime stayed stopped. Next: Faraz reviews this focused opening before integration into the full cut. The masjid replacement is still reserved at 1:00–1:30 in the full video.
 
 ## Earlier implementation milestones
 
