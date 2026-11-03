@@ -24,3 +24,7 @@ Apply requested edits, replace exactly the 1:00–1:30 masjid block with approve
 ## New creative reference
 
 Faraz supplied https://www.youtube.com/watch?v=uIHJvUVaB34. Fullprimarycaptions and directopening/closingexample inspection are recorded in CHECKPOINT.md and privatebuild/reference-uIHJvUVaB34/. Apply its argument-driven scene transformation, recurring visual motifs, asset layering and narration-led timing when revising. The next proposed proof is a single20-second impact sequence before another full-length render. v0.2 remains unchanged by the reference review.
+
+## Meta asset approval route
+
+The organizer answer supplied by Faraz says organizers cannot approve Meta brand assets. Use the Meta exceptions channel specified in the private local request, not organizer permission as clearance. The concrete request is build/meta-display-page-review/meta-asset-exception-request.txt; it has not been sent. Keep Meta website images/frames/models out of the public repository. Keep project name and artwork original. Obtain clarification for any proposed official asset reuse and descriptive model-name references before treating them as cleared. This does not authorize sending email or using the website animation.
