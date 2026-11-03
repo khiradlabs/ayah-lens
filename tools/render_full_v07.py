@@ -121,6 +121,10 @@ def scene_at(timeline,t):
  return max((k for k,(a,b) in timeline.items() if a<=t),key=lambda k:timeline[k][0])
 
 def ease(x):x=max(0,min(1,x));return x*x*(3-2*x)
+def scene_exit_opacity(scene,t,next_start):
+ if scene not in ('hook','human_context','long_verse_cue','mechanism','choice_and_use','foundation'):return 1
+ return 1-ease((t-(next_start-.3))/.3)
+
 def lerp(a,b,p):return tuple(round(x+(y-x)*p) for x,y in zip(a,b))
 
 def render_picture(edit, frame_range=None):
@@ -272,7 +276,7 @@ def render_picture(edit, frame_range=None):
    if key in ('hook','human_context','long_verse_cue','choice_and_use','foundation','close') and intro<=local<intro+.3:
     factor=min(factor,ease((local-intro)/.3));slide=round(12*(1-factor))
    ordered=list(timeline);index=ordered.index(key);next_start=timeline[ordered[index+1]][0] if index+1<len(ordered) else edit['duration']
-   if key in ('hook','human_context','long_verse_cue','choice_and_use','foundation') and next_start-.3<=t<next_start:factor=min(factor,1-ease((t-(next_start-.3))/.3))
+   factor=min(factor,scene_exit_opacity(key,t,next_start))
    if factor<1:
     original=im.copy();region=(100,170,1820,815);body=im.crop(region);body=Image.blend(Image.new('RGB',body.size,bg),body,factor);ImageDraw.Draw(im).rectangle(region,fill=bg);im.paste(body,(100,170+slide))
     for rect in protected:im.paste(original.crop(rect),(rect[0],rect[1]))

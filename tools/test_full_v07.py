@@ -36,6 +36,13 @@ class FullCut(unittest.TestCase):
   m=self.load();self.assertTrue(hasattr(m,'caption_chunks'),'Approved-copy caption mapping is missing')
   chunks=m.caption_chunks('Pew on Ray-Ban display.',[{'word':'Q','start':0,'end':.2},{'word':'on','start':.2,'end':.4},{'word':'Ray','start':.4,'end':.5},{'word':'Ban','start':.5,'end':.7},{'word':'display','start':.7,'end':1}])
   self.assertEqual(chunks,[(0,1,'Pew on Ray-Ban display.')])
+ def test_mechanism_exits_smoothly_while_moving_proof_keeps_full_opacity(self):
+  m=self.load();self.assertTrue(hasattr(m,'scene_exit_opacity'),'Scene-exit opacity is missing')
+  end=3671/30
+  self.assertEqual(m.scene_exit_opacity('mechanism',end-.4,end),1)
+  self.assertAlmostEqual(m.scene_exit_opacity('mechanism',end-.15,end),.5)
+  self.assertLess(m.scene_exit_opacity('mechanism',end-1/30,end),.04)
+  self.assertEqual(m.scene_exit_opacity('phone_reference',89.98,90),1)
  def test_transcription_accepts_known_spelling_only_and_rejects_missing_words(self):
   m=self.load();self.assertTrue(m.words_equal('Ayah Lens Quran Hifz Ray-Ban','Aya Lenz Koran Hifts Ray Ban'))
   self.assertFalse(m.words_equal('follow the meaning and stay with the moment','follow the meaning'))
