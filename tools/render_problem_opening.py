@@ -63,10 +63,10 @@ def prepare():
     measured=[]
     for i,sentence in enumerate(sentences):
         p=OUT/f'voice-{i}.aiff'
-        voice_cache.ensure_voice(p,sentence.rstrip('.')+'.','Daniel',150,generate,duration)
+        voice_cache.ensure_voice(p,sentence.rstrip('.')+'.','Daniel',160 if i==3 else 150,generate,duration)
         measured.append(duration(p))
     (OUT/'receipts/voice-durations.json').write_text(json.dumps(measured,indent=2)+'\n')
-    assert all(s+d/1.03<=28 for s,d in zip(timing.TIMELINE['narration_starts'],measured)),'measured voice does not fit the narration phase'
+    timing.narration_windows(measured)
     inputs=[]
     for i in range(5): inputs+=['-i',OUT/f'voice-{i}.aiff']
     filters=[]

@@ -17,6 +17,12 @@ class OpeningTimingTests(unittest.TestCase):
                          ['listen','listen','problem','problem','scale','scale','phone','phone','bridge','bridge','replay','replay'])
         with self.assertRaises(ValueError): self.m.scene_at(1080)
 
+    def test_measured_narration_cannot_overlap_the_next_sentence(self):
+        self.assertTrue(callable(getattr(self.m,'narration_windows',None)), 'measured narration guard is missing')
+        self.m.narration_windows(self.m.TIMELINE['narration_durations'])
+        with self.assertRaisesRegex(ValueError,'overlap'):
+            self.m.narration_windows([4.634558,4.437778,4.797143,3.566032,2.904354])
+
     def test_replay_uses_exact_first_eight_seconds_and_accepted_audio(self):
         self.assertEqual([self.m.source_frame(f) for f in (0,239,240,839,840,1079)], [0,239,None,None,0,239])
         self.assertEqual(self.m.audio_sources(), ['build/video-v0.2.1/audio/00.wav','build/video-v0.2.1/audio/02.wav'])

@@ -15,3 +15,8 @@ def source_frame(frame):
     return frame if scene == 'listen' else frame-840 if scene == 'replay' else None
 def audio_sources():
     return ['build/video-v0.2.1/audio/00.wav','build/video-v0.2.1/audio/02.wav']
+def narration_windows(durations):
+    windows=[(s,s+d/1.03) for s,d in zip(TIMELINE['narration_starts'],durations)]
+    if any(a<8 or b>28 for a,b in windows): raise ValueError('narration outside its phase')
+    if any(left[1]>right[0] for left,right in zip(windows,windows[1:])): raise ValueError('narration sentences overlap')
+    return windows
