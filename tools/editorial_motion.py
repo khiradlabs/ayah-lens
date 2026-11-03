@@ -213,8 +213,8 @@ def technical(img,t):
     # Conditional assist branch opens under the local matching stage, then returns.
     if 9<=t<19:
         d.line((906,630,906,755,570,755),fill=BLUE,width=3)
-        text(d,(590,712),'MUSE SPARK / CONDITIONAL',25,color=BLUE,bold=True)
-        text(d,(590,783),'Bounded ambiguity / paired-source plans / filmed plans cached',25,color=MUTED)
+        text(d,(590,712),'MUSE SPARK · WHEN NEEDED',25,color=BLUE,bold=True)
+        text(d,(590,783),'Bounded ambiguity / paired-source plans / Validated source plans are cached.',25,color=MUTED)
         arrow(d,(906,755),(1110,755),BLUE)
         text(d,(1135,735),'Validate + cache',24,color=BLUE)
         moving_line(d,(906,630),(906,755),t,9,2,color=BLUE)

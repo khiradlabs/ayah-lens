@@ -46,7 +46,7 @@ All source labels sit outside those rectangles. Existing footage predates Build 
 | 4 | 48–60 | Two listening settings share moving audio envelopes and a traced connective rule. The prayer disclaimer remains present. |
 | 5 | 60–90 | The single reserved masjid slot remains explicit. Existing phone reference appears after six seconds. A slot-duration rail advances below the copy. |
 | 6 | 90–112 | A highlighted source window advances over abstract word positions while the genuine changing source card plays on the right. |
-| 7 | 112–138 | Sound representation becomes transcript, canonical word position, published source and lens window. A travelling red evidence marker and staged rail guide attention. Spark opens as a blue conditional branch, with validation and cached paired-source plans. |
+| 7 | 112–138 | Sound representation becomes transcript, canonical word position, published source and lens window. A travelling red evidence marker and staged rail guide attention. Spark opens as a blue conditional branch, with validation and cached paired-source plans. The branch reads “MUSE SPARK · WHEN NEEDED” throughout its visible interval. |
 | 8 | 138–152 | The Arabic reference schematic gains published English meaning as a labelled explanatory mode change. It is not a filmed toggle or tajweed grader. |
 | 9 | 152–168 | The 114-surah, 6,236-reference-ayah and 59-test figures build separately. A yellow future-teaching insert appears with the required development/testing qualification. |
 | 10 | 168–180 | The listening motif returns beside the real native recording and repository address. |
@@ -55,7 +55,7 @@ The population caption remains visible: Pew Research Center, 2020 estimate, publ
 
 Sources: [Muslim population change](https://www.pewresearch.org/religion/2025/06/09/muslim-population-change/) and [global religious landscape](https://www.pewresearch.org/religion/2025/06/09/how-the-global-religious-landscape-changed-from-2010-to-2020/).
 
-The technical source example is read verbatim from `App/Resources/verses.json`, Pickthall 1:3: “The Beneficent, the Merciful.” The diagram makes no acoustic word-timestamp claim. Muse Voice transcribes; local software matches and tracks; published Arabic/Pickthall supplies the displayed wording. Spark assists bounded ambiguity and paired-source plans conditionally. Filmed plans are cached. No generated translation is implied.
+The technical source example is read verbatim from `App/Resources/verses.json`, Pickthall 1:3: “The Beneficent, the Merciful.” The diagram makes no acoustic word-timestamp claim. Muse Voice transcribes; local software matches and tracks; published Arabic/Pickthall supplies the displayed wording. Spark assists bounded ambiguity and paired-source plans conditionally. Validated source plans are cached. No generated translation is implied.
 
 ## Verification
 
