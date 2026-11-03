@@ -278,7 +278,7 @@ def render_picture(edit, frame_range=None):
    ordered=list(timeline);index=ordered.index(key);next_start=timeline[ordered[index+1]][0] if index+1<len(ordered) else edit['duration']
    factor=min(factor,scene_exit_opacity(key,t,next_start))
    if factor<1:
-    original=im.copy();region=(100,170,1820,815);body=im.crop(region);body=Image.blend(Image.new('RGB',body.size,bg),body,factor);ImageDraw.Draw(im).rectangle(region,fill=bg);im.paste(body,(100,170+slide))
+    original=im.copy();region=(100,140,1820,815);body=im.crop(region);body=Image.blend(Image.new('RGB',body.size,bg),body,factor);ImageDraw.Draw(im).rectangle(region,fill=bg);im.paste(body,(100,140+slide))
     for rect in protected:im.paste(original.crop(rect),(rect[0],rect[1]))
   if key=='human_context' and timeline['native_proof'][0]-.3<=t<timeline['native_proof'][0]:text(im,'Next: complete 12.5 second native replay',(120,924),24,muted)
   if key=='close' and t>edit['duration']-.4:im=Image.blend(im,Image.new('RGB',im.size,bg),ease((t-(edit['duration']-.4))/.4))
