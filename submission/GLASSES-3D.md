@@ -2,7 +2,7 @@
 
 This original procedural model approximates the black Meta Ray-Ban Display for the Ayah Lens editorial video. It is not manufacturer CAD.
 
-The model uses curved, bevelled solid meshes for two rounded trapezoid rims, a raised bridge, thick tapered temples and nose supports. It includes one camera on the viewer's left and one capture indicator opposite. The indicator is a physical opal surface, without animation that implies recording. The right lens has a faint combiner coating. Both lenses remain free of device output or generated words. Logos are omitted.
+The model uses curved, bevelled solid meshes for two rounded trapezoid rims, a rounded narrow saddle bridge, thick tapered temples and nose supports. It includes one camera on the viewer's left and one capture indicator opposite. The indicator is a physical opal surface, without animation that implies recording. The right lens has a faint combiner coating. Both lenses remain free of device output or generated words. Logos are omitted.
 
 The geometry was drawn from these official references:
 
@@ -31,7 +31,7 @@ The smooth looping orbit changes the product's yaw, pitch and roll. A moving key
 
 The geometry contract was observed failing before implementation: `AssertionError: Expected two volumetric lens rims`. The implemented check measures the rendered mesh, rather than trusting a declarative part count. It verifies two rims, one camera, one opposite indicator, more than 100 mm of depth, curved surface triangles, projected landmark changes, image changes, background color and framing.
 
-The passing check reported 23 mesh parts, 47,478 triangles and 161.99 mm of transformed depth. The four sampled projected bounds stayed within x785–1890 and y395–797. The frame-90 versus frame-270 pixel difference was 52.531 summed mean RGB levels. These checks establish actual geometry and changing rendered views. They do not establish production dimensional accuracy.
+The passing check reported 21 mesh parts, 50,686 triangles and 157.95 model units of transformed depth. The four sampled projected bounds stayed within x796–1890 and y395–797. The frame-90 versus frame-270 pixel difference was 53.047 summed mean RGB levels. These checks establish actual geometry and changing rendered views. They do not establish production dimensional accuracy.
 
 Private review and mesh receipts:
 
@@ -44,4 +44,8 @@ Private review and mesh receipts:
 
 The producing subagent inspected the official gallery and all four rendered keyframes. The render visibly contains black solid thickness, clear shaded lenses, changing temple perspective and asymmetric camera hardware. It is an editorial product approximation. The lens contour, hinge clearances, optical combiner, internal electronics and material response are simplified. Millimeter values are modelling units and are not verified product measurements. No fabricated official branding, display output or endorsement is implied.
 
-The final encoded asset passed FFprobe: 1920×1080, `30/1`, `12.000000` seconds and `360` picture frames. All 360 source frames passed a pixel-bounds check, with combined bounds x785–1890 and y395–797. The producing subagent also inspected an encoded frame at 11.8 seconds. The late picture was present and the product remained fully visible. `build/video-v0.2/3d/frame-contract.json` records the all-frame check.
+The final encoded asset passed FFprobe: 1920×1080, `30/1`, `12.000000` seconds and `360` picture frames. All 360 source frames passed a pixel-bounds check, with combined bounds x796–1890 and y395–797. The producing subagent also inspected an encoded frame at 11.8 seconds. The late picture was present and the product remained fully visible. `build/video-v0.2/3d/frame-contract.json` records the all-frame check.
+
+## Product-fidelity revision
+
+Independent review found that separate corner housings and a rectangular bridge weakened the close product match. Revision one replaced both housings with continuous curved rim contours. Their front surfaces now share the rim depth. Smaller camera and indicator details sit close to that surface. The bridge became a narrower rounded saddle at the same front depth. Camera asymmetry, temple geometry, lens materials, orbit and editorial framing remained covered by the existing checks. A new mesh regression failed on the separate corner parts and passed after the integrated contours replaced them. The renderer now maintains the all-frame bounds check and writes its receipt before encoding. The original asset and keyframes remain privately preserved under `build/video-v0.2/3d/revision-0/`.

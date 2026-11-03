@@ -50,15 +50,23 @@ function shape(side=1,scale=1){
  s.bezierCurveTo(...p(-17,-21),...p(-20,-15),...p(-23,-5));
  s.bezierCurveTo(...p(-26,5),...p(-27,12),...p(-24,16));return s;
 }
+function rimShape(side){
+ // One continuous contour joins lens rim, brow and camera corner.
+ const s=new T.Shape();const p=(x,y)=>[side*x,y];
+ s.moveTo(...p(-24,16));s.bezierCurveTo(...p(-18,22),...p(10,23),...p(24,22));
+ s.bezierCurveTo(...p(30,22),...p(36,22),...p(40,20));
+ s.quadraticCurveTo(...p(42,18),...p(41,12));
+ s.quadraticCurveTo(...p(40,8),...p(34,8));
+ s.quadraticCurveTo(...p(29,8),...p(27,3));
+ s.lineTo(...p(20,-17));s.bezierCurveTo(...p(18,-23),...p(5,-24),...p(-7,-22));
+ s.bezierCurveTo(...p(-17,-21),...p(-20,-15),...p(-23,-5));
+ s.bezierCurveTo(...p(-26,5),...p(-27,12),...p(-24,16));return s;
+}
 function extrude(s,depth,bevel=1){return new T.ExtrudeGeometry(s,{depth,bevelEnabled:true,bevelSegments:4,steps:1,bevelSize:bevel,bevelThickness:bevel,curveSegments:28});}
 for(const side of [-1,1]){
- const s=shape(side);const hole=shape(side,.805);s.holes.push(new T.Path(hole.getPoints(120).reverse()));
- const frame=add('lens_rim_'+side,extrude(s,6,1.05));frame.position.set(side*32,0,0);frame.rotation.y=side*-.045;
+ const s=rimShape(side);const hole=shape(side,.805);s.holes.push(new T.Path(hole.getPoints(120).reverse()));
+ const frame=add('lens_rim_'+side,extrude(s,6,1.05));frame.position.set(side*32,0,0);
  const lens=add('lens_'+side,extrude(shape(side,.79),.75,.25),lensMaterial);lens.position.set(side*32,0,3);lens.rotation.y=side*-.045;
- // Brow wing and the unusually tall electronics housings distinguish Display.
- const wing=new T.Shape();wing.moveTo(58,23);wing.lineTo(71,22);wing.quadraticCurveTo(75,19,74,10);wing.lineTo(64,7);wing.lineTo(59,11);wing.closePath();
- const wg=extrude(wing,10,1);if(side<0){wg.scale(-1,1,1);const a=wg.attributes.position;for(let i=0;i<a.count;i+=3){for(let j=0;j<3;j++){const v=a.getComponent(i+1,j);a.setComponent(i+1,j,a.getComponent(i+2,j));a.setComponent(i+2,j,v);}}wg.computeVertexNormals();}
- add('brow_wing_'+side,wg);
  // Side silhouette drawn in the z/y plane, then extruded across x.
  const t=new T.Shape();t.moveTo(0,21);t.lineTo(57,20);t.quadraticCurveTo(77,19,91,12);
  t.quadraticCurveTo(102,7,109,-8);t.lineTo(118,-29);t.quadraticCurveTo(120,-35,116,-36);
@@ -73,14 +81,18 @@ for(const side of [-1,1]){
  const touch=add('temple_inset_'+side,new T.BoxGeometry(.15,9.5,32),innerBlack);touch.position.set(side*74.6,13,-31);
  const mic=add('microphone_'+side,new T.SphereGeometry(.55,12,8),darkGlass);mic.position.set(side*74.8,7,-40);
 }
-const bridgeShape=new T.Shape();bridgeShape.moveTo(-13,17);bridgeShape.quadraticCurveTo(0,22,13,17);bridgeShape.lineTo(12,9);bridgeShape.quadraticCurveTo(0,17,-12,9);bridgeShape.closePath();
-add('bridge',extrude(bridgeShape,7,.9));
+// Thin rounded saddle, flush with the rim fronts rather than a raised cap.
+const bridgeShape=new T.Shape();bridgeShape.moveTo(-15,17);bridgeShape.quadraticCurveTo(0,15,15,17);
+bridgeShape.lineTo(15,10);bridgeShape.quadraticCurveTo(8,11,5,13);
+bridgeShape.quadraticCurveTo(0,16,-5,13);bridgeShape.quadraticCurveTo(-8,11,-15,10);bridgeShape.closePath();
+const bridgeGeometry=extrude(bridgeShape,6,.8);bridgeGeometry.scale(.7,1,1);
+add('bridge',bridgeGeometry);
 function disk(name,x,y,r,z,material){const m=add(name,new T.CylinderGeometry(r,r,1.1,48),material);m.rotation.x=Math.PI/2;m.position.set(x,y,z);return m;}
 // Front view: one camera at viewer-left, unlike the opposite opal capture LED.
-disk('camera_bezel',-66.4,16,2.85,11.1,steel);disk('camera',-66.4,16,2.2,11.8,darkGlass);
-disk('camera_optic',-66.4,16,1.18,12.4,new T.MeshPhysicalMaterial({color:0x132c3b,roughness:.04,metalness:.45,clearcoat:1}));
-disk('indicator_bezel',66.4,16,2.5,11.1,innerBlack);
-disk('indicator',66.4,16,1.65,11.8,new T.MeshPhysicalMaterial({color:0xbbbdb6,roughness:.28,metalness:.1,clearcoat:1}));
+disk('camera_bezel',-66.4,16,2.6,6.9,steel);disk('camera',-66.4,16,2.05,7.35,darkGlass);
+disk('camera_optic',-66.4,16,1.1,7.9,new T.MeshPhysicalMaterial({color:0x132c3b,roughness:.04,metalness:.45,clearcoat:1}));
+disk('indicator_bezel',66.4,16,2.25,6.9,innerBlack);
+disk('indicator',66.4,16,1.6,7.35,new T.MeshPhysicalMaterial({color:0xbbbdb6,roughness:.28,metalness:.1,clearcoat:1}));
 // The right-lens display combiner is a faint physical coating, never a fake UI.
 const combiner=add('right_lens_combiner',new T.PlaneGeometry(12,15),new T.MeshPhysicalMaterial({color:0xadb8bb,transparent:true,opacity:.08,roughness:.1,metalness:.4,side:T.DoubleSide,depthWrite:false}));combiner.position.set(-44,-3,4);
 // All triangles are original procedural geometry; no imported meshes or photos.
@@ -132,6 +144,7 @@ def verify(receipt):
     parts = receipt['mesh']['parts']
     names = [p['name'] for p in parts]
     assert sum(n.startswith('lens_rim_') for n in names) == 2, 'Expected two volumetric lens rims'
+    assert not any(n.startswith('brow_wing_') for n in names), 'Corner hardware must be integrated into the rim mesh'
     assert names.count('camera') == 1, 'Expected one camera, not a mirrored pair'
     assert names.count('indicator') == 1, 'Expected one opposite-side capture indicator'
     assert receipt['mesh']['localDepth'] > 100, 'Expected temples extending in genuine 3D depth'
@@ -149,6 +162,25 @@ def verify(receipt):
     assert difference > 2, 'Rendered frames must change, not merely metadata'
     assert a.getpixel((100,100)) == (243,239,229), 'Paper background must match editorial palette'
     print(json.dumps({'result':'PASS','mesh_parts':len(parts),'triangles':int(sum(p['triangles'] for p in parts)), 'depth_mm':round(receipt['mesh']['localDepth'],2),'frame_pixel_difference':round(difference,3),'shot_bounds':[s['bounds'] for s in shots]},indent=2))
+
+
+def verify_frames():
+    """Check every rendered source frame before encoding the integration asset."""
+    from PIL import Image, ImageChops
+    frames = sorted((WORK / 'frames').glob('*.png'))
+    assert len(frames) == 360, f'Expected 360 rendered frames, received {len(frames)}'
+    bounds = []
+    for path in frames:
+        with Image.open(path) as source:
+            picture = source.convert('RGB')
+        box = ImageChops.difference(picture, Image.new('RGB', picture.size, (243,239,229))).getbbox()
+        assert box and box[0] >= 780 and box[2] <= 1900 and box[1] >= 220 and box[3] <= 920, (str(path), box)
+        bounds.append(box)
+    receipt = {'frames':len(frames), 'safe_region':'PASS', 'all_frame_bounds':[
+        min(b[0] for b in bounds), min(b[1] for b in bounds),
+        max(b[2] for b in bounds), max(b[3] for b in bounds)]}
+    (WORK / 'frame-contract.json').write_text(json.dumps(receipt, indent=2))
+    print(json.dumps(receipt))
 
 
 def main():
@@ -169,6 +201,7 @@ def main():
         server.shutdown();server.server_close()
     verify(json.loads((WORK/'receipt.json').read_text()))
     if not args.check:
+        verify_frames()
         assets=BUILD/'assets';assets.mkdir(exist_ok=True)
         subprocess.run(['ffmpeg','-v','error','-y','-framerate','30','-i',str(WORK/'frames/%04d.png'),'-c:v','libx264','-crf','17','-preset','medium','-pix_fmt','yuv420p','-movflags','+faststart',str(assets/'glasses-turntable.mp4')],check=True)
         print('Rendered:',assets/'glasses-turntable.mp4')
