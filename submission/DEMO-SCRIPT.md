@@ -1,6 +1,6 @@
 # Ayah Lens demo script Version 3
 
-Three-minute submission video. Device baseline: version 0.3.0, Build 31. Video v0.1 in production from script Version 3; guide narration and reserved masjid slot.
+Three-minute submission video. Device baseline: version 0.3.0, Build 31. v0.2 editorial rebuild for private review; local temporary guide narration; masjid slot reserved.
 
 Let viewers experience unfamiliar recitation, then reveal its meaning through genuine output. Explain the population and Meta implementation after that experience. Keep the uninterrupted proof section intact.
 
@@ -14,7 +14,7 @@ No voiceover. Keep the real recitation audible.
 
 Picture
 
-Open on a dark designed frame with Just listen. Play eight seconds of the actual supplied recitation. No narrator or music competes with the source audio.
+Warm paper opens with a clipped headline and travelling explanatory sound envelope. Play the original eight-second recitation without narration.
 
 On screen
 
@@ -28,7 +28,7 @@ No voiceover. Keep the real recitation audible.
 
 Picture
 
-Replay the same eight-second excerpt as a native camera-plus-display recording, beside an enlargement from the same frames. Label both views accurately. Keep the edit apparent; this is not optical camera-through-lens footage.
+Traced rules introduce the native glasses recording and an enlarged crop from the same frames. Both source labels remain visible.
 
 On screen
 
@@ -39,16 +39,16 @@ Native glasses recording | Enlarged display from the same recording
 
 Spoken narration
 
-If Arabic is unfamiliar, you just felt the gap between hearing words and following their meaning. About two billion people are Muslim. For many of us, that gap is part of everyday listening. What if the meaning could stay with us?
+If Arabic is unfamiliar, you just felt the gap between hearing words and following their meaning. About two billion people are Muslim, roughly one quarter of the world’s population. For many of us, that gap is part of everyday listening. What if meaning could stay with us?
 
 Picture
 
-Return to the same listener. Let the population figure appear briefly beside real human footage. The number gives scale after the viewer has experienced the need. Keep the small population source caption readable.
+One hundred marks arrive, twenty-five turn red, and the marks regroup into four equal groups. About 2 billion and about one quarter land beside the dated Pew source caption.
 
 On screen
 
-About 2 billion Muslims
-Pew Research Center · 2020 estimate, published 2025
+About 2 billion Muslims · about one quarter of the world’s population
+Pew Research Center · 2020 estimate, published 2025 · underlying share 25.6%
 
 ## 0:36 to 0:48 Name the product and Meta stack
 
@@ -58,7 +58,7 @@ Meet Ayah Lens. Meta glasses, Muse Voice, and Muse Spark, working together to br
 
 Picture
 
-A crisp product shot of the actual glasses. Introduce each Meta component as its name is spoken, then return to the working phone and glasses. Add all words in post.
+Original animated 3D geometry approximates the black Meta Ray-Ban Display. A changing perspective and moving light accompany staggered stack names. Label 3D illustration; the lenses contain no invented output.
 
 On screen
 
@@ -73,7 +73,7 @@ During Salat, Muslim prayer, it could help listeners follow the recitation. At h
 
 Picture
 
-Match the wearer’s position across a proposed prayer scene and the television listening scene. Let the same frame composition connect the settings. Keep the religious-permissibility disclaimer visible for the entire prayer scene. Use cleared recitation footage and audio.
+Prayer and home listening settings share travelling explanatory sound envelopes and a traced rule. The prayer disclaimer stays readable.
 
 On screen
 
@@ -87,7 +87,7 @@ No voiceover. Keep the real recitation audible.
 
 Picture
 
-Reserve this30-second block for the forthcoming masjid recording. The review cut uses a six-second placeholder card and24 seconds of existing within-73:20 phone footage, persistently labelled as reference footage awaiting replacement. The final masjid take should preserve genuine continuous recitation and automatic following.
+The exact 60–90-second reserved masjid block starts with a six-second placeholder. Existing phone reference then plays with its persistent replacement label and advancing slot rail.
 
 On screen
 
@@ -102,7 +102,7 @@ Now look closer. We are still inside the same passage. A long verse cannot fit o
 
 Picture
 
-Freeze the passage identifier for emphasis while the genuine captured portions continue to change. Briefly show a full-source reference beside the compact display window, labelled Explanatory graphic. Keep the real device footage visible. Show the challenge at a glance rather than teaching verse numbering.
+An explanatory highlighted source window advances over abstract word positions. The genuine 73:20 phone source card keeps changing on the right, with no change to its wording or playback speed.
 
 On screen
 
@@ -117,7 +117,7 @@ Muse Voice converts the glasses’ audio into Arabic text. Muse Spark helps pair
 
 Picture
 
-Build a clean exploded diagram around a product shot. Audio enters Muse Voice; the live transcript reaches our passage tracker; Spark-assisted paired source spans supply the display portions. Show cached plans on a separate branch, with bounded ambiguity assistance as another branch. Reassemble the diagram into the actual lens/preview footage.
+Animated data moves from glasses audio through Muse Voice transcription, local canonical matching and portion tracking, published Arabic/Pickthall source, and the lens window. Spark branches only when needed for bounded ambiguity and validated cached paired-source plans.
 
 On screen
 
@@ -133,7 +133,7 @@ Hifz means memorizing the Quran. Arabic-only mode offers a reference while rehea
 
 Picture
 
-Use a labelled explanatory graphic showing Arabic-only reference mode for Hifz and Arabic with English for following meaning. The feature passed the wearer test, but no supplied clip shows an actual toggle interaction. Do not substitute the brief unpaired-translation gap as switch proof.
+A labelled Hifz reference schematic gains published English meaning as an explanatory mode change. This graphic is not filmed switch proof or a tajweed grader.
 
 On screen
 
@@ -148,7 +148,7 @@ The reference covers all 114 surahs. We built the glasses integration and automa
 
 Picture
 
-Keep the working product prominent. Show brief readable inserts of the actual source library, event-dated Git history and verified test result. Then introduce a short card labelled Future: teaching support, requires extensive testing. Complete reference coverage remains separate from recognition accuracy; the teaching card describes future work.
+The 114-surah, 6,236-reference-ayah and 59-test figures build separately. A yellow future-teaching insert states that further development and extensive testing are required.
 
 On screen
 
@@ -163,7 +163,7 @@ The words were already there. Ayah Lens brings their meaning into view. Hear the
 
 Picture
 
-Return to the exact opening composition, now with the genuine readable display sample. End on the project name and public repository address. Give the final line room to land.
+The opening listening motif returns beside the genuine native recording. End with the repository address and guide voice badge.
 
 On screen
 
@@ -172,7 +172,7 @@ Hear the recitation. Follow the meaning.
 
 ## Recording notes
 
-Total narration: 250 words. The timeline reserves 46 seconds for unvoiced live recitation proof. Aim for a calm delivery and preserve those proof sections.
+Total narration: 256 words. The timeline reserves 46 seconds for unvoiced live recitation proof. Aim for a calm delivery and preserve those proof sections.
 
 The opening is an edited listen/reveal replay. The review cut reserves1:00–1:30 for masjid footage; its current fill is explicitly labelled reference footage, not completed30-second masjid proof.
 

@@ -1,12 +1,12 @@
 {
-  "title": "Ayah Lens demo video v0.1",
+  "title": "Ayah Lens demo video v0.2",
   "duration_seconds": 180,
   "resolution": [
     1920,
     1080
   ],
   "fps": 30,
-  "status": "v0.1 rendered and independently visually passed for user review; temporary guide narration; masjid slot reserved",
+  "status": "v0.2 editorial rebuild for private review; local temporary guide narration; masjid slot reserved",
   "masjid_slot": {
     "start": 60,
     "end": 90,
@@ -36,13 +36,14 @@
     "cloud_upload": false
   },
   "design": {
-    "palette": "deep navy, teal, warm white",
+    "palette": "warm paper #F3EFE5, near-black #1A1A18, red #D34B38, muted blue #53749B, yellow #EDC84B",
     "footage_labels": [
       "Native glasses recording",
       "Enlarged display from the same recording",
       "Recorded phone preview"
     ],
-    "no_fake_device_output": true
+    "no_fake_device_output": true,
+    "motion": "Continuous explanatory motion from tools/editorial_motion.py; original 3D product geometry"
   },
   "acceptance": [
     "180-second1920x1080 audio/video export",
@@ -57,7 +58,7 @@
       "end": 8,
       "title": "Let the viewer hear before explaining",
       "narration": "",
-      "visual": "Open on a dark designed frame with Just listen. Play eight seconds of the actual supplied recitation. No narrator or music competes with the source audio.",
+      "visual": "Warm paper opens with a clipped headline and travelling explanatory sound envelope. Play the original eight-second recitation without narration.",
       "overlay": "Just listen.",
       "capture": "opening_recitation"
     },
@@ -66,7 +67,7 @@
       "end": 16,
       "title": "Reveal the meaning",
       "narration": "",
-      "visual": "Replay the same eight-second excerpt as a native camera-plus-display recording, beside an enlargement from the same frames. Label both views accurately. Keep the edit apparent; this is not optical camera-through-lens footage.",
+      "visual": "Traced rules introduce the native glasses recording and an enlarged crop from the same frames. Both source labels remain visible.",
       "overlay": "Now follow the meaning.\nNative glasses recording | Enlarged display from the same recording",
       "capture": "opening_reveal"
     },
@@ -74,9 +75,9 @@
       "start": 16,
       "end": 36,
       "title": "Make the experience universal",
-      "narration": "If Arabic is unfamiliar, you just felt the gap between hearing words and following their meaning. About two billion people are Muslim. For many of us, that gap is part of everyday listening. What if the meaning could stay with us?",
-      "visual": "Return to the same listener. Let the population figure appear briefly beside real human footage. The number gives scale after the viewer has experienced the need. Keep the small population source caption readable.",
-      "overlay": "About 2 billion Muslims\nPew Research Center \u00b7 2020 estimate, published 2025",
+      "narration": "If Arabic is unfamiliar, you just felt the gap between hearing words and following their meaning. About two billion people are Muslim, roughly one quarter of the world’s population. For many of us, that gap is part of everyday listening. What if meaning could stay with us?",
+      "visual": "One hundred marks arrive, twenty-five turn red, and the marks regroup into four equal groups. About 2 billion and about one quarter land beside the dated Pew source caption.",
+      "overlay": "About 2 billion Muslims · about one quarter of the world’s population\nPew Research Center · 2020 estimate, published 2025 · underlying share 25.6%",
       "capture": "founder_intro"
     },
     {
@@ -84,7 +85,7 @@
       "end": 48,
       "title": "Name the product and Meta stack",
       "narration": "Meet Ayah Lens. Meta glasses, Muse Voice, and Muse Spark, working together to bring Quran recitation and its English meaning into view.",
-      "visual": "A crisp product shot of the actual glasses. Introduce each Meta component as its name is spoken, then return to the working phone and glasses. Add all words in post.",
+      "visual": "Original animated 3D geometry approximates the black Meta Ray-Ban Display. A changing perspective and moving light accompany staggered stack names. Label 3D illustration; the lenses contain no invented output.",
       "overlay": "Ayah Lens\nMeta glasses + Muse Voice + Muse Spark",
       "capture": "product_reveal"
     },
@@ -93,7 +94,7 @@
       "end": 60,
       "title": "Carry one listening experience between settings",
       "narration": "During Salat, Muslim prayer, it could help listeners follow the recitation. At home, it can follow a reciter playing on television. Hands free.",
-      "visual": "Match the wearer\u2019s position across a proposed prayer scene and the television listening scene. Let the same frame composition connect the settings. Keep the religious-permissibility disclaimer visible for the entire prayer scene. Use cleared recitation footage and audio.",
+      "visual": "Prayer and home listening settings share travelling explanatory sound envelopes and a traced rule. The prayer disclaimer stays readable.",
       "overlay": "Technology demonstration only. This does not establish religious permissibility for use during prayer.",
       "capture": "use_cases"
     },
@@ -102,7 +103,7 @@
       "end": 90,
       "title": "Prove the live experience without cuts",
       "narration": "",
-      "visual": "Reserve this30-second block for the forthcoming masjid recording. The review cut uses a six-second placeholder card and24 seconds of existing within-73:20 phone footage, persistently labelled as reference footage awaiting replacement. The final masjid take should preserve genuine continuous recitation and automatic following.",
+      "visual": "The exact 60–90-second reserved masjid block starts with a six-second placeholder. Existing phone reference then plays with its persistent replacement label and advancing slot rail.",
       "overlay": "MASJID RECORDING / RESERVED\nReference footage / replace with masjid take",
       "capture": "hero_live"
     },
@@ -111,17 +112,17 @@
       "end": 112,
       "title": "Reveal the difficult part hiding in plain sight",
       "narration": "Now look closer. We are still inside the same passage. A long verse cannot fit on this lens. Ayah Lens follows the recitation through it, showing the relevant portion as the words continue. Nobody is turning a page.",
-      "visual": "Freeze the passage identifier for emphasis while the genuine captured portions continue to change. Briefly show a full-source reference beside the compact display window, labelled Explanatory graphic. Keep the real device footage visible. Show the challenge at a glance rather than teaching verse numbering.",
-      "overlay": "Same passage \u00b7 changing portions\nNo manual paging",
+      "visual": "An explanatory highlighted source window advances over abstract word positions. The genuine 73:20 phone source card keeps changing on the right, with no change to its wording or playback speed.",
+      "overlay": "Same passage · changing portions\nNo manual paging",
       "capture": "within_passage_reveal"
     },
     {
       "start": 112,
       "end": 138,
       "title": "Explain the actual AI and tracking work",
-      "narration": "Muse Voice converts the glasses\u2019 audio into Arabic text. Muse Spark helps pair Arabic phrases with portions of a published English translation. It can also assist with uncertain passage matches. Our software tracks the position, validates the source boundaries, and sends the current portion to the glasses.",
-      "visual": "Build a clean exploded diagram around a product shot. Audio enters Muse Voice; the live transcript reaches our passage tracker; Spark-assisted paired source spans supply the display portions. Show cached plans on a separate branch, with bounded ambiguity assistance as another branch. Reassemble the diagram into the actual lens/preview footage.",
-      "overlay": "Muse Voice \u00b7 live transcription\nMuse Spark \u00b7 source pairing and ambiguity assistance\nFilmed phrase plans cached",
+      "narration": "Muse Voice converts the glasses’ audio into Arabic text. Muse Spark helps pair Arabic phrases with portions of a published English translation. It can also assist with uncertain passage matches. Our software tracks the position, validates the source boundaries, and sends the current portion to the glasses.",
+      "visual": "Animated data moves from glasses audio through Muse Voice transcription, local canonical matching and portion tracking, published Arabic/Pickthall source, and the lens window. Spark branches only when needed for bounded ambiguity and validated cached paired-source plans.",
+      "overlay": "Muse Voice · live transcription\nMuse Spark · source pairing and ambiguity assistance\nFilmed phrase plans cached",
       "capture": "model_roles"
     },
     {
@@ -129,8 +130,8 @@
       "end": 152,
       "title": "Show memorization practice and listener choice",
       "narration": "Hifz means memorizing the Quran. Arabic-only mode offers a reference while rehearsing. Turn English back on whenever you want to follow the meaning.",
-      "visual": "Use a labelled explanatory graphic showing Arabic-only reference mode for Hifz and Arabic with English for following meaning. The feature passed the wearer test, but no supplied clip shows an actual toggle interaction. Do not substitute the brief unpaired-translation gap as switch proof.",
-      "overlay": "Hifz \u00b7 Quran memorization practice\nArabic reference | Arabic with English meaning",
+      "visual": "A labelled Hifz reference schematic gains published English meaning as an explanatory mode change. This graphic is not filmed switch proof or a tajweed grader.",
+      "overlay": "Hifz · Quran memorization practice\nArabic reference | Arabic with English meaning",
       "capture": "listener_choice"
     },
     {
@@ -138,8 +139,8 @@
       "end": 168,
       "title": "Establish the working foundation",
       "narration": "The reference covers all 114 surahs. We built the glasses integration and automatic following during this hackathon. Fifty-nine tests cover matching, source preservation, and display scheduling. With further development and extensive testing, future versions could support Quran teaching.",
-      "visual": "Keep the working product prominent. Show brief readable inserts of the actual source library, event-dated Git history and verified test result. Then introduce a short card labelled Future: teaching support, requires extensive testing. Complete reference coverage remains separate from recognition accuracy; the teaching card describes future work.",
-      "overlay": "Complete reference library \u00b7 original event work \u00b7 59 core tests passed\nThen: Future: teaching support \u00b7 requires extensive testing",
+      "visual": "The 114-surah, 6,236-reference-ayah and 59-test figures build separately. A yellow future-teaching insert states that further development and extensive testing are required.",
+      "overlay": "Complete reference library · original event work · 59 core tests passed\nThen: Future: teaching support · requires extensive testing",
       "capture": "engineering_proof"
     },
     {
@@ -147,7 +148,7 @@
       "end": 180,
       "title": "Return to the opening experience",
       "narration": "The words were already there. Ayah Lens brings their meaning into view. Hear the recitation. Follow the meaning.",
-      "visual": "Return to the exact opening composition, now with the genuine readable display sample. End on the project name and public repository address. Give the final line room to land.",
+      "visual": "The opening listening motif returns beside the genuine native recording. End with the repository address and guide voice badge.",
       "overlay": "Ayah Lens\nHear the recitation. Follow the meaning.",
       "capture": "closing_card"
     }
@@ -156,8 +157,9 @@
     "type": "explanatory mode-choice graphic",
     "reason": "The supplied phone excerpt does not show the English toggle changing; it must not serve as switch proof."
   },
-  "video_version": "0.1",
-  "output_directory": "build/video-v0.1",
-  "output_filename": "Ayah-Lens-Demo-v0.1.mp4",
-  "verified_core_tests": 59
+  "video_version": "0.2",
+  "output_directory": "build/video-v0.2",
+  "output_filename": "Ayah-Lens-Demo-v0.2.mp4",
+  "verified_core_tests": 59,
+  "visual_style": "editorial_motion"
 }

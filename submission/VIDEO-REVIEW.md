@@ -1,27 +1,31 @@
-# Ayah Lens demo video v0.1
+# Ayah Lens demo video v0.2
 
-Video v0.1 uses the approved script Version 3. The video version is separate from the app version.
+Video v0.2 rebuilds approved script Version 3 with warm-paper editorial motion. The video version is separate from installed app 0.3.0 Build 40.
 
-The review cut uses actual native glasses and phone-preview footage with designed graphics and a temporary local guide narrator. It is a review artifact, not a submitted final video.
+The review cut retains genuine native glasses and phone-preview footage. Its narrator is the temporary local macOS Daniel voice. It is a private review artifact.
 
 ## Reserved masjid recording
 
-One30-second replacement slot remains at 1:00–1:30. Its current six-second placeholder and 24-second phone reference are labelled throughout. Replace this block with the selected masjid recording. The reference fill is not presented as completed 30-second masjid proof.
+The single 30-second replacement slot stays exactly at 1:00–1:30. Its six-second placeholder and 24-second phone reference remain labelled throughout. This fill is not completed continuous masjid proof.
 
-## Available footage and graphics
+## Editorial sequence
 
-The opening repeats the same recorded audio and then reveals readable native display content. The enlarged display comes from the same frames. The long-verse explanation uses the reviewed 73:20 phone recording. Hifz uses an explanatory modes graphic because the supplied short phone clip does not show the English toggle changing.
+The population graphic builds 100 marks, highlights 25 and regroups them into four equal groups. It states about 2 billion Muslims and about one quarter of the world’s population. The caption identifies Pew’s 2020 estimate, published 2025, with underlying share 25.6%. This is no comprehension statistic.
 
-The models section distinguishes live Muse Voice, cached Spark phrase plans, local tracking and source preservation. The final engineering card labels teaching as future work requiring development and extensive testing.
+The product scene uses original 3D geometry approximating the black Meta Ray-Ban Display. It is labelled 3D illustration. The lenses contain no invented output. The geometry is an editorial approximation, not official manufacturer CAD.
 
-## Local review artifacts
+The technical diagram advances glasses audio through Muse Voice transcription, local matching and portion tracking, published source and lens output. Spark branches conditionally for bounded ambiguity and validated cached paired-source plans. It does not author the displayed translation.
 
-The video is generated under build/video-v0.1/Ayah-Lens-Demo-v0.1.mp4. Guide captions and viewing notes are beside it. Source recordings, temporary speech tracks, QA images and the master remain ignored by Git.
+The opening replays the same recorded audio with its genuine display content. The enlargement comes from the same native frames. The 73:20 sequence preserves source text, crop, mask and playback speed. Hifz uses a labelled reference-mode graphic, since the supplied footage does not show the actual toggle. Teaching remains future work requiring development and extensive testing. The prayer disclaimer remains visible.
 
-Run python3 tools/render_demo_video.py to reproduce the review cut. It uses Pillow, FFmpeg and the local macOS Daniel voice. No paid generation service is required. The maintained edit plan is video-edit.json.
+## Local artifacts and reproduction
 
-Run python3 tools/check_submission.py --video /absolute/path/to/review.mp4 to check duration and picture/audio coverage. Visual review must confirm exact slot boundaries, readable source text, source labels and absence of unrelated personal UI.
+The master is build/video-v0.2/Ayah-Lens-Demo-v0.2.mp4. Approximate guide captions, viewing notes, technical receipt and private QA samples live beside it. The previous v0.1 master remains unchanged.
 
-## v0.1 acceptance
+Run python3 tools/render_demo_video.py to render motion bases and assemble the review cut. Run with --assemble-only to use existing motion bases. Run with --storyboard-only for the full assembled storyboard, including an actual 3D frame. Run with --audio-only to prepare guide and source audio. Speech generation requires access to the local macOS speech service; positive audio duration must be verified. No paid or cloud narration is required.
 
-Export 179–180 seconds of full-length 1920×1080 picture and stereo audio. Keep the v0.1 badge and temporary narration label visible. Verify the exact 60–90-second reserved block, actual source labels, the updated 59-test card, source text readability and the final frame. The prior source clips remain unchanged. These clips predate Build 40 and do not demonstrate its new font size.
+Run python3 tools/check_submission.py --video build/video-v0.2/Ayah-Lens-Demo-v0.2.mp4 for timeline, document and picture/audio checks. Independent visual review covers the assembled storyboard and master in motion. Technical checks cover 1920×1080/30fps, 179–180 seconds, at least 5,397 picture frames, stereo 48 kHz audio, late picture and numerical audio level.
+
+## Remaining review
+
+Final technical and independent visual results are recorded beside the master. Human review remains necessary for guide pronunciation, pacing and recitation synchronization. Existing footage predates Build 40 and does not establish its larger font’s readability. No app, audio-buffer, new capture or publication work is included.

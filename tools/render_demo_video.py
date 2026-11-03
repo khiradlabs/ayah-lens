@@ -7,6 +7,7 @@ import math
 from pathlib import Path
 import subprocess
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
+import editorial_motion
 
 ROOT = Path(__file__).resolve().parents[1]
 W, H, FPS = 1920, 1080, 30
@@ -14,6 +15,7 @@ INK, WHITE, MUTED, TEAL, GOLD = '#080f18', '#f4f1e9', '#9caebc', '#29d9c1', '#df
 FONT_ROOT = Path('/System/Library/Fonts/Supplemental')
 PLAN = json.loads((ROOT / 'submission/video-edit.json').read_text())
 OUT = ROOT / PLAN['output_directory']
+EDITORIAL = PLAN.get('visual_style') == 'editorial_motion'
 FONT_CACHE = {}
 
 
@@ -234,7 +236,7 @@ def sources(index):
     if index == 1:
         return [(native, None, 635, 844, 1185, 145, 0, 0),
                 (native, assets['native_display_crop'], 960, 240, 92, 530, 0, 0)]
-    if index == 3:
+    if index == 3 and not EDITORIAL:
         return [(native, None, 580, 770, 1240, 160, 0, 0)]
     if index == 5:
         return [(within, None, 770, 873, 1060, 138, 0, 6)]
@@ -291,8 +293,19 @@ def storyboard():
     prepare_phone_card()
     thumbnails = []
     for i, segment in enumerate(PLAN['segments']):
-        img = scene_image(i, 1 if i == 2 else 0)
-        img.save(OUT / f'assets/scene-{i:02}.png')
+        if EDITORIAL:
+            moment = min(9, segment['end'] - segment['start'] - 1)
+            product = None
+            if i == 3:
+                clip = OUT / 'assets/glasses-turntable.mp4'
+                assert clip.exists(), 'Accepted 3D product asset is required for the assembled storyboard'
+                still = OUT / 'assets/product-story.png'
+                frame_at(clip, moment, still)
+                product = Image.open(still).convert('RGB')
+            img = editorial_motion.keyframe(i, moment, PLAN, product)
+        else:
+            img = scene_image(i, 1 if i == 2 else 0)
+            img.save(OUT / f'assets/scene-{i:02}.png')
         for k, source in enumerate(sources(i)):
             path, crop, width, height, x, y, _, _ = source
             still = OUT / f'assets/still-{i:02}-{k}.png'
@@ -312,9 +325,10 @@ def storyboard():
     for n, image in enumerate(thumbnails):
         sheet.paste(image, ((n % 3) * 640, (n // 3) * 360))
     sheet.save(OUT / 'storyboard.jpg', quality=94)
-    scene_image(2, 0).save(OUT / 'assets/scene-02.png')
-    for i, phase in [(2, 1), (7, 1), (7, 2), (8, 1), (9, 1)]:
-        scene_image(i, phase).save(OUT / f'assets/scene-{i:02}-phase-{phase}.png')
+    if not EDITORIAL:
+        scene_image(2, 0).save(OUT / 'assets/scene-02.png')
+        for i, phase in [(2, 1), (7, 1), (7, 2), (8, 1), (9, 1)]:
+            scene_image(i, phase).save(OUT / f'assets/scene-{i:02}-phase-{phase}.png')
     print(f'STORYBOARD: {OUT / "storyboard.jpg"}', flush=True)
 
 
@@ -329,7 +343,8 @@ def guide_audio():
             script.write_text(segment['narration'].replace('Quran', 'Koran').replace('Ayah Lens', 'Eye-ah Lens').replace('Hifz', 'Hiffs'))
             raw = audio / f'{i:02}.aiff'
             run(['say', '-v', 'Daniel', '-r', '145', '-f', script, '-o', raw])
-            length = float(probe(raw)['format']['duration'])
+            length = float(probe(raw)['format'].get('duration', 0))
+            assert length > 0, f'Empty local guide narration: {raw}'
             speed = max(1, length / (duration - 1.0))
             filters = f'atempo={speed:.5f},loudnorm=I=-17:TP=-2:LRA=9,adelay=400:all=1,apad,atrim=duration={duration}'
             run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', raw, '-af', filters, '-ar', '48000', '-ac', '2', target])
@@ -345,10 +360,16 @@ def guide_audio():
 def render_segment(index):
     segment = PLAN['segments'][index]
     duration = segment['end'] - segment['start']
-    cmd = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-loop', '1', '-framerate', FPS, '-i', OUT / f'assets/scene-{index:02}.png']
+    cmd = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y']
+    if EDITORIAL:
+        motion = OUT / f'motion/scene-{index:02}.mp4'
+        assert motion.exists(), f'Render the motion base first: {motion}'
+        cmd += ['-i', motion]
+    else:
+        cmd += ['-loop', '1', '-framerate', FPS, '-i', OUT / f'assets/scene-{index:02}.png']
     chain, previous = [], '0:v'
     number = 1
-    if index in (2, 7, 8, 9):
+    if not EDITORIAL and index in (2, 7, 8, 9):
         phases = {2: [(1, 7, 20)], 7: [(1, 6, 18), (2, 18, 26)], 8: [(1, 7.5, 14)], 9: [(1, 11, 16)]}[index]
         for phase, start, end in phases:
             cmd += ['-loop', '1', '-framerate', FPS, '-i', OUT / f'assets/scene-{index:02}-phase-{phase}.png']
@@ -369,17 +390,21 @@ def render_segment(index):
         previous, number = name, number + 1
     cmd += ['-i', OUT / f'audio/{index:02}.wav']
     # Editorial fades never change source playback speed.
-    chain.append(f'[{previous}]fade=t=in:st=0:d=0.25,fade=t=out:st={duration-.25}:d=0.25,format=yuv420p[out]')
+    ending = 'format=yuv420p' if EDITORIAL else f'fade=t=in:st=0:d=0.25,fade=t=out:st={duration-.25}:d=0.25,format=yuv420p'
+    chain.append(f'[{previous}]{ending}[out]')
     cmd += ['-filter_complex', ';'.join(chain), '-map', '[out]', '-map', f'{number}:a', '-t', duration,
             '-r', FPS, '-c:v', 'libx264', '-preset', 'fast', '-crf', '19', '-threads', '4', '-c:a', 'aac', '-b:a', '192k',
             '-color_range', 'tv', '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709',
             '-map_metadata', '-1', '-movflags', '+faststart', OUT / f'segment-{index:02}.mp4']
-    run(cmd, timeout=240)
+    run(cmd, timeout=1200)
     print(f'RENDERED: {index:02} / {segment["title"]}', flush=True)
 
 
-def render():
+def render(render_motion=True):
     guide_audio()
+    if EDITORIAL and render_motion:
+        for index in range(len(PLAN['segments'])):
+            editorial_motion.render_scene(index, OUT / f'motion/scene-{index:02}.mp4', PLAN)
     for index in range(len(PLAN['segments'])):
         render_segment(index)
     concat = OUT / 'concat.txt'
@@ -397,7 +422,9 @@ def render():
     assert (video['width'], video['height']) == (W, H)
     assert float(video['duration']) >= length - .1, 'Picture must cover the full review duration'
     assert int(video['nb_frames']) >= 5397, 'Missing picture frames'
-    receipt = {'file': str(master), 'video_version': PLAN['video_version'], 'duration': length, 'resolution': [W, H], 'status': 'review only',
+    receipt = {'file': str(master), 'sha256': hashlib.sha256(master.read_bytes()).hexdigest(), 'bytes': master.stat().st_size,
+               'video_version': PLAN['video_version'], 'visual_style': PLAN.get('visual_style', 'legacy'),
+               'duration': length, 'resolution': [W, H], 'status': 'review only',
                'guide_narration': True, 'masjid_slot': PLAN['masjid_slot'], 'source_assets': PLAN['source_assets']}
     (OUT / 'render-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
     print(f'PASS: {length:.3f}s / 1920x1080 / audio+video / masjid slot reserved', flush=True)
@@ -407,11 +434,16 @@ def render():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--storyboard-only', action='store_true')
+    parser.add_argument('--assemble-only', action='store_true', help='Use already-rendered motion bases')
+    parser.add_argument('--audio-only', action='store_true', help='Prepare local guide/source audio only')
     args = parser.parse_args()
     assert PLAN['duration_seconds'] == 180
     assert PLAN['masjid_slot']['end'] - PLAN['masjid_slot']['start'] == 30
     for key in ('native', 'within'):
         assert (ROOT / PLAN['source_assets'][key]).is_file()
-    storyboard()
-    if not args.storyboard_only:
-        render()
+    if args.audio_only:
+        guide_audio()
+    else:
+        storyboard()
+        if not args.storyboard_only:
+            render(render_motion=not args.assemble_only)
