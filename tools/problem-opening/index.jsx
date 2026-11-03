@@ -37,7 +37,7 @@ const Scale=({f})=>{const p=ease(f,514,35);return <>
  <Text y={365} size={66}>Muslims worldwide.</Text>
  <svg style={{position:'absolute',left:110,top:485,width:1020,height:330}} viewBox="0 0 1020 330">{Array.from({length:40},(_,i)=><Person key={i} x={(i%10)*99} y={Math.floor(i/10)*78} blue={i<10} opacity={tween(f,514+i*.9,540+i*.9,0,.85)}/>)}</svg>
  <Text y={840} size={47} color={C.blue}>Roughly one quarter of humanity.</Text>
- <div style={{position:'absolute',left:100,bottom:40,fontSize:21,lineHeight:1.35}}>Pew Research Center · 2020 estimate, published2025 · 25.6%<br/>Population context, not a count of people needing translation.</div>
+ <div style={{position:'absolute',left:100,bottom:40,fontSize:21,lineHeight:1.35}}>Pew Research Center · 2020 estimate, published 2025 · 25.6%<br/>Population context, not a count of people needing translation.</div>
  </>};
 const Bridge=({f})=>{
  const returnToListener=ease(f,658,32),frame=tween(f,784,839,0,1),lift=tween(f,785,807,0,1),leave=tween(f,755,780,0,1);
