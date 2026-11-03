@@ -1,6 +1,24 @@
-# Ayah Lens full demo video v0.6
+# Ayah Lens complete demo v0.7
 
-The current review master is build/video-v0.6/Ayah-Lens-Demo-v0.6.mp4. It replaces the local guide with OpenAI-generated English narration using gpt-4o-mini-tts and built-in Marin. Full v0.5 remains preserved.
+Current review cut: build/video-v0.7/Ayah-Lens-Demo-v0.7.mp4,163.833333seconds,4915frames,1080p30,48kHz stereo. SHA25632343f60133baa68fd90678c9b1daa99b3426dd65f4f3bb36f944958a4b7851a. The complete new283-word script and picture use the selected B delivery direction, OpenAI Realtime2.1 Cedar. Earlier v0.6 was creatively rejected and remains preserved.
+
+The rewritten script explains the listening need, shows genuine automatic following, connects Meta's model roles to that behavior, then shows use cases and scoped engineering evidence. Reference counts and tests stay on readable cards. Full script: DEMO-SCRIPT-V0.7.md. A clean spoken-only copy and captions are beside the private master.
+
+Eight continuous paragraphs include the exact accepted B hook. New paragraphs were measured before picture timing; no old animation grid, per-clause splicing or tempo fitting returned. Paragraph bodies range-23.00to-23.16LUFS after light peak protection. Genuine recitation remains separate from English narration and at original speed. Final peak is-5.8dBFS.
+
+The new picture uses a coherent reading-window/rail motif. Changed headings fade through paper without doubled text; only new diagram nodes animate. Source windows stay clear of editorial text. Independent encoded checks inspected the full cut in sequential sheets and dense boundary/cue sequences. This is sampled visual QA, not continuous human viewing or emotional approval.
+
+The60–90masjid slot remains clearly reserved: six quiet seconds then24seconds of genuine earlier phone reference. It is not completed masjid footage or25-second hands-free evidence. Native footage is a native camera/display composite, not optical filming. Current appBuild40 was not filmed. Mode diagrams do not impersonate a recorded English-toggle action.
+
+Controller, specification and code-quality checks passed. Run python3 tools/test_full_v07.py and python3 tools/render_full_v07.py --check. Seven focused tests, full decode, word coverage, source/audio correspondence, timing, crops and immutable input hashes passed. Private receipts and encoded review reports are in build/video-v0.7/.
+
+Automatic audio-model review applies to qa/English-only-original-generated.wav, a byte-identical archive of the original generated-English concat. It does not certify the later processed waveform. Final processed paragraph preservation is checked separately by waveform correlation. Human listening, pronunciation and creative approval remain for Faraz.
+
+New estimated speech/transcription/audio-QA costUSD0.2438505 is a planning estimate, not invoice actuals. No app change, new recording, Meta website asset, publication or submission occurred. QuickTime remains stopped. No further narration generation is needed unless feedback identifies a specific issue.
+
+## Preserved v0.6 technical history
+
+The former v0.6 review master is build/video-v0.6/Ayah-Lens-Demo-v0.6.mp4. It replaces the local guide with OpenAI-generated English narration using gpt-4o-mini-tts and built-in Marin. Full v0.5 remains preserved.
 
 ## Narration and disclosure
 

@@ -1,5 +1,33 @@
 # Ayah Lens implementation checkpoint
 
+## Current result, November 3: complete v0.7 B-voice review cut
+
+Faraz requested the complete rewritten script and full video with selected B, including smooth visual and sound transitions. Built build/video-v0.7/Ayah-Lens-Demo-v0.7.mp4. Runtime163.833333seconds,4915frames,1920x1080/30fps,48kHz stereo. Final SHA25632343f60133baa68fd90678c9b1daa99b3426dd65f4f3bb36f944958a4b7851a. Plain narration: build/video-v0.7/spoken-script.txt. Captions: build/video-v0.7/captions.srt.
+
+The complete283-word script replaces the old narration and disjointed picture. It preserves the exact40-word accepted B opening and uses seven new continuous selected Cedar paragraphs. No clause splicing, tempo fitting or accelerated recitation. Script/spec and cold-viewer review passed after a narrative revision. Production commits736e8bd,408b65d and674418e implemented measured timing and encoded transition fixes. Script revisionad48b789 and plan0d9e691 precede them.
+
+The final picture uses original neutral editorial motion and genuine source output, not the old generated listener or approximate product turntable. Incoming diagram nodes animate independently; existing content stays stationary. Changing headings fade through paper, source frames reframe without covering words, and reference labels remain outside the source card. Independent encoded review passed after two focused fixes. It inspected full-cut sheets and dense sequences, not a continuous human playback or audio. No Faraz creative approval is inferred.
+
+Controller independently ran seven tests and the offline full check against the final hash. Full decode,283-word coverage, original source/master/B hashes, source crops, audio correspondence and reservation silence passed. Minimum source cropSSIM0.961943. Source audio correlation exceeds0.999986 and each encoded English paragraph exceeds0.999988 against its complete processed waveform. Peak-5.8dBFS. Processed paragraph loudness ranges-23.00to-23.16LUFS. Specification and code-quality reviews passed. One minor automated transition-list coverage gap remains documented; the omitted122second handoff was independently checked in encoded frames.
+
+An automatic OpenAI audio-model review assessed the original generated English concatenation, not the level-matched final waveform. Its byte-identical source is preserved at build/video-v0.7/qa/English-only-original-generated.wav with hash2181affa63e999bd39e8e8946af29671d191573b67ae058664786d3c63a80fa7. The review found consistent voice and no technical word clipping. Product-name spellings and Pew/Q recognition were reconciled using independent waveform evidence; human pronunciation and emotional approval remain unverified.
+
+New speech, transcription and audio-review planning estimateUSD0.2438505, not invoice actuals. Eight new speech calls included one rejected context retry; accepted B was reused. Private requests, usage, transcripts, level receipts and review reports remain under build/video-v0.7/. No new recording, app change, Meta website asset, publication, push or submission occurred. Earlier masters remain unchanged.
+
+The60–90masjid section remains a six-second reservation plus24seconds of explicitly labelled earlier phone reference. It is not completed masjid proof or a25-second continuous take. The app remains0.3.0Build40; footage predates it. QuickTime remains stopped, audio-buffer work remains deferred, and Meta asset permission remains pending. Next is Faraz's full-cut review and suitable masjid replacement footage.
+
+
+## Current production, November 3: complete v0.7 rebuild requested
+
+Faraz explicitly requested a complete rewritten script and full video using selected B, with smooth visual and sound transitions. This supersedes the earlier next-step short-proof plan. Produce the full cut without asking for another script or voice approval.
+
+Script revision ad48b789 contains283 spoken words,107 before the reserved60–90slot. The exact40-word B opening is retained. Independent specification and cold-viewer reviews passed after one editorial revision. Context now follows the hook; the central still gives way to an animated population/source relationship. Spoken model roles are plain language, counts and scoped test evidence stay on cards, and the close returns to the listening benefit.
+
+Production uses Realtime2.1 Cedar and selected B directions in continuous paragraphs. New renderer/test files are owned by the production worker; controller owns checkpoint/review integration. Plan: docs/plans/2026-11-03-full-video-v07-plan.md. Preserve all old masters. Final output target: build/video-v0.7/Ayah-Lens-Demo-v0.7.mp4, under180seconds. Measured narration, render, independent motion/audio checks and human creative review are not complete yet.
+
+The reserved60–90section remains six seconds of labelled reservation plus24seconds of genuine phone reference. A read-only source-tail review found manual app scrolling at72.883seconds in the raw phone take, preventing a clean25-second extension. Do not extend or claim a25-second hands-free proof. No fresh masjid capture is available. Native composite is not optical lens footage. Source labels remain necessary.
+
+
 ## Voice selected, November 3: B engaged Cedar
 
 Faraz selected B from A, B and C. Use its delivery direction; stop generating alternatives unless the next actual scene exposes a specific problem. Selection is saved in submission/narration-v0.7.json with the exact model, voice, instructions, speed and source hash. The original13.65-second take remains build/video-v0.7-study/realtime-audition/B-engaged.wav. Its hash and full WAV decode were checked again; the independent waveform transcription verified all40 words.

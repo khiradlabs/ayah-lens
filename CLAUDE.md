@@ -58,3 +58,7 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Video disclosures can cover burned-in source labels. Keep the v0.6 disclosure inside the existing version header and verify its bounded asset with tools/test_openai_narration.py plus sampled source-label inspection.
 
 - Technical checks and automatic audio reviews do not establish emotional delivery or editorial quality. Faraz rejected v0.6 despite those checks. Verify a short continuous voice-and-picture proof with human feedback before rebuilding the full master.
+
+- Binary float timestamps can repeat or skip source frames with int(seconds*fps). Round the source frame offset instead. Verify every native proof frame appears exactly once with python3 tools/test_full_v07.py.
+
+- Sampling only after a transition missed source-text collisions and doubled headings during its first half-second. Keep existing layers stationary and animate only incoming content. Verify consecutive encoded frames at boundaries and internal narration cues, not only average image-change scores.
