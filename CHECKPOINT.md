@@ -1,5 +1,13 @@
 # Ayah Lens implementation checkpoint
 
+## Narration request, November 3: Muse availability checked
+
+Faraz requested Meta Muse narration with emotional delivery. Verified the official Meta model documentation and queried GET /v1/models using the existing private credential. The account returned nine models. Its only speech model was muse-voice-transcribe-1.0. Meta documentation explicitly says this model does not synthesize speech. No narration synthesis request or paid inference occurred.
+
+Private evidence: build/meta-voice-recon/account-model-catalog.json and voice-delivery-plan.txt. Source: https://dev.meta.ai/docs/models. Existing fal credentials are present, and its ElevenLabs v3 endpoint is documented. No alternative-provider request was made. Changing from the expressly requested Muse provider needs Faraz's choice. Proposed next step: two expressive hook auditions through ElevenLabs via fal, capped at USD1 outside Meta credits. Full video v0.5 remains unchanged at 179.900 seconds.
+
+Delivery direction is prepared: curious invitation for the hook, confident benefits, crisp No scrolling / No tapping beats and a warmer closing. Preserve approved words, genuine Quran audio and the three-minute limit. Do not synthesize scripture or mislabel another provider as Muse.
+
 ## Current status, November 3: full v0.5 integrated under three minutes
 
 Faraz approved the opening and requested its integration into the full video within three minutes. Built build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4 at 179.900 seconds. Both picture and audio remain under 180 seconds. The export has 5,397 frames at 1920×1080 and 30fps, with 48kHz stereo.

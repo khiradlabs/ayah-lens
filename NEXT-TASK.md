@@ -2,6 +2,12 @@
 
 Status: The approved opening is integrated into full video v0.5. The current review master is build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4.
 
+## Narration provider choice
+
+Faraz requested Meta Muse voice generation with emotion. Official documentation and the account model catalog confirm no Muse speech-synthesis model is available. No narration generation occurred. The availability evidence and emotional directions are under build/meta-voice-recon/.
+
+Pending choice: may we use ElevenLabs v3 through the existing fal setup for two expressive hook samples, capped at USD1 outside Meta credits? Do not perform alternative-provider paid calls until Faraz answers. Existing fal credentials were checked for presence only. If approved, use the maintained tools/fal/fal.py helper with --note and correct cost logging. Audition the approved hook first, then update full narration and sync while retaining the 180-second cap. Do not clone a real voice or replace genuine recitation.
+
 ## Remaining production work
 
 Replace the labelled 1:00–1:30 masjid fill with suitable approved footage and finish narration. The current master runs 179.900 seconds. Preserve its three-minute limit and all earlier exports. Do not ask again for opening or integration approval; Faraz already approved both.
