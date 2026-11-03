@@ -1,30 +1,34 @@
-# Ayah Lens demo video v0.2.1
+# Ayah Lens full demo video v0.5
 
-Video v0.2.1 reorders the opening of the accepted v0.2 editorial master. The video version is separate from installed app 0.3.0 Build 40.
+Faraz approved the v0.5 opening and its integration into the full video. The current review master is build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4. Video numbering is separate from installed app 0.3.0 Build 40.
 
-The review cut retains genuine native glasses and phone-preview footage. Its narrator is the temporary local macOS Daniel voice. It is a private review artifact.
+## Current assembly
 
-## Reserved masjid recording
+The accepted opening plays at 0:00–0:38. Its exact personal Quran translator hook and timed benefits remain intact. Original Muse Image artwork is reused, with no new generation spend. The genuine recorded source replay stays at its original speed.
 
-The single 30-second replacement slot stays exactly at 1:00–1:30. Its six-second placeholder and 24-second phone reference remain labelled throughout. This fill is not completed continuous masjid proof.
+The editorial product and Meta stack scene is retimed from twelve seconds to ten seconds, placing it at 0:38–0:48. The existing temporary narration uses pitch-preserving tempo. No words or Meta stack names are cut. This scene is an original approximate 3D illustration, not genuine listening proof.
 
-## Editorial sequence
+Every original scene from 0:48 onward keeps its original absolute time and speed. The only visual replacement is the editorial video-version badge at x1420, y30, width 460, height 48, enabled from 38 seconds. It now reads VIDEO v0.5 / GUIDE VOICE. Source comparisons mask exactly that rectangle in both frames and compare all other regions. Genuine device text is outside the rectangle.
 
-The population graphic builds 100 marks, highlights 25 and regroups them into four equal groups. It states about 2 billion Muslims and about one quarter of the world’s population. The caption identifies Pew’s 2020 estimate, published 2025, with underlying share 25.6%. This is no comprehension statistic.
+The output target is 179.900 seconds, 5,397 frames, 1920×1080 at 30fps with 48kHz stereo. The accepted opening and earlier full master remain unchanged.
 
-The product scene uses original 3D geometry approximating the black Meta Ray-Ban Display. It is labelled 3D illustration. The lenses contain no invented output. The geometry is an editorial approximation, not official manufacturer CAD.
+## Reserved masjid recording and remaining work
 
-The technical diagram advances glasses audio through Muse Voice transcription, local matching and portion tracking, published source and lens output. Spark branches conditionally for bounded ambiguity and validated cached paired-source plans. It does not author the displayed translation.
+The single 30-second replacement slot stays exactly at 1:00–1:30. Its six-second placeholder and 24-second phone reference remain labelled throughout. This fill is not completed continuous masjid proof. Narration remains the temporary local macOS Daniel voice. Captions are approximate. This is a private review artifact, not a public release.
 
-The opening replays the same recorded audio with its genuine display content. The enlargement comes from the same native frames. The 73:20 sequence preserves source text, crop, mask and playback speed. Hifz uses a labelled reference-mode graphic, since the supplied footage does not show the actual toggle. Teaching remains future work requiring development and extensive testing. The prayer disclaimer remains visible.
+The prayer disclaimer remains visible. The 73:20 sequence preserves source text, crop, masking and playback speed. Hifz uses a labelled reference-mode graphic. Teaching remains future work requiring development and extensive testing. Existing footage predates Build 40 and does not establish its larger text readability.
 
-## Local artifacts and reproduction
+## Reproduction and evidence
 
-The current master is build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4. Approximate guide captions, viewing notes, technical receipt and private QA samples live beside it. The previous v0.1 and accepted v0.2 masters remain unchanged.
+Run python3 tools/test_full_demo_assembly.py, then python3 tools/assemble_full_demo.py. The separate submission/full-video-v0.5.json manifest identifies accepted input hashes and source/output mappings. It does not change the older renderer's plan.
 
-Run python3 tools/render_demo_video.py --reuse-audio-from build/video-v0.2/audio to render motion bases and reuse the accepted audio. Run with --assemble-only to use existing motion bases. Run with --storyboard-only for the full assembled storyboard, including an actual 3D frame. Run with --audio-only to prepare guide and source audio. Speech generation requires access to the local macOS speech service; positive audio duration must be verified. No paid or cloud narration is required.
+Run python3 tools/assemble_full_demo.py --check for fresh read-only verification. It checks input hashes, full decode, picture/audio duration, frame count, peak level, captions and numerical source correspondence. Product speech is compared against the same pitch-preserving reference tempo, including its final words. The maintained helper uses a Pillow badge PNG because this FFmpeg build lacks drawtext.
 
-Run python3 tools/check_submission.py --video build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4 for timeline, document and picture/audio checks. Independent visual review covers the assembled storyboard and master in motion. Technical checks cover 1920×1080/30fps, 179–180 seconds, at least 5,397 picture frames, stereo 48 kHz audio, late picture and numerical audio level.
+Private captions, viewing notes, assembly manifest, technical receipts and encoded join samples live under build/video-v0.5/. Independent reviews are recorded under its qa/ directory. Technical comparisons and sampled visual inspection do not establish uninterrupted human playback, pronunciation quality, physical glasses readability or recognition accuracy.
+
+## Historical export evidence
+
+The following sections describe preserved earlier exports, not the current assembly.
 
 ## v0.2 verification and remaining review
 

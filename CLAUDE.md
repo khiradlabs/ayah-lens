@@ -48,3 +48,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Reordering video scenes must preserve semantic visuals, native overlays and recitation audio, not just timeline positions. Accepted guide WAVs can end slightly before the scene boundary after resampling. Verify tools/test_video_opening_order.py passes source selection and byte-identical accepted-audio reuse with tail padding.
 
 - Hackathon organizers cannot grant Meta brand-asset rights. Verify any reuse gate names Meta’s exceptions route and records actual approval, rather than treating an organizer answer or public download as permission. Keep unapproved website frames out of public exports and Git.
+
+- Imported master scenes can retain burned-in old video-version badges. Verify sampled editorial badges against the assembly version; tools/assemble_full_demo.py --check records the narrow replacement rectangle and source comparisons. This FFmpeg build lacks drawtext, so rasterize the badge with Pillow and verify its bounded PNG before overlaying with python3 tools/test_full_demo_assembly.py.

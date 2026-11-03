@@ -1,0 +1,62 @@
+{
+  "version": "0.5",
+  "output": "build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4",
+  "duration_seconds": 179.9,
+  "frames": 5397,
+  "fps": 30,
+  "inputs": {
+    "opening": {
+      "path": "build/video-v0.5-opening/Ayah-Lens-Opening-v0.5.mp4",
+      "sha256": "0ee67a247163bb5d01176c1bc6722ed28a9db7e338beee0d48912d7d869e9d2e"
+    },
+    "master": {
+      "path": "build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4",
+      "sha256": "a23d319e234c5c71a40600cc37294572dea7666e14211b91b0c330a7572871e5"
+    }
+  },
+  "segments": [
+    {
+      "source": "opening",
+      "source_start": 0,
+      "source_end": 38,
+      "output_start": 0,
+      "output_end": 38,
+      "speed": 1
+    },
+    {
+      "source": "master",
+      "source_start": 36,
+      "source_end": 48,
+      "output_start": 38,
+      "output_end": 48,
+      "speed": 1.2,
+      "content": "Editorial product illustration and temporary guide narration only"
+    },
+    {
+      "source": "master",
+      "source_start": 48,
+      "source_end": 179.9,
+      "output_start": 48,
+      "output_end": 179.9,
+      "speed": 1
+    }
+  ],
+  "masjid_slot": {
+    "start": 60,
+    "end": 90,
+    "status": "reserved; labelled placeholder/reference fill, not completed masjid proof"
+  },
+  "narration": "Temporary local Daniel guide; existing product narration retimed with pitch-preserving tempo",
+  "new_generation_cost_usd": 0,
+  "editorial_badge": {
+    "rectangle": [
+      1420,
+      30,
+      460,
+      48
+    ],
+    "start_seconds": 38,
+    "text": "VIDEO v0.5 / GUIDE VOICE",
+    "comparison": "Source SSIM masks exactly this rectangle in both frames from 38 seconds onward; all other regions remain compared."
+  }
+}
