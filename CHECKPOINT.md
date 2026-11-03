@@ -1,6 +1,20 @@
 # Ayah Lens implementation checkpoint
 
-## Current status, November 3: approved hook and animated benefits in v0.5
+## Current status, November 3: full v0.5 integrated under three minutes
+
+Faraz approved the opening and requested its integration into the full video within three minutes. Built build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4 at 179.900 seconds. Both picture and audio remain under 180 seconds. The export has 5,397 frames at 1920×1080 and 30fps, with 48kHz stereo.
+
+The approved opening occupies 0–38 seconds. The original editorial product illustration and guide narration were retimed from twelve seconds to ten at 38–48. Pitch-preserving tempo retains all words and Meta stack names. Genuine listening footage was not accelerated. From 48 seconds onward, original timing and playback speed remain. The reserved masjid block stays exactly at 60–90 seconds with its existing replacement labels.
+
+The imported master contained an old burned-in video-version badge. Only the editorial header rectangle x1420, y30, width 460, height 48 was replaced from 38 seconds onward. It reads VIDEO v0.5 / GUIDE VOICE. It lies outside genuine device text. Source comparisons exclude precisely that rectangle in both images. The maintained assembler uses a Pillow badge PNG because this FFmpeg build lacks drawtext. A CLAUDE.md gotcha and bounded-badge checks preserve this finding.
+
+Implementation commit: b813cc9. Six focused tests and controller-run read-only verification passed. Independent visual, specification and final quality reviews passed. The visual reviewer inspected 20 independently decoded final frames. Full-stream black detection found no black runs. Quality review checked continuous frame timestamps through 179.866667 seconds, stereo source correspondence, exact joins and final frames. Full decode passed; peak is -3dBFS. Opening source similarity exceeded 0.9676; product and tail comparisons exceeded 0.9988. Audio correlations exceeded 0.99997, including retained product final words. Input opening and old master hashes remained unchanged.
+
+Final SHA256: eda86f8188c7e8d472d700964eabf3ec65e50813e9639fc3936875f25764cfc8. Maintained assembler: tools/assemble_full_demo.py. Separate manifest: submission/full-video-v0.5.json. Private captions, viewing notes, technical receipts and reviews live under build/video-v0.5/.
+
+Temporary narration and the labelled masjid placeholder remain. Reviews sampled visuals rather than uninterrupted human playback. No physical glasses, pronunciation, recognition accuracy or comprehension study was retested. No new API call, asset generation, recording, app change or publication occurred. Earlier exports remain intact. QuickTime stayed stopped. Meta website-asset permission remains pending; audio-buffer work remains deferred.
+
+## Earlier status, November 3: approved hook and animated benefits in v0.5
 
 Faraz approved the personal Quran translator hook and requested the video update. Built build/video-v0.5-opening/Ayah-Lens-Opening-v0.5.mp4. The focused opening is 38 seconds. Earlier v0.4, v0.3 and full v0.2.1 exports retained their hashes.
 

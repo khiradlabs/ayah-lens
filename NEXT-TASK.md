@@ -1,19 +1,23 @@
 # Next Ayah Lens task
 
-Status: The approved hook and benefit animations are implemented in opening v0.5. The complete video remains v0.2.1.
+Status: The approved opening is integrated into full video v0.5. The current review master is build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4.
 
-## Next production work
+## Remaining production work
 
-Use build/video-v0.5-opening/Ayah-Lens-Opening-v0.5.mp4 as the current opening candidate. It is 38 seconds. Integrate it into the full three-minute review cut and reclaim two seconds elsewhere. Preserve the reserved 30-second masjid replacement block. Preserve all earlier exports.
+Replace the labelled 1:00–1:30 masjid fill with suitable approved footage and finish narration. The current master runs 179.900 seconds. Preserve its three-minute limit and all earlier exports. Do not ask again for opening or integration approval; Faraz already approved both.
 
-Finish narration and replace the labelled masjid placeholder with suitable approved footage. Keep genuine source labels and clear replay identification. Recheck full picture/audio duration, source correspondence and accessibility of final links. Publication, final form submission and the production-bound repository merge retain their existing approval boundaries. Do not ask again for approval of the hook wording; Faraz already approved it.
+The masjid slot remains a six-second placeholder followed by 24 seconds of labelled phone reference. It is not completed continuous masjid proof. Narration remains temporary local Daniel, and captions are approximate. Recheck the full picture/audio duration and source labels after any replacement.
 
-## Current evidence
+Public video/repository links, final form submission and the production-bound repository merge retain their existing approval boundaries. Final links must work while signed out.
 
-- Implementation fc9c30e contains the exact hook and nine measured speech beats. Six focused tests passed.
-- Opening v0.5 is 38 seconds, 1,140 frames, 1920×1080/30fps with 48kHz stereo. Genuine replay starts at 30 seconds. Narration ends at 29.257 seconds.
-- Independent specification, quality and sampled encoded visual reviews passed. Receipts live under build/video-v0.5-opening/.
-- Existing Muse artwork was reused. New generation spend was zero. Temporary local Daniel narration and approximate captions remain.
+## Current evidence and reproduction
+
+- Implementation b813cc9 integrates the accepted opening at 0–38 and retimes only the editorial product section into 38–48. Original footage after 48 seconds retains timing and speed.
+- Full output is 179.900 seconds, 5,397 frames, 1920×1080/30fps and 48kHz stereo. Peak is -3dBFS. Input hashes stayed unchanged.
+- Six tests, full decode, source/audio/caption comparisons and independent visual, specification and quality reviews passed. Uninterrupted human playback and pronunciation were not assessed.
+- Use python3 tools/test_full_demo_assembly.py and python3 tools/assemble_full_demo.py --check for read-only verification. Rebuild with python3 tools/assemble_full_demo.py. The separate submission/full-video-v0.5.json manifest keeps older renderer assumptions intact.
+- The editorial video-version badge is replaced only within the documented header rectangle from 38 seconds onward. Pillow renders this post-production label because FFmpeg drawtext is unavailable.
+- Private reviews and receipts are under build/video-v0.5/. The original Muse artwork was reused with zero new generation spend.
 
 ## Persistent constraints
 
