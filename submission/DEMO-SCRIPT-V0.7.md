@@ -1,10 +1,10 @@
 # Complete Ayah Lens v0.7 script
 
-Draft1. Selected B delivery. 307 spoken words. This is a complete production script, not creative approval.
+Draft2. Selected B delivery. 283 spoken words. Revised after cold storyboard review. This is a production draft, not creative approval.
 
-Timings outside60–90seconds are provisional. Measure whole paragraph performances before locking the edit. The natural end must remain under180seconds.
+Timings outside60–90seconds are provisional. Measure whole paragraph performances before locking the edit. End naturally under180seconds; do not pad to165seconds.
 
-Use the same off-white field, charcoal typography, restrained blue accent, reading-window outline and thin rail throughout. Real source words stay readable and unchanged. Do not reuse the generated listener or introduce a3D turntable.
+Use off-white, charcoal, one restrained blue accent, a reading-window outline and one thin rail. The genuine held crop becomes a small continuity inset after the first question. Human context then drives the main composition. Source pixels remain unchanged. No static generated listener or3D turntable.
 
 ## listen · 0–6s
 
@@ -42,7 +42,7 @@ What if your glasses became your personal Quran translator? You hear the recitat
 
 Picture
 
-Keep the real crop anchored in the same position. Reveal the question above the rail in two linked lines. Move a small accent marker along the rail on follows along; let a simple phone outline settle outside the reading area on leave your phone alone. The outline carries no fabricated interface.
+Begin with the genuine crop in its opening position, then reduce it to a small labelled continuity inset over0.5s during the first question. The main composition becomes the question, the reading rail and a simple phone outline. On meaning appears the rail opens into Arabic and published English source labels. On leave your phone alone the phone outline settles outside the reading frame. Keep held source status clear; no fabricated interface or scripture.
 
 On-screen copy
 
@@ -60,23 +60,26 @@ Reuse build/video-v0.7-study/realtime-audition/B-engaged.wav exactly, duration13
 
 Handoff
 
-Keep the question baseline and crop fixed. The question moves upward by one text line and becomes the product heading as the next connected paragraph starts.
+The phone outline settles into the lower margin while the existing rail divides into four equal sections. Carry the small labelled source inset unchanged into the human-context composition.
 
-## idea · 19.65–33.65s
+## human_context · 19.65–36.8s
 
 Speaker text
 
-That is the idea behind Ayah Lens, built for Meta Ray-Ban Display. The Quran is Islam's scripture, recited in Arabic. If Arabic is unfamiliar, hearing the words and following their meaning can be very different experiences.
+Pew estimated about two billion Muslims in 2020, roughly a quarter of humanity. The Quran is Islam's scripture, recited in Arabic. If you do not understand Arabic, you can hear every word and still miss the meaning. Ayah Lens brings published English meaning into view on Meta Ray-Ban Display.
 
 Picture
 
-Product name inherits the question position. A small label names the glasses beside the existing genuine display. A second label names the English meaning beneath the recorded crop, outside source pixels. Keep the real Arabic and English fully readable rather than drawing illustrative substitutes.
+Make human context the main composition, with the genuine held crop only a small labelled continuity inset. At two billion the population count resolves beside the rail; at quarter accent one of four equal divisions. At recited in Arabic the divisions regroup into a source relationship: Arabic alongside published English, using labels and abstract blocks without invented scripture. At miss the meaning separate those two abstract source blocks slightly; at brings published English meaning connect them along the same rail. Keep the English-audience scope and dated Pew attribution readable. The real inset stays unchanged.
 
 On-screen copy
 
+- About 2 billion Muslims · roughly one quarter of humanity
+- Pew Research Center · 2020 estimate, published June 2025
+- For listeners seeking English meaning
 - Ayah Lens · Meta Ray-Ban Display
-- Quran · Islam’s scripture, recited in Arabic
 - Published Arabic + published English meaning
+- Held recorded inset · earlier prototype
 
 Source
 
@@ -84,13 +87,13 @@ Source
 
 Sound
 
-One continuous B-directed paragraph. Let the final sentence ease into a short quiet gap. Do not add separate spoken title stings.
+One continuous B-directed paragraph. Put human meaning ahead of presentation cadence. End with a short quiet gap before genuine recitation; measure the whole paragraph without acceleration.
 
 Handoff
 
-The held source frame shrinks gently into the left composite position. Its enlarged crop stays at right. A visible replay label arrives before motion restarts, so the repeat has a clear reason.
+The source relationship brackets contract around the real inset; the inset expands into the genuine composite-and-crop layout over0.5s. Remove the abstract blocks outside source pixels. Show replay labelling before the first moving proof frame.
 
-## native_proof · 33.65–46.15s
+## native_proof · 36.8–49.3s
 
 Speaker text
 
@@ -115,24 +118,23 @@ Original synchronized recitation only. No narration. No other recitation layer. 
 
 Handoff
 
-At the end hold the complete last source frame. Move its surrounding frame toward the right edge while the same rail grows leftward into the population context. No text is morphed or rewritten.
+At the final source word, hold the last genuine frame briefly. Its outside reading-window outline detaches into a neutral diagram frame while the real picture reduces to a labelled thumbnail. Keep a clean audio gap before the cue.
 
-## context · 46.15–60s
+## long_verse_cue · 49.3–60s
 
 Speaker text
 
-Pew estimates about two billion Muslims, roughly a quarter of humanity, in 2020. For listeners seeking English meaning, this is one way to keep it close.
+Now watch one long verse. The verse stays the same while the displayed portion changes with the recitation.
 
 Picture
 
-Keep the source-frame thumbnail at right as the rail becomes four equal divisions at left; accent one division. Then retain the rail as the population copy yields to a small Possible Salat use label and the prayer disclaimer. No invented congregation footage. The disclaimer remains through the reservation and phone reference.
+Use a neutral editorial diagram to explain what the next genuine phone take will show. Keep one verse identifier fixed while a narrow outlined reading window moves over abstract indexed blocks. Do not invent scripture or show phone footage before66s. The real native thumbnail remains labelled earlier prototype. Let the reservation context and prayer disclaimer arrive beside the diagram before60s.
 
 On-screen copy
 
-- About 2 billion Muslims · roughly one quarter of humanity
-- Pew Research Center · 2020 estimate, published June 2025
-- Population context, not adoption
-- Possible Salat use · Muslim prayer
+- Watch one long verse · changing portions
+- Explanatory reading-window diagram
+- Masjid slot reserved · phone reference follows
 - Technology demonstration only. This does not establish religious permissibility for use during prayer.
 
 Source
@@ -141,11 +143,11 @@ Source
 
 Sound
 
-One continuous paragraph. End before60s with comfortable room; if necessary begin context earlier after the measured previous paragraphs. Keep the reserved boundary fixed.
+One continuous short cue, after native recitation fully ends. End before60s. No recitation under the cue. Let the quiet lead into the fixed reservation.
 
 Handoff
 
-The four-part rail straightens into the slot progress rail. The retained source thumbnail fades into a clearly empty reservation frame over0.4s, keeping the disclaimer in place.
+The outlined explanatory reading window becomes the empty reserved frame over0.4s. The cue directs attention to changing portions; the explicit reservation copy explains the temporary absence of a masjid take. Keep the same rail and prayer disclaimer in place.
 
 ## masjid_reservation · 60–66s
 
@@ -204,15 +206,15 @@ Handoff
 
 Freeze the final phone frame at90s. The 73:20 label remains fixed and becomes the heading for the next explanation. Hold a short quiet gap before narration, then visibly label the coming silent replay.
 
-## following · 90–102s
+## following · 90–100s
 
 Speaker text
 
-Look at what changed there: the verse stayed the same, but the reading window moved through it. A long verse cannot fit on the glasses at once, so the software follows smaller portions automatically.
+That was one verse. Because it cannot fit on the glasses at once, the software follows smaller portions automatically. You keep listening without turning a page.
 
 Picture
 
-After the held frame, replay the beginning of the phone take silently at source speed. Keep the ayah identifier anchored outside the crop while real portions change. The rail marker advances only as an explanatory marker below the actual source card. End on a genuine source frame, not a constructed one.
+After the genuine source tail and a quiet gap, replay a measured excerpt of the phone take silently at source speed. Keep the ayah identifier anchored outside the crop as real portions change. Nominal source range0–10s fits this10s scene. Once narration is measured, select an equally long source excerpt inside0–24s; if a narration gap remains, hold the final genuine frame rather than slowing playback. The rail marker is explanatory and remains outside source text.
 
 On-screen copy
 
@@ -222,7 +224,7 @@ On-screen copy
 
 Source
 
-{"path": "recordings/version-3/muzzammil-following-24s-candidate.mp4", "start_seconds": 0, "end_seconds": 14, "crop": [48, 1232, 984, 1116], "speed": 1, "mode": "silent explanatory replay"}
+{"path": "recordings/version-3/muzzammil-following-24s-candidate.mp4", "start_seconds": 0, "end_seconds": 10, "crop": [48, 1232, 984, 1116], "speed": 1, "mode": "silent explanatory replay"}
 
 Sound
 
@@ -232,42 +234,43 @@ Handoff
 
 Retain the final genuine crop as a small output node at right. Its surrounding frame contracts over0.5s while the rail extends back toward a glasses-audio node at left, opening the mechanism without an unrelated slide reset.
 
-## mechanism · 102–123s
+## mechanism · 100–120s
 
 Speaker text
 
-Muse Voice transcribes the glasses audio live. Muse Spark pairs Arabic spans with spans from a published English translation, and helps resolve bounded passage ambiguities. Local software tracks position and validates canonical source text before sending a reading window. The phrase plans in these demos are cached; the displayed translation comes from published text.
+Muse Voice turns the glasses' audio into a live Arabic transcript. Local software finds the passage and follows your place. Muse Spark helps pair Arabic portions with published English and resolve uncertain passage matches. These demos use cached pairing plans. Local checks preserve the source words before each portion reaches the glasses.
 
 Picture
 
-Animate one argument along the retained rail, rather than presenting all boxes for25s. First an audio pulse reaches Muse Voice; a transcript token travels to local matching and tracking. Next two source-span brackets appear over abstract indexed blocks, never fake scripture, and Spark links the Arabic and English boundaries. A separate small ambiguity branch can return a supplied candidate or abstain. Cache badge sits on the paired-plan branch, never on live transcription. Finally a validation bracket closes around the source indices and leads into the retained genuine output crop. Output wording remains unchanged.
+Animate the journey of sound and meaning along the inherited rail. A sound pulse reaches Muse Voice; a transcript marker travels to local passage finding and position tracking. At Muse Spark, two abstract source blocks link into paired Arabic and published English portions. Keep Tanzil/Pickthall attribution readable. An uncertainty branch offers only supplied candidates or abstention. The pairing branch carries its cache badge, separate from the live transcription branch. At local checks a validation bracket closes around source indices and leads into the retained genuine output inset. Reveal the argument on spoken cues rather than holding a complete technical slide.
 
 On-screen copy
 
-- Muse Voice · live Arabic transcription
-- Local matching + portion tracking
-- Muse Spark · source-span pairing + bounded ambiguity help
+- Muse Voice · live Arabic transcript
+- Local software · finds passage + follows place
+- Muse Spark · pairs published Arabic + English portions
+- Uncertain match · supplied candidates or abstain
 - Published Tanzil Arabic · Pickthall English
-- Demo phrase plans cached
-- Validated source slices → glasses
+- Demo pairing plans cached · transcription live
+- Local validation → unchanged source words
 
 Source
 
-{"path": "recordings/version-3/muzzammil-following-24s-candidate.mp4", "start_seconds": 14, "end_seconds": 14, "crop": [48, 1232, 984, 1116], "speed": 1, "mode": "held genuine output within editorial diagram"}
+{"path": "recordings/version-3/muzzammil-following-24s-candidate.mp4", "start_seconds": 10, "end_seconds": 10, "crop": [48, 1232, 984, 1116], "speed": 1, "mode": "held genuine output within editorial diagram"}
 
 Sound
 
-One connected paragraph with a small breath after live. No recitation. Animate each explanation on its spoken cue, keeping each previous useful node visible.
+One connected paragraph, with a natural breath after follows your place. No recitation. Keep the sound-to-meaning journey conversational and animate it on spoken cues.
 
 Handoff
 
 The validated-output frame expands back to reading-window size. Two English visibility states appear beside it as clearly labelled explanatory diagrams; the source crop itself is never altered.
 
-## choice_and_use · 123–139s
+## choice_and_use · 120–134s
 
 Speaker text
 
-At home, that could mean following a reciter on television. For Hifz, or Quran memorization, you can hide English and keep an Arabic reference while rehearsing, then restore the meaning. Salat, Muslim prayer, is another possible setting to explore carefully.
+At home, the same idea could help you follow a reciter on television. For Hifz, Quran memorization, hide the English while rehearsing, then bring the meaning back. We are also exploring Salat, Muslim prayer.
 
 Picture
 
@@ -294,22 +297,24 @@ Handoff
 
 The three setting markers slide together into a single library tab. Keep the reading-window outline as the outside edge of the next evidence panel, with the disclaimer fading only after the prayer mention ends.
 
-## foundation · 139–160s
+## foundation · 134–153s
 
 Speaker text
 
-The full reference contains a hundred and fourteen surahs and six thousand two hundred and thirty-six ayahs. We built the glasses integration and automatic following during this hackathon. Fifty-nine core tests passed, covering matching, source preservation and display scheduling. That is not whole-Quran accuracy. Teaching support would need further development and extensive testing.
+During this hackathon, we built the glasses integration and automatic following you have seen. The reference library contains the complete Quran. Our core tests check matching, source preservation and display scheduling. Teaching support would need further development and extensive testing.
 
 Picture
 
-Within the inherited frame, open library tabs into114 and6,236 reference counts. Replace the tabs with a plain recorded-test receipt card, not a live terminal simulation. Show59 with scope underneath and receipt provenance in the margin. The coverage boundary stays visible. The same rail reaches a final outlined Future teaching tab that stays visibly unfinished.
+Lead with the event work: the inherited reading frame connects glasses integration to automatic following. At complete Quran open a readable reference card showing114surahs and6,236ayahs with reference-only scope beside the counts. At core tests replace it with the recorded59-test receipt, dated November2 with provenance from the saved core-test log; retain selected-software-test scope beside it. Do not simulate a fresh terminal run. End on a distinct outlined future-teaching tab, qualified by further development and extensive testing. Keep each evidence card readable through its full sentence.
 
 On-screen copy
 
-- 114 surahs · 6,236 ayahs · reference coverage
-- 59 core tests passed · recorded receipt
+- Built during this hackathon · glasses integration + automatic following
+- 114 surahs · 6,236 ayahs · complete reference library
+- Reference coverage, not verified recognition accuracy
+- 59 core tests passed · recorded November 2 receipt
+- Selected software tests, not a whole-Quran accuracy study
 - Matching · source preservation · display scheduling
-- Coverage is not whole-Quran accuracy
 - Future teaching support · further development and extensive testing required
 
 Source
@@ -318,17 +323,17 @@ Source
 
 Sound
 
-One continuous paragraph. Let the qualification sound natural and direct. No triumphant sound sting over the testing limit.
+One confident connected paragraph, leading with the work that produced the observed behavior. No recitation or triumphant sound sting. Counts and accuracy scope remain readable evidence cards rather than a spoken list of numbers and negations.
 
 Handoff
 
 Close the future tab and contract the evidence panel back to the original reading-window outline. The rail returns to its opening position; carry the final breath into a short clean gap.
 
-## close · 160–170s
+## close · 153–165s
 
 Speaker text
 
-What matters is the listening experience: keeping the meaning nearby without reaching for a phone. That is the possibility Ayah Lens puts in view.
+The aim is simple: hear the recitation, follow the meaning, and stay with the moment. That is what we are building with Ayah Lens.
 
 Picture
 
@@ -346,7 +351,7 @@ Source
 
 Sound
 
-One warm paragraph, easing off naturally. Keep the full last word and a short room-tone tail. No tempo change. End naturally before180s;170s is a proposal, not a target to pad.
+One warm paragraph, easing off naturally. Keep the full last word and a short room-tone tail. No tempo change. End naturally before180s;165s is a proposal, not a target to pad.
 
 Handoff
 
@@ -354,32 +359,36 @@ Hold the completed frame for a short breath and fade picture/audio gently after 
 
 ## Performance and source boundaries
 
-Pre-slot narration totals 102 words, including the exact40-word,13.65-second accepted B hook. The first minute also contains6seconds of opening recitation and12.5seconds of native proof. Readable real output appears immediately, before any mechanism explanation.
+Pre-slot narration totals 107 words, including the exact40-word,13.65-second accepted B hook. The first minute also contains6seconds of opening recitation and12.5seconds of complete native proof. The population context starts immediately after the hook. Genuine output is visible from the first frame.
 
-The opening is an explicitly edited listen/replay, not an uninterrupted new session. Keep the whole12.5-second native proof and whole24-second phone reference at original speed. Use the first opening window at a clean audio boundary; a short source-frame hold can accommodate a recitation tail. Never cut a spoken word to hit a provisional timestamp.
+The merged human-context paragraph contains 49 words. At 175 words per minute it takes about 16.8 seconds. The complete audible native replay therefore begins near 37 seconds. Do not force it earlier by speeding the voice or recitation. Its immediate opening excerpt already establishes genuine output before the context.
 
-The60–66reservation and66–90phone reference remain fixed. The latter is24seconds of continuous phone evidence, not completed masjid footage. No fresh masjid take is available. Carry the prayer disclaimer through the reservation and reference.
+The opening is an edited listen/replay, not an uninterrupted new session. Keep the whole12.5-second native proof and whole24-second phone reference at original speed. Let the opening6-second window finish at a clean audio boundary; a short held frame can accommodate a tail. No spoken word is cut to hit a provisional timestamp.
 
-Any narration after90seconds begins after the original recitation tail. The explanatory replay is silent and labelled. No narration talks over audible Quran. No two independent recitations overlap. Avoid synthetic effects across scripture boundaries. Apply small fades only at sample edges without clipping words.
+Keep60–66quiet reservation and66–90complete phone reference unchanged. The latter is24seconds of continuous phone evidence, not completed masjid footage or a25-second take. Fresh masjid footage is unavailable. Keep source labels and the prayer disclaimer readable.
 
-The English switch is implemented and wearer checked, but existing choice footage does not show the control interaction. Use an explicit explanatory mode diagram; do not present it as switch proof. The source recordings show an earlier prototype.
+After90seconds, begin English only after the original recitation tail ends. The subsequent phone replay is silent and labelled. Its excerpt duration follows measured narration without speeding or slowing the original. No English talks over audible Quran; no independent recitations overlap.
 
-Muse Spark supplies bounded source-span plans and ambiguity help. Local validation preserves the canonical source text. Published Tanzil Arabic and Pickthall English supply displayed words; the hook does not claim a newly generated Quran translation. Filmed phrase plans are cached, while Muse Voice transcription is live.
+Use continuous paragraph performances and gentle sample-edge fades without clipping words. Preserve source timing and natural voice dynamics. Level-match the quiet source recitation to the narration without imposing dynamic flattening. No music is required.
 
-The core-test figure is a recorded59-test receipt, not a fresh test run or field accuracy study. Full-reference coverage is114surahs and6,236ayahs, not demonstrated accuracy over every passage. Future teaching needs further development and extensive testing.
+The English switch is implemented and wearer checked. Supplied choice footage does not show the control interaction. Show an explicit explanatory mode diagram, not filmed switch proof. Both genuine sources show an earlier prototype.
 
-Keep AI-generated English narration disclosure visible during synthetic speech only. Keep source labels clear and outside source words. No assets, new audio or rendering were produced by this script task.
+Muse Voice transcription is live; filmed pairing plans are cached. Muse Spark pairs published Arabic/English source boundaries and helps choose among supplied uncertain candidates or abstain. Local checks preserve canonical words. Tanzil Arabic and Pickthall English supply displayed text. No newly generated Quran translation is claimed.
+
+Show114surahs and6,236ayahs as reference coverage, not verified recognition accuracy. Show59coretests as a recorded November2receipt from the saved core-test log, not a fresh run or whole-Quran accuracy study. Future teaching remains qualified by further development and extensive testing.
+
+Keep synthetic-English disclosure visible during synthetic speech only. Labels and diagrams stay outside source words. No generation, spending or rendering occurred in the script task.
 
 ## Rubric evidence map
 
 | Criterion | Weight | Concrete evidence |
 |---|---:|---|
-| Impact |30%| Immediate meaning reveal, unfamiliar-language explanation, dated population context, TV/Hifz/possible Salat settings, return to listening. |
-| Meta tooling |25%| Genuine device output precedes the live Muse Voice, Spark source-pairing and ambiguity argument. Cache scope stays explicit. |
-| Technical execution |20%| Same ayah with changing portions, canonical validation, complete reference scope, recorded59-test receipt. |
-| Demo |25%| Readable native output and12.5-second replay;24-second uninterrupted phone reference; clear source and prototype labels. |
+| Impact |30%| Genuine opening, early population and human need, TV/Hifz/possible Salat settings, listening-focused close. |
+| Meta tooling |25%| Live Muse Voice, Spark pairing and uncertainty help, readable live/cache distinction and source provenance. |
+| Technical execution |20%| Same ayah with changing portions, local tracking and validation, hackathon work, reference and recorded-test cards. |
+| Demo |25%| Immediate readable native output,12.5-second native replay,24-second uninterrupted phone reference, silent explanatory replay. |
 
 ## Claim sources
 
-- [Pew Research Center: Muslim population change, June9,2025](https://www.pewresearch.org/religion/2025/06/09/muslim-population-change/). Checked November3. Its2020 estimate is2.0billion; roughly one quarter is context, not adoption.
-- [Claims and limits](CLAIMS.md), [judging evidence](JUDGING.md), and [recorded core-test receipt](../CHECKPOINT.md). The latest recorded dense-window milestone states59coretests passed with zero failures.
+- [Pew Research Center: Muslim population change, June9,2025](https://www.pewresearch.org/religion/2025/06/09/muslim-population-change/). Checked November3. The2020estimate is2.0billion. This is population context, not adoption.
+- [Claims and limits](CLAIMS.md), [judging evidence](JUDGING.md), [checkpoint](../CHECKPOINT.md), and the recorded November2core-test log at build/logs/core-tests.log.
