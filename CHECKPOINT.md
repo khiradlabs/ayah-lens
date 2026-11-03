@@ -1,12 +1,16 @@
 # Ayah Lens implementation checkpoint
 
-## Narration request, November 3: Muse availability checked
+## Narration investigation, November 3: Spark API route clarified
 
-Faraz requested Meta Muse narration with emotional delivery. Verified the official Meta model documentation and queried GET /v1/models using the existing private credential. The account returned nine models. Its only speech model was muse-voice-transcribe-1.0. Meta documentation explicitly says this model does not synthesize speech. No narration synthesis request or paid inference occurred.
+The earlier statement that Muse cannot generate narration was too broad. Meta's September 23 research article describes Muse Realtime Voice producing speech. The account model catalog only established which developer API models were listed; it did not establish all consumer-app capabilities. Added a CLAUDE.md gotcha and an exact-endpoint verification requirement.
 
-Private evidence: build/meta-voice-recon/account-model-catalog.json and voice-delivery-plan.txt. Source: https://dev.meta.ai/docs/models. Existing fal credentials are present, and its ElevenLabs v3 endpoint is documented. No alternative-provider request was made. Changing from the expressly requested Muse provider needs Faraz's choice. Proposed next step: two expressive hook auditions through ElevenLabs via fal, capped at USD1 outside Meta credits. Full video v0.5 remains unchanged at 179.900 seconds.
+Faraz clarified that the requested route is Muse Spark APIs. A direct POST /v1/chat/completions request using muse-spark-1.3 and modalities [text, audio] returned HTTP400, invalid_request_error, param modalities, message: `modalities` is not supported. No audio was returned. Private receipt: build/meta-voice-recon/spark-1.3-audio-probe.json. The shared schema lists audio, but the compatibility guide explicitly marks modalities unsupported and audio output unavailable. This probe rejects that particular route; it is not proof against every possible Meta speech interface.
 
-Delivery direction is prepared: curious invitation for the hook, confident benefits, crisp No scrolling / No tapping beats and a warmer closing. Preserve approved words, genuine Quran audio and the three-minute limit. Do not synthesize scripture or mislabel another provider as Muse.
+A fresh Muse app side-chat received the approved sample prompt during reconnaissance. Automatic approval review rejected reading its response because the page also included unrelated private history. A narrow selector attempt was also rejected. All Muse UI reads stopped. No response, model provenance or audio export was verified. Do not retry that blocked UI route or use another channel to read the same private context.
+
+Current next step: obtain and test the exact Spark endpoint, model name or example Muse gave Faraz. This clarification has been requested asynchronously. Continue the requested Meta route; the earlier ElevenLabs alternative is not approved. No new voice track or full-video replacement occurred. The current full v0.5 remains 179.900 seconds.
+
+Sources: https://research.meta.ai/blog/bringing-your-muse-to-life and https://dev.meta.ai/docs/protocols/chat-completions. Account catalog evidence and emotional delivery directions remain under build/meta-voice-recon/. Voice direction is curious for the hook, confident for benefits and warm for the closing. Preserve approved words and genuine recitation.
 
 ## Current status, November 3: full v0.5 integrated under three minutes
 

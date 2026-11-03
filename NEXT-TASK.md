@@ -2,11 +2,15 @@
 
 Status: The approved opening is integrated into full video v0.5. The current review master is build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4.
 
-## Narration provider choice
+## Current narration investigation
 
-Faraz requested Meta Muse voice generation with emotion. Official documentation and the account model catalog confirm no Muse speech-synthesis model is available. No narration generation occurred. The availability evidence and emotional directions are under build/meta-voice-recon/.
+Faraz clarified the requested route is Muse Spark APIs. Ask for no alternative-provider approval while investigating that route. An exact Spark API example or endpoint/model has been requested asynchronously; use that information when received.
 
-Pending choice: may we use ElevenLabs v3 through the existing fal setup for two expressive hook samples, capped at USD1 outside Meta credits? Do not perform alternative-provider paid calls until Faraz answers. Existing fal credentials were checked for presence only. If approved, use the maintained tools/fal/fal.py helper with --note and correct cost logging. Audition the approved hook first, then update full narration and sync while retaining the 180-second cap. Do not clone a real voice or replace genuine recitation.
+The direct muse-spark-1.3 Chat Completions audio-modality probe returned HTTP400: `modalities` is not supported. The compatibility guide states no audio output, despite a shared schema exposing an audio enum. See build/meta-voice-recon/spark-1.3-audio-probe.json. This is scoped evidence, not a claim that all Muse products lack speech generation. Official Meta research describes Muse Realtime Voice producing speech.
+
+A fresh Muse app sample prompt was sent, but automatic approval review blocked response reading because the page included unrelated private history. A narrow selector attempt was rejected too. UI reads stopped. Do not retry or bypass that rejected access. User's clarification directs work to the API; no app-read permission is currently needed.
+
+No native speech file has been confirmed. Keep full v0.5 unchanged until a genuine generated track exists. Do not silently use another provider or label OS speech as Muse. Existing emotional directions are saved under build/meta-voice-recon/. Preserve the approved words, genuine Quran audio and three-minute cap.
 
 ## Remaining production work
 

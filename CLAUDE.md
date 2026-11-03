@@ -50,3 +50,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Hackathon organizers cannot grant Meta brand-asset rights. Verify any reuse gate names Meta’s exceptions route and records actual approval, rather than treating an organizer answer or public download as permission. Keep unapproved website frames out of public exports and Git.
 
 - Imported master scenes can retain burned-in old video-version badges. Verify sampled editorial badges against the assembly version; tools/assemble_full_demo.py --check records the narrow replacement rectangle and source comparisons. This FFmpeg build lacks drawtext, so rasterize the badge with Pillow and verify its bounded PNG before overlaying with python3 tools/test_full_demo_assembly.py.
+
+- An API model catalog does not establish all capabilities of the Muse app. Separate Muse Voice Transcribe, Muse Realtime Voice and downloadable Spark API speech output. Verify the exact output endpoint with a live request; record HTTP status and actual audio bytes before claiming synthesis works or is universally unavailable. See build/meta-voice-recon/ for the scoped catalog and Spark audio-probe receipts.
