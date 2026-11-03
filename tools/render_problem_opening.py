@@ -4,7 +4,7 @@ import argparse, array, hashlib, importlib.util, json, math, os, re, shutil, sub
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 SRC=ROOT/'tools/problem-opening'
-OUT=ROOT/'build/video-v0.3-opening'
+OUT=ROOT/'build/video-v0.4-opening'
 MEDIA=SRC/'public/media'
 MASTER=ROOT/'build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4'
 MASTER_HASH='a23d319e234c5c71a40600cc37294572dea7666e14211b91b0c330a7572871e5'
@@ -26,9 +26,11 @@ def correlation(a,b):
 def check():
     run([sys.executable,SRC/'test_timing.py'],env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
     assert sha(MASTER)==MASTER_HASH,'existing full master changed'
+    previous=ROOT/'build/video-v0.3-opening/Ayah-Lens-Opening-v0.3.mp4'
+    assert sha(previous)=='85cde1b7f662e91f553eed5f5d81c44a02cdcf9ece83622ccb134e5b8aa4ba33','previous v0.3 proof changed'
     assert timing.source_frame(840)==0 and timing.source_frame(1079)==239
     assert all(s+d/1.03<=28 for s,d in zip(timing.TIMELINE['narration_starts'],timing.TIMELINE['narration_durations']))
-    receipts={'master_unchanged_sha256':sha(MASTER),'narration_words':len(timing.NARRATION.split()),'frames':1080,'fps':30}
+    receipts={'previous_v03_unchanged_sha256':sha(previous),'master_unchanged_sha256':sha(MASTER),'narration_words':len(timing.NARRATION.split()),'frames':1080,'fps':30}
     for source in timing.audio_sources():
         p=ROOT/source
         assert sha(p)==sha(MEDIA/p.name),f'accepted audio copy differs: {p.name}'
@@ -36,7 +38,7 @@ def check():
     receipts['native_source_sha256']=sha(MEDIA/'native.mp4')
     receipts['accepted_vs_original_recitation_correlation']=correlation(pcm(MEDIA/'00.wav'),pcm(MEDIA/'native.mp4',filters='volume=20dB,highpass=f=90,lowpass=f=7000,afade=t=in:d=0.08,afade=t=out:st=7.8:d=0.2'))
     assert receipts['accepted_vs_original_recitation_correlation']>.995
-    final=OUT/'Ayah-Lens-Opening-v0.3.mp4'
+    final=OUT/'Ayah-Lens-Opening-v0.4.mp4'
     if final.exists():
         p=probe(final);v=next(s for s in p['streams'] if s['codec_type']=='video');a=next(s for s in p['streams'] if s['codec_type']=='audio')
         assert (v['width'],v['height'],v['r_frame_rate'],int(v['nb_read_frames']))==(1920,1080,'30/1',1080)
@@ -58,12 +60,14 @@ def prepare():
     assets=json.loads((ROOT/'submission/video-edit.json').read_text())['source_assets']
     shutil.copyfile(ROOT/assets['native'],MEDIA/'native.mp4')
     for source in timing.audio_sources(): shutil.copyfile(ROOT/source,MEDIA/Path(source).name)
-    sentences=timing.NARRATION.split('. ')
+    shutil.copyfile(OUT/'assets/listener-muse.png',MEDIA/'listener-muse.png')
+    run(['ffmpeg','-v','error','-y','-i',MEDIA/'native.mp4','-vf','crop=576:144:208:832','-frames:v','1',MEDIA/'native-crop-frame0.png'])
+    sentences=re.split(r'(?<=[.?])\s+',timing.NARRATION)
     def generate(path,text,voice,rate): run(['say','-v',voice,'-r',str(rate),'-o',path,text])
     measured=[]
     for i,sentence in enumerate(sentences):
         p=OUT/f'voice-{i}.aiff'
-        voice_cache.ensure_voice(p,sentence.rstrip('.')+'.','Daniel',160 if i==3 else 150,generate,duration)
+        voice_cache.ensure_voice(p,sentence,'Daniel',150,generate,duration)
         measured.append(duration(p))
     (OUT/'receipts/voice-durations.json').write_text(json.dumps(measured,indent=2)+'\n')
     timing.narration_windows(measured)
@@ -79,10 +83,11 @@ def prepare():
     def stamp(t):
         ms=round(t*1000);return f'{ms//3600000:02}:{ms//60000%60:02}:{ms//1000%60:02},{ms%1000:03}'
     caps=[(0,4.4,'Quran recitation · Just listen.'),(4.4,8,'Can you follow its meaning?')]
-    caps += [(s,s+d/1.03,t.rstrip('.')+'.') for s,d,t in zip(timing.TIMELINE['narration_starts'],measured,sentences)]
+    caps += [(s,s+d/1.03,t) for s,d,t in zip(timing.TIMELINE['narration_starts'],measured,sentences)]
     caps += [(28,36,'The same words. Now with meaning.\nActual glasses display · same passage replayed')]
     (OUT/'approximate-captions.srt').write_text('\n'.join(f'{i+1}\n{stamp(a)} --> {stamp(b)}\n{t}\n' for i,(a,b,t) in enumerate(caps)))
-    (OUT/'viewing-notes.txt').write_text('REVIEW DRAFT: opening v0.3 only.\n36 seconds, local Remotion/React and original SVG illustration.\nNo music or new sound effects.\nLocal Daniel temporary narration; approximate captions.\nFirst and last eight seconds reuse accepted genuine recitation WAVs.\nLast scene replays source frames0–239, enlarged crop and native camera/display composite in sync.\nEarlier prototype footage does not prove Build40 readability or recognition accuracy.\nConcept phone is an original illustration, not app output.\nPopulation figure is supporting context, not a count of people needing translation.\nNo Meta website assets, paid services, app changes, new recording or publication.\nFull v0.2.1 master preserved.\nInspect question, lived problem, phone gaze shift, immediate replay answer.\n')
+    (OUT/'viewing-notes.txt').write_text('REVIEW DRAFT: opening v0.4 only.\n36 seconds, original Muse Image illustration plus local Remotion motion.\nNo phone concept or companion-phone inset.\nLocal Daniel temporary guide; approximate captions.\nActual source crop x208,y832,w576,h144 is unchanged and replayed at original speed.\nEnlarged from native camera + display recording, not optical lens capture.\nEarlier footage does not prove Build40 readability or overall recognition accuracy.\nStatic genuine frame0 preview appears27.2–28s before the moving replay.\nPew2020 estimate published2025; scale does not imply everyone needs translation.\nNo Meta website assets, app changes, new recording or publication. Full v0.2.1 and v0.3 exports preserved.\n')
+
 def storyboard_sheet():
     from PIL import Image,ImageDraw
     frames=[30,150,285,390,585,720,795,930]
@@ -97,6 +102,6 @@ def main():
     prepare();check()
     run(['node','render.mjs',*(['--storyboard-only'] if args.storyboard_only else [])],cwd=SRC,timeout=1200)
     if args.storyboard_only: storyboard_sheet();return
-    run(['ffmpeg','-v','error','-y','-i',OUT/'picture.mp4','-i',OUT/'audio.wav','-map','0:v','-map','1:a','-c:v','copy','-c:a','aac','-b:a','256k','-ar','48000','-ac','2','-t','36','-movflags','+faststart',OUT/'Ayah-Lens-Opening-v0.3.mp4'])
+    run(['ffmpeg','-v','error','-y','-i',OUT/'picture.mp4','-i',OUT/'audio.wav','-map','0:v','-map','1:a','-c:v','copy','-c:a','aac','-b:a','256k','-ar','48000','-ac','2','-t','36','-movflags','+faststart',OUT/'Ayah-Lens-Opening-v0.4.mp4'])
     check()
 if __name__=='__main__': main()

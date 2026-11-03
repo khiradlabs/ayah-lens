@@ -1,7 +1,7 @@
 import {bundle} from '@remotion/bundler';
 import {openBrowser,selectComposition,renderMedia,renderStill} from '@remotion/renderer';
 import path from 'node:path';
-const out=path.resolve('../../build/video-v0.3-opening');
+const out=path.resolve('../../build/video-v0.4-opening');
 const storyboard=process.argv.includes('--storyboard-only');
 const serveUrl=await bundle({entryPoint:path.resolve('index.jsx'),publicDir:path.resolve('public')});
 const browser=await openBrowser('chrome',{browserExecutable:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});

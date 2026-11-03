@@ -1,102 +1,73 @@
 import React from 'react';
-import {AbsoluteFill, Composition, OffthreadVideo, Sequence, interpolate, registerRoot, spring, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill,Composition,Img,OffthreadVideo,Sequence,interpolate,registerRoot,spring,staticFile,useCurrentFrame} from 'remotion';
 import timeline from './timing.json';
-const C={paper:'#F3EFE5',ink:'#1A1A18',red:'#D34B38',blue:'#53749B'};
-const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
-const ease=(f,start,d=28)=>spring({frame:f-start,fps:30,config:{damping:19,stiffness:105,mass:.8},durationInFrames:d});
+const C={paper:'#F3EFE5',ink:'#1A1A18',red:'#B94B37',blue:'#465D79'};
 const tween=(f,a,b,x,y)=>interpolate(f,[a,b],[x,y],{extrapolateLeft:'clamp',extrapolateRight:'clamp'});
-const Text=({children,x=100,y=100,size=80,width=1600,color=C.ink,style={}})=><div style={{position:'absolute',left:x,top:y,width,fontSize:size,lineHeight:1.07,fontWeight:650,letterSpacing:-2,...style,color}}>{children}</div>;
-const Label=({children,x=100,y=70,color=C.ink,width=1700})=><div style={{position:'absolute',left:x,top:y,width,fontSize:23,letterSpacing:2.3,textTransform:'uppercase',fontWeight:650,color}}>{children}</div>;
-const Listener=({x=0,y=0,scale=1,gaze=0})=><div style={{position:'absolute',left:x,top:y,width:640,height:740,transform:`scale(${scale})`,transformOrigin:'50% 50%'}}><svg width="640" height="740" viewBox="0 0 640 740">
- <ellipse cx="308" cy="687" rx="274" ry="20" fill={C.ink} opacity=".10"/>
- <path d="M72 677L106 484Q146 427 250 423L386 423Q489 444 525 510L566 677Z" fill={C.blue}/>
- <path d="M204 449L274 528L363 451" fill="none" stroke={C.paper} strokeWidth="5"/>
- <path d="M260 364L256 446Q300 484 355 443L357 350" fill="#D4B998" stroke={C.ink} strokeWidth="5"/>
- <g transform={`rotate(${gaze} 318 270)`}>
- <path d="M190 231C174 105 266 66 348 97Q438 122 428 222L460 271L427 286Q432 360 370 383L265 363Q213 321 190 231Z" fill="#DDC6AA" stroke={C.ink} strokeWidth="5"/>
- <path d="M187 238Q149 122 240 77Q350 25 411 119L426 194L374 174Q337 128 290 168L246 232L233 301Q200 291 187 238Z" fill={C.ink}/>
- <path d="M239 233Q204 215 203 257Q205 293 237 292" fill="#DDC6AA" stroke={C.ink} strokeWidth="5"/>
- <path d="M216 253Q232 240 232 272" fill="none" stroke={C.ink} strokeWidth="4"/>
- <path d="M361 217L393 215" stroke={C.ink} strokeWidth="6" strokeLinecap="round"/>
- <circle cx="383" cy="235" r="7" fill={C.ink}/>
- <path d="M398 310Q412 317 426 309" fill="none" stroke={C.ink} strokeWidth="4"/>
- </g>
- <path d="M147 527L120 665M470 536L501 675" stroke={C.ink} strokeWidth="5" fill="none" opacity=".55"/>
- </svg></div>;
-const Waves=({f,x=0,y=0,scale=1,color=C.blue,opacity=1})=><svg style={{position:'absolute',left:x,top:y,transform:`scale(${scale})`,transformOrigin:'left center',opacity}} width="850" height="650" viewBox="0 0 850 650">{[0,1,2,3].map(i=><path key={i} d={`M${60+i*120} 120Q${260+i*120} 325 ${60+i*120} 530`} fill="none" stroke={color} strokeWidth={7-i} opacity={.8-i*.15} transform={`translate(${Math.sin(f/25+i)*12} 0)`}/>)}</svg>;
-const Corner=({children})=><div style={{position:'absolute',left:100,bottom:40,fontSize:22,color:C.ink,letterSpacing:.2}}>{children}</div>;
-const Familiar=({f})=>{
- const intro=ease(f,240,38), scatter=ease(f,323,30);
- return <><div style={{position:'absolute',inset:0,transform:`translateX(${(1-intro)*180}px)`}}>
- <Waves f={f} x={780} y={240} scale={.83} opacity={.70}/>
- <Listener x={1130-intro*115} y={250} scale={1.04}/>
- <div style={{position:'absolute',left:770,top:480,transform:`rotate(-9deg) translate(${scatter*35}px,${scatter*-45}px)`,width:230,height:180,background:C.paper,border:`3px solid ${C.red}`,boxShadow:'12px 14px 0 #1a1a1815',opacity:scatter}}><div style={{fontSize:95,textAlign:'center',paddingTop:30,color:C.red}}>?</div></div>
- </div>
- <Label>01 / A familiar sound</Label>
- <Text x={100} y={205} size={94} width={1010} style={{transform:`translateY(${(1-intro)*45}px)`}}>Hearing the Quran.<br/>Every day.</Text>
- <div style={{position:'absolute',left:100,top:470,width:925,overflow:'hidden',height:265}}><Text x={0} y={0} size={86} width={920} color={C.red} style={{transform:`translateY(${(1-scatter)*275}px)`}}>Without following<br/>its meaning.</Text></div>
- <Text x={105} y={805} size={31} width={930} style={{fontWeight:450,lineHeight:1.3,letterSpacing:0}}>A familiar experience for many Muslims<br/>who do not understand Arabic.</Text>
- <Corner>Concept illustration · no app output</Corner>
- </>;
-};
-const Scale=({f})=>{
- const t=ease(f,514,38);const turn=tween(f,524,570,-18,0);
- return <><div style={{position:'absolute',inset:0,transform:`translateY(${(1-t)*130}px)`}}>
- <Label>02 / The wider context</Label>
- <Text y={205} size={190} width={1000}>About <span style={{color:C.red}}>2B</span></Text>
- <Text y={415} size={73} width={950}>people are Muslim.</Text>
- <Text y={590} size={57} width={930} style={{fontWeight:450}}>Roughly one quarter<br/>of humanity.</Text>
- <svg style={{position:'absolute',left:1165,top:245,transform:`rotate(${turn}deg) scale(${.75+t*.25})`}} width="550" height="550" viewBox="0 0 550 550"><circle cx="275" cy="275" r="238" fill="none" stroke="#D8D4CB" strokeWidth="48"/><circle cx="275" cy="275" r="238" fill="none" stroke={C.red} strokeWidth="48" strokeDasharray={`${2*Math.PI*238*.256} ${2*Math.PI*238*.744}`} transform="rotate(-90 275 275)"/>{Array.from({length:100},(_,i)=>{let x=130+(i%10)*32,y=130+Math.floor(i/10)*32;return <circle key={i} cx={x} cy={y} r="8" fill={i<26?C.red:C.ink} opacity={i<26?1:.25}/>})}</svg>
- <div style={{position:'absolute',left:1165,top:830,width:550,textAlign:'center',fontSize:25}}>Population context, not a measure of need.</div>
- </div>
- <div style={{position:'absolute',left:100,top:935,fontSize:24,lineHeight:1.3}}>Pew Research Center · 2020 estimate, published 2025<br/>Underlying share: 25.6% · This does not imply all Muslims need translation.</div>
- </>;
-};
-const Phone=({f})=>{
- const t=ease(f,658,25),look=ease(f,673,35),bridge=ease(f,742,30);
- const px=1080-t*140,py=530;
- return <><Label>03 / The attention cost</Label>
- <div style={{position:'absolute',inset:0,transform:`translateX(${-bridge*1950}px) rotate(${-bridge*8}deg)`,transformOrigin:'55% 80%'}}>
- <Waves f={f} x={1080} y={30} scale={.72} opacity={.45}/>
- <Listener x={1120-t*360} y={170-t*70} scale={.99} gaze={look*25}/>
- <svg style={{position:'absolute',left:1000,top:340,width:500,height:450,opacity:look}} viewBox="0 0 500 450"><path d="M160 80Q240 240 180 350" stroke={C.red} strokeWidth="5" strokeDasharray="12 12" fill="none"/><path d="M164 330L180 356L204 337" stroke={C.red} strokeWidth="5" fill="none"/></svg>
- <div style={{position:'absolute',left:px,top:py,width:254,height:420,background:C.ink,borderRadius:35,boxShadow:'20px 23px 0 #1a1a181b',transform:`rotate(${-12+look*6}deg) translateY(${(1-t)*480}px)`}}><div style={{position:'absolute',inset:14,background:C.paper,borderRadius:23,padding:25,paddingTop:47}}><div style={{fontSize:23,color:C.blue,fontWeight:650,letterSpacing:0}}>Translation</div>{[1,.8,.95,.6,.9,.7].map((n,i)=><div key={i} style={{height:8,width:`${n*100}%`,marginTop:20,background:C.ink,opacity:.32}}/>)}<div style={{marginTop:27,fontSize:14,letterSpacing:0}}>Concept illustration</div></div><div style={{position:'absolute',left:90,top:18,width:75,height:12,borderRadius:9,background:C.ink}}/></div>
- <Text y={220} size={91} width={830}>The meaning<br/>is on a phone.</Text>
- <Text y={540} size={81} width={770} color={C.red}>Your gaze<br/>leaves the moment.</Text>
- <Corner>Concept illustration · no app output</Corner>
- </div>
- <div style={{position:'absolute',inset:0,transform:`translateX(${(1-bridge)*2200}px)`}}>
- <Text x={130} y={250} size={119} width={1650}>Now listen again.</Text>
- <Text x={130} y={440} size={98} width={1650} color={C.blue}>With the meaning<br/>in view.</Text>
- <svg style={{position:'absolute',left:135,top:755}} width="1640" height="150"><path d="M0 40H1500L1450 0M1500 40L1450 80" stroke={C.blue} strokeWidth="7" fill="none" strokeDasharray="1700" strokeDashoffset={(1-bridge)*1700}/></svg>
- <Corner>Next: the same eight seconds of actual recitation</Corner>
- </div>
- </>;
-};
-const Listen=({f})=>{const question=ease(f,132,35);return <>
- <Label>Quran recitation · original audio</Label>
- <Text x={100} y={205} size={151} width={1250}>Just listen.</Text>
- <Waves f={f} x={1030} y={195} scale={.75}/>
- <div style={{position:'absolute',left:1400,top:340,width:160,height:235,border:`9px solid ${C.ink}`,borderRadius:'54% 50% 50% 45%',transform:`rotate(-16deg) translateY(${Math.sin(f/30)*4}px)`}}><div style={{position:'absolute',left:40,top:45,width:65,height:130,border:`7px solid ${C.ink}`,borderRightColor:'transparent',borderRadius:'50%'}}/></div>
- <Text x={100} y={555} size={96} width={1390} color={C.red} style={{transform:`translateY(${(1-question)*60}px)`,opacity:question}}>Can you follow<br/>its meaning?</Text>
- <Corner>Genuine recitation · the same excerpt will return with the recorded display</Corner>
+const ease=(f,start,d=30)=>spring({frame:f-start,fps:30,config:{damping:22,stiffness:90,mass:.9},durationInFrames:d});
+const Text=({children,x=100,y=150,size=85,width=1100,color=C.ink,style={}})=><div style={{position:'absolute',left:x,top:y,width,fontSize:size,lineHeight:1.09,fontWeight:650,letterSpacing:-2,color,...style}}>{children}</div>;
+const Label=({children,x=100,y=65,color=C.ink})=><div style={{position:'absolute',left:x,top:y,fontSize:25,fontWeight:650,letterSpacing:1.5,color}}>{children}</div>;
+const Footer=({children})=><div style={{position:'absolute',left:100,bottom:43,fontSize:22,letterSpacing:.1,color:C.ink}}>{children}</div>;
+const Art=({f,opacity=1,scale=1})=><div style={{position:'absolute',inset:0,opacity,transform:`scale(${scale})`,transformOrigin:'76% 56%'}}>
+ <Img src={staticFile('media/listener-muse.png')} style={{position:'absolute',inset:0,width:1920,height:1080}}/>
+ <div style={{position:'absolute',inset:0,clipPath:'inset(24% 0 0 59%)',transform:`translate(${Math.sin(f/90)*4}px,${Math.sin(f/80)*-3}px)`}}><Img src={staticFile('media/listener-muse.png')} style={{width:1920,height:1080}}/></div>
+ </div>;
+const Sound=({f,y=810,width=950,opacity=1})=><svg style={{position:'absolute',left:100,top:y,width,height:80,opacity}} viewBox={`0 0 ${width} 80`}>
+ <path d={`M0 40H${width}`} stroke={C.blue} strokeWidth="2" opacity=".25"/>
+ {Array.from({length:57},(_,i)=>{const h=8+Math.abs(Math.sin(i*1.12+f*.07))*Math.sin(i/56*Math.PI)*43;return <path key={i} d={`M${i*width/56} ${40-h/2}V${40+h/2}`} stroke={C.blue} strokeWidth="5" strokeLinecap="round"/>})}
+ </svg>;
+const Person=({x,y,blue=false,opacity=1})=><g transform={`translate(${x} ${y})`} fill={blue?C.blue:C.ink} opacity={opacity}><circle cx="18" cy="14" r="12"/><path d="M1 68V45Q2 31 18 31Q34 31 35 45V68Z"/></g>;
+const Listen=({f})=>{const q=ease(f,132,40);return <>
+ <Art f={f} scale={1+tween(f,0,240,0,.018)}/><Label>Quran recitation · original audio</Label>
+ <Text y={205} size={139}>Just listen.</Text>
+ <Text y={500} size={85} color={C.red} style={{opacity:q,transform:`translateY(${(1-q)*35}px)`}}>Can you follow<br/>its meaning?</Text>
+ <Sound f={f}/><Footer>Concept illustration made with Muse Image · genuine recitation audio</Footer>
  </>};
-const Replay=({f})=>{const t=ease(f,0,25);return <>
- <div style={{position:'absolute',left:92,top:65,fontSize:30,fontWeight:650,color:C.blue}}>Actual glasses display · same passage replayed</div>
- <Text x={92} y={155} size={83} width={1320}>The same words.<br/><span style={{color:C.blue}}>Now with meaning.</span></Text>
- <div style={{position:'absolute',left:92,top:425,fontSize:27,width:1350}}>Actual display text · enlarged crop from the same recording</div>
- <div style={{position:'absolute',left:92,top:480,width:1400,height:350,overflow:'hidden',boxShadow:`0 0 0 4px ${C.blue}`,transform:`translateY(${(1-t)*25}px)`}}><OffthreadVideo muted src={staticFile('media/native.mp4')} style={{position:'absolute',width:2372.2222222,height:3150,left:-505.5555556,top:-2022.2222222}}/></div>
- <div style={{position:'absolute',left:1565,top:275,fontSize:20,lineHeight:1.3,width:280}}>Native camera +<br/>display composite</div>
- <OffthreadVideo muted src={staticFile('media/native.mp4')} style={{position:'absolute',left:1565,top:345,width:260,height:345.2459}}/>
- <div style={{position:'absolute',left:1620.41,top:566.64,width:153.44,height:38.36,border:`3px solid ${C.blue}`,boxSizing:'border-box'}}/>
- <svg style={{position:'absolute',left:1496,top:550,width:132,height:100}} viewBox="0 0 132 100"><path d="M127 35H70L12 80M27 58L10 82L37 79" stroke={C.blue} strokeWidth="4" fill="none"/></svg>
- <div style={{position:'absolute',left:1565,top:715,fontSize:20,lineHeight:1.35,width:280}}>Phone in camera background.<br/>Blue box: actual display text.</div>
- <Text x={92} y={890} size={27} width={1400} style={{fontWeight:450,lineHeight:1.4,letterSpacing:0}}>Actual Arabic and English source words, unchanged.<br/>Earlier prototype footage · original speed · no generated device output.</Text>
- <Corner>Source: supplied native display capture · this is a replay</Corner>
+const Problem=({f})=>{const t=ease(f,244,40),meaning=ease(f,325,40);return <>
+ <Art f={f} scale={1.018}/><Label>A familiar sound</Label>
+ <Text y={190} size={100} style={{opacity:t,transform:`translateY(${(1-t)*30}px)`}}>Hearing the Quran.<br/>Every day.</Text>
+ <Text y={465} size={88} color={C.red} style={{opacity:meaning,transform:`translateY(${(1-meaning)*30}px)`}}>Without following<br/>its meaning.</Text>
+ <Text y={735} size={31} width={950} style={{fontWeight:450,letterSpacing:0,lineHeight:1.35}}>For many Muslims who do not understand Arabic,<br/>the sound is familiar. The meaning is out of reach.</Text>
+ <Sound f={f} y={865} width={950}/><Footer>Concept illustration · no generated scripture or device output</Footer>
  </>};
+const Scale=({f})=>{const p=ease(f,514,35);return <>
+ <Art f={f} opacity={.45} scale={1.018}/>
+ <div style={{position:'absolute',inset:0,background:`linear-gradient(90deg,${C.paper}ee 0%,${C.paper}cc 54%,transparent 84%)`}}/>
+ <Label>One listener. A worldwide community.</Label>
+ <Text y={150} size={175} style={{transform:`translateY(${(1-p)*-30}px)`}}>2 billion</Text>
+ <Text y={365} size={66}>Muslims worldwide.</Text>
+ <svg style={{position:'absolute',left:110,top:485,width:1020,height:330}} viewBox="0 0 1020 330">{Array.from({length:40},(_,i)=><Person key={i} x={(i%10)*99} y={Math.floor(i/10)*78} blue={i<10} opacity={tween(f,514+i*.9,540+i*.9,0,.85)}/>)}</svg>
+ <Text y={840} size={47} color={C.blue}>Roughly one quarter of humanity.</Text>
+ <div style={{position:'absolute',left:100,bottom:40,fontSize:21,lineHeight:1.35}}>Pew Research Center · 2020 estimate, published2025 · 25.6%<br/>Population context, not a count of people needing translation.</div>
+ </>};
+const Bridge=({f})=>{
+ const returnToListener=ease(f,658,32),frame=tween(f,784,839,0,1),lift=tween(f,785,807,0,1),leave=tween(f,755,780,0,1);
+ const left=100+frame*28,top=785-frame*335,width=950+frame*714,height=70+frame*346;
+ return <>
+ <Art f={f} opacity={1-frame} scale={1.018}/>
+ <Label>Ayah Lens · meaning in view</Label>
+ <div style={{opacity:1-leave,transform:`translateY(${(1-returnToListener)*35}px)`}}>
+ <Text y={185} size={91}>What if your glasses<br/>could put the meaning<br/><span style={{color:C.blue}}>in view?</span></Text>
+ </div>
+ <Text x={128} y={165} size={88} width={1600} style={{opacity:lift}}>Listen again.</Text>
+ <Text x={128} y={280} size={54} width={1600} color={C.blue} style={{opacity:lift}}>The same words. Now with meaning.</Text>
+ <div style={{position:'absolute',left,top,width,height,border:`3px solid ${C.blue}`,background:`rgba(26,26,24,${frame*.98})`,overflow:'hidden',boxSizing:'border-box'}}>
+ {f>=816?<Img src={staticFile('media/native-crop-frame0.png')} style={{position:'absolute',inset:0,width:'100%',height:'100%'}}/>:null}
+ <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',opacity:1-frame}} viewBox="0 0 950 70">{Array.from({length:57},(_,i)=><path key={i} d={`M${i*17} ${35-Math.abs(Math.sin(i+f*.07))*20}V${35+Math.abs(Math.sin(i+f*.07))*20}`} stroke={C.blue} strokeWidth="4"/>)}</svg>
+ </div>
+ <Footer>Next: the same genuine passage, replayed with its recorded glasses display</Footer>
+ </>;
+};
+const Replay=()=> <>
+ <div style={{position:'absolute',left:128,top:62,fontSize:48,fontWeight:650,color:C.blue}}>Recorded glasses display</div>
+ <div style={{position:'absolute',left:128,top:127,fontSize:30}}>Arabic + English in the glasses · same passage replayed</div>
+ <Text x={128} y={210} size={78} width={1664}>The same words.<br/><span style={{color:C.blue}}>Now with meaning.</span></Text>
+ <div style={{position:'absolute',left:128,top:450,width:1664,height:416,overflow:'hidden',boxShadow:`0 0 0 3px ${C.blue}`}}><OffthreadVideo muted src={staticFile('media/native.mp4')} style={{position:'absolute',width:2819.5555556,height:3744,left:-600.8888889,top:-2403.5555556}}/></div>
+ <Text x={128} y={910} size={28} width={1664} style={{fontWeight:450,letterSpacing:0}}>Enlarged from native camera + display recording · unchanged source text</Text>
+ <div style={{position:'absolute',left:128,top:963,fontSize:26}}>Background: camera view · Text: recorded glasses display</div>
+ <Footer>Earlier prototype footage · original speed · same source replay</Footer>
+ </>;
 const Opening=()=>{const f=useCurrentFrame();return <AbsoluteFill style={{backgroundColor:C.paper,color:C.ink,fontFamily:'Arial, Helvetica, sans-serif',overflow:'hidden'}}>
- <div style={{position:'absolute',inset:26,border:`1px solid ${C.ink}18`,pointerEvents:'none'}}/>
- {f<240?<Listen f={f}/>:f<timeline.scenes[1][2]?<Familiar f={f}/>:f<timeline.scenes[2][2]?<Scale f={f}/>:f<840?<Phone f={f}/>:<Sequence from={840} durationInFrames={240}><Replay f={f-840}/></Sequence>}
- <div style={{position:'absolute',left:0,bottom:0,height:5,width:`${f/1079*100}%`,background:C.red}}/>
+ {f<240?<Listen f={f}/>:f<514?<Problem f={f}/>:f<658?<Scale f={f}/>:f<840?<Bridge f={f}/>:<Sequence from={840} durationInFrames={240}><Replay/></Sequence>}
+ <div style={{position:'absolute',left:0,bottom:0,height:4,width:`${f/1079*100}%`,background:C.red}}/>
  </AbsoluteFill>};
-registerRoot(()=><Composition id="ProblemOpening" component={Opening} durationInFrames={1080} fps={30} width={1920} height={1080}/>);
+registerRoot(()=><Composition id="ProblemOpening" component={Opening} durationInFrames={timeline.frames} fps={timeline.fps} width={1920} height={1080}/>);

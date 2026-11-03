@@ -5,7 +5,7 @@ TIMELINE = json.loads(Path(__file__).with_name('timing.json').read_text())
 FPS = TIMELINE['fps']
 FRAMES = TIMELINE['frames']
 SCENES = TIMELINE['scenes']
-NARRATION = 'Imagine hearing the Quran every day, without understanding its meaning. For many Muslims who don’t understand Arabic, that is familiar. About two billion people are Muslim, roughly one quarter of humanity. Reading a translation pulls your eyes down to your phone. Now listen again, with the meaning in view.'
+NARRATION = 'Imagine hearing the Quran every day, without understanding its meaning. For many Muslims who do not understand Arabic, this is familiar. Two billion Muslims, roughly a quarter of humanity. What if glasses could put the meaning in view? Listen again.'
 def scene_at(frame):
     for name,start,end in SCENES:
         if start <= frame < end: return name

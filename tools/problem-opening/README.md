@@ -1,31 +1,25 @@
-# Problem opening v0.3
+# Problem opening v0.4
 
-A standalone36-second review proof. It does not modify the full master or app.
+Standalone 36-second review proof. Earlier v0.3 and full v0.2.1 exports remain preserved.
 
-Run from the app root:
+From the app root:
 
 ```sh
-cd /Users/farazsyed/data/khirad/apps/ayah-lens
-npm ci --prefix tools/problem-opening --ignore-scripts --no-audit --no-fund
+python3 tools/test_muse_image.py
 PYTHONDONTWRITEBYTECODE=1 python3 tools/render_problem_opening.py --check
 PYTHONDONTWRITEBYTECODE=1 python3 tools/render_problem_opening.py --storyboard-only
 PYTHONDONTWRITEBYTECODE=1 python3 tools/render_problem_opening.py
+python3 tools/problem-opening/verify_media.py
 ```
 
-The wrapper resolves paths from its own location. Local Chrome and a localhost server need sandbox access. macOS Daniel speech needs local speech-service access. Verify positive AIFF duration; a sandboxed `say` can return an empty file with exit0.
+Local Chrome/localhost and macOS Daniel speech require local-service access. Verify positive AIFF duration; sandboxed say can exit 0 with empty audio. Dependencies remain pinned in package-lock.json.
 
-Outputs, source copies and local guide audio stay in ignored `build/video-v0.3-opening/` and ignored `tools/problem-opening/public/`. Never stage those directories. No remote media or paid service is required. The free Remotion license applies to this solo company; recheck eligibility for a larger team.
+The original Muse Image listener scene lives under ignored build/video-v0.4-opening/assets/. The maintained tools/muse_image.py helper generates one image per explicit call with required --note, disables built-in search and writes private prompt/hash/usage/cost receipts. It never retries automatically. Credentials load inside the process from the private secrets file. Official API documentation: https://dev.meta.ai/docs/image-generation. Documented price: $0.01 per returned image at https://dev.meta.ai/docs/pricing-rate-limits. Generated artwork and every source copy remain ignored, never staged.
 
-`timing.json` owns scene boundaries and narration placements. The Python timing checks cover editorial order and exact first-eight-second source selection. Layout is verified using rendered storyboards and motion, rather than unit tests that copy graphics.
+No conceptual phone or companion-phone provenance inset appears. The listener scene carries the sound motif into the worldwide population field, then returns. A sound-line frame expands into a static genuine source-frame 0 preview from 27.2 seconds. The same source starts moving with its original audio at 28 seconds. This is an editorial transition, not a claim of optical lens filming.
 
-The guide words match the current opening brief. macOS Daniel produces sentence clips, slightly accelerated1.03× to fit the20-second narration phase. `approximate-captions.srt` is approximate, not word-aligned. Narration never overlays the two genuine-recitation intervals.
+Timing and actual measured sentence durations live in timing.json. The guide is temporary local Daniel narration. Captions remain approximate. Narration does not overlay either actual-recitation section. Both recitation sections reuse the exact accepted eight-second WAVs.
 
-The replay uses first source frames at original speed in both native camera/display composite and enlarged crop. Crop bounds come from `submission/video-edit.json` and are208,832,576,144. No Arabic or English source words are recreated. The native source footage predates the current app build.
+The genuine replay uses source frames 0–239 at original speed. Crop x208, y832, width 576, height 144 comes from the 976×1296 supplied native camera + display composite. No source words are recreated. The footage predates the current app build and does not establish Build 40 readability or overall accuracy. Source camera background remains part of the unaltered source crop. Encoded crop SSIM and actual-art patch checks are recorded privately by verify_media.py.
 
-Primary implementation references:
-
-- [Remotion renderer](https://www.remotion.dev/docs/renderer/render-media)
-- [Remotion CLI](https://www.remotion.dev/docs/cli/render)
-- [License](https://www.remotion.dev/docs/license/pricing)
-
-Review proof only. No publication, Meta website assets, new recording, model calls or app changes.
+No Meta website assets, app changes, new capture, full-master replacement or publication.
