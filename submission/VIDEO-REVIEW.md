@@ -35,7 +35,7 @@ The independent reviewer inspected all 31 supplied full-HD samples, decoded seve
 
 ## v0.2.1 opening-order revision
 
-Render and independent visual review are pending. The revised master target is build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4. The accepted v0.2 master remains unchanged.
+The v0.2.1 master was rendered. Full technical and independent visual review are pending. The revised master target is build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4. The accepted v0.2 master remains unchanged.
 
 The opening order is Just listen at 0:00–0:08, the population and understanding gap at 0:08–0:28, then Now follow the meaning at 0:28–0:36. Narration, scene durations, source text, crops, masking and playback speed remain the same. The product reveal remains at 0:36–0:48. The reserved masjid slot remains exactly 1:00–1:30.
 

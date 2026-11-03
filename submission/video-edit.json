@@ -1,12 +1,12 @@
 {
-  "title": "Ayah Lens demo video v0.2",
+  "title": "Ayah Lens demo video v0.2.1",
   "duration_seconds": 180,
   "resolution": [
     1920,
     1080
   ],
   "fps": 30,
-  "status": "v0.2 rendered and independently visually passed for user review; temporary guide narration; original approximate 3D illustration; masjid slot reserved",
+  "status": "v0.2.1 rendered; full technical and independent visual review pending; temporary guide narration; original approximate 3D illustration; masjid slot reserved",
   "masjid_slot": {
     "start": 60,
     "end": 90,
