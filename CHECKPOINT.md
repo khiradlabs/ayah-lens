@@ -1,6 +1,24 @@
 # Ayah Lens implementation checkpoint
 
-## Narration investigation, November 3: Spark API route clarified
+## Current status, November 3: OpenAI narration completed in full v0.6
+
+Faraz authorized OpenAI APIs for narration and saved the project credential in the private file. Generated and integrated a consistent OpenAI Marin English track into build/video-v0.6/Ayah-Lens-Demo-v0.6.mp4. Runtime remains 179.900 seconds, with 5,397 frames at 1920×1080 and 30fps, plus 48kHz stereo. The genuine Quran recitation remains unchanged in content, timing and speed at 0–8, 30–38 and 60–90 seconds.
+
+Sixteen timed narration clips retain all 260 normalized approved words. A coherent 31-word Marin hook was split at timestamped phrase boundaries to preserve delivery and existing animation starts. Three auditions were retained privately. One expressive Cedar audition omitted the final two words and was rejected. Two scene takes omitted their short closing sentences; same-voice standalone endings repaired them. Raw and fitted transcripts confirmed the issue came from generation rather than fitting. Both repaired clauses occur exactly once in the verified final track.
+
+Actual OpenAI gpt-audio-1.5 waveform analysis independently transcribed the final generated-English-only track. It found a consistent voice, clear terms, steady pacing, no repeated or clipped endings and no material defect. It described emotional variation as restrained and appropriate for informative content. This was automatic audio analysis, not human listening or approval. No genuine Quran audio was uploaded for these checks. Human pronunciation and subjective emotional approval remain unverified.
+
+The new AI-generated English narration disclosure appears only during synthetic-English sections. After one visual correction, it fits entirely inside the original header rectangle x1420, y30, width 460, height 48. Recorded-source labels, the prayer disclaimer, device text and masjid labels remain visible. The video badge reads v0.6. The 1:00–1:30 masjid block remains labelled placeholder/reference fill.
+
+Implementation commit: f8835f6. Ten focused tests, controller-run verification, independent specification review, final quality review and sampled visual review passed. Quality review reconciled 34 speech receipts and four audio reviews, tested six failure candidates and confirmed strict decode. Visual review sampled 20 final frames and checked original picture outside the header. Peak is -3dBFS. Protected-audio correlations exceed 0.99999; the old guide voice was replaced. Final SHA256: 7d0227e481b1d1818ada978f0cdc700b327cdde2c4dc570204f5db9b4730e1c2. Earlier full v0.5 retained its hash.
+
+Total generation, transcription and audio-review planning estimate: USD0.2665435. This is not invoice actuals. The streaming WAV header bug was corrected using actual PCM duration, and the bogus early estimate was repaired. Source identity, instruction-aware caching, fitting bounds, omitted-word rejection and protected windows have regression coverage. Maintained helper: tools/openai_narration.py. Manifest: submission/narration-v0.6.json. Private receipts, captions, audio, viewing notes and review reports are under build/video-v0.6/.
+
+The user-provided key remains only in the authorized private credential file, mode600. No key appeared in the tracked diff or tool output. An optional Proton Pass backup was rejected by automatic approval review because separate vault storage was not explicitly authorized. That command never executed and was not retried. Generation continued safely from the authorized local file. No further key or provider approval is needed for this completed job.
+
+No app change, new recording or publication occurred. QuickTime stayed stopped. Meta website-asset permission remains pending, and audio-buffer investigation remains deferred. The earlier Muse API-example question is superseded by the explicit OpenAI choice. Next production work: replace the reserved masjid fill and complete human final review before release.
+
+## Earlier narration investigation, November 3: Spark API route clarified
 
 The earlier statement that Muse cannot generate narration was too broad. Meta's September 23 research article describes Muse Realtime Voice producing speech. The account model catalog only established which developer API models were listed; it did not establish all consumer-app capabilities. Added a CLAUDE.md gotcha and an exact-endpoint verification requirement.
 
@@ -12,7 +30,7 @@ Current next step: obtain and test the exact Spark endpoint, model name or examp
 
 Sources: https://research.meta.ai/blog/bringing-your-muse-to-life and https://dev.meta.ai/docs/protocols/chat-completions. Account catalog evidence and emotional delivery directions remain under build/meta-voice-recon/. Voice direction is curious for the hook, confident for benefits and warm for the closing. Preserve approved words and genuine recitation.
 
-## Current status, November 3: full v0.5 integrated under three minutes
+## Earlier status, November 3: full v0.5 integrated under three minutes
 
 Faraz approved the opening and requested its integration into the full video within three minutes. Built build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4 at 179.900 seconds. Both picture and audio remain under 180 seconds. The export has 5,397 frames at 1920×1080 and 30fps, with 48kHz stereo.
 
