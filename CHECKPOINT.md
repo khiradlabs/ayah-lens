@@ -1,6 +1,20 @@
 # Ayah Lens implementation checkpoint
 
-## Current status, November 2: problem-led opening proof v0.3 built
+## Current status, November 3: Muse-illustrated opening proof v0.4 built
+
+Faraz rejected the conceptual phone-translation scene and requested a stronger recitation transition with Muse-generated images. Built a new standalone 36-second opening at build/video-v0.4-opening/Ayah-Lens-Opening-v0.4.mp4. Earlier v0.3 and full v0.2.1 exports retained their hashes.
+
+The phone concept and native-composite inset are removed. One original Muse Image illustration establishes an attentive listener. The same scene carries the sound motif into population context, then returns. A sound-line frame expands into a genuine static source preview from 27.2 seconds. The original moving source and matching recitation replay start together at 28 seconds. The larger Recorded glasses display label distinguishes native display text from the camera background. No source words were generated or recreated.
+
+Muse Image 1.0 returned one 2016×1152 image in 10.152 seconds. Estimated charge: $0.01. Prompt, usage, hash and costs.jsonl are private under build/video-v0.4-opening/assets/. The maintained tools/muse_image.py helper requires --note, disables search, validates returned image bytes and never retries automatically. No additional image generation occurred.
+
+Implementation commits: f1cac82 and the one-line citation-spacing correction 2213705. Seven focused tests passed. The controller reran tests, full decode and source checks. Export is 36 seconds, 1,080 frames, 1920×1080 at 30fps with 48kHz stereo. Peak is -3.0dBFS. Final SHA256: 29b10f0be23cd4273603a86fb8db2b9463f3ebba1acbbecb00189394857ae4b5. Opening/replay audio correlation is 0.999985. Encoded display crops matched source samples above 0.9627. The generated artwork matched the encoded scene above 0.9525 under the documented coarse comparison.
+
+Independent story, private artwork, encoded visual, specification and final quality reviews passed after one transition correction. Reports are private under build/video-v0.4-opening/qa/. Reviews sampled decoded frames rather than uninterrupted human playback. Narration remains temporary local Daniel. Comprehension benefit, physical glasses readability and recognition accuracy were not retested by this video-only task.
+
+Next: Faraz reviews this opening before integration into the full cut. The reserved masjid replacement remains at 1:00–1:30. Meta website-asset permission remains pending. The audio-buffer investigation remains deferred. QuickTime stayed stopped. No app change, new capture, public release or full-master replacement occurred.
+
+## Earlier status, November 2: problem-led opening proof v0.3 built
 
 Faraz said the first two sections did not explain the problem clearly and the transition into the third was weak. Built a standalone 36-second Remotion proof at build/video-v0.3-opening/Ayah-Lens-Opening-v0.3.mp4. The full three-minute master remains v0.2.1 and stayed byte-identical.
 
