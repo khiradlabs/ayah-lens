@@ -12,7 +12,7 @@ Script Version 3 uses a cinematic before-and-after reveal, followed by a genuine
 - [FORM-ANSWERS.md](FORM-ANSWERS.md) matches the supplied submission form.
 - [CLAIMS.md](CLAIMS.md) records source wording and implementation limits.
 - [REVIEW.md](REVIEW.md) records checks and remaining release work.
-- [VIDEO-REVIEW.md](VIDEO-REVIEW.md) describes the local Version 3 review cut and reserved masjid slot.
+- [VIDEO-REVIEW.md](VIDEO-REVIEW.md) describes demo video v0.1, based on script Version 3, and its reserved masjid slot.
 
 The maintained timing source is demo-timeline.json. Regenerate the script with python3 tools/render_demo_script.py, then run python3 tools/check_submission.py.
 

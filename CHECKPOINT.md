@@ -1,5 +1,17 @@
 # Ayah Lens implementation checkpoint
 
+## Current status, November 2: demo video v0.1 built
+
+Built build/video-v0.1/Ayah-Lens-Demo-v0.1.mp4 from the approved script Version 3. The export is 179.900 seconds, 1920×1080, 30 fps with 5,397 full-duration picture frames and stereo audio. The video number is separate from installed app version 0.3.0 Build 40. Source footage predates Build 40 typography.
+
+The maintained renderer now takes version, output paths and verified test count from submission/video-edit.json. Updated script, graphics and approximate guide captions to the existing 59-test receipt. Original footage and earlier review export remain preserved. The first sandboxed local voice call produced empty audio; rerunning with local speech-service access produced positive-duration narration and completed the render. No paid generation or cloud audio transfer occurred.
+
+python3 tools/check_submission.py --video build/video-v0.1/Ayah-Lens-Demo-v0.1.mp4 passed script, links, form coverage, duration and full picture/audio checks. Audio measured -22.1 dBFS mean and -3.0 dBFS peak. Independent visual review passed the storyboard and twelve master samples: version badge, 59-test card, source labels, reserved slot boundaries, source words and closing frames. Private receipts, approximate SRT and viewing notes are beside the export. Perceived pronunciation, narration quality and recitation synchronization require human review.
+
+The single masjid replacement slot remains exactly 1:00–1:30, clearly labelled as placeholder/reference. Local Daniel narration remains temporary. No publishing, submission, app rebuild, new capture or audio-buffer work occurred. QuickTime stayed stopped. The next task is Faraz’s review of video v0.1 and the replacement masjid take.
+
+## Earlier implementation milestones
+
 October 26, 2026. Wearer confirmed the corrected combined check: app stayed open, lens text remained visible, and microphone sample count increased while speaking. The core simultaneous audio/display milestone passed. A local recognition slice is implemented and installed. The wearer reported it worked for most of Al-Fatihah, with one or two ayahs missed. This is a partial live-recognition pass; the wearer identified Ar-Rahman ir-Rahim, likely 1:3, as a missed phrase.
 
 ## Done and verified

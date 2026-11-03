@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the private Version 3 review cut; keep the masjid slot replaceable."""
+"""Render the versioned private demo cut; keep the masjid slot replaceable."""
 import argparse
 import hashlib
 import json
@@ -9,11 +9,11 @@ import subprocess
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'build/video-review'
 W, H, FPS = 1920, 1080, 30
 INK, WHITE, MUTED, TEAL, GOLD = '#080f18', '#f4f1e9', '#9caebc', '#29d9c1', '#dfbc7b'
 FONT_ROOT = Path('/System/Library/Fonts/Supplemental')
 PLAN = json.loads((ROOT / 'submission/video-edit.json').read_text())
+OUT = ROOT / PLAN['output_directory']
 FONT_CACHE = {}
 
 
@@ -99,7 +99,7 @@ def background(index):
     if index > 1:
         text(d, (88, 38), 'AYAH LENS', 29, WHITE, True)
         d.ellipse((61, 47, 71, 57), fill=TEAL)
-    text(d, (1390, 40), 'REVIEW CUT / GUIDE VOICE', 23, MUTED)
+    text(d, (1390, 40), f"VIDEO v{PLAN['video_version']} / GUIDE VOICE", 23, MUTED)
     d.line((88, 1009, 1832, 1009), fill='#253b47', width=2)
     d.line((88, 1009, 88 + (1832 - 88) * (index + 1) / 11, 1009), fill=TEAL, width=3)
     text(d, (88, 1030), 'Hear the recitation. Follow the meaning.', 22, MUTED)
@@ -208,7 +208,7 @@ def scene_image(index, phase=0):
     elif index == 9:
         tag(d, 92, 155, 'BUILT DURING THE HACKATHON')
         text(d, (92, 245), 'A working foundation.', 95, display=True)
-        for x, number, label in [(95, '114', 'SURAHS'), (690, '6,236', 'REFERENCE AYAHS'), (1285, '55', 'CORE TESTS PASSED')]:
+        for x, number, label in [(95, '114', 'SURAHS'), (690, '6,236', 'REFERENCE AYAHS'), (1285, str(PLAN['verified_core_tests']), 'CORE TESTS PASSED')]:
             box(d, (x, 440, x + 540, 740))
             text(d, (x + 35, 465), number, 120, TEAL, display=True)
             text(d, (x + 35, 638), label, 28, WHITE, True)
@@ -384,7 +384,7 @@ def render():
         render_segment(index)
     concat = OUT / 'concat.txt'
     concat.write_text(''.join(f"file 'segment-{i:02}.mp4'\n" for i in range(len(PLAN['segments']))))
-    master = OUT / 'Ayah-Lens-Version-3-Review.mp4'
+    master = OUT / PLAN['output_filename']
     run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-reinit_filter', '0', '-f', 'concat', '-safe', '0', '-i', concat,
          '-vf', 'fps=30,setpts=PTS-STARTPTS', '-af', 'aresample=async=1:first_pts=0,apad',
          '-c:v', 'libx264', '-preset', 'fast', '-crf', '18', '-threads', '4', '-c:a', 'aac', '-b:a', '192k',
@@ -397,7 +397,7 @@ def render():
     assert (video['width'], video['height']) == (W, H)
     assert float(video['duration']) >= length - .1, 'Picture must cover the full review duration'
     assert int(video['nb_frames']) >= 5397, 'Missing picture frames'
-    receipt = {'file': str(master), 'duration': length, 'resolution': [W, H], 'status': 'review only',
+    receipt = {'file': str(master), 'video_version': PLAN['video_version'], 'duration': length, 'resolution': [W, H], 'status': 'review only',
                'guide_narration': True, 'masjid_slot': PLAN['masjid_slot'], 'source_assets': PLAN['source_assets']}
     (OUT / 'render-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
     print(f'PASS: {length:.3f}s / 1920x1080 / audio+video / masjid slot reserved', flush=True)

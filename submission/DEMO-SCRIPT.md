@@ -1,6 +1,6 @@
 # Ayah Lens demo script Version 3
 
-Three-minute submission video. Device baseline: version 0.3.0, Build 31. Version 3 review cut assembled; temporary guide narration and one reserved masjid replacement slot.
+Three-minute submission video. Device baseline: version 0.3.0, Build 31. Video v0.1 in production from script Version 3; guide narration and reserved masjid slot.
 
 Let viewers experience unfamiliar recitation, then reveal its meaning through genuine output. Explain the population and Meta implementation after that experience. Keep the uninterrupted proof section intact.
 
@@ -144,7 +144,7 @@ Arabic reference | Arabic with English meaning
 
 Spoken narration
 
-The reference covers all 114 surahs. We built the glasses integration and automatic following during this hackathon. Fifty-five tests cover matching, source preservation, and display scheduling. With further development and extensive testing, future versions could support Quran teaching.
+The reference covers all 114 surahs. We built the glasses integration and automatic following during this hackathon. Fifty-nine tests cover matching, source preservation, and display scheduling. With further development and extensive testing, future versions could support Quran teaching.
 
 Picture
 
@@ -152,7 +152,7 @@ Keep the working product prominent. Show brief readable inserts of the actual so
 
 On screen
 
-Complete reference library · original event work · 55 core tests passed
+Complete reference library · original event work · 59 core tests passed
 Then: Future: teaching support · requires extensive testing
 
 ## 2:48 to 3:00 Return to the opening experience

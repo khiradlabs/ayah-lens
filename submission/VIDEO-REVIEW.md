@@ -1,4 +1,6 @@
-# Ayah Lens Version 3 review video
+# Ayah Lens demo video v0.1
+
+Video v0.1 uses the approved script Version 3. The video version is separate from the app version.
 
 The review cut uses actual native glasses and phone-preview footage with designed graphics and a temporary local guide narrator. It is a review artifact, not a submitted final video.
 
@@ -14,8 +16,12 @@ The models section distinguishes live Muse Voice, cached Spark phrase plans, loc
 
 ## Local review artifacts
 
-The video is generated under build/video-review/Ayah-Lens-Version-3-Review.mp4. Guide captions and viewing notes are beside it. Source recordings, temporary speech tracks, QA images and the master remain ignored by Git.
+The video is generated under build/video-v0.1/Ayah-Lens-Demo-v0.1.mp4. Guide captions and viewing notes are beside it. Source recordings, temporary speech tracks, QA images and the master remain ignored by Git.
 
 Run python3 tools/render_demo_video.py to reproduce the review cut. It uses Pillow, FFmpeg and the local macOS Daniel voice. No paid generation service is required. The maintained edit plan is video-edit.json.
 
 Run python3 tools/check_submission.py --video /absolute/path/to/review.mp4 to check duration and picture/audio coverage. Visual review must confirm exact slot boundaries, readable source text, source labels and absence of unrelated personal UI.
+
+## v0.1 acceptance
+
+Export 179–180 seconds of full-length 1920×1080 picture and stereo audio. Keep the v0.1 badge and temporary narration label visible. Verify the exact 60–90-second reserved block, actual source labels, the updated 59-test card, source text readability and the final frame. The prior source clips remain unchanged. These clips predate Build 40 and do not demonstrate its new font size.

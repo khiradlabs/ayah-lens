@@ -4,15 +4,15 @@
   "baseline_version": "0.3.0",
   "baseline_build": 31,
   "source_branch": "feat/within-ayah-following",
-  "status": "Version 3 review cut assembled; temporary guide narration and one reserved masjid replacement slot",
+  "status": "Video v0.1 rendered from script Version 3; temporary guide narration and one reserved masjid slot",
   "opening_note": "Let viewers experience unfamiliar recitation, then reveal its meaning through genuine output. Explain the population and Meta implementation after that experience. Keep the uninterrupted proof section intact.",
   "production_notes": [
-    "The opening is an edited listen/reveal replay. The review cut reserves1:00–1:30 for masjid footage; its current fill is explicitly labelled reference footage, not completed30-second masjid proof.",
-    "The review opening uses the supplied native112:1–4 excerpt. Its first eight seconds are replayed in the meaning reveal. Keep real source audio and display labels accurate.",
-    "The viewer condition matters: say “If Arabic is unfamiliar.” Do not assume that every judge is unfamiliar with Arabic or claim that all Muslims lack understanding.",
+    "The opening is an edited listen/reveal replay. The review cut reserves1:00\u20131:30 for masjid footage; its current fill is explicitly labelled reference footage, not completed30-second masjid proof.",
+    "The review opening uses the supplied native112:1\u20134 excerpt. Its first eight seconds are replayed in the meaning reveal. Keep real source audio and display labels accurate.",
+    "The viewer condition matters: say \u201cIf Arabic is unfamiliar.\u201d Do not assume that every judge is unfamiliar with Arabic or claim that all Muslims lack understanding.",
     "The prayer scene presents a possible use. Keep its religious-permissibility disclaimer readable beside the scene and repeat it in the final video description.",
     "The Show English meaning switch is implemented in Build 31. The wearer confirmed English disappears and returns on phone and glasses while Arabic keeps following. Capture the actual control in a separate take.",
-    "If the translation switch is unavailable, replace the 2:18–2:32 narration with: “The phone preview mirrors the selected lens window. The full passage remains available on the phone. The glasses keep a compact portion in view as the recitation continues.”",
+    "If the translation switch is unavailable, replace the 2:18\u20132:32 narration with: \u201cThe phone preview mirrors the selected lens window. The full passage remains available on the phone. The glasses keep a compact portion in view as the recitation continues.\u201d",
     "The source text is published Tanzil Arabic and Pickthall English. Spark supplies paired source boundaries; it does not author the displayed translation.",
     "The filmed long-passage plans are cached. Voice transcription is live. Complete reference coverage is not a full-Quran accuracy result.",
     "The population estimate comes from Pew Research Center: https://www.pewresearch.org/short-reads/2025/06/10/islam-was-the-worlds-fastest-growing-religion-from-2010-to-2020/",
@@ -53,7 +53,7 @@
       "title": "Make the experience universal",
       "narration": "If Arabic is unfamiliar, you just felt the gap between hearing words and following their meaning. About two billion people are Muslim. For many of us, that gap is part of everyday listening. What if the meaning could stay with us?",
       "visual": "Return to the same listener. Let the population figure appear briefly beside real human footage. The number gives scale after the viewer has experienced the need. Keep the small population source caption readable.",
-      "overlay": "About 2 billion Muslims\nPew Research Center · 2020 estimate, published 2025",
+      "overlay": "About 2 billion Muslims\nPew Research Center \u00b7 2020 estimate, published 2025",
       "capture": "founder_intro"
     },
     {
@@ -70,7 +70,7 @@
       "end": 60,
       "title": "Carry one listening experience between settings",
       "narration": "During Salat, Muslim prayer, it could help listeners follow the recitation. At home, it can follow a reciter playing on television. Hands free.",
-      "visual": "Match the wearer’s position across a proposed prayer scene and the television listening scene. Let the same frame composition connect the settings. Keep the religious-permissibility disclaimer visible for the entire prayer scene. Use cleared recitation footage and audio.",
+      "visual": "Match the wearer\u2019s position across a proposed prayer scene and the television listening scene. Let the same frame composition connect the settings. Keep the religious-permissibility disclaimer visible for the entire prayer scene. Use cleared recitation footage and audio.",
       "overlay": "Technology demonstration only. This does not establish religious permissibility for use during prayer.",
       "capture": "use_cases"
     },
@@ -89,16 +89,16 @@
       "title": "Reveal the difficult part hiding in plain sight",
       "narration": "Now look closer. We are still inside the same passage. A long verse cannot fit on this lens. Ayah Lens follows the recitation through it, showing the relevant portion as the words continue. Nobody is turning a page.",
       "visual": "Freeze the passage identifier for emphasis while the genuine captured portions continue to change. Briefly show a full-source reference beside the compact display window, labelled Explanatory graphic. Keep the real device footage visible. Show the challenge at a glance rather than teaching verse numbering.",
-      "overlay": "Same passage · changing portions\nNo manual paging",
+      "overlay": "Same passage \u00b7 changing portions\nNo manual paging",
       "capture": "within_passage_reveal"
     },
     {
       "start": 112,
       "end": 138,
       "title": "Explain the actual AI and tracking work",
-      "narration": "Muse Voice converts the glasses’ audio into Arabic text. Muse Spark helps pair Arabic phrases with portions of a published English translation. It can also assist with uncertain passage matches. Our software tracks the position, validates the source boundaries, and sends the current portion to the glasses.",
+      "narration": "Muse Voice converts the glasses\u2019 audio into Arabic text. Muse Spark helps pair Arabic phrases with portions of a published English translation. It can also assist with uncertain passage matches. Our software tracks the position, validates the source boundaries, and sends the current portion to the glasses.",
       "visual": "Build a clean exploded diagram around a product shot. Audio enters Muse Voice; the live transcript reaches our passage tracker; Spark-assisted paired source spans supply the display portions. Show cached plans on a separate branch, with bounded ambiguity assistance as another branch. Reassemble the diagram into the actual lens/preview footage.",
-      "overlay": "Muse Voice · live transcription\nMuse Spark · source pairing and ambiguity assistance\nFilmed phrase plans cached",
+      "overlay": "Muse Voice \u00b7 live transcription\nMuse Spark \u00b7 source pairing and ambiguity assistance\nFilmed phrase plans cached",
       "capture": "model_roles"
     },
     {
@@ -107,16 +107,16 @@
       "title": "Show memorization practice and listener choice",
       "narration": "Hifz means memorizing the Quran. Arabic-only mode offers a reference while rehearsing. Turn English back on whenever you want to follow the meaning.",
       "visual": "Use a labelled explanatory graphic showing Arabic-only reference mode for Hifz and Arabic with English for following meaning. The feature passed the wearer test, but no supplied clip shows an actual toggle interaction. Do not substitute the brief unpaired-translation gap as switch proof.",
-      "overlay": "Hifz · Quran memorization practice\nArabic reference | Arabic with English meaning",
+      "overlay": "Hifz \u00b7 Quran memorization practice\nArabic reference | Arabic with English meaning",
       "capture": "listener_choice"
     },
     {
       "start": 152,
       "end": 168,
       "title": "Establish the working foundation",
-      "narration": "The reference covers all 114 surahs. We built the glasses integration and automatic following during this hackathon. Fifty-five tests cover matching, source preservation, and display scheduling. With further development and extensive testing, future versions could support Quran teaching.",
+      "narration": "The reference covers all 114 surahs. We built the glasses integration and automatic following during this hackathon. Fifty-nine tests cover matching, source preservation, and display scheduling. With further development and extensive testing, future versions could support Quran teaching.",
       "visual": "Keep the working product prominent. Show brief readable inserts of the actual source library, event-dated Git history and verified test result. Then introduce a short card labelled Future: teaching support, requires extensive testing. Complete reference coverage remains separate from recognition accuracy; the teaching card describes future work.",
-      "overlay": "Complete reference library · original event work · 55 core tests passed\nThen: Future: teaching support · requires extensive testing",
+      "overlay": "Complete reference library \u00b7 original event work \u00b7 59 core tests passed\nThen: Future: teaching support \u00b7 requires extensive testing",
       "capture": "engineering_proof"
     },
     {
@@ -128,5 +128,6 @@
       "overlay": "Ayah Lens\nHear the recitation. Follow the meaning.",
       "capture": "closing_card"
     }
-  ]
+  ],
+  "video_version": "0.1"
 }
