@@ -427,5 +427,88 @@
     "Mode diagram illustrates an implemented feature but does not prove a filmed toggle.",
     "Complete reference coverage and59recorded core tests are not full-Quran recognition accuracy.",
     "Future teaching support needs development and extensive testing."
-  ]
+  ],
+  "measured_timing_receipt": {
+    "path": "build/video-v0.7/measured-edit.json",
+    "timeline": {
+      "listen": [
+        0,
+        6
+      ],
+      "hook": [
+        6.133333333333334,
+        19.8
+      ],
+      "human_context": [
+        19.966666666666665,
+        37.86666666666667
+      ],
+      "native_proof": [
+        38.03333333333333,
+        50.53333333333333
+      ],
+      "long_verse_cue": [
+        50.7,
+        60
+      ],
+      "masjid_reservation": [
+        60,
+        66
+      ],
+      "phone_reference": [
+        66,
+        90
+      ],
+      "following": [
+        90.2,
+        100.16666666666667
+      ],
+      "mechanism": [
+        100.16666666666667,
+        122.36666666666666
+      ],
+      "choice_and_use": [
+        122.36666666666666,
+        135.86666666666667
+      ],
+      "foundation": [
+        135.86666666666667,
+        153.46666666666667
+      ],
+      "close": [
+        153.46666666666667,
+        163.83333333333334
+      ]
+    },
+    "duration_seconds": 163.83333333333334,
+    "frames": 4915,
+    "speech_words": 283
+  },
+  "source_proof_receipt": {
+    "native": {
+      "sha256": "ec4bf7be386b44aeaae7b7c5b7b36478a93c2f25fcbad7af378836c0608997b0",
+      "seconds": 12.5,
+      "frames": 375,
+      "speed": 1,
+      "crop": [
+        208,
+        832,
+        576,
+        144
+      ]
+    },
+    "phone": {
+      "sha256": "bc7faac4066a6019eb5f1eb555fbb870ee6a48a9c789db0a4ba752d756d169de",
+      "seconds": 24,
+      "frames": 720,
+      "speed": 1,
+      "crop": [
+        48,
+        1232,
+        984,
+        1116
+      ]
+    },
+    "clean_card_mask": "build/video-v0.2.1/assets/card-mask.json"
+  }
 }
