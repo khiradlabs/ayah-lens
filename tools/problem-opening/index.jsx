@@ -83,13 +83,15 @@ const Listen=({f})=>{const question=ease(f,132,35);return <>
  </>};
 const Replay=({f})=>{const t=ease(f,0,25);return <>
  <div style={{position:'absolute',left:92,top:65,fontSize:30,fontWeight:650,color:C.blue}}>Actual glasses display · same passage replayed</div>
- <Text x={92} y={195} size={83} width={1035}>The same words.<br/><span style={{color:C.blue}}>Now with meaning.</span></Text>
- <div style={{position:'absolute',left:92,top:458,fontSize:25,width:1020}}>Enlarged crop from the same recording</div>
- <div style={{position:'absolute',left:92,top:530,width:960,height:240,overflow:'hidden',boxShadow:`0 0 0 4px ${C.blue}`,transform:`translateY(${(1-t)*25}px)`}}><OffthreadVideo muted src={staticFile('media/native.mp4')} style={{position:'absolute',width:1626.6666667,height:2160,left:-346.6666667,top:-1386.6666667}}/></div>
- <div style={{position:'absolute',left:1185,top:100,fontSize:24}}>Native camera + display composite</div>
- <OffthreadVideo muted src={staticFile('media/native.mp4')} style={{position:'absolute',left:1185,top:145,width:635,height:844}}/>
- <Text x={92} y={825} size={29} width={1000} style={{fontWeight:450,lineHeight:1.4,letterSpacing:0}}>Actual Arabic and English from the source frames.<br/>Enlarged for this video. No generated device output.</Text>
- <div style={{position:'absolute',left:1185,top:1010,fontSize:22}}>Earlier prototype footage · original speed</div>
+ <Text x={92} y={155} size={83} width={1320}>The same words.<br/><span style={{color:C.blue}}>Now with meaning.</span></Text>
+ <div style={{position:'absolute',left:92,top:425,fontSize:27,width:1350}}>Actual display text · enlarged crop from the same recording</div>
+ <div style={{position:'absolute',left:92,top:480,width:1400,height:350,overflow:'hidden',boxShadow:`0 0 0 4px ${C.blue}`,transform:`translateY(${(1-t)*25}px)`}}><OffthreadVideo muted src={staticFile('media/native.mp4')} style={{position:'absolute',width:2372.2222222,height:3150,left:-505.5555556,top:-2022.2222222}}/></div>
+ <div style={{position:'absolute',left:1565,top:275,fontSize:20,lineHeight:1.3,width:280}}>Native camera +<br/>display composite</div>
+ <OffthreadVideo muted src={staticFile('media/native.mp4')} style={{position:'absolute',left:1565,top:345,width:260,height:345.2459}}/>
+ <div style={{position:'absolute',left:1620.41,top:566.64,width:153.44,height:38.36,border:`3px solid ${C.blue}`,boxSizing:'border-box'}}/>
+ <svg style={{position:'absolute',left:1496,top:550,width:132,height:100}} viewBox="0 0 132 100"><path d="M127 35H70L12 80M27 58L10 82L37 79" stroke={C.blue} strokeWidth="4" fill="none"/></svg>
+ <div style={{position:'absolute',left:1565,top:715,fontSize:20,lineHeight:1.35,width:280}}>Phone in camera background.<br/>Blue box: actual display text.</div>
+ <Text x={92} y={890} size={27} width={1400} style={{fontWeight:450,lineHeight:1.4,letterSpacing:0}}>Actual Arabic and English source words, unchanged.<br/>Earlier prototype footage · original speed · no generated device output.</Text>
  <Corner>Source: supplied native display capture · this is a replay</Corner>
  </>};
 const Opening=()=>{const f=useCurrentFrame();return <AbsoluteFill style={{backgroundColor:C.paper,color:C.ink,fontFamily:'Arial, Helvetica, sans-serif',overflow:'hidden'}}>

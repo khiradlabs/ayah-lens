@@ -22,4 +22,22 @@ class OpeningTimingTests(unittest.TestCase):
         self.assertEqual(self.m.audio_sources(), ['build/video-v0.2.1/audio/00.wav','build/video-v0.2.1/audio/02.wav'])
         self.assertEqual(self.m.NARRATION, 'Imagine hearing the Quran every day, without understanding its meaning. For many Muslims who don’t understand Arabic, that is familiar. About two billion people are Muslim, roughly one quarter of humanity. Reading a translation pulls your eyes down to your phone. Now listen again, with the meaning in view.')
 
+
+class VoiceCacheTests(unittest.TestCase):
+    def test_changed_sentence_regenerates_positive_duration_audio(self):
+        import tempfile
+        module=Path(__file__).with_name('voice_cache.py')
+        self.assertTrue(module.exists(), 'sentence-aware voice cache has not been implemented')
+        spec=importlib.util.spec_from_file_location('voice_cache',module)
+        m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+        with tempfile.TemporaryDirectory() as folder:
+            audio=Path(folder)/'voice.aiff';calls=[]
+            def generate(p,text,voice,rate): calls.append(text);p.write_text(text)
+            measure=lambda p: 1 if p.read_text() else 0
+            self.assertTrue(m.ensure_voice(audio,'Old sentence.','Daniel',150,generate,measure))
+            self.assertFalse(m.ensure_voice(audio,'Old sentence.','Daniel',150,generate,measure))
+            self.assertTrue(m.ensure_voice(audio,'New sentence.','Daniel',150,generate,measure))
+            self.assertEqual(calls,['Old sentence.','New sentence.'])
+            self.assertEqual(audio.read_text(),'New sentence.')
+
 if __name__ == '__main__': unittest.main()

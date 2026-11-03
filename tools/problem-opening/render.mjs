@@ -8,7 +8,7 @@ const browser=await openBrowser('chrome',{browserExecutable:'/Applications/Googl
 try {
  const common={serveUrl,browserInstance:browser,logLevel:'warn'};
  const composition=await selectComposition({...common,id:'ProblemOpening'});
- if(storyboard){for(const frame of [30,150,285,390,585,720,795,930]){
+ if(storyboard){for(const frame of [30,150,285,390,585,720,795,855,930,1050]){
    await renderStill({...common,composition,frame,output:path.join(out,`storyboard-${frame}.png`)});
    console.log(`STILL ${frame}`);
  }} else {

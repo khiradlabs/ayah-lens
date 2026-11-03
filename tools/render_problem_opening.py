@@ -10,6 +10,7 @@ MASTER=ROOT/'build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4'
 MASTER_HASH='a23d319e234c5c71a40600cc37294572dea7666e14211b91b0c330a7572871e5'
 os.environ['PYTHONDONTWRITEBYTECODE']='1'
 spec=importlib.util.spec_from_file_location('timing',SRC/'timing.py');timing=importlib.util.module_from_spec(spec);spec.loader.exec_module(timing)
+cache_spec=importlib.util.spec_from_file_location('voice_cache',SRC/'voice_cache.py');voice_cache=importlib.util.module_from_spec(cache_spec);cache_spec.loader.exec_module(voice_cache)
 def run(args,**kw):
     return subprocess.run([str(a) for a in args],check=True,**kw)
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -58,11 +59,14 @@ def prepare():
     shutil.copyfile(ROOT/assets['native'],MEDIA/'native.mp4')
     for source in timing.audio_sources(): shutil.copyfile(ROOT/source,MEDIA/Path(source).name)
     sentences=timing.NARRATION.split('. ')
+    def generate(path,text,voice,rate): run(['say','-v',voice,'-r',str(rate),'-o',path,text])
+    measured=[]
     for i,sentence in enumerate(sentences):
         p=OUT/f'voice-{i}.aiff'
-        if not p.exists() or duration(p)<=0:
-            run(['say','-v','Daniel','-r','150','-o',p,sentence.rstrip('.')+'.'])
-        assert duration(p)>0,'local speech service returned empty audio; rerun with local speech access'
+        voice_cache.ensure_voice(p,sentence.rstrip('.')+'.','Daniel',150,generate,duration)
+        measured.append(duration(p))
+    (OUT/'receipts/voice-durations.json').write_text(json.dumps(measured,indent=2)+'\n')
+    assert all(s+d/1.03<=28 for s,d in zip(timing.TIMELINE['narration_starts'],measured)),'measured voice does not fit the narration phase'
     inputs=[]
     for i in range(5): inputs+=['-i',OUT/f'voice-{i}.aiff']
     filters=[]
@@ -75,7 +79,7 @@ def prepare():
     def stamp(t):
         ms=round(t*1000);return f'{ms//3600000:02}:{ms//60000%60:02}:{ms//1000%60:02},{ms%1000:03}'
     caps=[(0,4.4,'Quran recitation · Just listen.'),(4.4,8,'Can you follow its meaning?')]
-    caps += [(s,s+d/1.03,t.rstrip('.')+'.') for s,d,t in zip(timing.TIMELINE['narration_starts'],timing.TIMELINE['narration_durations'],sentences)]
+    caps += [(s,s+d/1.03,t.rstrip('.')+'.') for s,d,t in zip(timing.TIMELINE['narration_starts'],measured,sentences)]
     caps += [(28,36,'The same words. Now with meaning.\nActual glasses display · same passage replayed')]
     (OUT/'approximate-captions.srt').write_text('\n'.join(f'{i+1}\n{stamp(a)} --> {stamp(b)}\n{t}\n' for i,(a,b,t) in enumerate(caps)))
     (OUT/'viewing-notes.txt').write_text('REVIEW DRAFT: opening v0.3 only.\n36 seconds, local Remotion/React and original SVG illustration.\nNo music or new sound effects.\nLocal Daniel temporary narration; approximate captions.\nFirst and last eight seconds reuse accepted genuine recitation WAVs.\nLast scene replays source frames0–239, enlarged crop and native camera/display composite in sync.\nEarlier prototype footage does not prove Build40 readability or recognition accuracy.\nConcept phone is an original illustration, not app output.\nPopulation figure is supporting context, not a count of people needing translation.\nNo Meta website assets, paid services, app changes, new recording or publication.\nFull v0.2.1 master preserved.\nInspect question, lived problem, phone gaze shift, immediate replay answer.\n')
@@ -91,7 +95,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--check',action='store_true');p.add_argument('--storyboard-only',action='store_true');args=p.parse_args()
     if args.check: check();return
     prepare();check()
-    run(['node','render.mjs',*(['--storyboard-only'] if args.storyboard_only else [])],cwd=SRC)
+    run(['node','render.mjs',*(['--storyboard-only'] if args.storyboard_only else [])],cwd=SRC,timeout=1200)
     if args.storyboard_only: storyboard_sheet();return
     run(['ffmpeg','-v','error','-y','-i',OUT/'picture.mp4','-i',OUT/'audio.wav','-map','0:v','-map','1:a','-c:v','copy','-c:a','aac','-b:a','256k','-ar','48000','-ac','2','-t','36','-movflags','+faststart',OUT/'Ayah-Lens-Opening-v0.3.mp4'])
     check()
