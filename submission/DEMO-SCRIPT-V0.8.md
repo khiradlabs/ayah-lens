@@ -344,6 +344,7 @@ On-screen copy
 - Potential impact / roughly one quarter of humanity
 - Pew Research Center / 2020 estimate, published June 2025
 - For listeners seeking English meaning
+- Hands-free meaning / daily recitation
 - Ayah Lens
 - Hear the recitation. Follow the meaning. Stay with the moment.
 

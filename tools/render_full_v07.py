@@ -286,7 +286,7 @@ def render_picture(edit, frame_range=None):
     text(im,'For listeners seeking English meaning',(120,205),54,width=1250)
     node(im,'Daily recitation',120,440,460);node(im,'Hands-free meaning',670,440,590)
     d.line((580,495,670,495),fill=blue,width=5)
-    text(im,'Potential benefit / understanding not measured',(120,665),30,muted,width=1250)
+    text(im,'Hands-free meaning / daily recitation',(120,665),30,muted,width=1250)
   elif key=='close':
    text(im,'Hear the recitation.',(120,205),54,width=1100);text(im,'Follow the meaning.',(120,280),54,width=1100)
    text(im,'Stay with the moment.',(120,740),44,width=1300)
