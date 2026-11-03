@@ -26,6 +26,8 @@ Run python3 tools/render_demo_video.py to render motion bases and assemble the r
 
 Run python3 tools/check_submission.py --video build/video-v0.2/Ayah-Lens-Demo-v0.2.mp4 for timeline, document and picture/audio checks. Independent visual review covers the assembled storyboard and master in motion. Technical checks cover 1920×1080/30fps, 179–180 seconds, at least 5,397 picture frames, stereo 48 kHz audio, late picture and numerical audio level.
 
-## Remaining review
+## v0.2 verification and remaining review
 
-Final technical and independent visual results are recorded beside the master. Human review remains necessary for guide pronunciation, pacing and recitation synchronization. Existing footage predates Build 40 and does not establish its larger font’s readability. No app, audio-buffer, new capture or publication work is included.
+The rendered v0.2 master passed technical checks and independent sampled visual review for user review. It contains 5,397 full-HD frames at 30 fps and runs 179.900 seconds with stereo 48 kHz audio. Complete decoding passed. Audio peaked at −2.977 dBFS with zero clipped samples. The final picture was extracted at 177 and 179 seconds.
+
+The independent reviewer inspected all 31 supplied full-HD samples, decoded seven master excerpts at two-second intervals and checked exact 60-, 66- and 90-second boundaries. This was sampled decoded-motion review, not uninterrupted playback or an every-frame visual audit. The private report is build/video-v0.2/qa/master-visual-review.txt. Technical and visual receipts are beside the master. The original v0.1 master remained byte-identical. Human review remains necessary for guide pronunciation, pacing and recitation synchronization. Existing footage predates Build 40 and does not establish its larger font’s readability. No app, audio-buffer, new capture or publication work is included.
