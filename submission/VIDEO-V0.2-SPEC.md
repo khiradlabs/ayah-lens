@@ -19,3 +19,7 @@ Population: https://www.pewresearch.org/religion/2025/06/09/muslim-population-ch
 Exact share: https://www.pewresearch.org/religion/2025/06/09/how-the-global-religious-landscape-changed-from-2010-to-2020/
 Hardware reference: https://about.fb.com/news/2025/09/meta-ray-ban-display-ai-glasses-emg-wristband/
 Product reference: https://www.ray-ban.com/usa/electronics/0HX000001-META%20RAY-BAN%20DISPLAY-Black/815820026709
+
+## Opening revision0.2.1, November2
+
+Faraz requested first three sections in the original slide order1→3→2. Interpret labels explicitly: Just listen(0–8)→population/understanding gap(8–28)→Now follow the meaning(28–36). Product reveal remains36–48; every later boundary including60–90masjid slot stays fixed. Keep scene durations/source words/narration unchanged. Preservev0.2; exportv0.2.1with matching badges/captions/timeline and actual replay audio. Because rendering currently keys visuals/footage/audio to positional indices, retain semantic scene identity while reordering. Test that the population has no native-video overlay and the meaning reveal retains native video plus recitation audio. No other creative redesign, Meta asset reuse, app changes or publication is included.
