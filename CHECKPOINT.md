@@ -1,16 +1,16 @@
 # Ayah Lens implementation checkpoint
 
-## Current status, November 2: editorial demo video v0.2 built
+## Current status, November 2: opening revision v0.2.1 built
 
-Built build/video-v0.2/Ayah-Lens-Demo-v0.2.mp4 from Faraz’s v0.1 feedback. It adds the sourced about2billion/aboutonequarter comparison, original reference-guided3D Meta Ray-Ban Display illustration, warm-paper/black/red editorial design and genuinely animated technical explanation. The v0.1 master remains byte-identical. App version remains0.3.0 Build40. Existing native/phone footage predates that build.
+Faraz requested the original slides in order 1 → 3 → 2. The opening now runs Just listen at 0–8 seconds, population at 8–28, and meaning reveal at 28–36. The product starts at 36 seconds. Later timing and source content stayed in place, including the reserved 60–90-second masjid slot. The v0.2 master remains byte-identical.
 
-The original3D model passed geometry, perspective, material, full-frame-bounds and encoded-asset checks. One visual revision integrated camera corners and rounded the bridge. The12-second1080p30fps asset was independently compared with official references; it remains an editorial approximation, not manufacturerCAD. Motion checks confirmed population marks regroup into quarters and the actual pipeline stages change beyond captions/footers. Spark remains conditional, source plans validated/cached and displayed text published.
+Deliverables are build/video-v0.2.1/Ayah-Lens-Demo-v0.2.1.mp4 and its 36-second opening-preview.mp4. The master contains 179.900 seconds of picture and audio, 1920×1080 at 30 fps, 5,397 frames and 48 kHz stereo. The adjacent render receipt records its hash and review evidence.
 
-Source milestones: de0ef417 corrected3D;4c9ba07 editorialmotion;8b4088f assembly;31ddd5d reviewstatus/docs. Each task passed independent spec and quality review. The assembled storyboard and sampled motion review passed31full-HDframes,seven decoded excerpts and exact60/66/90boundaries. Final whole-phase checks found no material integration defect. Private reports are under build/video-v0.2/qa/.
+Stable semantic scene identities keep visuals, overlays and audio attached when timeline positions change. Five opening regressions passed after observed RED and reverse-RED. Independent specification, quality and sampled visual reviews passed. Video, semantic and full-decode checks passed. Reviewers verified exact opening and later boundaries. Moved recitation audio correlated 0.999959 with its accepted source. All eleven accepted audio files and reused source assets retained their hashes. Caption texts stayed identical; only the population cues moved eight seconds earlier.
 
-Executed verification: python3 tools/check_submission.py --video build/video-v0.2/Ayah-Lens-Demo-v0.2.mp4 passed;256spokenwords,180-secondplan,179.900-secondfullpicture/audioexport. FFprobe:1920×1080,30fps,5397frames,48kHzstereo. Full decode passed; late frames177/179 remained present. Audio peak−2.977dBFS,zero clipped samples. Source/crop/mask/speed comparisons passed; only population narration changed. The final3Dasset matched encoded product samples. The v0.1 SHA matched its old receipt.
+The existing editorial design, original reference-guided 3D illustration and animated pipeline remain. App version stays 0.3.0 Build 40. Recorded footage predates that build. No Meta website animation was used; its reuse status remains unresolved. Temporary guide narration, approximate captions and reserved masjid footage remain disclosed. No app tests, new capture, cloud calls, paid generation or publication occurred. QuickTime stayed stopped. The audio-buffer investigation remains deferred.
 
-Temporary local Daniel narration, approximate captions and one clearly labelled60–90-secondmasjid replacement slot remain. Guide pronunciation, perceived audio quality and recognition accuracy were not established by these checks. No paid generation, cloud narration, new recording, app change, publication or submission occurred. QuickTime remained stopped. The audio-buffer investigation remains deferred. Next: Faraz reviews v0.2 and supplies the replacement masjid take.
+Next: Faraz reviews the revised opening and supplies the replacement masjid recording.
 
 ## Earlier implementation milestones
 

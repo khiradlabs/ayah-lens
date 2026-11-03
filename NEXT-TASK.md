@@ -1,10 +1,10 @@
 # Next Ayah Lens task
 
-Status: NOT STARTED. Review built editorial video v0.2 and collect its replacement masjid recording.
+Status: NOT STARTED. Review opening-reordered video v0.2.1 and collect its replacement masjid recording.
 
 ## First action
 
-Open build/video-v0.2/Ayah-Lens-Demo-v0.2.mp4 and its viewing-notes.txt. Gather Faraz’s feedback on the new editorial direction, reference-guided3D product, population comparison and animated technical pipeline. The v0.1 export remains byte-identical and preserved.
+Open build/video-v0.2.1/opening-preview.mp4 for the36-secondopening, or Ayah-Lens-Demo-v0.2.1.mp4 for thefullcut. Confirm the requested Justlisten→population→meaningreveal flow. Read the adjacent viewing notes. Both earlier masters remain preserved.
 
 ## Definition of done
 

@@ -44,3 +44,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Body-style live text was barely readable in the actual glasses. Use heading style with compact source windows. Verify automatic long-ayah bounds, then obtain wearer confirmation of Arabic and English readability without clipping.
 
 - Sandboxed macOS say can exit successfully with a zero-duration AIFF when voice-service access is blocked. Verify narration has positive duration and rerun with local speech access before rendering; never accept the empty file.
+
+- Reordering video scenes must preserve semantic visuals, native overlays and recitation audio, not just timeline positions. Accepted guide WAVs can end slightly before the scene boundary after resampling. Verify tools/test_video_opening_order.py passes source selection and byte-identical accepted-audio reuse with tail padding.
