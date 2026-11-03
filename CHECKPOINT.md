@@ -1,14 +1,16 @@
 # Ayah Lens implementation checkpoint
 
-## Current status, November 2: demo video v0.1 built
+## Current status, November 2: editorial demo video v0.2 built
 
-Built build/video-v0.1/Ayah-Lens-Demo-v0.1.mp4 from the approved script Version 3. The export is 179.900 seconds, 1920×1080, 30 fps with 5,397 full-duration picture frames and stereo audio. The video number is separate from installed app version 0.3.0 Build 40. Source footage predates Build 40 typography.
+Built build/video-v0.2/Ayah-Lens-Demo-v0.2.mp4 from Faraz’s v0.1 feedback. It adds the sourced about2billion/aboutonequarter comparison, original reference-guided3D Meta Ray-Ban Display illustration, warm-paper/black/red editorial design and genuinely animated technical explanation. The v0.1 master remains byte-identical. App version remains0.3.0 Build40. Existing native/phone footage predates that build.
 
-The maintained renderer now takes version, output paths and verified test count from submission/video-edit.json. Updated script, graphics and approximate guide captions to the existing 59-test receipt. Original footage and earlier review export remain preserved. The first sandboxed local voice call produced empty audio; rerunning with local speech-service access produced positive-duration narration and completed the render. No paid generation or cloud audio transfer occurred.
+The original3D model passed geometry, perspective, material, full-frame-bounds and encoded-asset checks. One visual revision integrated camera corners and rounded the bridge. The12-second1080p30fps asset was independently compared with official references; it remains an editorial approximation, not manufacturerCAD. Motion checks confirmed population marks regroup into quarters and the actual pipeline stages change beyond captions/footers. Spark remains conditional, source plans validated/cached and displayed text published.
 
-python3 tools/check_submission.py --video build/video-v0.1/Ayah-Lens-Demo-v0.1.mp4 passed script, links, form coverage, duration and full picture/audio checks. Audio measured -22.1 dBFS mean and -3.0 dBFS peak. Independent visual review passed the storyboard and twelve master samples: version badge, 59-test card, source labels, reserved slot boundaries, source words and closing frames. Private receipts, approximate SRT and viewing notes are beside the export. Perceived pronunciation, narration quality and recitation synchronization require human review.
+Source milestones: de0ef417 corrected3D;4c9ba07 editorialmotion;8b4088f assembly;31ddd5d reviewstatus/docs. Each task passed independent spec and quality review. The assembled storyboard and sampled motion review passed31full-HDframes,seven decoded excerpts and exact60/66/90boundaries. Final whole-phase checks found no material integration defect. Private reports are under build/video-v0.2/qa/.
 
-The single masjid replacement slot remains exactly 1:00–1:30, clearly labelled as placeholder/reference. Local Daniel narration remains temporary. No publishing, submission, app rebuild, new capture or audio-buffer work occurred. QuickTime stayed stopped. The next task is Faraz’s review of video v0.1 and the replacement masjid take.
+Executed verification: python3 tools/check_submission.py --video build/video-v0.2/Ayah-Lens-Demo-v0.2.mp4 passed;256spokenwords,180-secondplan,179.900-secondfullpicture/audioexport. FFprobe:1920×1080,30fps,5397frames,48kHzstereo. Full decode passed; late frames177/179 remained present. Audio peak−2.977dBFS,zero clipped samples. Source/crop/mask/speed comparisons passed; only population narration changed. The final3Dasset matched encoded product samples. The v0.1 SHA matched its old receipt.
+
+Temporary local Daniel narration, approximate captions and one clearly labelled60–90-secondmasjid replacement slot remain. Guide pronunciation, perceived audio quality and recognition accuracy were not established by these checks. No paid generation, cloud narration, new recording, app change, publication or submission occurred. QuickTime remained stopped. The audio-buffer investigation remains deferred. Next: Faraz reviews v0.2 and supplies the replacement masjid take.
 
 ## Earlier implementation milestones
 
