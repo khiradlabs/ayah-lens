@@ -20,3 +20,7 @@ Apply requested edits, replace exactly the 1:00–1:30 masjid block with approve
 - QuickTime remains stopped. Do not start a new recording without a requested capture.
 - The implementation draft PR is https://github.com/khiradlabs/ayah-lens/pull/1. The default branch still needs the reviewed implementation before submission. No final publication or form submission is authorized by the video build.
 - The deadline is November 4 at 8 PM America/Chicago. Two personal Meta API opinion ratings remain Faraz’s choice.
+
+## New creative reference
+
+Faraz supplied https://www.youtube.com/watch?v=uIHJvUVaB34. Fullprimarycaptions and directopening/closingexample inspection are recorded in CHECKPOINT.md and privatebuild/reference-uIHJvUVaB34/. Apply its argument-driven scene transformation, recurring visual motifs, asset layering and narration-led timing when revising. The next proposed proof is a single20-second impact sequence before another full-length render. v0.2 remains unchanged by the reference review.

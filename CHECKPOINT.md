@@ -372,3 +372,9 @@ Faraz explicitly chose to skip this investigation for now. The foreground/unlock
 ## Foreground observation received after deferral, November 2
 
 Faraz answered the earlier question: Ayah Lens stayed open on the unlocked iPhone when the audio-buffer error occurred. This weakens the lock/background interruption hypothesis but does not identify the send or scheduling delay. His prior instruction to defer investigation remains in force. No further test or code change was made.
+
+## Motion reference reviewed, November 2
+
+Faraz supplied https://www.youtube.com/watch?v=uIHJvUVaB34 as a creative reference. Public metadata identifies RandomAI’s13:33 tutorial on reference-driven motion graphics with Remotion. Read the complete primary auto-caption export,0:00–13:31; an image-review subagent directly inspected opening debt and closingCO2 examples plus tutorial UI. This was not an uninterrupted full-video viewing. Primary transcript and visual notes remain private under build/reference-uIHJvUVaB34/.
+
+Observed distinction: examples transform each argument into a new visual scene using tactile cutouts, charts, receipts, calendars and recurring evidence motifs. Ourv0.2 still relies heavily on fixed two-column panels and bars. The tutorial’s transferable method is reference-derived visual/motion rules, reusable scene components, narration-led timing and deliberate sound design. Recommendations are analysis, not proof that a specific model or automatic workflow guarantees quality. No code, app, video master, paid service or render changed during this viewing task. A focused20-second impact-scene proof is the proposed next creative step.
