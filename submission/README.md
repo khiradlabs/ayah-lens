@@ -1,9 +1,10 @@
 # Ayah Lens submission drafts
 
-The current production script is [DEMO-SCRIPT-V0.7.md](DEMO-SCRIPT-V0.7.md). Its complete283-word B-voice review cut runs2:43.83 at build/video-v0.7/Ayah-Lens-Demo-v0.7.mp4. Human creative review and masjid replacement remain. Earlier creative Versions1–3 are preserved below. The English switch was wearer-confirmed in Build31; video footage predates installed Build40.
+The current production script is [DEMO-SCRIPT-V0.8.md](DEMO-SCRIPT-V0.8.md). Its complete307-word B-voice review cut runs2:55.07 at build/video-v0.8/Ayah-Lens-Demo-v0.8.mp4. Explicit technical-challenge and potential global-impact narration reinforce the scoring rubric. Human creative review and masjid replacement remain. Earlier creative Versions1–3 are preserved below. The English switch was wearer-confirmed in Build31; video footage predates installed Build40.
 
 - [JUDGING.md](JUDGING.md) maps the four weighted criteria to available proof and remaining gaps.
-- [DEMO-SCRIPT-V0.7.md](DEMO-SCRIPT-V0.7.md) and [full-video-v0.7.json](full-video-v0.7.json) contain the current complete production narrative and measured edit reference.
+- [DEMO-SCRIPT-V0.8.md](DEMO-SCRIPT-V0.8.md) and [full-video-v0.8.json](full-video-v0.8.json) contain the current full narrative and measured edit reference.
+- [DEMO-SCRIPT-V0.7.md](DEMO-SCRIPT-V0.7.md) preserves the earlier complete rewrite.
 - [DEMO-SCRIPT.md](DEMO-SCRIPT.md) preserves earlier creative Version3.
 - [VERSION-3-CONCEPT.md](VERSION-3-CONCEPT.md) describes the visual reveals and optional demonstration surprise.
 - [DEMO-SCRIPT-VERSION-2.md](DEMO-SCRIPT-VERSION-2.md) preserves the rubric-led script.
@@ -13,9 +14,9 @@ The current production script is [DEMO-SCRIPT-V0.7.md](DEMO-SCRIPT-V0.7.md). Its
 - [FORM-ANSWERS.md](FORM-ANSWERS.md) matches the supplied submission form.
 - [CLAIMS.md](CLAIMS.md) records source wording and implementation limits.
 - [REVIEW.md](REVIEW.md) records checks and remaining release work.
-- [VIDEO-REVIEW.md](VIDEO-REVIEW.md) describes current complete v0.7, its review evidence and the reserved masjid slot, with earlier cut history.
+- [VIDEO-REVIEW.md](VIDEO-REVIEW.md) describes current complete v0.8, its review evidence and the reserved masjid slot, with earlier cut history.
 
-The current v0.7 renderer is tools/render_full_v07.py and its manifest is full-video-v0.7.json. The older creative Version3 timing source is demo-timeline.json; tools/render_demo_script.py regenerates that older script, not v0.7.
+The current renderer is tools/render_full_v07.py --version0.8 and its manifest is full-video-v0.8.json. Default rendering remains0.7. The older creative Version3 timing source is demo-timeline.json; tools/render_demo_script.py regenerates that older script, not v0.7.
 
 Earlier video v0.2 rebuilt the local review cut with warm-paper motion graphics, a one-in-four population comparison, original 3D hardware geometry and an animated causal diagram. Temporary local guide narration and the single reserved masjid slot remain. It is not the final submission video. The public repository default branch still needs the reviewed implementation. Personal opinion ratings and final submission remain with the entrant.
 

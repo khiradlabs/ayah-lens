@@ -1,6 +1,18 @@
-# Ayah Lens complete demo v0.7
+# Ayah Lens complete demo v0.8
 
-Current review cut: build/video-v0.7/Ayah-Lens-Demo-v0.7.mp4,163.833333seconds,4915frames,1080p30,48kHz stereo. SHA25632343f60133baa68fd90678c9b1daa99b3426dd65f4f3bb36f944958a4b7851a. The complete new283-word script and picture use the selected B delivery direction, OpenAI Realtime2.1 Cedar. Earlier v0.6 was creatively rejected and remains preserved.
+Current master: build/video-v0.8/Ayah-Lens-Demo-v0.8.mp4. Runtime175.066667seconds,5252frames,1080p30,48kHz stereo. SHA2567de8371ae991c04f519a19a372350b08f0c6d0824cd79dd12f5b908ad485b9b9.
+
+Faraz requested more explicit rubric evidence in narration. Only two paragraphs changed. The following scene now names the technical challenge of tracking inside a long verse and fitting its current portion to a tiny display. The closing says the impact could be enormous, connects the opportunity to roughly one quarter of humanity, and names listeners who do not understand Arabic as the intended audience. Existing Meta model roles and genuine automatic-following proof stay in the narration. No adoption count or measured comprehension gain is claimed.
+
+The full script is307words. Two new continuous selected-B Cedar takes replace following and close; six takes remain unchanged. The ending adds dated Pew2020 population context, English-audience scope and a listening resolve using the same visual language. The60–90masjid reservation/reference fill remains clearly labelled. This is a private review cut, not a public submission or completed mosque recording.
+
+Twelve tests, full offline checks and independent spec/quality/encoded-motion reviews passed. The retimed replay-to-model handoff now holds the actual final source frame334, preventing a backward jump. AAC packets were unchanged by that picture repair. Peak-5.8dBFS and matched paragraph levels-23.00to-23.20LUFS. Human emotional approval and pronunciation review remain pending. The minor brand-resolve cue can appear0.74seconds ahead of its spoken name during a pause; it is not a required fix.
+
+Use python3 tools/render_full_v07.py --version0.8 --check; the default remains0.7. Current script and manifest are DEMO-SCRIPT-V0.8.md and full-video-v0.8.json. Captions and spoken-script.txt are beside the private export. New speech/transcription estimateUSD0.05178 is not invoice actuals. All previous masters and source/B hashes remained unchanged. No app edits, capture, new images or publication occurred.
+
+## Preserved v0.7 production history
+
+Former v0.7 review cut: build/video-v0.7/Ayah-Lens-Demo-v0.7.mp4,163.833333seconds,4915frames,1080p30,48kHz stereo. SHA25632343f60133baa68fd90678c9b1daa99b3426dd65f4f3bb36f944958a4b7851a. The complete new283-word script and picture use the selected B delivery direction, OpenAI Realtime2.1 Cedar. Earlier v0.6 was creatively rejected and remains preserved.
 
 The rewritten script explains the listening need, shows genuine automatic following, connects Meta's model roles to that behavior, then shows use cases and scoped engineering evidence. Reference counts and tests stay on readable cards. Full script: DEMO-SCRIPT-V0.7.md. A clean spoken-only copy and captions are beside the private master.
 

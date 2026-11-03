@@ -1,5 +1,27 @@
 # Ayah Lens implementation checkpoint
 
+## Current result, November 3: v0.8 makes rubric evidence explicit
+
+Faraz asked for the scoring rubric to be clearer in narration, especially potentially large global impact. Produced build/video-v0.8/Ayah-Lens-Demo-v0.8.mp4 at175.066667seconds,5252frames,1080p30 and48kHz stereo. Final SHA2567de8371ae991c04f519a19a372350b08f0c6d0824cd79dd12f5b908ad485b9b9. Full script307words, with only following and close changed. Selected B and six unchanged performances were reused. Technical challenge is now spoken directly; closing says The impact could be enormous, cites roughly one quarter of humanity, and narrows the benefit to listeners who do not understand Arabic. Existing Meta Voice/Spark roles and actual demonstration remain narrated.
+
+The new impact ending displays dated Pew2020 population context and English-meaning audience scope, not adoption or measured comprehension gains. Cold wording review passed before calls. Two complete new takes and three transcription calls cost an estimatedUSD0.05178, not invoice actuals. The close primary recognizer misheard Arabic as Aramaic; independent unprompted recognition confirmed Arabic. Semantic substitutions remain rejected, with only documented product-name phonetics reconciled. Human pronunciation and creative approval remain unverified.
+
+Implementatione22a583 added isolated --version0.8 configuration to the maintained renderer and the new script/manifest. Source-handoff fixdda3ee7 derives the held model-diagram card from the actual final replay frame334. Hard-coded299 had visibly rewound the newly longer replay. Twelve tests, controller-run offline full check, independent specification/code-quality and final encoded motion review passed. Final quality found no required fixes. A minor0.74-second brand-cue precision limit remains documented. Final source-card continuity SSIM0.999818; min full-source cropSSIM0.963457; all307words and complete processed English/source waveforms passed correspondence checks. AAC packets were byte-identical across the local picture repair. Peak-5.8dBFS, paragraph levels-23.00to-23.20LUFS.
+
+New files: submission/DEMO-SCRIPT-V0.8.md and full-video-v0.8.json. Renderer remains tools/render_full_v07.py, with explicit --version0.8; default0.7 behavior is preserved. Full plain script and captions are beside the master. Private evidence lives under build/video-v0.8/qa/ and receipts/. The v0.7 master, real source recordings and accepted B remain byte-identical. No app change, capture, new imagery, publication or submission occurred.
+
+Final on-screen benefit wording was polished in3f851d7 to Hands-free meaning / daily recitation, retaining the dated population context and intended audience. Audio packets remained identical.
+
+The60–90masjid reservation/reference fill remains. Next is Faraz's review of the updated full cut and later suitable masjid replacement footage. No further provider/voice/preliminary-script approval is needed.
+
+
+## Current work, November 3: v0.8 rubric emphasis
+
+Faraz requested the scoring criteria be clearer in narration, especially the potentially large global impact. The update replaces only following and close. The new technical line names tracking inside a long verse and a tiny display. The new ending begins The impact could be enormous and connects roughly one quarter of humanity with the intended non-Arabic listeners and daily recitation. Other Meta-model and demonstration narration remains unchanged.
+
+Cold wording review passed before generation. Expected full script307words. Two complete selected-B replacements were generated; six unchanged takes and their evidence were reused. Independent second recognition confirmed Arabic rather than the primary recognizer's Aramaic mistake; no semantic alias was accepted. Current measured timeline is about175.07seconds,5252frames, pending final encoded verification. Production is in progress under docs/plans/2026-11-03-rubric-narration-v08-plan.md. Target output build/video-v0.8/Ayah-Lens-Demo-v0.8.mp4. Keep v0.7 master unchanged; no user preliminary approval is needed for this requested addition.
+
+
 ## Current result, November 3: complete v0.7 B-voice review cut
 
 Faraz requested the complete rewritten script and full video with selected B, including smooth visual and sound transitions. Built build/video-v0.7/Ayah-Lens-Demo-v0.7.mp4. Runtime163.833333seconds,4915frames,1920x1080/30fps,48kHz stereo. Final SHA25632343f60133baa68fd90678c9b1daa99b3426dd65f4f3bb36f944958a4b7851a. Plain narration: build/video-v0.7/spoken-script.txt. Captions: build/video-v0.7/captions.srt.

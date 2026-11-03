@@ -1,14 +1,16 @@
 # Next Ayah Lens task
 
-The complete v0.7 review cut is ready at build/video-v0.7/Ayah-Lens-Demo-v0.7.mp4. Faraz explicitly requested this complete rewrite, superseding the earlier short-proof plan. Runtime163.833333seconds; final SHA25632343f60133baa68fd90678c9b1daa99b3426dd65f4f3bb36f944958a4b7851a. The283-word narration uses selected B, Realtime2.1 Cedar. Stop voice auditions unless specific new feedback warrants one.
+The latest complete review cut is build/video-v0.8/Ayah-Lens-Demo-v0.8.mp4. Runtime175.066667seconds;5252frames;307spokenwords. Final SHA2567de8371ae991c04f519a19a372350b08f0c6d0824cd79dd12f5b908ad485b9b9. Faraz requested explicit rubric/global-impact narration. Only following and close changed; selected B and six earlier takes stayed unchanged. All prior masters are preserved.
 
 ## Next work
 
-Faraz reviews the full cut for script, delivery, pacing and emotional impact. Technical, specification, code-quality and sampled encoded visual checks passed, but they do not establish his creative approval. Deliver the complete video and build/video-v0.7/spoken-script.txt; do not ask another preliminary script or provider question.
+Faraz reviews v0.8 for script, delivery and emotional impact. The technical-challenge line and potential global-impact closing now directly support the rubric. Meta model roles and the hands-free demonstration already remain in the voiceover. No literal rubric weights or self-scores were added.
 
-Replace the labelled60–90masjid fill with suitable approved footage when available. It currently contains six seconds of quiet reservation and24seconds of genuine phone reference. Private raw-source review found manual scrolling before/after the clean window; do not extend it into a fake25-second hands-free proof. Keep real source words and audio timing intact. Fresh recording requires the requested capture setup; keep QuickTime stopped meanwhile.
+Replace the labelled60–90masjid fill with suitable approved footage when available. It is six quiet reservation seconds plus24seconds of genuine phone reference, not completed mosque footage or25-second uninterrupted proof. Keep QuickTime stopped until a requested capture.
 
-Current sources: submission/DEMO-SCRIPT-V0.7.md, full-video-v0.7.json and narration-v0.7.json. Maintained renderer: tools/render_full_v07.py. Offline checks: python3 tools/test_full_v07.py and python3 tools/render_full_v07.py --check. Seven tests passed. Captions are build/video-v0.7/captions.srt. Private review reports and receipts are in build/video-v0.7/qa/ and receipts/. Latest production code674418e.
+Current inputs: submission/DEMO-SCRIPT-V0.8.md, full-video-v0.8.json and selected-B settings in narration-v0.7.json. Maintained renderer: tools/render_full_v07.py. Use python3 tools/test_full_v07.py and python3 tools/render_full_v07.py --version0.8 --check. Default version remains0.7, so specify0.8. Twelve focused tests and full offline/source/word checks passed. Plain script and captions are under build/video-v0.8/. Latest code3f851d7. The final impact footer reads Hands-free meaning / daily recitation.
+
+Independent specification, code-quality and encoded transition reviews passed. New source-card handoff was checked against final replay frame334 and remains continuous. Human creative approval remains pending. Do not generate more auditions or ask the earlier voice/provider questions unless specific new feedback warrants work. New generation/transcription estimateUSD0.05178, not invoice actuals.
 
 ## Evidence limits
 
@@ -16,7 +18,7 @@ The native footage is a native camera/display composite, not optical lens filmin
 
 The library covers114surahs and6236ayahs, not verified recognition accuracy over every passage. Muse Voice supplies live transcription. Spark helps published-source pairing and bounded matching; filmed pairing plans are cached. Teaching support remains future and needs development/testing. B paragraph levels are matched; final peak-5.8dBFS. Human pronunciation and emotional approval remain pending.
 
-The automatic audio review refers to the archived original generated-English concatenation, qa/English-only-original-generated.wav. It is byte-identical to the reviewed source. Final processed speech is validated separately by waveform correlation. Never claim a human listened or equate technical checks with presentation success.
+The earlier automatic audio review refers only to the archived original v0.7 English concatenation. The two new v0.8 takes have independent transcription and final waveform checks. Do not claim a full v0.8 aural or human emotional review occurred. Never equate technical checks with presentation success.
 
 ## Persistent boundaries
 

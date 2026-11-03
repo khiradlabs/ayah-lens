@@ -62,3 +62,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Binary float timestamps can repeat or skip source frames with int(seconds*fps). Round the source frame offset instead. Verify every native proof frame appears exactly once with python3 tools/test_full_v07.py.
 
 - Sampling only after a transition missed source-text collisions and doubled headings during its first half-second. Keep existing layers stationary and animate only incoming content. Verify consecutive encoded frames at boundaries and internal narration cues, not only average image-change scores.
+
+- Retiming narration changes the final visible replay frame. A hard-coded held card rewound the source at the model explanation. Derive it from integer timeline bounds. Verify following_last_frame tests and consecutive encoded replay-to-model frames.
