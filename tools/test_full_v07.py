@@ -56,6 +56,13 @@ class FullCut(unittest.TestCase):
   self.assertEqual(m.scene_at(t,6.05),'listen')
   self.assertEqual(m.scene_at(t,50.6),'native_proof')
   self.assertEqual(m.scene_at(t,90.1),'phone_reference')
+ def test_mechanism_retains_final_following_source_frame_for_measured_durations(self):
+  m=self.load();self.assertTrue(hasattr(m,'following_last_frame'),'Measured replay handoff is missing')
+  for end_frame,expected in [(3041,334),(3005,298),(2707,0),(3500,719)]:
+   timeline={'following':[2706/30,end_frame/30]}
+   self.assertEqual(m.following_last_frame(timeline),expected)
+   visible=[m.source_frame(i/30,timeline['following'][0],720) for i in range(2706,end_frame)]
+   self.assertEqual(m.following_last_frame(timeline),visible[-1])
  def test_native_proof_has_every_source_frame_once_despite_float_boundaries(self):
   m=self.load();self.assertTrue(hasattr(m,'source_frame'),'Exact source frame mapping is missing')
   start=1141/30;indices=[m.source_frame(i/30,start,375) for i in range(1141,1516)]

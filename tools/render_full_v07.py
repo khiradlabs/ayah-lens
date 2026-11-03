@@ -123,6 +123,10 @@ def extract_sources():
 def source_frame(t,start,count):
  return min(count-1,max(0,round((t-start)*FPS)))
 
+def following_last_frame(timeline):
+ start,end=timeline['following']
+ return min(719,max(0,round(end*FPS)-1-round(start*FPS)))
+
 def scene_at(timeline,t):
  return max((k for k,(a,b) in timeline.items() if a<=t),key=lambda k:timeline[k][0])
 
@@ -234,7 +238,7 @@ def render_picture(edit, frame_range=None):
    text(im,'PHONE REFERENCE / earlier prototype / not masjid footage' if key=='phone_reference' else 'SILENT REPLAY / earlier phone prototype',(120,855),24,width=540)
    if key=='following':text(im,'No manual paging',(1450,530),34,blue,width=340)
   elif key=='mechanism':
-   paste(im,source('card',299),lerp(phonebox,(1490,190,300,340),p))
+   paste(im,source('card',following_last_frame(timeline)),lerp(phonebox,(1490,190,300,340),p))
    if local>=.5:
     titlelayer=Image.new('RGBA',im.size,(0,0,0,0));text(titlelayer,'From sound to published meaning',(120,150),54,width=1250);titlelayer.putalpha(titlelayer.getchannel('A').point(lambda alpha:round(alpha*ease((local-.5)/.35))));im.paste(titlelayer,(0,0),titlelayer)
    labels=['Muse Voice: live Arabic transcript','Local passage + position tracker','Muse Spark: source pairing','Cached pairing plans','Local source-word validation'];positions=[(120,365),(660,365),(120,575),(660,575),(1200,575)]
