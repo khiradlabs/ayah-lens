@@ -6,11 +6,11 @@ Faraz said the first two sections do not explain the problem clearly and the tra
 
 - 0–8 seconds: retain the genuine recitation and “Just listen.” Add clear context that this is Quran recitation. Before the cut, ask “Can you follow its meaning?” Do not speak over the recitation.
 - 8–28 seconds: explain the lived problem before the population statistic. Animate one listener hearing familiar recitation, the meaning remaining unclear, and a phone translation pulling their gaze away. Keep the 2B/about-one-quarter comparison as supporting scale, not a claim that all Muslims need the product. End with a clear invitation to hear the same passage with meaning.
-- 28–36 seconds: replay the same actual source excerpt and genuine native/enlarged display footage. Main payoff: “The same words. Now with meaning.” Retain source/replay labels and exact source words. The third section must answer the problem posed in the first two.
+- 28–36 seconds: replay the same actual source excerpt and genuine native/enlarged display footage. Main payoff: “The same words. Now with meaning.” Prominently label “Actual glasses display · same passage replayed,” and identify the enlargement as a crop from that same recording. Retain exact source words. Do not call it an optical through-lens recording. The third section must answer the problem posed in the first two.
 
 Proposed 20-second guide narration:
 
-Imagine hearing the Quran every day, without understanding its meaning. For many Muslims who don’t understand Arabic, that is familiar. About two billion people are Muslim, roughly one quarter of humanity. A phone translation means looking away. Now listen again, with the meaning in view.
+Imagine hearing the Quran every day, without understanding its meaning. For many Muslims who don’t understand Arabic, that is familiar. About two billion people are Muslim, roughly one quarter of humanity. Reading a translation pulls your eyes down to your phone. Now listen again, with the meaning in view.
 
 ## Design and implementation
 
@@ -23,3 +23,5 @@ Outputs under ignored build/video-v0.3-opening/: a 36-second 1920×1080/30fps MP
 ## Verification
 
 Check scene timing and narration pace before rendering. Verify 1,080 full-duration picture frames, stereo48kHz audio, genuine source replay correspondence and no clipping. Inspect a cold-viewer storyboard and decoded motion samples independently. Test that a viewer can identify the problem, phone attention cost and meaning-reveal payoff. Technical checks do not prove comprehension improvement or device accuracy. No app tests for this video-only work.
+
+Cold-viewer story review required these two clarifications: name the phone as the gaze destination, and identify the meaning reveal as genuine glasses-display recording. The revised paragraph has 50 words, or 150 words per minute across the20-second narration section.
