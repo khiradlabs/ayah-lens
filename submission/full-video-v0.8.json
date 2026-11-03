@@ -1,0 +1,523 @@
+{
+  "version": "0.8",
+  "label": "Complete Ayah Lens v0.8 rubric emphasis",
+  "status": "Production draft; measured complete B performances",
+  "output": "build/video-v0.8/Ayah-Lens-Demo-v0.8.mp4",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "max_duration_seconds": 179.9,
+  "nominal_duration_seconds": 165,
+  "voice_manifest": "submission/narration-v0.7.json",
+  "scenes": [
+    {
+      "id": "listen",
+      "narration": "",
+      "copy": [
+        "Ayah Lens",
+        "Earlier prototype · native camera + display recording",
+        "Enlarged recorded display · not optical lens footage"
+      ],
+      "visual": "Open directly on genuine readable output. Fit the native composite at left and enlarge its exact display crop at right. A thin charcoal reading rail joins both frames. Off-white background, charcoal type, one muted blue accent. No recreated scripture.",
+      "source": {
+        "path": "recordings/version-3/native-display-recognition-candidate.mp4",
+        "start_seconds": 0,
+        "end_seconds": 6,
+        "crop": [
+          208,
+          832,
+          576,
+          144
+        ],
+        "speed": 1,
+        "mode": "moving native composite and same-frame crop"
+      },
+      "timing_guidance": {
+        "nominal_start_seconds": 0,
+        "nominal_end_seconds": 6,
+        "fixed": false,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "Original recitation only, at original speed. No narration or music. Preserve all words through the selected source boundary; the next scene may begin with a short silent held frame if the reciter needs room.",
+      "transition": "At the recitation pause, hold the last genuine frame and retain its crop position. Dim the surrounding camera view by a short opacity ramp while the rail extends into space for the opening question. Do not wipe across source words."
+    },
+    {
+      "id": "hook",
+      "narration": "What if your glasses became your personal Quran translator? You hear the recitation, and the meaning appears right in front of you. It follows along as you listen, so you can leave your phone alone and stay with the moment.",
+      "copy": [
+        "Your personal Quran translator?",
+        "Held recorded frame · earlier prototype",
+        "AI-generated English narration"
+      ],
+      "visual": "Begin with the genuine crop in its opening position, then reduce it to a small labelled continuity inset over0.5s during the first question. The main composition becomes the question, the reading rail and a simple phone outline. On meaning appears the rail opens into Arabic and published English source labels. On leave your phone alone the phone outline settles outside the reading frame. Keep held source status clear; no fabricated interface or scripture.",
+      "source": {
+        "path": "recordings/version-3/native-display-recognition-candidate.mp4",
+        "start_seconds": 6,
+        "end_seconds": 6,
+        "crop": [
+          208,
+          832,
+          576,
+          144
+        ],
+        "speed": 1,
+        "mode": "held source frame; no live claim"
+      },
+      "timing_guidance": {
+        "nominal_start_seconds": 6,
+        "nominal_end_seconds": 19.65,
+        "fixed": false,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "Reuse build/video-v0.7-study/realtime-audition/B-engaged.wav exactly, duration13.65s. Start after recitation has ended with a small clean gap. No recitation under narration.",
+      "transition": "The phone outline settles into the lower margin while the existing rail divides into four equal sections. Carry the small labelled source inset unchanged into the human-context composition."
+    },
+    {
+      "id": "human_context",
+      "narration": "Pew estimated about two billion Muslims in 2020, roughly a quarter of humanity. The Quran is Islam's scripture, recited in Arabic. If you do not understand Arabic, you can hear every word and still miss the meaning. Ayah Lens brings published English meaning into view on Meta Ray-Ban Display.",
+      "copy": [
+        "About 2 billion Muslims · roughly one quarter of humanity",
+        "Pew Research Center · 2020 estimate, published June 2025",
+        "For listeners seeking English meaning",
+        "Ayah Lens · Meta Ray-Ban Display",
+        "Published Arabic + published English meaning",
+        "Held recorded inset · earlier prototype"
+      ],
+      "visual": "Make human context the main composition, with the genuine held crop only a small labelled continuity inset. At two billion the population count resolves beside the rail; at quarter accent one of four equal divisions. At recited in Arabic the divisions regroup into a source relationship: Arabic alongside published English, using labels and abstract blocks without invented scripture. At miss the meaning separate those two abstract source blocks slightly; at brings published English meaning connect them along the same rail. Keep the English-audience scope and dated Pew attribution readable. The real inset stays unchanged.",
+      "source": {
+        "path": "recordings/version-3/native-display-recognition-candidate.mp4",
+        "start_seconds": 6,
+        "end_seconds": 6,
+        "crop": [
+          208,
+          832,
+          576,
+          144
+        ],
+        "speed": 1,
+        "mode": "held source frame; no live claim"
+      },
+      "timing_guidance": {
+        "nominal_start_seconds": 19.65,
+        "nominal_end_seconds": 36.8,
+        "fixed": false,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "One continuous B-directed paragraph. Put human meaning ahead of presentation cadence. End with a short quiet gap before genuine recitation; measure the whole paragraph without acceleration.",
+      "transition": "The source relationship brackets contract around the real inset; the inset expands into the genuine composite-and-crop layout over0.5s. Remove the abstract blocks outside source pixels. Show replay labelling before the first moving proof frame."
+    },
+    {
+      "id": "native_proof",
+      "narration": "",
+      "copy": [
+        "Earlier prototype · native display recording replay",
+        "Enlarged from the same recording · not optical lens capture"
+      ],
+      "visual": "Replay the complete12.5s native camera/display composite continuously. Keep same-frame enlarged display at right and all labels outside source words. This is genuine recorded output; the scene is an edited replay, not a new session.",
+      "source": {
+        "path": "recordings/version-3/native-display-recognition-candidate.mp4",
+        "start_seconds": 0,
+        "end_seconds": 12.5,
+        "crop": [
+          208,
+          832,
+          576,
+          144
+        ],
+        "speed": 1,
+        "mode": "continuous unmodified-speed replay"
+      },
+      "timing_guidance": {
+        "nominal_start_seconds": 36.8,
+        "nominal_end_seconds": 49.3,
+        "fixed": false,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "Original synchronized recitation only. No narration. No other recitation layer. Allow the final audible word to finish before the next paragraph.",
+      "transition": "At the final source word, hold the last genuine frame briefly. Its outside reading-window outline detaches into a neutral diagram frame while the real picture reduces to a labelled thumbnail. Keep a clean audio gap before the cue."
+    },
+    {
+      "id": "long_verse_cue",
+      "narration": "Now watch one long verse. The verse stays the same while the displayed portion changes with the recitation.",
+      "copy": [
+        "Watch one long verse · changing portions",
+        "Explanatory reading-window diagram",
+        "Masjid slot reserved · phone reference follows",
+        "Technology demonstration only. This does not establish religious permissibility for use during prayer."
+      ],
+      "visual": "Use a neutral editorial diagram to explain what the next genuine phone take will show. Keep one verse identifier fixed while a narrow outlined reading window moves over abstract indexed blocks. Do not invent scripture or show phone footage before66s. The real native thumbnail remains labelled earlier prototype. Let the reservation context and prayer disclaimer arrive beside the diagram before60s.",
+      "source": {
+        "path": "recordings/version-3/native-display-recognition-candidate.mp4",
+        "start_seconds": 12.466667,
+        "end_seconds": 12.466667,
+        "crop": [
+          208,
+          832,
+          576,
+          144
+        ],
+        "speed": 1,
+        "mode": "held final available frame; use last decodable frame"
+      },
+      "timing_guidance": {
+        "nominal_start_seconds": 49.3,
+        "nominal_end_seconds": 60,
+        "fixed": false,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "One continuous short cue, after native recitation fully ends. End before60s. No recitation under the cue. Let the quiet lead into the fixed reservation.",
+      "transition": "The outlined explanatory reading window becomes the empty reserved frame over0.4s. The cue directs attention to changing portions; the explicit reservation copy explains the temporary absence of a masjid take. Keep the same rail and prayer disclaimer in place."
+    },
+    {
+      "id": "masjid_reservation",
+      "narration": "",
+      "copy": [
+        "MASJID RECORDING · RESERVED",
+        "Fresh masjid footage is not available",
+        "Phone reference follows",
+        "Technology demonstration only. This does not establish religious permissibility for use during prayer."
+      ],
+      "visual": "Show an empty editorial frame with the persistent rail advancing over exactly6s. Plain reservation copy fills the frame. Do not show the phone yet and do not imply a recorded mosque session.",
+      "source": null,
+      "timing_guidance": {
+        "nominal_start_seconds": 60,
+        "nominal_end_seconds": 66,
+        "fixed": true,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "Quiet. No narration, recitation or fabricated ambience.",
+      "transition": "Over the final0.4s, the empty frame outline moves into the phone-reference layout. Keep the reservation label until66s; replace it with the reference label before the first moving phone frame."
+    },
+    {
+      "id": "phone_reference",
+      "narration": "",
+      "copy": [
+        "PHONE REFERENCE · earlier prototype · not masjid footage",
+        "73:20 · one ayah, changing portions",
+        "Technology demonstration only. This does not establish religious permissibility for use during prayer."
+      ],
+      "visual": "Play all24s continuously, original speed and synchronized audio. Fit the full phone at left; enlarge its exact live source-card crop at right. Keep source text unchanged and readable. The same rail sits below the crop; no artificial highlights are painted inside scripture. This is phone preview evidence, not optical glasses evidence.",
+      "source": {
+        "path": "recordings/version-3/muzzammil-following-24s-candidate.mp4",
+        "start_seconds": 0,
+        "end_seconds": 24,
+        "crop": [
+          48,
+          1232,
+          984,
+          1116
+        ],
+        "speed": 1,
+        "mode": "continuous phone reference; not masjid footage"
+      },
+      "timing_guidance": {
+        "nominal_start_seconds": 66,
+        "nominal_end_seconds": 90,
+        "fixed": true,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "Original phone-source recitation only. No narration or second reciter. Begin after quiet reservation, with a tiny sample-edge fade. Finish the full source tail before any English.",
+      "transition": "Freeze the final phone frame at90s. The 73:20 label remains fixed and becomes the heading for the next explanation. Hold a short quiet gap before narration, then visibly label the coming silent replay."
+    },
+    {
+      "id": "following",
+      "narration": "The technical challenge is tracking your place within a long verse and fitting the current portion onto a tiny display. Our software does that automatically, so you keep listening without turning a page.",
+      "copy": [
+        "73:20 · same ayah, changing portions",
+        "Silent replay · earlier phone prototype",
+        "No manual paging"
+      ],
+      "visual": "After the genuine source tail and a quiet gap, replay a measured excerpt of the phone take silently at source speed. Keep the ayah identifier anchored outside the crop as real portions change. Nominal source range0–10s fits this10s scene. Once narration is measured, select an equally long source excerpt inside0–24s; if a narration gap remains, hold the final genuine frame rather than slowing playback. The rail marker is explanatory and remains outside source text. Keep the automatic-following evidence visible through the explicit long-verse tracking and tiny-display explanation; keep labels outside the unchanged source pixels.",
+      "source": {
+        "path": "recordings/version-3/muzzammil-following-24s-candidate.mp4",
+        "start_seconds": 0,
+        "end_seconds": 10,
+        "crop": [
+          48,
+          1232,
+          984,
+          1116
+        ],
+        "speed": 1,
+        "mode": "silent explanatory replay"
+      },
+      "timing_guidance": {
+        "nominal_start_seconds": 90,
+        "nominal_end_seconds": 100,
+        "fixed": false,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "One continuous paragraph, no audible source audio. Recitation from the preceding scene must fully end before this voice starts.",
+      "transition": "Retain the final genuine crop as a small output node at right. Its surrounding frame contracts over0.5s while the rail extends back toward a glasses-audio node at left, opening the mechanism without an unrelated slide reset."
+    },
+    {
+      "id": "mechanism",
+      "narration": "Muse Voice turns the glasses' audio into a live Arabic transcript. Local software finds the passage and follows your place. Muse Spark helps pair Arabic portions with published English and resolve uncertain passage matches. These demos use cached pairing plans. Local checks preserve the source words before each portion reaches the glasses.",
+      "copy": [
+        "Muse Voice · live Arabic transcript",
+        "Local software · finds passage + follows place",
+        "Muse Spark · pairs published Arabic + English portions",
+        "Uncertain match · supplied candidates or abstain",
+        "Published Tanzil Arabic · Pickthall English",
+        "Demo pairing plans cached · transcription live",
+        "Local validation → unchanged source words"
+      ],
+      "visual": "Animate the journey of sound and meaning along the inherited rail. A sound pulse reaches Muse Voice; a transcript marker travels to local passage finding and position tracking. At Muse Spark, two abstract source blocks link into paired Arabic and published English portions. Keep Tanzil/Pickthall attribution readable. An uncertainty branch offers only supplied candidates or abstention. The pairing branch carries its cache badge, separate from the live transcription branch. At local checks a validation bracket closes around source indices and leads into the retained genuine output inset. Reveal the argument on spoken cues rather than holding a complete technical slide.",
+      "source": {
+        "path": "recordings/version-3/muzzammil-following-24s-candidate.mp4",
+        "start_seconds": 10,
+        "end_seconds": 10,
+        "crop": [
+          48,
+          1232,
+          984,
+          1116
+        ],
+        "speed": 1,
+        "mode": "held genuine output within editorial diagram"
+      },
+      "timing_guidance": {
+        "nominal_start_seconds": 100,
+        "nominal_end_seconds": 120,
+        "fixed": false,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "One connected paragraph, with a natural breath after follows your place. No recitation. Keep the sound-to-meaning journey conversational and animate it on spoken cues.",
+      "transition": "The validated-output frame expands back to reading-window size. Two English visibility states appear beside it as clearly labelled explanatory diagrams; the source crop itself is never altered."
+    },
+    {
+      "id": "choice_and_use",
+      "narration": "At home, the same idea could help you follow a reciter on television. For Hifz, Quran memorization, hide the English while rehearsing, then bring the meaning back. We are also exploring Salat, Muslim prayer.",
+      "copy": [
+        "TV listening · possible setting",
+        "Hifz · Quran memorization",
+        "Show English meaning · implemented switch",
+        "Explanatory mode diagram · not filmed switch proof",
+        "Possible Salat use",
+        "Technology demonstration only. This does not establish religious permissibility for use during prayer."
+      ],
+      "visual": "Carry the output frame through three connected rail positions: a television outline with no invented broadcast; Arabic reference and Arabic plus English diagram boxes; then the possible prayer label. Use abstract lines in mode boxes, not generated Quran words. Label them explanatory, retaining the genuine crop separately. Do not use choice-phone-preview-candidate.mp4 as toggle evidence. Keep the prayer disclaimer readable for the entire prayer mention.",
+      "source": null,
+      "timing_guidance": {
+        "nominal_start_seconds": 120,
+        "nominal_end_seconds": 134,
+        "fixed": false,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "One continuous paragraph, no recitation or television sound. No artificial click is needed for the schematic switch.",
+      "transition": "The three setting markers slide together into a single library tab. Keep the reading-window outline as the outside edge of the next evidence panel, with the disclaimer fading only after the prayer mention ends."
+    },
+    {
+      "id": "foundation",
+      "narration": "During this hackathon, we built the glasses integration and automatic following you have seen. The reference library contains the complete Quran. Our core tests check matching, source preservation and display scheduling. Teaching support would need further development and extensive testing.",
+      "copy": [
+        "Built during this hackathon · glasses integration + automatic following",
+        "114 surahs · 6,236 ayahs · complete reference library",
+        "Reference coverage, not verified recognition accuracy",
+        "59 core tests passed · recorded November 2 receipt",
+        "Selected software tests, not a whole-Quran accuracy study",
+        "Matching · source preservation · display scheduling",
+        "Future teaching support · further development and extensive testing required"
+      ],
+      "visual": "Lead with the event work: the inherited reading frame connects glasses integration to automatic following. At complete Quran open a readable reference card showing114surahs and6,236ayahs with reference-only scope beside the counts. At core tests replace it with the recorded59-test receipt, dated November2 with provenance from the saved core-test log; retain selected-software-test scope beside it. Do not simulate a fresh terminal run. End on a distinct outlined future-teaching tab, qualified by further development and extensive testing. Keep each evidence card readable through its full sentence.",
+      "source": {
+        "reference": "build/logs/core-tests.log",
+        "receipt": "Recorded dense-window milestone:59 core tests, zero failures; no fresh test claim in this video"
+      },
+      "timing_guidance": {
+        "nominal_start_seconds": 134,
+        "nominal_end_seconds": 153,
+        "fixed": false,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "One confident connected paragraph, leading with the work that produced the observed behavior. No recitation or triumphant sound sting. Counts and accuracy scope remain readable evidence cards rather than a spoken list of numbers and negations.",
+      "transition": "Close the future tab and contract the evidence panel back to the original reading-window outline. The rail returns to its opening position; carry the final breath into a short clean gap."
+    },
+    {
+      "id": "close",
+      "narration": "The impact could be enormous. Roughly a quarter of humanity shares this scripture. For listeners who don't understand Arabic, this could bring meaning into daily recitation, hands free. Ayah Lens: hear the recitation, follow the meaning, and stay with the moment.",
+      "copy": [
+        "Potential impact / roughly one quarter of humanity",
+        "Pew Research Center / 2020 estimate, published June 2025",
+        "For listeners seeking English meaning",
+        "Ayah Lens",
+        "Hear the recitation. Follow the meaning. Stay with the moment."
+      ],
+      "visual": "Keep the genuine held native source inset at its protected original crop. Reveal four equal population blocks with one accented, dated Pew 2020 attribution, and potential impact scope. Fade through paper to For listeners seeking English meaning, then resolve to Ayah Lens and hear/follow/stay. Population context is not adoption or measured comprehension. Animate only incoming layers; keep source words and labels clear.",
+      "source": {
+        "path": "recordings/version-3/native-display-recognition-candidate.mp4",
+        "start_seconds": 12.466667,
+        "end_seconds": 12.466667,
+        "crop": [
+          208,
+          832,
+          576,
+          144
+        ],
+        "speed": 1,
+        "mode": "held final available frame; use last decodable frame"
+      },
+      "timing_guidance": {
+        "nominal_start_seconds": 153,
+        "nominal_end_seconds": 165,
+        "fixed": false,
+        "rule": "Measure narration before locking all other boundaries; never change source speed."
+      },
+      "audio": "One warm paragraph, easing off naturally. Keep the full last word and a short room-tone tail. No tempo change. End naturally before180s;165s is a proposal, not a target to pad.",
+      "transition": "Hold the completed frame for a short breath and fade picture/audio gently after all speech finishes.",
+      "impact_ending": true
+    }
+  ],
+  "masjid_slot": {
+    "start": 60,
+    "end": 90,
+    "reservation_seconds": 6,
+    "reference_seconds": 24,
+    "status": "Reserved; no fresh masjid take available"
+  },
+  "global_direction": {
+    "palette": "Off-white, charcoal, one restrained muted-blue accent; no gradients",
+    "motif": "One reading-window outline, one thin rail and an accent marker carry all scene handoffs",
+    "source_text": "Preserve source pixels; labels and abstract diagrams outside real Arabic and English; no generated scripture",
+    "narration": "B Cedar direction; continuous paragraphs, no tempo fitting or clause splicing; synthetic-English disclosure during narration only",
+    "audio": "No narration over audible Quran, no independent recitation overlap; preserve original source timing and speed, avoid clipped words; no music required",
+    "transition_duration_seconds": [
+      0.3,
+      0.6
+    ],
+    "timing": "The60–90slot is fixed. All other scene bounds follow measured paragraphs and complete source-audio tails. Pre-slot narration is107words. Do not pad to165s; reclaim time from editorial holds, never accelerate genuine media."
+  },
+  "claims_sources": [
+    {
+      "claim": "About2billion Muslims; roughlyquarter;2020estimate published2025",
+      "url": "https://www.pewresearch.org/religion/2025/06/09/muslim-population-change/",
+      "checked": "2026-11-03; report states2.0billion in2020"
+    },
+    {
+      "claim": "59coretests recorded, not retested for script",
+      "path": "build/logs/core-tests.log",
+      "evidence": "Dense-window milestone, all59passed with zero failures"
+    }
+  ],
+  "rubric": {
+    "impact_30": [
+      "hook",
+      "human_context",
+      "choice_and_use",
+      "close"
+    ],
+    "meta_tooling_25": [
+      "native_proof",
+      "mechanism"
+    ],
+    "technical_20": [
+      "following",
+      "mechanism",
+      "foundation"
+    ],
+    "demo_25": [
+      "listen",
+      "native_proof",
+      "long_verse_cue",
+      "phone_reference",
+      "following"
+    ]
+  },
+  "limits": [
+    "Native composite is not optical lens filming.",
+    "Both proof candidates show an earlier prototype, not the latest installed build.",
+    "The24s phone clip is not30s masjid proof or a25s continuous take.",
+    "Mode diagram illustrates an implemented feature but does not prove a filmed toggle.",
+    "Complete reference coverage and59recorded core tests are not full-Quran recognition accuracy.",
+    "Future teaching support needs development and extensive testing."
+  ],
+  "measured_timing_receipt": {
+    "path": "build/video-v0.8/measured-edit.json",
+    "timeline": {
+      "listen": [
+        0,
+        6
+      ],
+      "hook": [
+        6.133333333333334,
+        19.8
+      ],
+      "human_context": [
+        19.966666666666665,
+        37.86666666666667
+      ],
+      "native_proof": [
+        38.03333333333333,
+        50.53333333333333
+      ],
+      "long_verse_cue": [
+        50.7,
+        60
+      ],
+      "masjid_reservation": [
+        60,
+        66
+      ],
+      "phone_reference": [
+        66,
+        90
+      ],
+      "following": [
+        90.2,
+        101.36666666666666
+      ],
+      "mechanism": [
+        101.36666666666666,
+        123.56666666666666
+      ],
+      "choice_and_use": [
+        123.56666666666666,
+        137.06666666666666
+      ],
+      "foundation": [
+        137.06666666666666,
+        154.66666666666666
+      ],
+      "close": [
+        154.66666666666666,
+        175.06666666666666
+      ]
+    },
+    "duration_seconds": 175.06666666666666,
+    "frames": 5252,
+    "speech_words": 307
+  },
+  "source_proof_receipt": {
+    "native": {
+      "sha256": "ec4bf7be386b44aeaae7b7c5b7b36478a93c2f25fcbad7af378836c0608997b0",
+      "seconds": 12.5,
+      "frames": 375,
+      "speed": 1,
+      "crop": [
+        208,
+        832,
+        576,
+        144
+      ]
+    },
+    "phone": {
+      "sha256": "bc7faac4066a6019eb5f1eb555fbb870ee6a48a9c789db0a4ba752d756d169de",
+      "seconds": 24,
+      "frames": 720,
+      "speed": 1,
+      "crop": [
+        48,
+        1232,
+        984,
+        1116
+      ]
+    },
+    "clean_card_mask": "build/video-v0.2.1/assets/card-mask.json"
+  },
+  "rubric_evidence": {
+    "impact_30": "The close voices prospective global impact, then scopes potential hands-free meaning to listeners seeking English. Pew 2020 is population context, not adoption.",
+    "technical_20": "The following paragraph explicitly states long-verse position tracking and tiny-display fitting, paired with genuine automatic portion changes.",
+    "meta_tooling_25": "Unchanged Muse Voice live transcription, Muse Spark pairing and uncertain matching, cache labels and source checks remain voiced.",
+    "demo_25": "Unchanged genuine native replay and fixed 24-second phone reference; no completed masjid or 25-second proof claim."
+  }
+}

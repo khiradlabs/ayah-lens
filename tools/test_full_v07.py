@@ -1,12 +1,40 @@
 #!/usr/bin/env python3
 """Behavioral guards for the complete v0.7 edit; offline and synthetic inputs."""
-import importlib.util, unittest
+import importlib.util, json, tempfile, unittest
 from pathlib import Path
 P=Path(__file__).with_name('render_full_v07.py')
 class FullCut(unittest.TestCase):
  def load(self):
   self.assertTrue(P.exists(),'Complete-cut renderer is missing')
   s=importlib.util.spec_from_file_location('full',P); m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
+ def test_version_configuration_defaults_to_v07_and_isolates_v08(self):
+  m=self.load();self.assertEqual(m.WORK,m.ROOT/'build/video-v0.7')
+  self.assertTrue(hasattr(m,'configure_version'),'Version selection is missing')
+  m.configure_version('0.8')
+  self.assertEqual(m.WORK,m.ROOT/'build/video-v0.8');self.assertEqual(m.VO,m.WORK/'narration')
+  self.assertEqual(m.MANIFEST,m.ROOT/'submission/full-video-v0.8.json');self.assertEqual(m.OUT,m.WORK/'Ayah-Lens-Demo-v0.8.mp4')
+  with self.assertRaises(ValueError):m.configure_version('0.9')
+  self.assertEqual(m.WORK,m.ROOT/'build/video-v0.8')
+  m.configure_version('0.7');self.assertEqual(m.OUT,m.ROOT/'build/video-v0.7/Ayah-Lens-Demo-v0.7.mp4')
+ def test_caption_name_phonetics_keep_raw_timing_without_extra_word(self):
+  m=self.load();words=[dict(word=w,start=i,end=i+1) for i,w in enumerate(['Eye','a','lens','hear','the','meaning'])]
+  self.assertTrue(m.words_equal('Ayah Lens','Eye a lens'),'Known phonetic product name is not normalized')
+  self.assertTrue(m.words_equal('Ayah Lens','AyaLens'))
+  self.assertEqual(m.caption_chunks('Ayah Lens hear the meaning.',words),[(0,6,'Ayah Lens hear the meaning.')])
+ def test_optional_impact_ending_resolves_on_spoken_cues(self):
+  m=self.load();self.assertTrue(hasattr(m,'ending_stage'),'Impact ending stages are missing')
+  self.assertEqual(m.ending_stage(False,0,[5,11]),'resolve')
+  self.assertEqual(m.ending_stage(True,4.9,[5,11]),'population')
+  self.assertEqual(m.ending_stage(True,5,[5,11]),'meaning')
+  self.assertEqual(m.ending_stage(True,11,[5,11]),'resolve')
+ def test_cached_performance_rejects_changed_text(self):
+  m=self.load()
+  with tempfile.TemporaryDirectory() as tmp:
+   p=Path(tmp)/'take.wav';p.write_bytes(b'unchanged synthetic fixture')
+   take=dict(model='gpt-realtime-2.1',voice='cedar',text='original words',instructions='read exactly',speed=1)
+   p.with_suffix('.json').write_text(json.dumps(dict(take,provider='OpenAI',sha256=m.sha(p))))
+   m.receipt_valid(p,take)
+   with self.assertRaisesRegex(ValueError,'identity or hash mismatch'):m.receipt_valid(p,dict(take,text='changed words'))
  def test_measured_timing_respects_fixed_proof_and_under_three_minutes(self):
   m=self.load(); ds=dict(hook=13.65,human_context=17,long_verse_cue=6.3,following=9,mechanism=19,choice_and_use=13,foundation=16,close=9)
   t=m.make_timeline(ds)
@@ -46,4 +74,5 @@ class FullCut(unittest.TestCase):
  def test_transcription_accepts_known_spelling_only_and_rejects_missing_words(self):
   m=self.load();self.assertTrue(m.words_equal('Ayah Lens Quran Hifz Ray-Ban','Aya Lenz Koran Hifts Ray Ban'))
   self.assertFalse(m.words_equal('follow the meaning and stay with the moment','follow the meaning'))
+  self.assertFalse(m.words_equal("listeners who don't understand Arabic","listeners who don't understand Aramaic"))
 if __name__=='__main__':unittest.main()

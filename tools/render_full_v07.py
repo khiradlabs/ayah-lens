@@ -8,6 +8,12 @@ import argparse, difflib, hashlib, importlib.util, json, math, re, shutil, subpr
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]; WORK=ROOT/'build/video-v0.7'; VO=WORK/'narration'; FPS=30
 MANIFEST=ROOT/'submission/full-video-v0.7.json'; OUT=WORK/'Ayah-Lens-Demo-v0.7.mp4'
+def configure_version(version='0.7'):
+ global WORK,VO,MANIFEST,OUT
+ if version not in ('0.7','0.8'):raise ValueError('Unsupported full-cut version')
+ WORK=ROOT/f'build/video-v{version}';VO=WORK/'narration'
+ MANIFEST=ROOT/f'submission/full-video-v{version}.json';OUT=WORK/f'Ayah-Lens-Demo-v{version}.mp4'
+
 NATIVE=ROOT/'recordings/version-3/native-display-recognition-candidate.mp4'
 PHONE=ROOT/'recordings/version-3/muzzammil-following-24s-candidate.mp4'
 CLEAN=ROOT/'build/video-v0.2.1/assets/within-card-clean.mp4'
@@ -40,7 +46,7 @@ def validate_source(s,d,w,h):
  if s['speed']!=1 or not 0<=s['start_seconds']<=s['end_seconds']<=d+1e-6 or min(x,y,cw,ch)<0 or x+cw>w or y+ch>h:raise ValueError('Source rate, crop or duration is unsafe')
 def canonical(s):
  s=s.lower().replace('’',"'")
- for a,b in [(r"qur['-]?an|koran",'quran'),(r'\b(?:aya(?:h)?\s+len[sz]|ilens|iolens)\b','ayah lens'),(r'\b(?:hifts|hyphs)\b','hifz'),(r'\bsuras\b','surahs'),(r'\btwo billion\b','2 billion'),(r'\btwenty[ -]twenty\b','2020')]:s=re.sub(a,b,s)
+ for a,b in [(r"qur['-]?an|koran",'quran'),(r'\b(?:aya(?:h)?\s*len[sz]|eye\s+a\s+len[sz]|ilens|iolens)\b','ayah lens'),(r'\b(?:hifts|hyphs)\b','hifz'),(r'\bsuras\b','surahs'),(r'\btwo billion\b','2 billion'),(r'\btwenty[ -]twenty\b','2020')]:s=re.sub(a,b,s)
  return re.findall('[a-z0-9]+',s)
 def words_equal(a,b):return canonical(a)==canonical(b)
 def receipt_valid(path,take):
@@ -81,7 +87,7 @@ def prepare(note):
  validate_audio_windows(windows)
  data={'clips':clips,'timeline':timeline,'audio_windows':windows,'frames':round(timeline['close'][1]*FPS),'fps':FPS,'duration':timeline['close'][1],'no_time_stretching':True,'native_source':str(NATIVE.relative_to(ROOT)),'phone_source':str(PHONE.relative_to(ROOT))}
  save(WORK/'measured-edit.json',data);(WORK/'spoken-script.txt').write_text('\n\n'.join(c['text'] for c in clips)+'\n')
- m=json.loads(MANIFEST.read_text());m['source_proof_receipt']={'native':{'sha256':sha(NATIVE),'seconds':12.5,'frames':375,'speed':1,'crop':[208,832,576,144]},'phone':{'sha256':sha(PHONE),'seconds':24,'frames':720,'speed':1,'crop':[48,1232,984,1116]},'clean_card_mask':'build/video-v0.2.1/assets/card-mask.json'};m['measured_timing_receipt']={'path':'build/video-v0.7/measured-edit.json','timeline':timeline,'duration_seconds':data['duration'],'frames':data['frames'],'speech_words':sum(c['word_count'] for c in clips)};MANIFEST.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
+ m=json.loads(MANIFEST.read_text());m['source_proof_receipt']={'native':{'sha256':sha(NATIVE),'seconds':12.5,'frames':375,'speed':1,'crop':[208,832,576,144]},'phone':{'sha256':sha(PHONE),'seconds':24,'frames':720,'speed':1,'crop':[48,1232,984,1116]},'clean_card_mask':'build/video-v0.2.1/assets/card-mask.json'};m['measured_timing_receipt']={'path':str((WORK/'measured-edit.json').relative_to(ROOT)),'timeline':timeline,'duration_seconds':data['duration'],'frames':data['frames'],'speech_words':sum(c['word_count'] for c in clips)};MANIFEST.write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
  return data
 
 def pcm(path):
@@ -125,6 +131,10 @@ def scene_exit_opacity(scene,t,next_start):
  if scene not in ('hook','human_context','long_verse_cue','mechanism','choice_and_use','foundation'):return 1
  return 1-ease((t-(next_start-.3))/.3)
 
+def ending_stage(enabled,local,cues):
+ if not enabled or local>=cues[1]:return 'resolve'
+ return 'population' if local<cues[0] else 'meaning'
+
 def lerp(a,b,p):return tuple(round(x+(y-x)*p) for x,y in zip(a,b))
 
 def render_picture(edit, frame_range=None):
@@ -164,6 +174,8 @@ def render_picture(edit, frame_range=None):
  choicecues=[cue('choice_and_use',p,d) for p,d in [('For Hifz',5),('We are also exploring',10.8)]]
  foundationcues=[cue('foundation',p,d) for p,d in [('The reference library',5),('Our core tests',9),('Teaching support',13.4)]]
  contextcue=cue('human_context','The Quran',7)
+ impact=byid['close'].get('impact_ending',False)
+ closecues=[cue('close','For listeners',7),cue('close','Ayah Lens',13)] if impact else []
  def frame(t,transitions=True):
   key=scene_at(timeline,t)
   a,b=timeline[key];local=max(0,t-a);p=ease(local/.5);protected=[];im=Image.new('RGB',(1920,1080),bg);d=ImageDraw.Draw(im)
@@ -183,6 +195,7 @@ def render_picture(edit, frame_range=None):
    text(im,'Earlier prototype'+(' / complete 12.5 second replay' if key=='native_proof' else ''),(120,924),24,muted)
   elif key in ('hook','human_context','long_verse_cue','close'):
    box=lerp(large,small,p) if key in ('hook','long_verse_cue') else lerp(small,large,p) if key=='close' else small
+   if key=='close' and impact:box=small if local<closecues[1] else lerp(small,large,ease((local-closecues[1])/.5))
    source_opacity=ease((60-t)/.3) if key=='long_verse_cue' and t>59.7 else 1
    paste(im,nc,box,source_opacity);protected.append((box[0]-2,box[1]-2,box[0]+box[2]+2,box[1]+box[3]+80));text(im,'Held recorded frame / earlier prototype',(box[0],box[1]+box[3]+16),22,muted,width=box[2]+30)
   if key=='hook' and local>=.5:
@@ -258,6 +271,18 @@ def render_picture(edit, frame_range=None):
     text(im,'Selected software tests, not a whole-Quran accuracy study',(120,650),30,muted,width=1600)
    else:
     text(im,'Future teaching support',(120,250),68);text(im,'Further development and extensive testing required',(120,440),38,width=1600)
+  elif key=='close' and impact and ending_stage(impact,local,closecues)!='resolve':
+   if ending_stage(impact,local,closecues)=='population':
+    text(im,'Potential impact',(120,205),68,width=1200)
+    text(im,'Roughly one quarter of humanity',(120,335),44,width=1200)
+    for j in range(4):d.rounded_rectangle((120+j*265,470,345+j*265,530),8,fill=blue if j==0 else '#D3DCDD')
+    text(im,'Pew Research Center / 2020 estimate, published June 2025',(120,610),28,muted,width=1250)
+    text(im,'Population context / potential reach',(120,690),28,muted,width=1250)
+   else:
+    text(im,'For listeners seeking English meaning',(120,205),54,width=1250)
+    node(im,'Daily recitation',120,440,460);node(im,'Hands-free meaning',670,440,590)
+    d.line((580,495,670,495),fill=blue,width=5)
+    text(im,'Potential benefit / understanding not measured',(120,665),30,muted,width=1250)
   elif key=='close':
    text(im,'Hear the recitation.',(120,205),54,width=1100);text(im,'Follow the meaning.',(120,280),54,width=1100)
    text(im,'Stay with the moment.',(120,740),44,width=1300)
@@ -266,7 +291,7 @@ def render_picture(edit, frame_range=None):
   # Separate exit and entry phases prevent old/new glyph superposition.
   # Sources, their labels, the header, rail and footer never enter this layer.
   if transitions:
-   internal=([contextcue] if key=='human_context' else choicecues if key=='choice_and_use' else foundationcues if key=='foundation' else [])
+   internal=([contextcue] if key=='human_context' else choicecues if key=='choice_and_use' else foundationcues if key=='foundation' else closecues if key=='close' and impact else [])
    factor=1.;slide=0
    for boundary in internal:
     delta=local-boundary
@@ -301,6 +326,13 @@ def stamp(t):
  ms=round(t*1000);return f'{ms//3600000:02}:{ms//60000%60:02}:{ms//1000%60:02},{ms%1000:03}'
 def caption_chunks(text,words):
  # Caption spelling comes from the verified script; recognition supplies timing.
+ # Merge only the documented phonetic product-name spelling; keep raw ASR intact.
+ aligned=[];i=0
+ while i<len(words):
+  if i+2<len(words) and [w['word'].lower().strip('.,:') for w in words[i:i+3]]==['eye','a','lens']:
+   aligned.extend([dict(word='Ayah',start=words[i]['start'],end=words[i+1]['end']),words[i+2]]);i+=3
+  else:aligned.append(words[i]);i+=1
+ words=aligned
  tokens=[row for row in words for token in canonical(row['word'])];script=text.split();counts=[len(canonical(word)) for word in script]
  if len(tokens)!=sum(counts):raise ValueError('Caption lexical alignment differs; inspect verified word receipts')
  rows=[];offset=0
@@ -362,7 +394,7 @@ def check():
  def image_at(t):
   b=subprocess.check_output(['ffmpeg','-v','error','-ss',str(t),'-i',str(OUT),'-frames:v','1','-f','image2pipe','-vcodec','png','-']);import io;return Image.open(io.BytesIO(b)).convert('RGB')
  report['transition_metrics']={}
- boundaries=[e['timeline']['native_proof'][1],60,66,90,e['timeline']['mechanism'][0]]
+ boundaries=[e['timeline']['native_proof'][1],60,66,90,e['timeline']['mechanism'][0],e['timeline']['choice_and_use'][0]]
  for boundary in boundaries:
   frames=[image_at(boundary+i/30) for i in range(-3,16)];mad=[sum(ImageStat.Stat(ImageChops.difference(x,y)).mean)/3 for x,y in zip(frames,frames[1:])];sample=round(boundary*48000)*2;edge=max(abs(mixed[j]-mixed[j-2]) for j in range(max(2,sample-960),min(len(mixed),sample+960),2))
   report['transition_metrics'][str(boundary)]={'consecutive_frames':len(frames),'mean_absolute_picture_change':mad,'maximum_sample_edge':edge};require(max(mad)<70,'Abrupt picture discontinuity '+str(boundary));require(edge<.25,'Audio edge discontinuity '+str(boundary))
@@ -375,7 +407,7 @@ def check():
 def qa_artifacts():
  """Private review windows from the exact encoded master, including internal cues."""
  e=json.loads((WORK/'measured-edit.json').read_text());captions(e);timeline=e['timeline'];qa=WORK/'qa/motion';qa.mkdir(parents=True,exist_ok=True)
- windows={'native-to-cue':timeline['long_verse_cue'][0],'reservation-to-phone':66,'phone-to-following':90,'following-to-mechanism':timeline['mechanism'][0],'mechanism-to-choice':timeline['choice_and_use'][0],'choice-to-foundation':timeline['foundation'][0]}
+ windows={'native-to-cue':timeline['long_verse_cue'][0],'reservation-to-phone':66,'phone-to-following':90,'following-to-mechanism':timeline['mechanism'][0],'mechanism-to-choice':timeline['choice_and_use'][0],'choice-to-foundation':timeline['foundation'][0],'foundation-to-close':timeline['close'][0]}
  for name,phrase,fallback in [('human_context','The Quran',7),('choice_and_use','For Hifz',5),('foundation','Our core tests',9),('mechanism','Muse Spark',8)]:
   c=next(c for c in e['clips'] if c['id']==name);words=json.loads((ROOT/c['path']).with_suffix('.words.json').read_text())['words'];wanted=canonical(phrase);relative=fallback
   for i in range(len(words)):
@@ -384,6 +416,10 @@ def qa_artifacts():
  for label,boundary in windows.items():
   start=max(0,boundary-.6);run(['ffmpeg','-v','error','-y','-ss',start,'-i',OUT,'-t','1.4','-c:v','libx264','-crf','17','-preset','veryfast','-c:a','aac',qa/(label+'.mp4')]);folder=qa/label;folder.mkdir(exist_ok=True)
   run(['ffmpeg','-v','error','-y','-ss',start,'-i',OUT,'-t','1.4','-an','-q:v','2',folder/'%03d.jpg'])
+ if json.loads(MANIFEST.read_text())['scenes'][-1].get('impact_ending'):
+  run(['ffmpeg','-v','error','-y','-ss',timeline['close'][0]-.6,'-i',OUT,'-c:v','libx264','-crf','17','-preset','veryfast','-c:a','aac',qa/'complete-impact-ending.mp4'])
+  folder=qa/'complete-impact-ending';folder.mkdir(exist_ok=True)
+  run(['ffmpeg','-v','error','-y','-ss',timeline['close'][0]-.6,'-i',OUT,'-an','-q:v','2',folder/'%03d.jpg'])
  save(qa/'windows.json',{'encoded_master':str(OUT.relative_to(ROOT)),'master_sha256':sha(OUT),'boundaries':windows,'seconds_before':.6,'seconds_after':.8,'consecutive_fps':30})
  print(json.dumps({'qa':str(qa),'windows':len(windows),'master_sha256':sha(OUT)},indent=2))
 
@@ -394,7 +430,8 @@ def patch_reservation():
  run(['ffmpeg','-v','error','-y','-i',WORK/'picture.mp4','-i',WORK/'mix.wav','-map','0:v','-map','1:a','-c:v','copy','-c:a','aac','-b:a','256k','-ar','48000','-ac','2','-t',e['duration'],'-movflags','+faststart',OUT])
 
 def main():
- parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--check',action='store_true');parser.add_argument('--prepare',action='store_true');parser.add_argument('--qa',action='store_true');parser.add_argument('--patch-reservation',action='store_true');parser.add_argument('--note');args=parser.parse_args()
+ parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--version',choices=('0.7','0.8'),default='0.7');parser.add_argument('--check',action='store_true');parser.add_argument('--prepare',action='store_true');parser.add_argument('--qa',action='store_true');parser.add_argument('--patch-reservation',action='store_true');parser.add_argument('--note');args=parser.parse_args()
+ configure_version(args.version)
  if args.check:return check()
  if args.qa:return qa_artifacts()
  if not args.note:parser.error('Rendering or generation requires --note for spend provenance')
