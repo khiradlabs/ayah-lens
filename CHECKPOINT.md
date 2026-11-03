@@ -390,3 +390,7 @@ Reuse remains unverified. The official Brand Resource Center routes asset approv
 Faraz supplied an organizer answer: organizers cannot grant Meta brand-asset permission, including the cited Muse avatar/name examples. The answer identifies a Meta exceptions channel and asks for reference use, demo appearance and public-repository inclusion details. This supersedes the earlier suggestion that organizer approval alone could clear Meta website assets. No asset approval was granted.
 
 Prepared a local, unsent request under build/meta-display-page-review/meta-asset-exception-request.txt. It describes an up-to12-second product-animation excerpt, public demo distribution, source credit, and exclusion of original website images/frames/models from the public repository. It separately asks about factual hardware/API-name references; project naming/artwork remain original. The current master uses original geometry, not the downloaded Meta website frames. No email was sent, no external draft created, and no video or app changed. Final reuse remains pending Meta confirmation.
+
+## Asset exception request sent, November 2
+
+Faraz reported that he sent the exception request. Mark the sending step complete on his confirmation; sent-mail headers and the final message body were not independently checked. Meta permission remains pending. Do not resend the request or treat sending as approval. The current video continues to use original artwork. No external message was sent by the agent and no video or app changed.
