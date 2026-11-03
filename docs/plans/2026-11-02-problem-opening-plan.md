@@ -1,0 +1,10 @@
+# Problem-led opening proof — Implementation Plan
+Goal: Explain the listening/meaning problem in the first two sections and make the third section its clear payoff.
+Architecture: A small local Remotion composition renders original editorial artwork and composites unchanged source footage. A maintained wrapper prepares private media and local narration, then verifies the36-second proof. Existingfullmastersstayunchanged.
+Tech stack: React/Remotion,SVG,localChrome,FFmpeg,localmacOSspeech. Free local dependencies only.
+Execution: use execute-plan with one fresh worker, then independent spec/quality and cold-viewer visual review. User authorized improving the opening; no extra approval for a reversible local proof.
+
+## Task1 — Build and verify the focused proof
+Touches: create tools/problem-opening/ source/package/lock/ignore files and tools/render_problem_opening.py; modify submission/OPENING-PROBLEM-SPEC.md only if essential. Generatedmedia/deps/renders underignoredpaths. Do not touchApp/Core/currentfulltimelines/oldrenderer/fullmasters or parentcheckpoint/nextfiles.
+Steps: Read the exactstory/copy in submission/OPENING-PROBLEM-SPEC.md. Write/observe meaningful failing timing or scene/audio-selection checks where code logic is introduced; visual design uses actualrender/cold-viewer verification. Install pinned free Remotion dependencies locally. Build original layered scene transformation over0–8/8–28/28–36; retain authenticrecitation/video/replay andsourcewords. PreparelocalDanielguidevoice for20s;noaudiooverthefirst/finalrecitation. Renderstoryboard for independentcold-viewerreview,then36s1080p30fpsproofwith20-minute localrenderbudget. Verifymetadata/fullpicture/audiodecode/peak/sourcecorrespondence andoldmasterhashes. Commitownedsource/docs;excludeallmedia/generatedassets.
+Donewhen: exact36s/1080frames/stereo48kartifact andsupportingnotes/captions exist; problem-before-scale andlisten-againbridge arevisually/narrativelyclear; independent spec/quality/visualreview passes. DeliverproofwithoutrebuildingfullcutorstartingMetaassetreuse.
