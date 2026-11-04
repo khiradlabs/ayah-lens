@@ -1,0 +1,81 @@
+{
+  "version": "0.9",
+  "output": "build/video-v0.9/Ayah-Lens-Demo-v0.9.mp4",
+  "status": "Non-demo production; three user recordings pending",
+  "creative_basis": "Finalized v0.5 pictures and order, extended approved impact/Allah opening, selected B Cedar delivery",
+  "timing_authority": "Measured waveform durations and Whisper word timestamps, not legacy guide timestamps",
+  "narration_manifest": "build/video-v0.9/narration-manifest.json",
+  "measured_edit": "build/video-v0.9/measured-edit.json",
+  "demo_slots_manifest": "build/video-v0.9/demo-slots.json",
+  "renderer": "tools/render_restored_v09.py",
+  "verification": "python3 tools/test_restored_v09.py; python3 tools/render_restored_v09.py --check",
+  "inputs": {
+    "v05_full": {
+      "path": "build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4",
+      "sha256": "eda86f8188c7e8d472d700964eabf3ec65e50813e9639fc3936875f25764cfc8"
+    },
+    "v05_opening": {
+      "path": "build/video-v0.5-opening/Ayah-Lens-Opening-v0.5.mp4",
+      "sha256": "0ee67a247163bb5d01176c1bc6722ed28a9db7e338beee0d48912d7d869e9d2e"
+    },
+    "listener": {
+      "path": "tools/problem-opening/public/media/listener-muse.png",
+      "sha256": "68fe49022d40411d6d3f880bd46d6440e52ca511d6eb434ac8a22bce856eb77d"
+    },
+    "original_3d": {
+      "path": "build/video-v0.2/3d/revision-0/glasses-turntable.mp4",
+      "sha256": "35e54f6e834ff8d5a65fa1aa5527226ce8c8c5a8809d8eb668261c020d0ca2ee"
+    }
+  },
+  "demo_spaces": [
+    {
+      "id": "tv_demo",
+      "seconds": 18,
+      "after": "use_cases",
+      "expected_file": "ayah-tv-following"
+    },
+    {
+      "id": "long_demo",
+      "seconds": 11,
+      "before": "meta_challenge",
+      "expected_file": "ayah-long-verse-73-20"
+    },
+    {
+      "id": "toggle_demo",
+      "seconds": 7,
+      "after": "hifz",
+      "expected_file": "ayah-english-toggle"
+    }
+  ],
+  "animation": {
+    "direction": "Vox-style explanatory editorial motion using the accepted original artwork/layouts",
+    "palette": "warm paper, charcoal, original muted blue/red/yellow accents",
+    "features": [
+      "Original listener illustration and 3D glasses turntable",
+      "Narration-cued typography and 2B/quarter population reveal",
+      "6,236-reference search and moving portion illustration",
+      "Progressive live pipeline with conditional Spark assistance and cached-source-plan scope",
+      "Connected waveform/reading-window motifs and brief paper transitions"
+    ],
+    "opening_sequence": [
+      "listen",
+      "problem",
+      "population",
+      "impact",
+      "need",
+      "hook",
+      "benefits",
+      "meaning_reveal"
+    ]
+  },
+  "limits": [
+    "Three inserted spaces are silent, clearly awaiting-recording placeholders, not actual proof",
+    "Opening source recitation/replay retains original native speed and full8seconds each",
+    "Original reference text and labels are preserved in existing source replay",
+    "Published words supply the display; Spark pairing plans are cached, transcription/tracking live",
+    "114surahs/6236ayahs is reference coverage,59tests is recorded Nov2software evidence",
+    "Teaching is future work; no production/readiness/universalaccuracy claim",
+    "No new Meta website assets, app changes, public release or submission"
+  ],
+  "timing_adjustment": "Measured complete speech125.4s retained untouched. Controller approved18/11/7-second insert spaces and0.15sparagraph breaths, retaining16soriginal recitation, for<180s final timeline."
+}
