@@ -1,0 +1,225 @@
+/* Ayah Lens live demo deck. Designed at 1920x1080, scaled by JS (CSS transform).
+   Palette: paper #ECE7D3, ink #1E1E1E, blue #465D79, red #B94B37. No text under 40 px. */
+@font-face {
+  font-family: "UthmanicHafs";
+  src: url("fonts/UthmanicHafs1Ver18.ttf") format("truetype");
+  font-display: block;
+}
+:root {
+  --paper: #ECE7D3;
+  --paper-hi: #F6F2E2;
+  --ink: #1E1E1E;
+  --blue: #465D79;
+  --red: #B94B37;
+  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; height: 100%; width: 100%;
+  background: var(--paper); color: var(--ink);
+  font-family: var(--sans);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+body[data-page="deck"] { cursor: none; }
+body[data-page="deck"].show-cursor { cursor: default; }
+
+#viewport { position: fixed; inset: 0; overflow: hidden; background: var(--paper); }
+#stage {
+  position: absolute; left: 50%; top: 50%;
+  width: 1920px; height: 1080px;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(0.5);
+  background: var(--paper);
+  overflow: hidden;
+}
+
+/* ---------- slides and crossfade ---------- */
+.slide {
+  position: absolute; inset: 0;
+  background: var(--paper);
+  opacity: 0; visibility: hidden;
+  transition: opacity 350ms ease, visibility 0s linear 350ms;
+}
+.slide.active {
+  opacity: 1; visibility: visible;
+  transition: opacity 350ms ease, visibility 0s linear 0s;
+}
+
+/* ---------- build steps: 300 ms fade and rise (12 px) ---------- */
+.b {
+  opacity: 0; transform: translateY(12px); visibility: hidden;
+  transition: opacity 300ms ease, transform 300ms ease, visibility 0s linear 300ms;
+}
+.b.on {
+  opacity: 1; transform: none; visibility: visible;
+  transition: opacity 300ms ease, transform 300ms ease, visibility 0s linear 0s;
+}
+body.qa *, body.qa *::before, body.qa *::after { transition: none !important; animation: none !important; }
+
+/* ---------- shared pieces ---------- */
+video { display: block; width: 100%; height: 100%; object-fit: contain; background: #0c0c0c; }
+.win { position: absolute; overflow: hidden; background: #0c0c0c; }
+.plate {
+  position: absolute;
+  background: var(--paper-hi); color: var(--ink);
+  border: 3px solid var(--ink); border-radius: 10px;
+  padding: 10px 24px;
+  font-weight: 700; line-height: 1.15;
+}
+.cap, .line { margin: 0; font-weight: 600; line-height: 1.18; }
+
+/* ---------- slides 1, 5, 7: glasses clip, portrait window pillar-boxed on paper ---------- */
+.glasses-win { left: 553px; top: 0; width: 814px; height: 1080px; }
+.label-tr { right: 40px; top: 40px; width: 480px; font-size: 48px; }
+.caps-bl { position: absolute; left: 50px; bottom: 56px; width: 480px; }
+.caps-bl .cap { font-size: 46px; margin-top: 22px; }
+.caps-bl .cap:first-child { margin-top: 0; }
+
+/* ---------- slide 2: why ---------- */
+#s2 .why-left { position: absolute; left: 80px; top: 60px; width: 1190px; }
+#s2 .headline { position: relative; height: 270px; }
+#s2 .bignum, #s2 .bigtxt {
+  position: absolute; left: 0; top: 0; width: 100%;
+  font-size: 124px; line-height: 1.08; font-weight: 800; letter-spacing: -0.01em;
+  transition: opacity 300ms ease;
+}
+#s2 .bignum { font-variant-numeric: tabular-nums; opacity: 0; white-space: nowrap; }
+#s2 .bigtxt { opacity: 0; color: var(--ink); }
+#s2.counting .bignum { opacity: 1; }
+#s2.settled .bigtxt { opacity: 1; }
+#s2 .small { margin: 18px 0 0; font-size: 40px; font-weight: 500; color: var(--blue); opacity: 0; transition: opacity 300ms ease; }
+#s2.settled .small { opacity: 1; }
+#s2 .line { font-size: 58px; margin-top: 44px; }
+#s2 .line.red { color: var(--red); font-weight: 800; font-size: 64px; }
+#s2 .phone2 { left: 1440px; top: 118px; width: 420px; height: 914px; border-radius: 14px; }
+
+/* ---------- slide 3: Ayah Lens pipeline ---------- */
+#s3 .title { position: absolute; left: 60px; top: 14px; margin: 0; font-size: 160px; line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; }
+#s3 .pipe { position: absolute; left: 60px; top: 232px; width: 1320px; display: flex; flex-direction: column; gap: 22px; }
+#s3 .nodewrap { position: relative; }
+#s3 .nodewrap + .nodewrap::before {
+  content: ""; position: absolute; left: 38px; top: -22px; width: 5px; height: 22px; background: var(--blue);
+}
+#s3 .node {
+  background: var(--blue); color: var(--paper);
+  border-radius: 12px; padding: 14px 30px;
+  font-size: 44px; line-height: 1.2; font-weight: 500;
+  display: inline-block; max-width: 1320px;
+}
+#s3 .node .name { font-weight: 800; }
+#s3 .sub { margin-top: 8px; margin-left: 30px; font-size: 40px; line-height: 1.2; font-weight: 600; color: var(--blue); }
+#s3 .tag {
+  display: inline-block; margin-top: 8px;
+  border: 3px solid var(--paper); border-radius: 30px; padding: 2px 22px;
+  font-size: 40px; font-weight: 700; line-height: 1.2;
+}
+#s3 .easy { position: absolute; left: 60px; top: 936px; margin: 0; font-size: 60px; line-height: 1.15; font-weight: 800; color: var(--red); }
+#s3 .phone3 { left: 1440px; top: 118px; width: 420px; height: 914px; border-radius: 14px; }
+#s2 .label3, #s3 .label3 { right: 60px; top: 30px; font-size: 44px; }
+
+/* ---------- slide 4: the hard case ---------- */
+#s4 .win4 { left: 60px; top: 30px; width: 820px; height: 440px; }
+#s4 .win4 video { position: absolute; left: 0; top: var(--crop-top, -483px); width: 820px; height: 1088px; object-fit: fill; }
+#s4 .pin {
+  position: absolute; left: 16px; top: 16px;
+  font-size: 56px; line-height: 1.1; font-weight: 800;
+  color: var(--red); background: var(--paper-hi);
+  border: 6px solid var(--red); border-radius: 60px; padding: 4px 28px;
+  font-variant-numeric: tabular-nums;
+}
+#s4 .label4 { right: 14px; bottom: 14px; font-size: 44px; }
+#s4 .right4 { position: absolute; left: 940px; top: 30px; width: 920px; }
+#s4 .counter { font-size: 52px; line-height: 1.2; font-weight: 800; color: var(--blue); font-variant-numeric: tabular-nums; }
+#s4 .cap { font-size: 46px; margin-top: 14px; }
+#s4 .tag4 {
+  position: absolute; left: 60px; top: 494px;
+  font-size: 48px; line-height: 1.1; font-weight: 700; color: var(--ink);
+  border: 3px solid var(--blue); border-radius: 12px; padding: 8px 24px;
+}
+#ribbon {
+  position: absolute; left: 40px; top: 584px; width: 1840px;
+  direction: rtl; text-align: right; unicode-bidi: isolate;
+  font-family: "UthmanicHafs", "Geeza Pro", serif; font-size: 42px; line-height: 70px;
+  color: rgba(30, 30, 30, 0.65);
+  font-feature-settings: "kern", "liga", "calt", "mark", "mkmk";
+}
+#ribbon .w {
+  display: inline-block; padding: 0 0.13em; margin: 3px 0;
+  border-radius: 8px;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+#ribbon .w.lit { background: var(--blue); color: var(--paper); }
+
+/* ---------- slide 6: what is real ---------- */
+#s6 .stats { position: absolute; left: 80px; top: 90px; width: 1760px; display: flex; gap: 40px; }
+#s6 .stat { flex: 1 1 0; min-width: 0; }
+#s6 .stat .n { display: block; font-size: 170px; line-height: 1.02; font-weight: 800; color: var(--blue); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap; }
+#s6 .stat .l { display: block; font-size: 52px; line-height: 1.15; font-weight: 700; margin-top: 4px; }
+#s6 .lines { position: absolute; left: 80px; top: 540px; width: 1760px; }
+#s6 .line { font-size: 62px; margin-top: 40px; }
+#s6 .line:first-child { margin-top: 0; }
+#s6 .line .em { color: var(--red); }
+
+/* ---------- slide 7: close card ---------- */
+#s7 .card {
+  position: absolute; left: 160px; right: 160px; bottom: 40px; height: 150px;
+  display: block; text-align: center; line-height: 142px;
+  background: var(--paper); color: var(--ink);
+  border: 4px solid var(--ink); border-radius: 14px;
+  font-size: 66px; font-weight: 800; letter-spacing: -0.01em; white-space: nowrap;
+}
+#s7 .card .dot { color: var(--red); }
+
+/* ---------- progress bar (viewport level, 4 px) ---------- */
+#bar { position: fixed; left: 0; bottom: 0; height: 4px; width: 0; background: var(--blue); transition: width 300ms ease; z-index: 50; }
+body.qa #bar { transition: none; }
+
+/* ---------- gate (first keypress starts the show: browser autoplay rule) ---------- */
+#gate {
+  position: absolute; inset: 0; z-index: 40; background: var(--paper);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  transition: opacity 350ms ease;
+}
+#gate.gone { opacity: 0; pointer-events: none; }
+#gate .g1 { font-size: 160px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
+#gate .g2 { font-size: 64px; font-weight: 600; color: var(--blue); margin-top: 30px; }
+#gate .g3 { font-size: 44px; font-weight: 500; margin-top: 24px; opacity: 0.7; }
+
+/* ---------- toast ---------- */
+#toast {
+  position: absolute; left: 50%; bottom: 60px; transform: translateX(-50%);
+  background: var(--ink); color: var(--paper); border-radius: 12px; padding: 12px 32px;
+  font-size: 44px; font-weight: 700; line-height: 1.2; opacity: 0; transition: opacity 250ms ease; z-index: 45; pointer-events: none; white-space: nowrap;
+}
+#toast.on { opacity: 1; }
+
+/* ---------- debug corner (debug=1), outside the stage, not scaled ---------- */
+#dbg {
+  position: fixed; right: 6px; bottom: 10px; z-index: 99; max-width: 70vw;
+  background: rgba(0, 0, 0, 0.82); color: #9fff9f;
+  font: 15px/1.35 ui-monospace, Menlo, monospace; padding: 8px 12px; border-radius: 6px; white-space: pre; pointer-events: none;
+}
+
+/* ====================== notes page ====================== */
+body[data-page="notes"] { background: #101113; color: #f2efe4; overflow: auto; cursor: default; }
+#notes { min-height: 100%; padding: 0 4vw 12vw; max-width: 1500px; margin: 0 auto; }
+#notes .skipnote { padding-top: 1.2vw; font-size: clamp(20px, 2vw, 30px); color: #e7a08f; font-weight: 600; }
+#notes .skipnote:empty { display: none; }
+#notes .head { position: sticky; top: 0; z-index: 5; background: #101113; padding: 2.2vw 0 1vw; border-bottom: 2px solid #2a2d33; }
+#notes .hint { margin-top: 0.6vw; font-size: clamp(20px, 2vw, 30px); color: #d9a441; font-weight: 600; }
+#notes .top { display: flex; justify-content: space-between; align-items: baseline; gap: 2vw; flex-wrap: wrap; }
+#notes .where { font-size: clamp(30px, 3.6vw, 56px); font-weight: 800; letter-spacing: -0.01em; }
+#notes .stepinfo { font-size: clamp(24px, 2.6vw, 40px); color: #9db3cf; font-weight: 700; }
+#notes .clock { font-size: clamp(24px, 2.6vw, 40px); color: #b7b3a3; font-variant-numeric: tabular-nums; font-weight: 600; }
+#notes .state { margin-top: 1vw; font-size: clamp(22px, 2.2vw, 34px); color: #e7a08f; font-weight: 600; min-height: 1.3em; }
+#notes .script { margin-top: 2.2vw; }
+#notes .ln { font-size: clamp(30px, 4.1vw, 66px); line-height: 1.28; font-weight: 600; margin: 0 0 1.4vw; color: #6d6e70; transition: color 200ms ease; }
+#notes .ln.done { color: #8d8f92; }
+#notes .ln.now { color: #ffffff; }
+#notes .ln .cue { color: #d9a441; font-style: italic; font-weight: 500; font-size: 0.72em; }
+#notes .next { margin-top: 3vw; font-size: clamp(24px, 2.6vw, 40px); color: #9db3cf; font-weight: 700; }
+#notes .nav { position: fixed; left: 0; right: 0; bottom: 0; display: flex; gap: 2vw; padding: 1.6vw 4vw; background: linear-gradient(transparent, #101113 40%); }
+#notes .nav button {
+  flex: 1; font: 700 clamp(24px, 2.6vw, 40px) var(--sans); padding: 1.2vw; color: #f2efe4; background: #25282d; border: 2px solid #3b4049; border-radius: 12px;
+}

@@ -1,11 +1,10 @@
-# Next Ayah Lens task
+# Next Ayah Lens task (updated 2026-11-04 15:40)
 
-Status: WAITING FOR FARAZ’S VISUAL FEEDBACK ON THE CONTINUITY PROOF.
+Status: SUBMISSION DAY. Final deliverable = the RENDERED film (tools/v1 renderer), opening with Faraz's own on-camera clip (recordings/v1/IMG_4535-sdr.mp4, his voice) and Callum narration from section 2. The live deck (deck/) was built and QA'd but Faraz chose not to present live; it stays as an asset.
 
-First read CHECKPOINT.md and docs/plans/2026-11-04-continuity-repair-proof.md. User rejected v0.9 as disconnected, cut off and missing a coherent text/meaning sequence. The short correction is build/continuity-proof/Ayah-Lens-Continuity-Proof.mp4,35.7seconds,SHA457b436a038ebd12f1c476d64cda66ba9d4a5f4fd02bf41f6a07be5a883c826c. It uses the middle of approved B opening+complete recorded passage+product handoff. It does not replace the approved full opening. Eight tests, encoded integrity and independent chronological visual review passed; human feedback remains pending.
+Render in progress by the renderer agent: build/video-v1.0/Ayah-Lens-Demo-v1.0.mp4 (overwrites the stale file). When it reports: check SHA256, duration < 180 s, send to Faraz for approval.
 
-The existing CLAUDE.md guidance requires a short continuous voice-and-picture proof with human feedback before another full master. Do not reask about script, provider or B voice. After feedback settles the visual flow, apply one persistent passage/window across the full story, restore the technical source excerpt, put meaningful captions in the MP4 and keep global chapter/progress state. No whole-frame paper wipes or unrelated promotional title-card replacements. Then validate actual chronological flow as well as runtime/audio/source integrity. Re-measure native complete-recitation timing to remain under180s.
-
-The three user recordings remain TV following,73:20insideverse,Englishoff/on. Checklist: submission/DEMO-RECORDING-CHECKLIST-V0.9.md. New originals have not arrived/been inspected. Reserve spaces through the corrected full edit and integrate only real successful footage later. Existing v0.9measuredallocations18/11/7s are a starting point, not permission to clip source words. Keep all originals and rejected video masters unchanged.
-
-Persistent constraints: original accepted artwork/palette/3D, exact approved87wordopening, B Cedar delivery, no new officialMetaassets withoutpermission, sourcepublishedTanzil/Pickthall, Sparkpairedplanscached/liveASRdistinct, referencecoverage notuniversalaccuracy, recorded59testsnotnewhardwaretest. App0.3Build40unchanged, QuickTime stopped, bufferdiagnosisdeferred. No publicrelease/merge/submission without existing separateapproval. No secrets in output or optionalcloudvaultretry.
+Remaining, in order:
+1. Faraz approves the cut (first human listen).
+2. Faraz approvals pending: "merge" PR 1 into main; "release" (GitHub release asset) or "YouTube" for hosting.
+3. Fill the form from submission/FORM-ANSWERS.md (59 tests, Nov 2), add the video URL, check links signed out, submit before 8 PM Houston, recheck the portal.

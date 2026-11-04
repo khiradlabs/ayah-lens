@@ -74,3 +74,8 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Color metadata retagging does not convert full-range source pixels to limited-range output. Apply explicit range/matrix conversion before tagging, and compare decoded source/output frames in the same RGB space. Verify source-frame comparisons with python3 tools/render_restored_v09.py --check.
 
 - Passing word/pixel/timing checks did not catch a disconnected story: v0.9 blanked each thought to paper, reset chapter progress, left captions external and masked its source meaning. Verify the actual exported narrative chronologically with a persistent Arabic/English example and visible captions; test annotation bounds against the source-text area before another full render.
+
+## Gotchas added 2026-11-04 (video v1.0)
+- ffmpeg `alimiter` delays its output by the attack time (about 5 ms); trim it or audio drifts against picture. Verify: `tools/v1/render_v1.py --check` reports the audio offset within 1 sample.
+- Pillow on this Mac cannot shape Arabic (no raqm); `arabic-reshaper` + Pillow gives blank or disjoint letters. Use HarfBuzz shaping (uharfbuzz) with Skia outlines, as `tools/v1/render_v1.py` does. Verify: `tools/v1/test_render_v1.py` (Arabic shaping test) and look at one rendered 73:20 ribbon frame.
+- A section regex with the DOTALL flag matched to the last quote in DEMO-SCRIPT-V1.0.md and silently edited the wrong paragraph; edit script lines by header on a line basis. Verify: `build/video-v1.0/narration/paragraphs.json` lists 7 paragraphs.

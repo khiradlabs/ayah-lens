@@ -79,3 +79,11 @@ Faraz’s choice required. Select one of Very favorable, Somewhat favorable, Neu
 The video URL must be real and accessible. The repository root must expose the reviewed source. Contributor and opinion fields need the entrant’s final check. This draft has not been entered or submitted.
 
 Population and prayer references are in CLAIMS.md. The two subjective ratings are intentionally not chosen on the entrant’s behalf.
+
+## Demo Video URL
+
+https://github.com/khiradlabs/ayah-lens/releases/download/v1.0-hackathon/Ayah-Lens-Demo-v1.0.mp4
+
+Release page: https://github.com/khiradlabs/ayah-lens/releases/tag/v1.0-hackathon
+
+Check signed out after the asset is uploaded.

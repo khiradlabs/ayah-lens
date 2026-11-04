@@ -1,18 +1,14 @@
 # Ayah Lens checkpoint
 
-## Corrective continuity proof ready for human feedback
+Updated November 4, 2026, 15:05. DELIVERABLE CHANGED: a live browser deck (`deck/`) that Faraz drives and screen-records with his own narration replaces the rendered film. See NEXT-TASK.md for the order of the remaining steps. The v1.0 renderer (`tools/v1`, `build/video-v1.0`) and the v0.9 cut remain on disk as fallbacks; their MP4s are stale for scene one and must not be submitted.
 
-Built build/continuity-proof/Ayah-Lens-Continuity-Proof.mp4,35.7seconds,1071frames,1080p30. SHA457b436a038ebd12f1c476d64cda66ba9d4a5f4fd02bf41f6a07be5a883c826c. It is a middle-of-approved-opening sample, not a replacement opening or full corrected video. Existing B audio and approved words are reused. One persistent source window carries published112:1Arabic/English into actual recorded112:1→2→3→4 and the original glasses/product reveal. Narration captions are burned in outside the meaning window. The source ends at a measured quiet10.2s boundary; constant16.4dB gain preserves its waveform and matches narration level. No new generation/API spending occurred.
+## Deck state (verified)
+- Built to `deck/SPEC.md`; builder's Playwright checks in `deck/CHECK.md`: all keys, all slides at 1920x1080 / 1280x720 / 1000x760, ribbon lit words = lens Arabic at 7 of 7 steps, 35 spec strings exact, no console errors except the optional `toggle.mp4` probe.
+- Main session re-ran the deck's self-check in the browser pane over http://localhost:8765: every slide and step, zero issues, minimum font 40 px (ribbon 42). Independent QA subagent report pending at the time of writing.
+- Footage: glasses recording of 2026-11-04 (desk, laptop stream, verse 2:282 with seven observed portion steps) and phone takes of Nov 2. The long verse is 2:282, not 73:20. No toggle clip exists; slide 5 is skipped.
+- Honesty labels on screen: "What I see through the glasses", "Glasses display recording", "Phone screen recording", "prepared in advance", "Illustration, not in the app", "59 tests passed, Nov 2".
 
-Controller freshly ran python3 tools/test_continuity_proof.py:8testsPASS and python3 tools/render_continuity_proof.py --check:PASS. Independent critic inspected36chronological frames and54dense transition frames from the actual final sample, then passed after one repair round for question reflow, clipped benefits and missing tick glyphs. Programmatic audio correlation/sourcegain checks passed; human auditory/emotional judgment is not implied. Originalv0.9hash remains25559eea...ac5a,unchanged. Source implementation commit2168967. Full native recording remains visually busy; new user demos remain pending.
-
-Next is Faraz’s visual feedback on this focused proof, per CLAUDE.md short continuous voice-and-picture proof guidance. Do not blindly rebuild another full master or ask him to reapprove the script/voice. If the continuity is accepted, apply the coherent visual thread, visible source meaning, actual captions and global progression throughout the full edit. Re-measure the runtime because the complete native recitation is longer than the inherited8-second cut. Preserve three user-recording spaces and old masters.
-
-## Latest user feedback, November 4: v0.9 presentation rejected
-
-Faraz found the video disconnected, abruptly cut, without coherent on-screen text/meaning. This supersedes any implication that prior technical or sampled motion passes establish presentation readiness. Investigation confirmed full-frame paper resets, independent headline replacement, external-only narration captions, repeated chapter/progress resets and an overlay covering the published English example. Evidence: build/video-v0.9/receipts/editorial-failure-audit/diagnosis.json. The original v0.9 master remains preserved. No full replacement is being rendered yet. A focused continuity proof will reuse the approved B audio and exact matching112:1Arabic/English example, carry one reading window into the actual source replay and product reveal, and include visible narration captions. Plan: docs/plans/2026-11-04-continuity-repair-proof.md.
-
-Updated November 4, 2026. Non-demo video v0.9 built and verified; three new user recordings remain pending. Final independent specification, quality and sampled encoded-motion reviews passed.
+## Earlier state (v0.9 film), kept for reference
 
 ## Done and verified
 

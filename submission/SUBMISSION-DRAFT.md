@@ -34,7 +34,7 @@ For a cached demonstration passage, the display uses that accepted plan while lo
 
 ## Technical execution
 
-The app preserves the glasses microphone route, processes bounded evidence, discards stale decisions, and keeps only the newest pending display frame. Fifty-five automated tests cover core matching, source preservation, portions and scheduling. This is a foreground prototype; broader reciter accuracy and visible-lens latency remain unmeasured.
+The app preserves the glasses microphone route, processes bounded evidence, discards stale decisions, and keeps only the newest pending display frame. Fifty-nine automated tests (Nov 2 run, 0 failures) cover core matching, source preservation, portions and scheduling. This is a foreground prototype; broader reciter accuracy and visible-lens latency remain unmeasured.
 
 ## Original work and existing inputs
 
@@ -44,8 +44,8 @@ Original event work includes the app integration, Muse clients, retrieval, sourc
 
 Repository: https://github.com/khiradlabs/ayah-lens
 
-Implementation review branch: https://github.com/khiradlabs/ayah-lens/tree/feat/within-ayah-following
+Implementation: merged to main on Nov 4 (PR 1).
 
-Video URL: add only after the final three-minute cut is uploaded and checked while signed out.
+Video URL: https://github.com/khiradlabs/ayah-lens/releases/download/v1.0-hackathon/Ayah-Lens-Demo-v1.0.mp4 (release page https://github.com/khiradlabs/ayah-lens/releases/tag/v1.0-hackathon); check it signed out after upload.
 
 Entrant and contributor fields: copy the accepted profile and list all actual contributors. Do not guess legal acceptance fields or submit this draft automatically.

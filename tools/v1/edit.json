@@ -1,0 +1,287 @@
+{
+  "version": "1.0",
+  "notes": "Everything that may change when new clips arrive lives here. Times in 'in', 'out' and 'from_source_s' are seconds in the SOURCE file. 'start_s', 'end_s' are seconds from the start of the section picture. Paths are relative to the ayah-lens project root. Set fallback.enabled to true to ship without the s5 placeholder.",
+  "output": "build/video-v1.0/Ayah-Lens-Demo-v1.0.mp4",
+  "work_dir": "build/video-v1.0/work",
+  "canvas": {"w": 1920, "h": 1080, "fps": 30},
+  "palette": {"paper": "#ECE7D3", "ink": "#1E1E1E", "blue": "#465D79", "red": "#B94B37", "dim_mix": 0.55},
+  "fonts": {
+    "latin": "/System/Library/Fonts/Supplemental/Arial.ttf",
+    "latin_bold": "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+    "arabic": "/Users/farazsyed/data/khirad/apps/ayah-lens-prep/assets/qul/data/qpc-hafs/qpc-hafs/UthmanicHafs1Ver18.ttf"
+  },
+  "quran": {
+    "qpc_json": "/Users/farazsyed/data/khirad/apps/ayah-lens-prep/assets/qul/data/qpc-hafs.json/qpc-hafs.json",
+    "words_per_window": 4
+  },
+  "narration": {
+    "source": "callum",
+    "source_note": "'callum' uses each section's narration.file as written. 'own' uses own_dir/<stem>.wav for every section (stem of the file the section would use, so s4-fallback resolves when there is no toggle clip). Make the own files with tools/v1/ingest_voice.py.",
+    "callum_dir": "build/video-v1.0/narration",
+    "own_dir": "build/video-v1.0/narration/own",
+    "duration_tolerance": 0.40
+  },
+  "toggle": {
+    "file": null,
+    "note": "The English-off-and-on clip for s5. While file is null, s5 is dropped in every mode and s4 and s6 take 'without_toggle'; no placeholder ever renders. Set file plus in/out (seconds of that file) and s5 plays it, with the label and the caption, and s4 keeps the bridged line 'And if you would rather, the meaning steps aside.' crop and dest null mean the whole frame, contained on paper (pillar-boxed when portrait). Fallback mode drops s5 even when a clip is set.",
+    "label": "Glasses display recording",
+    "in": null,
+    "out": null,
+    "crop": null,
+    "dest": null,
+    "range": null,
+    "matrix": null,
+    "caption": "Arabic only, for memorization.",
+    "caption_pos": null,
+    "without_toggle": {
+      "drop_sections": ["s5"],
+      "overrides": {
+        "s4": {"narration": {"file": "build/video-v1.0/narration/s4-fallback.mp3"}},
+        "s6": {"narration": {"gap_before_s": 0.35}}
+      }
+    }
+  },
+  "min_text_px": 40,
+  "min_latin_px": 56,
+  "label_px": 48,
+  "bottom_margin_px": 54,
+  "timing": {
+    "default_cut_offset_s": 0.4,
+    "default_gap_s": 0.35,
+    "lead_in_s": 0.5
+  },
+  "audio": {
+    "bed_lufs": -23.0,
+    "narration_lufs": -20.0,
+    "duck_db": -16.0,
+    "duck_ramp_s": 0.3,
+    "duck_target_median_db": 12.0,
+    "peak_ceiling_dbfs": -3.25,
+    "target_peak_dbfs": -3.0,
+    "crossfade_s": 0.3,
+    "fade_in_s": 0.15,
+    "final_quiet_s": 0.2,
+    "final_fade_s": 0.8,
+    "sample_rate": 48000,
+    "aac_bitrate": "256k"
+  },
+  "video": {"crf": 16, "preset": "medium"},
+  "footage": {
+    "glasses": {
+      "file": "recordings/version-3/take-03-glasses-IMG_4525.MP4",
+      "range": "tv", "matrix": "bt709",
+      "label": "Glasses display recording",
+      "kind": "glasses display recording (camera plus display composite), 976x1296",
+      "text_zone": [200, 820, 600, 170],
+      "text_zone_note": "Source rectangle [x,y,w,h] where the lens text sits in the glasses recording; overlays must stay out of it.",
+      "note": "Clean interval 14.3 to 29.5 s. Meta home tiles are on screen until about 14.2 s, so in-point is 14.3, not 14.0."
+    },
+    "establishing": {
+      "file": "recordings/v1/IMG_4535-sdr.mp4",
+      "range": "tv", "matrix": "bt709",
+      "label": "Filmed on a phone",
+      "kind": "phone dual-camera clip, portrait 1080x1920 BT.709 (converted from HDR), 24 s: laptop streaming a reciter plus a front-camera box of the wearer talking",
+      "note": "Played in full as the opening of s1, pillar-boxed on paper (never cropped: the face box sits top-right). Its own audio is the only voice in that part (already about -19.9 LUFS)."
+    },
+    "glasses_desk": {
+      "file": "recordings/v1/video-299_singular_display.MP4",
+      "range": "tv", "matrix": "bt709",
+      "label": "Glasses display recording",
+      "kind": "glasses display recording of a desk (phone in hand, laptop streaming a reciter), 976x1296, 59.9 s; 2:281 then 2:282 on the lens",
+      "text_zone": [210, 705, 575, 270],
+      "text_zone_note": "Source rectangle [x,y,w,h] where the lens text sits (header, Arabic line, three English lines).",
+      "note": "2:282 counter states, from frame-differencing the lens text: 4-5/36 from 43.97 s, 5-6 at 44.73, 6-7 at 46.90, 7-8 at 49.73, 8-9 at 54.83, 9-10 at 55.20, 10-11 at 57.53. 2:282 first arrives at about 33.8 s. Audio is about -37 LUFS and voice-band dominant but only 58.7 s long (the video is 59.9 s)."
+    },
+    "phone_long": {
+      "file": "recordings/version-3/take-02-muzzammil-phone-original.mov",
+      "range": "pc", "matrix": "bt709",
+      "label": "Phone screen recording",
+      "kind": "iPhone screen recording of the Ayah Lens card, 73:20, 1206x2622",
+      "note": "Clean interval 48.8 to 72.8 s (card scrolls before 48.7 and after 72.87)."
+    },
+    "phone_fatiha": {
+      "file": "recordings/version-3/take-01-phone-original.mov",
+      "range": "pc", "matrix": "bt709",
+      "label": "Phone screen recording",
+      "kind": "iPhone screen recording of the Ayah Lens card, Al-Fatihah, 1206x2622",
+      "note": "Idle card and scrolling 5 to 24 s; useful recognition 39.75 to 69 s per capture-manifest.json."
+    }
+  },
+  "sections": [
+    {
+      "id": "s1", "name": "Cold open: the wearer, then what he sees",
+      "narration": {"duration_s": 33.9,
+                    "note": "No narration file. 24.0 s of the phone clip with its own audio as the only voice, then 9.9 s of the lens recording with the recitation bed only. duration_s must equal the two parts."},
+      "voice": {"source": "establishing", "in": 0.0, "out": 24.0, "lufs": -20.0, "start_s": 0.0},
+      "bed": {"source": "glasses_desk", "in": 24.3, "start_s": 24.0},
+      "layers": [
+        {"type": "paper"},
+        {"type": "footage", "id": "est", "source": "establishing", "in": 0.0, "out": 24.0, "start_s": 0, "end_s": 24.0,
+         "crop": [0, 0, 1080, 1920], "dest": [656, 0, 608, 1080], "freeze_after": false},
+        {"type": "plate", "role": "label", "pos": [1884, 28], "anchor": "tr", "pad": 14, "radius": 12, "end_s": 24.0,
+         "lines": [{"text": "Filmed on a phone", "size": 48, "bold": true}]},
+        {"type": "footage", "id": "main", "source": "glasses_desk", "label": "What I see through the glasses",
+         "in": 24.3, "out": 34.2, "start_s": 24.0,
+         "crop": [0, 421, 976, 549], "dest": [0, 0, 1920, 1080], "freeze_after": true},
+        {"type": "plate", "role": "label", "pos": [1884, 28], "anchor": "tr", "pad": 14, "radius": 12, "start_s": 24.0,
+         "lines": [{"text": "What I see through the glasses", "size": 48, "bold": true}]}
+      ]
+    },
+    {
+      "id": "s2", "name": "The need",
+      "narration": {"file": "build/video-v1.0/narration/s2.mp3", "cut_offset_s": 0.4},
+      "bed": {"source": "phone_long", "in": 20.0},
+      "layers": [
+        {"type": "paper"},
+        {"type": "footage", "id": "main", "source": "phone_fatiha", "in": 5.0, "out": 24.0, "start_s": 0,
+         "crop": [0, 150, 1206, 1880], "dest": [159, 40, 642, 1000], "freeze_after": false},
+        {"type": "plate", "role": "label", "pos": [1884, 28], "anchor": "tr", "pad": 14, "radius": 12,
+         "lines": [{"text": "Phone screen recording", "size": 48, "bold": true}]},
+        {"type": "plate", "pos": [1000, 330], "anchor": "tl", "max_width": 880, "fill": null, "pad": 0, "fade_s": 0.4,
+         "lines": [{"text": "About 2 billion Muslims", "size": 96, "bold": true, "color": "ink"}]},
+        {"type": "plate", "pos": [1000, 610], "anchor": "tl", "max_width": 880, "fill": null, "pad": 0, "fade_s": 0.4,
+         "appear_phrase": "by Pew",
+         "lines": [{"text": "Pew, 2020 estimate", "size": 64, "bold": false, "color": "blue"}]}
+      ]
+    },
+    {
+      "id": "s3", "name": "Meet Ayah Lens",
+      "narration": {"file": "build/video-v1.0/narration/s3.mp3", "cut_offset_s": 0.4},
+      "bed": {"source": "phone_fatiha", "in": 39.0},
+      "layers": [
+        {"type": "paper"},
+        {"type": "footage", "id": "main", "source": "phone_fatiha", "in": 40.0, "out": 66.0, "start_s": 1.0,
+         "crop": [60, 1385, 1086, 915], "dest": [60, 110, 900, 758], "freeze_after": true},
+        {"type": "plate", "role": "label", "pos": [1884, 28], "anchor": "tr", "pad": 14, "radius": 12, "start_s": 1.0,
+         "lines": [{"text": "Phone screen recording", "size": 48, "bold": true}]},
+        {"type": "plate", "pos": [990, 330], "anchor": "tl", "max_width": 890, "pad": 24, "border": "blue",
+         "appear_phrase": "Muse Voice", "fade_s": 0.25,
+         "lines": [{"text": "audio goes to Muse Voice", "size": 56, "bold": true}]},
+        {"type": "plate", "pos": [990, 520], "anchor": "tl", "max_width": 890, "pad": 24, "border": "blue",
+         "appear_phrase": "Muse Spark", "fade_s": 0.25,
+         "lines": [{"text": "English prepared in advance", "size": 56, "bold": true}]},
+        {"type": "card", "end_s": 1.0, "lines": [{"text": "Ayah Lens", "size": 240, "bold": true, "color": "ink"}]}
+      ]
+    },
+    {
+      "id": "s4", "name": "The hard case",
+      "narration": {"file": "build/video-v1.0/narration/s4.mp3", "cut_offset_s": 0.4},
+      "bed": {"source": "glasses_desk", "in": 44.2, "continue_with": {"source": "phone_long", "in": 60.0}},
+      "layers": [
+        {"type": "paper"},
+        {"type": "footage", "id": "main", "source": "glasses_desk", "in": 44.2, "out": 59.5, "start_s": 0,
+         "crop": [150, 690, 700, 394], "dest": [60, 134, 820, 461], "freeze_after": true},
+        {"type": "pin", "text": "2:282", "pos": [48, 28], "size": 56},
+        {"type": "plate", "role": "label", "pos": [1884, 28], "anchor": "tr", "pad": 14, "radius": 12,
+         "lines": [{"text": "Glasses display recording", "size": 48, "bold": true}]},
+        {"type": "plate", "pos": [920, 290], "anchor": "tl", "fill": null, "pad": 0,
+         "lines": [{"text": "Whole verse below.", "size": 56, "bold": false, "color": "ink"},
+                   {"text": "Lit words: the portion in view.", "size": 56, "bold": false, "color": "ink"}]},
+        {"type": "plate", "role": "illustration", "pos": [1860, 596], "anchor": "br", "pad": 14, "radius": 12, "border": "red",
+         "lines": [{"text": "Illustration, not in the app", "size": 48, "bold": true}]},
+        {"type": "ribbon", "verse": "2:282", "box": [60, 612, 1800, 414], "font_size": 42, "follow": "main",
+         "counter_pos": [920, 150], "counter_size": 56, "counter_total": 36, "counter_template": "Portion {a} of {n} on the lens",
+         "mapping_mode": "observed", "spans_are": "observed, not computed",
+         "mapping_note": "Spans are OBSERVED, not computed: words_observed were read off the Arabic printed on the lens at each counter state (frames at 44.4, 45.6, 48.0, 51.0, 54.95, 56.0 and 58.5 s) and matched to the words of 2:282. All seven states were readable, so none is marked computed. If a future clip has an unreadable state, give it words_computed (k of 36 mapping) and set its 'computed' flag to true.",
+         "windows": [
+           {"counter": [4, 5],   "from_source_s": 44.2,  "words_observed": [10, 14]},
+           {"counter": [5, 6],   "from_source_s": 44.73, "words_observed": [13, 18]},
+           {"counter": [6, 7],   "from_source_s": 46.90, "words_observed": [15, 22]},
+           {"counter": [7, 8],   "from_source_s": 49.73, "words_observed": [19, 24]},
+           {"counter": [8, 9],   "from_source_s": 54.83, "words_observed": [23, 27]},
+           {"counter": [9, 10],  "from_source_s": 55.20, "words_observed": [25, 30]},
+           {"counter": [10, 11], "from_source_s": 57.53, "words_observed": [28, 34]}
+         ]}
+      ]
+    },
+    {
+      "id": "s5", "name": "Hifz (exists only when toggle.file is set)",
+      "narration": {"file": "build/video-v1.0/narration/s5.mp3", "cut_offset_s": -2.0},
+      "bed": {"source": "phone_long", "in": 34.5},
+      "layers": [
+        {"type": "paper"}
+      ]
+    },
+    {
+      "id": "s6", "name": "What is real",
+      "narration": {"file": "build/video-v1.0/narration/s6.mp3", "gap_before_s": 2.35, "cut_offset_s": 0.4},
+      "bed": {"source": "glasses_desk", "in": 44.0, "continue_with": {"source": "phone_long", "in": 40.0}},
+      "layers": [
+        {"type": "paper"},
+        {"type": "footage", "id": "main", "source": "glasses_desk", "in": 44.0, "out": 52.0, "start_s": 0,
+         "crop": [0, 421, 976, 549], "dest": [0, 0, 1920, 1080], "freeze_after": true},
+        {"type": "plate", "role": "label", "pos": [1884, 28], "anchor": "tr", "pad": 14, "radius": 12,
+         "lines": [{"text": "Glasses display recording", "size": 48, "bold": true}]},
+        {"type": "plate", "pos": [30, 130], "anchor": "tl", "max_width": 1860, "pad": 18, "fade_s": 0.3,
+         "appear_phrase": "Transcription and tracking",
+         "lines": [{"text": "Transcription and tracking run live · Spark's English pairing prepared in advance", "size": 56, "bold": true}]},
+        {"type": "plate", "pos": [30, 322], "anchor": "tl", "max_width": 1860, "pad": 18, "fade_s": 0.3,
+         "appear_phrase": "Fifty-nine tests",
+         "lines": [{"text": "114 surahs · 6,236 ayahs bundled · 3 passages with prepared English · 59 tests passed, Nov 2", "size": 56, "bold": false}]}
+      ]
+    },
+    {
+      "id": "s7", "name": "Close",
+      "narration": {"file": "build/video-v1.0/narration/s7.mp3", "cut_offset_s": -4.0},
+      "bed": {"source": "glasses_desk", "in": 29.8, "in_align": {"phrase": "Hear the recitation", "source_s": 33.8}},
+      "layers": [
+        {"type": "paper"},
+        {"type": "footage", "id": "main", "source": "glasses_desk", "in": 29.8, "out": 34.5, "start_s": 0,
+         "in_align": {"phrase": "Hear the recitation", "source_s": 33.8},
+         "in_align_note": "2:282 first arrives at 33.8 s in the clip; the in-point is computed so that moment lands on the spoken phrase, whatever the voice's pace. in 29.8 is the nominal value.",
+         "crop": [0, 421, 976, 549], "dest": [0, 0, 1920, 1080], "freeze_after": true},
+        {"type": "plate", "role": "label", "pos": [1884, 28], "anchor": "tr", "pad": 14, "radius": 12,
+         "lines": [{"text": "Glasses display recording", "size": 48, "bold": true}]},
+        {"type": "card", "appear_phrase": "Follow the meaning.", "fade_s": 0.5, "joiner": " · ", "valign": "middle",
+         "lines": [
+           {"text": "Ayah Lens", "size": 170, "bold": true, "color": "ink", "gap_after": 36},
+           {"text": "github.com/khiradlabs/ayah-lens", "size": 72, "bold": false, "color": "blue"}
+         ]}
+      ]
+    }
+  ],
+  "fallback": {
+    "enabled": false,
+    "note": "Alternative cut: drops s5 and its narration, uses the fallback narration for s4 (no toggle bridge), holds s6 on the phone 73:20 footage 60-72 s, and cuts s7 so the English of 112:4 lands on 'Hear the recitation' (in = 27.0 s minus the spoken time of that phrase, 6.17 s).",
+    "drop_sections": ["s5"],
+    "overrides": {
+      "s4": {"narration": {"file": "build/video-v1.0/narration/s4-fallback.mp3"}},
+      "s6": {
+        "narration": {"gap_before_s": 0.35},
+        "layers": [
+          {"type": "paper"},
+          {"type": "footage", "id": "main", "source": "phone_long", "in": 60.0, "out": 72.0, "start_s": 0,
+           "crop": [60, 1385, 1086, 880], "dest": [60, 110, 900, 729], "freeze_after": true},
+          {"type": "plate", "role": "label", "pos": [1884, 28], "anchor": "tr", "pad": 14, "radius": 12,
+           "lines": [{"text": "Phone screen recording", "size": 48, "bold": true}]},
+          {"type": "plate", "pos": [990, 150], "anchor": "tl", "max_width": 890, "pad": 24, "fade_s": 0.3,
+           "appear_phrase": "Transcription and tracking",
+           "lines": [{"text": "Transcription and tracking run live · Spark's English pairing prepared in advance", "size": 56, "bold": true}]},
+          {"type": "plate", "pos": [990, 560], "anchor": "tl", "max_width": 890, "pad": 24, "fade_s": 0.3,
+           "appear_phrase": "Fifty-nine tests",
+           "lines": [{"text": "114 surahs · 6,236 ayahs bundled · 3 passages with prepared English · 59 tests passed, Nov 2", "size": 56, "bold": false}]}
+        ]
+      },
+      "s7": {
+        "layers": [
+          {"type": "paper"},
+          {"type": "footage", "id": "main", "source": "glasses", "in": 20.83, "out": 29.5, "start_s": 0,
+           "crop": [0, 560, 976, 549], "dest": [0, 0, 1920, 1080], "freeze_after": true},
+          {"type": "plate", "role": "label", "pos": [1884, 28], "anchor": "tr", "pad": 14, "radius": 12,
+           "lines": [{"text": "Glasses display recording", "size": 48, "bold": true}]},
+          {"type": "card", "start_s": 7.7, "fade_s": 0.5, "joiner": " · ", "valign": "middle",
+           "lines": [
+             {"text": "Ayah Lens", "size": 170, "bold": true, "color": "ink", "gap_after": 36},
+             {"text": "github.com/khiradlabs/ayah-lens", "size": 72, "bold": false, "color": "blue"}
+           ]}
+        ]
+      }
+    }
+  },
+  "script_lines_exact": {
+    "s2_card": "About 2 billion Muslims · Pew, 2020 estimate",
+    "s6_line1": "Transcription and tracking run live · Spark's English pairing prepared in advance",
+    "s6_line2": "114 surahs · 6,236 ayahs bundled · 3 passages with prepared English · 59 tests passed, Nov 2",
+    "s7_card": "Ayah Lens · github.com/khiradlabs/ayah-lens"
+  }
+}

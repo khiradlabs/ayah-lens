@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ayah Lens live demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body data-page="deck">
+<div id="viewport">
+<div id="stage">
+
+<!-- 1. What I see -->
+<section class="slide" id="s1" data-n="1" data-title="What I see">
+  <div class="win glasses-win"><video src="media/glasses-open.mp4" data-audio="1" playsinline preload="auto"></video></div>
+  <div class="plate label-tr">What I see through the glasses</div>
+  <div class="caps-bl">
+    <p class="cap b" data-b="1">The verse appears with its meaning. When the reciter moves on, the lens follows.</p>
+    <p class="cap b" data-b="2">Nothing is tapped to follow.</p>
+  </div>
+</section>
+
+<!-- 2. Why -->
+<section class="slide" id="s2" data-n="2" data-title="Why">
+  <div class="why-left">
+    <div class="headline">
+      <span class="bignum" id="num2">2,000,000,000</span>
+      <span class="bigtxt" id="txt2">About 2 billion Muslims</span>
+    </div>
+    <p class="small" id="pew">Pew Research Center, 2020 estimate, published 2025</p>
+    <p class="line b" data-b="1">Many of us hear the Quran daily and cannot follow the Arabic.</p>
+    <p class="line b" data-b="2">Looking a verse up pulls you out of the moment.</p>
+    <p class="line red b" data-b="3">The meaning should come to you.</p>
+  </div>
+  <div class="plate label3 b" data-b="2">Phone screen recording</div>
+  <div class="win phone2 b" data-b="2"><video src="media/phone-lookup.mp4" data-audio="0" data-start="2" muted playsinline preload="auto"></video></div>
+</section>
+
+<!-- 3. Ayah Lens -->
+<section class="slide" id="s3" data-n="3" data-title="Ayah Lens">
+  <h1 class="title">Ayah Lens</h1>
+  <div class="pipe">
+    <div class="nodewrap b" data-b="1"><div class="node"><span class="name">Meta Ray-Ban Display glasses</span> · listens</div></div>
+    <div class="nodewrap b" data-b="2"><div class="node"><span class="name">Muse Voice</span> · live Arabic transcript</div><div class="sub">audio goes to Muse Voice</div></div>
+    <div class="nodewrap b" data-b="3"><div class="node"><span class="name">Our software</span> · finds the verse and your place in it</div></div>
+    <div class="nodewrap b" data-b="4"><div class="node"><span class="name">Muse Spark</span> · prepares the English match <br><span class="tag">prepared in advance</span></div></div>
+    <div class="nodewrap b" data-b="5"><div class="node"><span class="name">Lens</span> · the meaning follows the recitation</div></div>
+  </div>
+  <p class="easy b" data-b="6">And that is the easy part.</p>
+  <div class="plate label3">Phone screen recording</div>
+  <div class="win phone3"><video src="media/phone-73-20.mp4" data-audio="0" muted playsinline preload="auto"></video></div>
+</section>
+
+<!-- 4. The hard case -->
+<section class="slide" id="s4" data-n="4" data-title="The hard case">
+  <div class="win win4">
+    <video id="v4" src="media/glasses-2-282.mp4" data-audio="1" playsinline preload="auto"></video>
+    <div class="pin">2:282</div>
+    <div class="plate label4">Glasses display recording</div>
+  </div>
+  <div class="right4">
+    <div class="counter" id="counter4">Portion 4-5 of 36 on the lens</div>
+    <p class="cap b" data-b="1">Same verse number, the whole way.</p>
+    <p class="cap b" data-b="2">The words on the lens keep moving: Ayah Lens follows your place inside the verse.</p>
+    <p class="cap b" data-b="3">The longest verse in the Quran, 128 words.</p>
+  </div>
+  <div class="tag4">Illustration, not in the app</div>
+  <div id="ribbon" dir="rtl" lang="ar"></div>
+</section>
+
+<!-- 5. Hifz (kept only if media/toggle.mp4 loads) -->
+<section class="slide" id="s5" data-n="5" data-title="Hifz">
+  <div class="win glasses-win"><video id="v5" data-src="media/toggle.mp4" data-audio="1" playsinline preload="auto"></video></div>
+  <div class="plate label-tr">Glasses display recording</div>
+  <div class="caps-bl">
+    <p class="cap b" data-b="1">English off. The Arabic keeps following.</p>
+    <p class="cap b" data-b="2">English back whenever you want it.</p>
+  </div>
+</section>
+
+<!-- 6. What is real -->
+<section class="slide" id="s6" data-n="6" data-title="What is real">
+  <div class="stats">
+    <div class="stat"><span class="n count" data-to="114">114</span> <span class="l">surahs</span></div>
+    <div class="stat"><span class="n count" data-to="6236">6,236</span> <span class="l">ayahs bundled</span></div>
+    <div class="stat"><span class="n count" data-to="59">59</span> <span class="l">tests passed, Nov 2</span></div>
+  </div>
+  <div class="lines">
+    <p class="line b" data-b="1">Transcription and tracking run live.</p>
+    <p class="line b" data-b="2">Only Spark's English pairing is prepared in advance.</p>
+    <p class="line b" data-b="3">The software was written in ten days, Oct 26 to Nov 4.</p>
+  </div>
+</section>
+
+<!-- 7. Close -->
+<section class="slide" id="s7" data-n="7" data-title="Close">
+  <div class="win glasses-win"><video src="media/glasses-arrival.mp4" data-audio="1" playsinline preload="auto"></video></div>
+  <div class="plate label-tr">Glasses display recording</div>
+  <div class="card b" data-b="1">Ayah Lens <span class="dot">·</span> github.com/khiradlabs/ayah-lens</div>
+</section>
+
+<div id="gate"><div class="g1">Ayah Lens</div><div class="g2">Press Space to start</div><div class="g3">F fullscreen · N notes · M sound</div></div>
+<div id="toast"></div>
+</div>
+</div>
+<div id="bar"></div>
+<script src="deck.js"></script>
+</body>
+</html>
