@@ -154,5 +154,18 @@
     "opening_text": "Explicitly approved impact/Allah wording is consolidated in the script.",
     "recording_checklist": "submission/DEMO-RECORDING-CHECKLIST-V0.9.md"
   },
-  "approval_source": "User approved the impact opening, requested the 6,000-verse technical detail, accepted all three demo shots, then said the script was okay and asked to finish the rest."
+  "approval_source": "User approved the impact opening, requested the 6,000-verse technical detail, accepted all three demo shots, then said the script was okay and asked to finish the rest.",
+  "editorial_motion": {
+    "style": "Vox-style explanatory editorial animation",
+    "confirmed_by": "Faraz: make sure to use vox style animations",
+    "preserve": "Approved opening, original artwork/3D illustration, slide order and restrained palette",
+    "techniques": [
+      "Narration-timed typography and evidence highlights",
+      "Animated population proportion",
+      "Progressive technical diagram with correct live/cached paths",
+      "Long-verse position and reading-window explanation",
+      "Controlled zooms and shared-shape transitions"
+    ],
+    "specification": "submission/EDIT-HANDOFF-V0.9.md"
+  }
 }

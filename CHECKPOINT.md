@@ -1,5 +1,7 @@
 # Ayah Lens implementation checkpoint
 
+Faraz confirmed Vox-style editorial animation: narration-timed typography, evidence highlights, progressive diagrams, controlled zooms and connected transitions. Preserve the approved opening and original slides. Detailed motion direction is saved in submission/EDIT-HANDOFF-V0.9.md. This update changes direction documents only; no script, audio or video was changed.
+
 ## November 3: script content accepted; three demo recordings pending
 
 Faraz approved the revised impact opening, requested the 6,000-verse technical challenge, accepted three demonstration shots and said the script was okay. Saved the current consolidated content as submission/DEMO-SCRIPT-V0.9.md with 415 spoken words. This supersedes the old 274-word draft and pending opening approval. B remains selected Cedar delivery. Original v0.5 visual sequence remains the creative baseline; its 49-word opening is intentionally extended by Faraz’s approved lines. Masjid footage is cancelled.

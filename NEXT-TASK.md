@@ -1,5 +1,7 @@
 # Next Ayah Lens task
 
+Faraz confirmed Vox-style editorial animation: narration-timed typography, evidence highlights, progressive diagrams, controlled zooms and connected transitions. Preserve the approved opening and original slides. Detailed motion direction is saved in submission/EDIT-HANDOFF-V0.9.md. This update changes direction documents only; no script, audio or video was changed.
+
 Status: IN PROGRESS. Content is accepted; timing/edit preparation remains.
 
 First read submission/EDIT-HANDOFF-V0.9.md, submission/DEMO-SCRIPT-V0.9.md and submission/RESTORATION-V0.9.json. Complete the timing edit under 180 seconds using B’s natural delivery, without changing the approved opening or accelerating recitation. The consolidated script is 415 words and takes about 142 seconds at 175wpm before proof/pauses. No actual B performance timing exists yet. Remove repetition elsewhere if necessary, preserving all rubric evidence.
