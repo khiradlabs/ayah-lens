@@ -1,5 +1,7 @@
 # Ayah Lens script 0.9: content accepted
 
+Production update, November 4: the actual performed script is DEMO-SCRIPT-V0.9-TIMED.md, 306 words. This 415-word file preserves accepted content before the timing edit. The exact approved opening remains unchanged. The non-demo v0.9 master is built; three recordings remain pending.
+
 Saved November 3, 2026 after Faraz said: “ok, I’ll record demo for all three. keep is save somewhere. lets finish the rest. I thnk we are ok with the script, right?”
 
 The opening was explicitly approved. This file consolidates the latest opening, technical explanation and stronger impact closing discussed in chat. B is the selected Cedar voice and delivery, not its audition wording. Faraz will record the three demos in DEMO-RECORDING-CHECKLIST-V0.9.md. Masjid footage is cancelled.

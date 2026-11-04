@@ -16,15 +16,12 @@ Explain each idea through purposeful motion timed to B’s narration. Preserve t
 - Transitions: connect scenes through shared shapes, source windows and match cuts. Use deliberate short pauses and smooth audio handoffs. Avoid a succession of unrelated slide entrances.
 - Final review: check the encoded motion at each transition and narration cue. Confirm that animation explains the spoken point, source words remain readable, and B’s delivery has room to breathe.
 
-## Remaining work
+## Non-demo build completed
 
-1. Timing pass: use DEMO-SCRIPT-V0.9.md and RESTORATION-V0.9.json. Current content is 415 words; estimate about 142 seconds at 175wpm. Reserve genuine proof and listening time. Cut repeated explanations outside the approved opening if needed to stay under 180 seconds. Exact B duration is unmeasured.
-2. Narration: selected B Cedar, connected conversational paragraphs, clear curiosity and emphasis without announcer cadence. Generate only the production-approved timed text. Preserve complete words, natural breath tails, original playback speed and accurate pronunciation. Verify actual audio wording, not only request text.
-3. Opening and visuals: restore original v0.5 artwork/3D illustration and layout. Animate benefits and original technical diagram. No new Meta website assets. Keep original source labels, disclaimers and clear cached/live attribution. Replace outdated video-version disclosure only within the existing header.
-4. Technical animation: reveal glasses microphone → Muse Voice live transcript → full-reference retrieval/current-position tracking → bounded Spark assistance/published-source pairing → validated compact portions → lens delivery. Spark is not a mandatory live serial call on every update. Keep cached pairing plans distinguished from live tracking. Published sources supply the words.
-5. Integrate Faraz’s three recordings after original-file inspection. Use genuine TV, long-verse and English-toggle proof. No masjid placeholder remains. Preserve native speed and complete source audio tails. Narration uses silent setup/holds; avoid talking over Quran recitation.
-6. Verify final encoded picture, sound, readable source text, source timing, complete narrated words, matching captions and runtime under 180 seconds. Check transitions in motion, not only stills. Then Faraz reviews the actual complete cut. No publication/submission is authorized by this handoff.
+Output: build/video-v0.9/Ayah-Lens-Demo-v0.9.mp4,178.633333s,5359frames,1080p30. Selected B/Cedar eight complete verified paragraphs at native speed;306words. Production text is DEMO-SCRIPT-V0.9-TIMED.md. Accepted-content415-word draft is preserved as history/reference. Original approved opening is exact. Original art/3D/layouts and Vox-style motion are built. All checks, source/input hashes and final encoded waveform comparisons are saved in build/video-v0.9/receipts/. Independent spec and sampled motion reviews passed; final code-quality review passed. No human emotional approval is implied.
 
-## Current result
+## Remaining recording integration
 
-Script, recording checklist, visual/technical cue plan and future edit steps are saved. No v0.9 audio or video exists. Timing, fresh media, final animation synchronization and final encoded review are outstanding. Existing rendered masters remain preserved.
+Faraz records the three shots in DEMO-RECORDING-CHECKLIST-V0.9.md. Use original complete files from Downloads after he says they are ready. Replace clearly labeled silent spaces at native source speed: TV74.166667–92.166667 (18s), longverse92.166667–103.166667 (11s), English155.433333–162.433333 (7s). Current measured manifest: build/video-v0.9/demo-slots.json. These shorter measured allocations supersede initial20/12/8 estimates. Keep longer recorded originals and select complete recitation phrases with real visible updates; do not manufacture continuous proof from a stalled take. Preserve v0.9 as a review master and use a new revision for integration.
+
+After integration, verify complete decode, duration under180s, original source wording/speed, audio/sample timing, all actual toggle/portion changes, captions and encoded motion. Faraz reviews the actual completed video. No publication/submission is authorized by this handoff.

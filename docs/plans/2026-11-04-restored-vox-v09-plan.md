@@ -52,3 +52,7 @@
 **Touches:** Review receipts and controller checkpoint only; fixes dispatched to responsible worker.
 **Steps:** Conduct spec review before quality review, max2 repair loops. Run independent fresh checks against final encoded hash. Then review representative transitions and dense diagram sequence in consecutive frames. Controller reruns tests/check, commits checkpoints and updates the recording gate only if slot handoff changes.
 **Done when:** reviewers report pass or concrete unresolved limits, controller fresh checks pass, final review cut and slot handoff are presented to Faraz, with final demo footage explicitly outstanding. No publication or submission.
+
+## Measured production revision, November 4
+
+Final verified B performances total 125.4 seconds across eight complete paragraphs and 306 spoken words. Exact approved 87-word opening and substantive technical pipeline remain unchanged. Repeated brand mentions were removed from foundation/close after pronunciation checks; product narration retains the verified brand. No further voice generation is required. To preserve every speech/source word at native speed under 180 seconds, current requirements supersede the planned 20/12/8 inserts: TV18s, long-verse11s, English-toggle7s, total36s. Original listening/replay remain8+8s. Paragraph padding is0.15s each, total1.2s before per-scene frame rounding. Estimated encoded duration is178.6–178.9seconds; actual encoded duration must be verified. No PCM silence trimming or speed fitting was used.

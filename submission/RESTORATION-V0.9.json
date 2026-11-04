@@ -1,6 +1,6 @@
 {
   "draft": "0.9",
-  "status": "Content accepted for production preparation; timing pass remains. Three new user-recorded demos pending.",
+  "status": "Non-demo v0.9 built and independently verified; three recordings pending.",
   "gate_source": "User: Restore the opening and slides we finalized. Keep B’s voice and add the scoring points to the narration. Show me the full revised script before rendering anything again.",
   "picture_master": {
     "path": "build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4",
@@ -34,7 +34,7 @@
     "reference_is_delivery_only": true,
     "use_audition_text_as_story": false
   },
-  "timing_status": "415 spoken words, approximately 142 seconds at 175wpm before demonstration pauses. Legacy timings are reference only. Complete timing pass under 180s; no recitation speedup or artificial narration acceleration.",
+  "timing_status": "Measured non-demo export178.633333s/5359frames with native125.4s voice, original16s recitation,36s silent demos and frame-rounded paragraph gaps. No speed changes.",
   "scenes": [
     {
       "id": "listen",
@@ -147,7 +147,7 @@
       "hifz"
     ]
   },
-  "media_generated_this_revision": false,
+  "media_generated_this_revision": true,
   "spoken_word_count": 415,
   "user_updates": {
     "demo_choice": "Masjid cancelled. Faraz will record TV following, long verse 73:20, and English off/on.",
@@ -167,5 +167,26 @@
       "Controlled zooms and shared-shape transitions"
     ],
     "specification": "submission/EDIT-HANDOFF-V0.9.md"
-  }
+  },
+  "production": {
+    "timed_script": "submission/DEMO-SCRIPT-V0.9-TIMED.md",
+    "spoken_word_count": 306,
+    "accepted_content_word_count": 415,
+    "narration_manifest": "build/video-v0.9/narration-manifest.json",
+    "output": "build/video-v0.9/Ayah-Lens-Demo-v0.9.mp4",
+    "sha256": "25559eea06bef702262b8dd1626afce44353ebe798d951470434a9abb2deac5a",
+    "duration_seconds": 178.633333,
+    "frames": 5359,
+    "measured_edit": "build/video-v0.9/measured-edit.json",
+    "demo_slots_manifest": "build/video-v0.9/demo-slots.json",
+    "demo_slot_seconds": {
+      "tv": 18,
+      "long_verse": 11,
+      "english_toggle": 7
+    },
+    "controller_verification": "build/video-v0.9/receipts/controller-final-check.json",
+    "pending": "Three user recordings and human creative review",
+    "review_status": "Independent specification, quality and sampled encoded-motion reviews passed"
+  },
+  "spoken_word_count_scope": "415-word accepted-content scenes below; actual performed production has306words, see production object."
 }

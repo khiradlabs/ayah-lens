@@ -66,3 +66,9 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Retiming narration changes the final visible replay frame. A hard-coded held card rewound the source at the model explanation. Derive it from integer timeline bounds. Verify following_last_frame tests and consecutive encoded replay-to-model frames.
 
 - A voice audition replaced the approved opening during a full rewrite. Lock the approved picture and opening words separately from the voice selection. Verify RESTORATION-V0.9.json against the v0.5 source hashes and timing.py opening before generation. When Faraz requests the complete script first, no TTS or rendering occurs until that review is approved.
+
+- FFmpeg loudnorm timestamps can make time-based padding/trimming shorten paragraph windows. Normalize to 48 kHz, reset continuous sample timestamps, then pad/trim to frames × 1,600 samples. Verify processed WAV and final AAC durations with python3 tools/test_restored_v09.py and python3 tools/render_restored_v09.py --check.
+
+- A regex match does not support capture group -1. Parse FFmpeg max_volume with group(1), and reject a missing numeric report. Verify the volume-report regression in python3 tools/test_restored_v09.py.
+
+- Color metadata retagging does not convert full-range source pixels to limited-range output. Apply explicit range/matrix conversion before tagging, and compare decoded source/output frames in the same RGB space. Verify source-frame comparisons with python3 tools/render_restored_v09.py --check.
