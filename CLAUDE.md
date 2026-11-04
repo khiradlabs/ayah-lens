@@ -72,3 +72,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - A regex match does not support capture group -1. Parse FFmpeg max_volume with group(1), and reject a missing numeric report. Verify the volume-report regression in python3 tools/test_restored_v09.py.
 
 - Color metadata retagging does not convert full-range source pixels to limited-range output. Apply explicit range/matrix conversion before tagging, and compare decoded source/output frames in the same RGB space. Verify source-frame comparisons with python3 tools/render_restored_v09.py --check.
+
+- Passing word/pixel/timing checks did not catch a disconnected story: v0.9 blanked each thought to paper, reset chapter progress, left captions external and masked its source meaning. Verify the actual exported narrative chronologically with a persistent Arabic/English example and visible captions; test annotation bounds against the source-text area before another full render.

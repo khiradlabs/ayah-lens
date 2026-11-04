@@ -1,5 +1,17 @@
 # Ayah Lens checkpoint
 
+## Corrective continuity proof ready for human feedback
+
+Built build/continuity-proof/Ayah-Lens-Continuity-Proof.mp4,35.7seconds,1071frames,1080p30. SHA457b436a038ebd12f1c476d64cda66ba9d4a5f4fd02bf41f6a07be5a883c826c. It is a middle-of-approved-opening sample, not a replacement opening or full corrected video. Existing B audio and approved words are reused. One persistent source window carries published112:1Arabic/English into actual recorded112:1→2→3→4 and the original glasses/product reveal. Narration captions are burned in outside the meaning window. The source ends at a measured quiet10.2s boundary; constant16.4dB gain preserves its waveform and matches narration level. No new generation/API spending occurred.
+
+Controller freshly ran python3 tools/test_continuity_proof.py:8testsPASS and python3 tools/render_continuity_proof.py --check:PASS. Independent critic inspected36chronological frames and54dense transition frames from the actual final sample, then passed after one repair round for question reflow, clipped benefits and missing tick glyphs. Programmatic audio correlation/sourcegain checks passed; human auditory/emotional judgment is not implied. Originalv0.9hash remains25559eea...ac5a,unchanged. Source implementation commit2168967. Full native recording remains visually busy; new user demos remain pending.
+
+Next is Faraz’s visual feedback on this focused proof, per CLAUDE.md short continuous voice-and-picture proof guidance. Do not blindly rebuild another full master or ask him to reapprove the script/voice. If the continuity is accepted, apply the coherent visual thread, visible source meaning, actual captions and global progression throughout the full edit. Re-measure the runtime because the complete native recitation is longer than the inherited8-second cut. Preserve three user-recording spaces and old masters.
+
+## Latest user feedback, November 4: v0.9 presentation rejected
+
+Faraz found the video disconnected, abruptly cut, without coherent on-screen text/meaning. This supersedes any implication that prior technical or sampled motion passes establish presentation readiness. Investigation confirmed full-frame paper resets, independent headline replacement, external-only narration captions, repeated chapter/progress resets and an overlay covering the published English example. Evidence: build/video-v0.9/receipts/editorial-failure-audit/diagnosis.json. The original v0.9 master remains preserved. No full replacement is being rendered yet. A focused continuity proof will reuse the approved B audio and exact matching112:1Arabic/English example, carry one reading window into the actual source replay and product reveal, and include visible narration captions. Plan: docs/plans/2026-11-04-continuity-repair-proof.md.
+
 Updated November 4, 2026. Non-demo video v0.9 built and verified; three new user recordings remain pending. Final independent specification, quality and sampled encoded-motion reviews passed.
 
 ## Done and verified
