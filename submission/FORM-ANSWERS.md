@@ -1,4 +1,4 @@
-# Ayah Lens form answers Draft 1
+# Ayah Lens form answers, final (2026-11-04 16:05)
 
 Paste-ready copy for the fields shown in the October 29 submission screenshots. The live participant guide was also verified October 29. The final video link and two personal ratings remain open.
 
@@ -38,11 +38,13 @@ During the hackathon, we built the native iPhone/glasses integration, live Muse 
 
 https://github.com/khiradlabs/ayah-lens
 
-Before submission, ensure the reviewed implementation is on the default branch. The current implementation review branch is feat/within-ayah-following.
+The reviewed implementation was merged to main on Nov 4 (PR 1). Verified signed out: the root URL shows the README and source.
 
 ## 3 Minute Demo Video
 
-Add the final accessible video URL after capture and export. Do not paste a placeholder into the actual form.
+https://github.com/khiradlabs/ayah-lens/releases/download/v1.0-hackathon/Ayah-Lens-Demo.mp4
+
+(Release page: https://github.com/khiradlabs/ayah-lens/releases/tag/v1.0-hackathon. Paste only after the signed-out download check passes.)
 
 ## Describe your use of Meta products to build the submitted project
 
@@ -82,7 +84,7 @@ Population and prayer references are in CLAIMS.md. The two subjective ratings ar
 
 ## Demo Video URL
 
-https://github.com/khiradlabs/ayah-lens/releases/download/v1.0-hackathon/Ayah-Lens-Demo-v1.0.mp4
+https://github.com/khiradlabs/ayah-lens/releases/download/v1.0-hackathon/Ayah-Lens-Demo.mp4
 
 Release page: https://github.com/khiradlabs/ayah-lens/releases/tag/v1.0-hackathon
 

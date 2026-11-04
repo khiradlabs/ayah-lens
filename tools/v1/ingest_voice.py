@@ -36,8 +36,8 @@ SILENCE_DB = -40.0
 TARGET_LUFS = -20.0
 TARGET_TP = -3.0
 EXTS = {'.m4a', '.mp3', '.wav', '.aif', '.aiff', '.aifc', '.caf', '.flac', '.ogg', '.opus', '.aac', '.wma', '.mp4', '.mov', '.webm'}
-ALL_IDS = [f's{i}' for i in range(1, 8)] + ['s1-fallback', 's4-fallback']
-NAME_RE = re.compile(r'^(s[1-7])(-fallback)?(?:-\(?\d+\)?)?$')
+ALL_IDS = [f's{i}' for i in range(1, 8)] + ['s1-fallback', 's4-fallback']  # default set; ingest_folder widens it from the Callum folder
+NAME_RE = re.compile(r'^(s[1-7]b?)(-[a-z]+\d*)?(?:-\(?\d+\)?)?$')
 
 
 class Refused(Exception):
@@ -58,7 +58,14 @@ def required_ids(edit=None):
     return [Path(sec['narration']['file']).stem for sec in edit['sections'] if sec['narration'].get('file')]
 
 
-def find_sources(folder):
+def known_ids(callum_dir=None):
+    """Narration ids that have a Callum counterpart (s1..s7, s1-fallback, s3-short, s3-v12, s3b-v12, s6-v12, s7-v12, ...)."""
+    d = Path(callum_dir or (R.ROOT / 'build/video-v1.0/narration'))
+    ids = [p.stem for p in sorted(d.glob('s*.mp3')) if re.match(r'^s\d+b?(-[a-z]+\d*)?$', p.stem)]
+    return ids or ALL_IDS
+
+
+def find_sources(folder, ids=None):
     """Return ({id: Path}, [warnings]). Newest file wins when several match the same id."""
     found, warnings, ignored = {}, [], []
     for p in sorted(Path(folder).expanduser().iterdir()):
@@ -68,7 +75,7 @@ def find_sources(folder):
         if not m:
             continue
         ident = m.group(1) + (m.group(2) or '')
-        if ident not in ALL_IDS:
+        if ident not in (ids or known_ids()):
             ignored.append(p.name)
             continue
         found.setdefault(ident, []).append(p)
@@ -79,7 +86,7 @@ def find_sources(folder):
         for f in files[:-1]:
             warnings.append(f'{ident}: several files match; using the newest ({files[-1].name}), ignoring {f.name}')
     for name in ignored:
-        warnings.append(f'ignored {name}: only s1 and s4 have a fallback take')
+        warnings.append(f'ignored {name}: no Callum paragraph of that name, so only s1 and s4 have a fallback take')
     return chosen, warnings
 
 
@@ -243,12 +250,13 @@ def ingest_folder(src_dir, out_dir, callum_dir, tol=0.40, log=print, required=No
     out_dir, callum_dir = Path(out_dir), Path(callum_dir)
     if out_dir.resolve() == callum_dir.resolve():
         raise RuntimeError('The output folder must not be the Callum folder')
-    chosen, warnings = find_sources(src_dir)
+    ids = known_ids(callum_dir)
+    chosen, warnings = find_sources(src_dir, ids)
     for w in warnings:
         log('note: ' + w)
     records, refused = [], []
     req = required if required is not None else required_ids()
-    for ident in ALL_IDS:
+    for ident in ids:
         if ident not in chosen:
             continue
         try:

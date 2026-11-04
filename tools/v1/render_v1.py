@@ -315,62 +315,91 @@ def narration_info(path):
 
 def narration_text(edit, section):
     """Paragraph text for the cue-time estimates. paragraphs.json (list of {id, text}) or fallback-paragraphs.json
-    (stem: text), looked up next to the narration file and one folder up (own voice files live in narration/own)."""
+    (stem: text), looked up next to the narration file and one folder up (own voice files live in narration/own).
+    Exact file stems win; otherwise the id before the first '-' is used (s3-short -> s3, s6-deep -> s6)."""
     f = rp(section['narration']['file'])
+    texts = {}
     for folder in (f.parent, f.parent.parent):
         pj = folder / 'paragraphs.json'
         if pj.exists():
             for p in json.loads(pj.read_text()):
-                if p['id'] == f.stem:
-                    return p['text']
+                texts.setdefault(p['id'], p['text'])
         fj = folder / 'fallback-paragraphs.json'
         if fj.exists():
-            d = json.loads(fj.read_text())
-            if isinstance(d.get(f.stem), str):
-                return d[f.stem]
+            for k, v in json.loads(fj.read_text()).items():
+                if isinstance(v, str):
+                    texts.setdefault(k, v)
+    for key in (f.stem, f.stem.split('-')[0]):
+        if key in texts:
+            return texts[key]
     raise KeyError(f'No paragraph text for {f.name}')
 
 
 def make_plan(edit):
-    """Timeline in frames and seconds. Pure arithmetic from edit.json plus decoded narration lengths."""
+    """Timeline in frames and seconds. Pure arithmetic from edit.json plus decoded narration lengths.
+
+    Crossfade model: every boundary between sections is a picture crossfade of timing.crossfade_s (15 frames). Section k
+    owns the frames [start_frame, end_frame); end_frame is where its fade OUT begins, and the next section's fade IN
+    begins on that same frame. Section k+1's narration starts on the first frame after the fade, so
+    narr_start = start_frame / FPS + crossfade_s (the first section starts its narration after timing.lead_in_s).
+    The picture of section k is rendered tail_frames longer than it owns, to be blended with the next section.
+    Where the fade begins: at the last speech sample of the narration plus timing.fade_after_speech_s by default;
+    narration.cut_offset_s (fade begins that long before the end of the file) and narration.end_at override it."""
     t = edit['timing']
+    X = t['crossfade_s']
+    XF = round(X * FPS)
+    if abs(XF / FPS - X) > 1e-9:
+        raise ValueError(f'timing.crossfade_s {X} is not a whole number of frames')
     miss = missing_narration(edit)
     if miss:
         hint = ' Run tools/v1/ingest_voice.py first, or set narration.source to "callum".' if edit.get('narration', {}).get('source') == 'own' else ''
         raise FileNotFoundError('Narration file missing: ' + '; '.join(f'{i}: {p}' for i, p in miss) + '.' + hint)
     secs = []
-    prev_E = 0.0
-    prev_B = 0.0
     prev_frame = 0
+    n_secs = len(edit['sections'])
     for k, s in enumerate(edit['sections']):
         n = s['narration']
+        start_s = prev_frame / FPS
+        fade_in = XF if k > 0 else 0
         if n.get('file'):
             info = narration_info(str(rp(n['file'])))
-            gap = n.get('gap_before_s', t['lead_in_s'] if k == 0 else t['default_gap_s'])
-            cut = n.get('cut_offset_s', t['default_cut_offset_s'])
-            N = (0.0 if k == 0 else prev_E) + gap
+            N = t['lead_in_s'] if k == 0 else start_s + X
             E = N + info['duration']
-            B = E - cut
-            nar = {'narr_start': N, 'narr_end': E, 'narr_duration': info['duration'],
-                   'speech_start': N + info['speech_start'], 'speech_end': N + info['speech_end'], 'cut_offset_s': cut}
+            speech_start, speech_end = N + info['speech_start'], N + info['speech_end']
+            ea = n.get('end_at')
+            if ea:
+                # the picture ends plus_s seconds after a narration cue (a beat that outlasts the voice)
+                if 'after_narration_end_s' in ea:
+                    B = E + ea['after_narration_end_s']
+                else:
+                    pseudo = {'narr_start': N, 'speech_start': speech_start, 'speech_end': speech_end, 'start_s': N}
+                    B = N + phrase_time(edit, pseudo, s, ea['phrase']) + ea['plus_s']
+                end_frame = round(B * FPS)
+            elif 'cut_offset_s' in n:
+                B = E - n['cut_offset_s']
+                end_frame = round(B * FPS)
+            else:
+                B = speech_end + t.get('fade_after_speech_s', 0.0)
+                end_frame = math.ceil(B * FPS - 1e-6)  # the fade never starts before the voice has stopped
+            nar = {'narr_start': N, 'narr_end': E, 'narr_duration': info['duration'], 'speech_start': speech_start, 'speech_end': speech_end,
+                   'cut_offset_s': E - end_frame / FPS}
         else:
             # no narration file: the section's length is fixed (its own recorded voice and/or recitation only)
-            B = prev_frame / FPS + n['duration_s']
-            E = B
-            cut = 0.0
+            end_frame = prev_frame + round(n['duration_s'] * FPS)
+            B = end_frame / FPS
             nar = {'narr_start': B, 'narr_end': B, 'narr_duration': 0.0, 'speech_start': None, 'speech_end': None, 'cut_offset_s': 0.0}
-        end_frame = round(B * FPS)
-        if end_frame <= prev_frame:
+        if end_frame - prev_frame < max(fade_in, XF if k < n_secs - 1 else 0) + 1:
             raise ValueError(f"Section {s['id']} has no picture frames")
-        start_s = prev_frame / FPS
+        tail = XF if k < n_secs - 1 else 0
         secs.append({
             'id': s['id'], 'index': k, 'name': s.get('name', s['id']), 'has_narration': bool(n.get('file')), **nar,
             'start_frame': prev_frame, 'end_frame': end_frame, 'frames': end_frame - prev_frame,
+            'fade_in_frames': fade_in, 'tail_frames': tail, 'render_frames': end_frame - prev_frame + tail,
             'start_s': start_s, 'end_s': end_frame / FPS, 'duration_s': (end_frame - prev_frame) / FPS,
         })
-        prev_E, prev_B, prev_frame = E, B, end_frame
+        prev_frame = end_frame
     total = prev_frame
-    return {'sections': secs, 'total_frames': total, 'duration_s': total / FPS, 'audio_samples': total * SPF}
+    return {'sections': secs, 'total_frames': total, 'duration_s': total / FPS, 'audio_samples': total * SPF, 'crossfade_frames': XF}
 
 
 @lru_cache(maxsize=None)
@@ -395,8 +424,18 @@ def phrase_time(edit, plan_sec, section, phrase, snap_s=1.3):
     sp0, sp1 = plan_sec['speech_start'] - n0, plan_sec['speech_end'] - n0
     est = sp0 + (i / len(text)) * (sp1 - sp0)
     t_narr = est
-    if text[max(0, i - 2):i] in ('. ', ', ', '; '):
-        cands = [e for s_, e in narration_pauses(str(rp(section['narration']['file']))) if abs(e - est) <= snap_s]
+    lead = text[max(0, i - 2):i]
+    if lead in ('. ', ', ', '; '):
+        pauses = [(s_, e) for s_, e in narration_pauses(str(rp(section['narration']['file']))) if abs(e - est) <= snap_s]
+        if lead == '. ':
+            # a sentence start follows a sentence-end pause, which is longer than a comma pause: prefer those
+            # and only those that no other sentence start is nearer to: the two short closing sentences of s7 would
+            # otherwise both snap to the pause before the first of them
+            starts = [0] + [m.end() for m in re.finditer(r'\. (?=\S)', text)]
+            ests = [sp0 + (j / len(text)) * (sp1 - sp0) for j in starts]
+            long_ = [(s_, e) for s_, e in pauses if e - s_ >= 0.4 and min(ests, key=lambda x: abs(x - e)) == est]
+            pauses = long_ or pauses
+        cands = [e for _, e in pauses]
         if cands:
             t_narr = min(cands, key=lambda e: abs(e - est))
     return max(0.0, n0 + t_narr - plan_sec['start_s'])
@@ -757,6 +796,306 @@ def paint_counter(edit, pal, layer, a, b):
 
 
 # ----------------------------------------------------------------------------------------------
+# architecture diagram and API card
+# ----------------------------------------------------------------------------------------------
+def mix_colour(a, b, m):
+    return tuple(round(x * (1 - m) + y * m) for x, y in zip(a, b))
+
+
+def wrap_clauses(fnt_path, size, text, max_w):
+    """Wrap text that holds ' \u00b7 ' separators so a line break always falls at a separator, and the separator is dropped
+    there (no line starts or ends with a dangling dot). Clauses that fit together keep their dot; a clause wider than
+    the line wraps by words."""
+    clauses = text.split(' \u00b7 ')
+    if len(clauses) == 1:
+        return wrap_text(fnt_path, size, text, max_w)
+    lines, cur = [], None
+    for c in clauses:
+        cand = c if cur is None else cur + ' \u00b7 ' + c
+        if cur is not None and text_width(fnt_path, size, cand) > max_w:
+            lines.append(cur)
+            cur = None
+            cand = c
+        if text_width(fnt_path, size, cand) > max_w:
+            wrapped = wrap_text(fnt_path, size, cand, max_w)
+            lines.extend(wrapped[:-1])
+            cur = wrapped[-1]
+        else:
+            cur = cand
+    lines.append(cur)
+    return lines
+
+
+def node_parts(nd):
+    """[title, sub, sub, ...] of a diagram node: explicit 'title' + 'subs', or 'text' split on ' \u00b7 '."""
+    if 'title' in nd:
+        return [nd['title']] + list(nd.get('subs', []))
+    return nd['text'].split(' \u00b7 ')
+
+
+def diagram_layout(edit, layer):
+    """Geometry of the architecture diagram: per node box, wrapped text lines, tag; row heights; arrow anchors.
+    Raises if the diagram does not fit the safe area (60 px sides, bottom margin from edit)."""
+    W, H = edit['canvas']['w'], edit['canvas']['h']
+    g = layer.get('geometry', {})
+    pad, mx, gap, wrap_gap = g.get('pad', 22), g.get('margin_x', 60), g.get('gap', 60), g.get('wrap_gap', 90)
+    title_px, sub_px, tag_px = layer['title_px'], layer['sub_px'], layer['tag_px']
+    bold, reg = edit['fonts']['latin_bold'], edit['fonts']['latin']
+    nodes = []
+    for nd in layer['nodes']:
+        parts = node_parts(nd)
+        inner = nd['w'] - 2 * pad
+        title_lines = wrap_clauses(bold, title_px, parts[0], inner)
+        sub_lines = [wrap_clauses(reg, sub_px, sp, inner) for sp in parts[1:]]
+        subline = wrap_text(reg, sub_px, nd['subline'], inner) if nd.get('subline') else []
+        for fp_, px_, lines_ in [(bold, title_px, title_lines)] + [(reg, sub_px, x_) for x_ in sub_lines + [subline]]:
+            for ln_ in lines_:
+                if text_width(fp_, px_, ln_) > inner + 1:
+                    raise ValueError(f"node {nd['n']}: {ln_!r} is wider than the node ({nd['w']} px)")
+        tag = nd.get('tag')
+        tag_w = text_width(bold, tag_px, tag['text']) + 36 if tag else 0
+        h = pad + len(title_lines) * round(title_px * 1.2)
+        h += sum(len(x) for x in sub_lines) * round(sub_px * 1.2) + len(subline) * round(sub_px * 1.2) + (8 if subline else 0)
+        if tag:
+            h += 14 + round(tag_px * 1.2) + 12
+        h += pad
+        nodes.append(dict(nd, title_lines=title_lines, sub_lines=sub_lines, subline_lines=subline, tag_w=tag_w, h_need=h))
+    rows = sorted({n['row'] for n in nodes})
+    row_h = {r: max(n['h_need'] for n in nodes if n['row'] == r) for r in rows}
+    row_y = {}
+    y = g.get('row0_y', 250)
+    for r in rows:
+        row_y[r] = y
+        y += row_h[r] + wrap_gap
+    bottom = row_y[rows[-1]] + row_h[rows[-1]]
+    if bottom > H - edit.get('bottom_margin_px', 54):
+        raise ValueError(f'diagram bottom {bottom} is inside the {edit.get("bottom_margin_px", 54)} px bottom margin')
+    for r in rows:
+        row_nodes = [n for n in nodes if n['row'] == r]
+        row_w = sum(n['w'] for n in row_nodes) + gap * (len(row_nodes) - 1)
+        if row_w > W - 2 * mx:
+            raise ValueError(f'diagram row {r} is {row_w} px wide, the safe width is {W - 2 * mx}')
+        x = mx + (W - 2 * mx - row_w) / 2
+        for n in row_nodes:
+            n.update(x=x, y=row_y[r], h=row_h[r])
+            x += n['w'] + gap
+    return nodes, row_y, row_h, dict(pad=pad, gap=gap, wrap_gap=wrap_gap, title_px=title_px, sub_px=sub_px, tag_px=tag_px)
+
+
+def _arrowhead(art, tip, direction, size, colour):
+    x, y = tip
+    if direction == 'right':
+        pts = [(x, y), (x - size, y - size * 0.6), (x - size, y + size * 0.6)]
+    else:  # down
+        pts = [(x, y), (x - size * 0.6, y - size), (x + size * 0.6, y - size)]
+    art.d.polygon([(px * SS, py * SS) for px, py in pts], fill=colour + (255,))
+
+
+def _line(art, pts, width, colour):
+    art.d.line([(px * SS, py * SS) for px, py in pts], fill=colour + (255,), width=width * SS, joint='curve')
+
+
+def paint_diagram(edit, pal, layer):
+    """Return [{name, img, cue, node}] in reveal order. Each node image holds its box and the arrow leading into it;
+    node 6 may split into an early and a late image (late items appear on a later cue)."""
+    W, H = edit['canvas']['w'], edit['canvas']['h']
+    nodes, row_y, row_h, g = diagram_layout(edit, layer)
+    bold, reg = edit['fonts']['latin_bold'], edit['fonts']['latin']
+    card = mix_colour(pal.paper, (255, 255, 255), 0.45)
+    out = []
+    by_n = {n['n']: n for n in nodes}
+    prev = None
+    for nd in nodes:
+        tagc = pal.get(nd['tag']['color']) if nd.get('tag') else None
+        border = tagc if tagc else pal.ink
+        solid = nd.get('style') == 'solid'
+        late = nd.get('late')
+        late_items = set(late['items']) if late else set()
+
+        def draw(art, stage):
+            if stage == 0:
+                art.rrect((nd['x'], nd['y'], nd['x'] + nd['w'], nd['y'] + nd['h']), radius=24,
+                          fill=(pal.blue if solid else card) + (255,), outline=border + (255,), width=5)
+            yy = nd['y'] + g['pad']
+            tcol = pal.paper if solid else pal.ink
+            for ln in nd['title_lines']:
+                if stage == 0:
+                    art.text((nd['x'] + g['pad'], yy + g['title_px'] * 0.95), ln, bold, g['title_px'], tcol)
+                yy += round(g['title_px'] * 1.2)
+            for si, lines in enumerate(nd['sub_lines']):
+                for ln in lines:
+                    if (stage == 0) == (f'sub:{si}' not in late_items):
+                        art.text((nd['x'] + g['pad'], yy + g['sub_px'] * 0.95), ln, reg, g['sub_px'], tcol)
+                    yy += round(g['sub_px'] * 1.2)
+            if nd['subline_lines']:
+                yy += 8
+                for ln in nd['subline_lines']:
+                    if (stage == 0) == ('subline' not in late_items):
+                        art.text((nd['x'] + g['pad'], yy + g['sub_px'] * 0.95), ln, reg, g['sub_px'], pal.blue)
+                    yy += round(g['sub_px'] * 1.2)
+            if nd.get('tag') and (stage == 0) == ('tag' not in late_items):
+                yy += 14
+                ph = round(g['tag_px'] * 1.2)
+                art.rrect((nd['x'] + g['pad'], yy, nd['x'] + g['pad'] + nd['tag_w'], yy + ph), radius=ph // 2, fill=tagc + (255,))
+                art.text((nd['x'] + g['pad'] + 18, yy + g['tag_px'] * 1.0), nd['tag']['text'], bold, g['tag_px'], pal.paper)
+
+        def arrow(art):
+            if prev is None:
+                return
+            if prev['row'] == nd['row']:
+                yc = nd['y'] + nd['h'] / 2
+                x0, x1 = prev['x'] + prev['w'], nd['x']
+                _line(art, [(x0 + 4, yc), (x1 - 14, yc)], 6, pal.ink)
+                _arrowhead(art, (x1 - 3, yc), 'right', 22, pal.ink)
+            else:  # wrap: down from the end of the previous row, back to the start of this one
+                x0, y0 = prev['x'] + prev['w'] / 2, prev['y'] + prev['h']
+                x1, y1 = nd['x'] + nd['w'] / 2, nd['y']
+                ym = (y0 + y1) / 2
+                _line(art, [(x0, y0 + 4), (x0, ym), (x1, ym), (x1, y1 - 16)], 6, pal.ink)
+                _arrowhead(art, (x1, y1 - 3), 'down', 22, pal.ink)
+
+        a0 = Art(W, H)
+        arrow(a0)
+        draw(a0, 0)
+        out.append({'name': f"node{nd['n']}", 'img': a0.finish(), 'cue': nd['cue'], 'cue_offset_s': nd.get('cue_offset_s', 0.0), 'node': nd['n']})
+        if late:
+            a1 = Art(W, H)
+            draw(a1, 1)
+            out.append({'name': f"node{nd['n']}-late", 'img': a1.finish(), 'cue': late['cue'], 'node': nd['n']})
+        prev = nd
+    af = layer.get('audio_flow')
+    if af:
+        a, b = by_n[af['from']], by_n[af['to']]
+        art = Art(W, H)
+        yl = row_y[a['row']] - af.get('rise', 30)
+        x0, x1 = a['x'] + a['w'] / 2, b['x'] + b['w'] / 2
+        red = pal.red
+        _line(art, [(x0, a['y'] - 4), (x0, yl), (x1, yl), (x1, b['y'] - 16)], af.get('width', 4), red)
+        _arrowhead(art, (x1, b['y'] - 3), 'down', 18, red)
+        lw = text_width(bold, af['label_px'], af['label'])
+        art.text(((x0 + x1) / 2 - lw / 2, yl - 16), af['label'], bold, af['label_px'], red)
+        out.append({'name': 'audio-flow', 'img': art.finish(), 'cue': af['cue'], 'node': None})
+    return out
+
+
+def parse_markup(s):
+    """'text with `identifiers`' -> tokens [(text, mono, space_before)]. A backtick run is one unbreakable token."""
+    tokens, last_end = [], 0
+    for m in re.finditer(r'`([^`]+)`|(\S+)', s):
+        space = m.start() > last_end
+        tokens.append((m.group(1), True, space) if m.group(1) is not None else (m.group(2), False, space))
+        last_end = m.end()
+    return tokens
+
+
+def plain_from_markup(s):
+    return s.replace('`', '')
+
+
+def wrap_tokens(tokens, widths, space_w, max_w):
+    """Greedy wrap of tokens at word boundaries; a mono identifier is never split. Returns lines of token indices."""
+    lines, cur, cur_w = [], [], 0.0
+    for i, (tok, mono, sp) in enumerate(tokens):
+        add = widths[i] + (space_w if (cur and sp) else 0)
+        if cur and cur_w + add > max_w:
+            lines.append(cur)
+            cur, cur_w = [i], widths[i]
+        else:
+            cur.append(i)
+            cur_w += add
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def read_source_lines(path, numbers):
+    lines = Path(path).read_text().split('\n')
+    return [lines[n - 1].strip() for n in numbers]
+
+
+def wrap_code(text_lines, mono_path, px, max_w):
+    """Wrap verbatim source lines at spaces for a monospace panel; return the visual lines. Raises when a single
+    token is wider than the panel (an identifier must never be truncated)."""
+    out = []
+    for ln in text_lines:
+        words = ln.split(' ')
+        cur = ''
+        for w in words:
+            if text_width(mono_path, px, w) > max_w:
+                raise ValueError(f'code token {w!r} is wider than the panel')
+            trial = w if not cur else cur + ' ' + w
+            if cur and text_width(mono_path, px, trial) > max_w:
+                out.append(cur)
+                cur = w
+            else:
+                cur = trial
+        out.append(cur)
+    return out
+
+
+def api_card_layout(edit, layer):
+    bold, reg, mono = edit['fonts']['latin_bold'], edit['fonts']['latin'], edit['fonts']['mono']
+    px = layer['line_px']
+    lx, ly, lw = layer['left']
+    rows = []
+    for raw in layer['lines']:
+        toks = parse_markup(raw)
+        widths = [text_width(mono if m else reg, px, t) for t, m, _ in toks]
+        space_w = text_width(reg, px, ' ')
+        lines = wrap_tokens(toks, widths, space_w, lw)
+        for ln in lines:
+            if sum(widths[i] for i in ln) > lw + 1:
+                raise ValueError(f'API line token wider than the card: {raw!r}')
+        rows.append((toks, widths, lines))
+    code = layer['code']
+    rx, ry, rw = layer['right']
+    src_lines = read_source_lines(rp(code['source']), code['lines'])
+    pad = 26
+    wrapped = wrap_code(src_lines, mono, code['px'], rw - 2 * pad)
+    return rows, src_lines, wrapped
+
+
+def paint_api_card(edit, pal, layer):
+    W, H = edit['canvas']['w'], edit['canvas']['h']
+    bold, reg, mono = edit['fonts']['latin_bold'], edit['fonts']['latin'], edit['fonts']['mono']
+    rows, src_lines, wrapped = api_card_layout(edit, layer)
+    art = Art(W, H, bg=pal.paper + (255,))
+    px = layer['line_px']
+    lx, ly, lw = layer['left']
+    rx, ry, rw = layer['right']
+    art.text((lx, 118), layer['title'], bold, layer['title_px'], pal.ink)
+    code = layer['code']
+    art.text((rx, 118), code['label'], bold, code['label_px'], pal.blue)
+    y = ly
+    lh = round(px * 1.32)
+    space_w = text_width(reg, px, ' ')
+    for toks, widths, lines in rows:
+        for ln in lines:
+            x = lx
+            for j, i in enumerate(ln):
+                t, m, sp = toks[i]
+                if j > 0 and sp:
+                    x += space_w
+                art.text((x, y + px * 0.95), t, mono if m else reg, px, pal.blue if m else pal.ink)
+                x += widths[i]
+            y += lh
+        y += 14
+    cp = code['px']
+    clh = round(cp * 1.25)
+    pad = 26
+    ph = len(wrapped) * clh + 2 * pad
+    art.rrect((rx, ry, rx + rw, ry + ph), radius=18, fill=pal.ink + (255,))
+    yy = ry + pad
+    for ln in wrapped:
+        art.text((rx + pad, yy + cp * 0.95), ln, mono, cp, pal.paper)
+        yy += clh
+    bottom = max(y, ry + ph)
+    if bottom > H - edit.get('bottom_margin_px', 54):
+        raise ValueError(f'API card bottom {bottom} is inside the bottom margin')
+    return art.finish()
+
+
+# ----------------------------------------------------------------------------------------------
 # layer resolution: every layer becomes inputs + overlay stages with section-relative timing
 # ----------------------------------------------------------------------------------------------
 def footage_spec(edit, layer, dur_s, in_override=None):
@@ -777,6 +1116,8 @@ def resolve_section(edit, plan, section, pal, workdir):
         start = layer.get('start_s', 0.0)
         if 'appear_phrase' in layer:
             start = phrase_time(edit, ps, section, layer['appear_phrase'])
+        if 'appear_before_narration_end_s' in layer:
+            start = ps['narr_end'] - ps['start_s'] - layer['appear_before_narration_end_s']
         start += layer.get('appear_offset_s', 0.0)
         end = layer.get('end_s')
         if 'end_phrase' in layer:
@@ -821,6 +1162,22 @@ def resolve_section(edit, plan, section, pal, workdir):
                 t1 = times[si + 1] if si + 1 < len(times) else None
                 stages.append({'kind': 'image', 'png': save(img, f'ribbon-lit{si}'), 'start': times[si], 'end': t1, 'fade': 0, 'x': 0, 'y': 0, 'base': False, 'sharp': True})
                 stages.append({'kind': 'image', 'png': save(paint_counter(edit, pal, layer, a, b), f'counter{si}'), 'start': times[si], 'end': t1, 'fade': 0, 'x': 0, 'y': 0, 'base': False, 'sharp': True})
+        elif ty == 'diagram':
+            motion = None
+            sl = layer.get('slide')
+            if sl:
+                if 'before_narration_end_s' in sl:
+                    t0 = ps['narr_end'] - ps['start_s'] - sl['before_narration_end_s']
+                else:
+                    t0 = phrase_time(edit, ps, section, sl['phrase']) + sl.get('offset_s', 0.0)
+                motion = {'kind': 'out_up', 't0': t0, 'd': sl['duration_s']}
+            for it in paint_diagram(edit, pal, layer):
+                stages.append({'kind': 'image', 'png': save(it['img'], it['name']), 'start': phrase_time(edit, ps, section, it['cue']) + it.get('cue_offset_s', 0.0), 'end': None,
+                               'fade': layer.get('fade_s', 0.3), 'x': 0, 'y': 0, 'base': False, 'motion': motion, 'name': it['name']})
+        elif ty == 'api_card':
+            motion = {'kind': 'in_up', 't0': start, 'd': layer.get('slide_in_s', 1.0)}
+            stages.append({'kind': 'image', 'png': save(paint_api_card(edit, pal, layer), 'api-card'), 'start': start, 'end': end, 'fade': 0,
+                           'x': 0, 'y': 0, 'base': False, 'motion': motion, 'name': 'api-card'})
         else:
             raise ValueError(f'Unknown layer type {ty}')
     return stages, ps
@@ -842,9 +1199,22 @@ def enable_expr(start, end):
     return '*'.join(parts) if len(parts) > 1 else parts[0]
 
 
+def motion_y(motion, H):
+    """ffmpeg overlay y expression for a vertical push: out_up slides the layer up and out of the frame, in_up slides it
+    in from below. Smoothstep easing over motion['d'] seconds starting at motion['t0']."""
+    p = f"min(1,max(0,(t-{motion['t0']:.4f})/{motion['d']:.4f}))"
+    ease = f"({p}*{p}*(3-2*{p}))"
+    if motion['kind'] == 'out_up':
+        return f"-{H}*{ease}"
+    if motion['kind'] == 'in_up':
+        return f"{H}*(1-{ease})"
+    raise ValueError(motion['kind'])
+
+
 def build_section_cmd(edit, plan, section, pal, workdir, out_path):
     stages, ps = resolve_section(edit, plan, section, pal, workdir)
-    frames, dur = ps['frames'], ps['duration_s']
+    frames = ps['render_frames']  # the section's own frames plus the tail that is blended with the next section
+    dur = frames / FPS
     V = edit['video']
     W, H = edit['canvas']['w'], edit['canvas']['h']
     cmd = ['ffmpeg', '-v', 'error', '-y']
@@ -864,7 +1234,10 @@ def build_section_cmd(edit, plan, section, pal, workdir, out_path):
                 chains.append(f'[{idx}:v]format=gbrap[{lab}]')
             en = enable_expr(st['start'], st['end'])
             nxt = f'o{si}'
-            chains.append(f"[{cur}][{lab}]overlay=x={st['x']}:y={st['y']}:format=gbrp:eof_action=repeat" + (f":enable='{en}'" if en else '') + f'[{nxt}]')
+            if st.get('motion'):
+                chains.append(f"[{cur}][{lab}]overlay=x={st['x']}:y='{motion_y(st['motion'], H)}':eval=frame:format=gbrp:eof_action=repeat" + (f":enable='{en}'" if en else '') + f'[{nxt}]')
+            else:
+                chains.append(f"[{cur}][{lab}]overlay=x={st['x']}:y={st['y']}:format=gbrp:eof_action=repeat" + (f":enable='{en}'" if en else '') + f'[{nxt}]')
             cur = nxt
         else:
             src = st['src']
@@ -880,6 +1253,8 @@ def build_section_cmd(edit, plan, section, pal, workdir, out_path):
                    f"format=gbrp,setpts=PTS-STARTPTS+{st['start']:.5f}/TB")
             if st['freeze']:
                 ch_ += ',tpad=stop=-1:stop_mode=clone'
+            if st['fade'] > 0:  # alpha fade-in: over paper at the film start, or over the title card (a crossfade)
+                ch_ += f",format=rgba,fade=t=in:st={st['start']:.3f}:d={st['fade']:.3f}:alpha=1,format=gbrap"
             chains.append(ch_ + f'[{lab}]')
             en = enable_expr(st['start'], st['end'])
             nxt = f'o{si}'
@@ -888,7 +1263,7 @@ def build_section_cmd(edit, plan, section, pal, workdir, out_path):
     chains.append(f"[{cur}]scale=w=iw:h=ih:flags=accurate_rnd+full_chroma_int:in_range=full:out_range=tv:out_color_matrix=bt709,"
                   f"format=yuv420p,setparams=range=tv:color_primaries=bt709:color_trc=bt709:colorspace=bt709[vout]")
     cmd += ['-filter_complex', ';'.join(chains), '-map', '[vout]', '-an', '-frames:v', str(frames), '-r', str(FPS),
-            '-c:v', 'libx264', '-preset', V['preset'], '-crf', str(V['crf']), '-pix_fmt', 'yuv420p',
+            '-c:v', 'libx264', '-preset', V['preset'], '-crf', str(V.get('intermediate_crf', V['crf'])), '-pix_fmt', 'yuv420p',
             '-color_range', 'tv', '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709',
             '-x264-params', 'colorprim=bt709:transfer=bt709:colormatrix=bt709:fullrange=off', '-movflags', '+faststart', out_path]
     return cmd
@@ -907,7 +1282,7 @@ def render_sections(edit, plan, only=None):
         run(cmd)
         n = int(run(['ffprobe', '-v', 'error', '-count_frames', '-select_streams', 'v:0', '-show_entries', 'stream=nb_read_frames',
                      '-of', 'csv=p=0', out], capture_output=True, text=True).stdout.strip())
-        want = next(p['frames'] for p in plan['sections'] if p['id'] == s['id'])
+        want = next(p['render_frames'] for p in plan['sections'] if p['id'] == s['id'])
         if n != want:
             raise RuntimeError(f"{s['id']}: rendered {n} frames, planned {want}")
         print(f"rendered {s['id']}: {n} frames", flush=True)
@@ -1003,8 +1378,9 @@ def build_audio(edit, plan, work):
     A = edit['audio']
     total = plan['audio_samples']
     secs = plan['sections']
-    xf = round(A['crossfade_s'] * SR)
-    half = xf // 2
+    xf = round(A['crossfade_s'] * SR)  # equal to the picture crossfade: the bed blends over exactly the frames the picture does
+    if xf != plan['crossfade_frames'] * SPF:
+        raise ValueError('audio.crossfade_s must equal timing.crossfade_s')
     bed = np.zeros((total, 2), dtype=np.float32)
     report = {'bed': [], 'narration': [], 'voice': []}
     bed_windows = {}
@@ -1017,8 +1393,8 @@ def build_audio(edit, plan, work):
         bs = round(b.get('start_s', 0.0) * SR)  # a bed that starts after the section does (s1: bed only under the lens recording)
         p0b = p0 + bs
         late = bs > 0
-        a0 = p0b if late else (0 if k == 0 else p0 - half)
-        a1 = total if k == len(secs) - 1 else p1 + half
+        a0 = p0b if late else p0
+        a1 = total if k == len(secs) - 1 else p1 + xf
         b_in = bed_in(edit, ps, s)
         src_start = b_in - (p0b - a0) / SR
         need = a1 - a0
@@ -1043,7 +1419,7 @@ def build_audio(edit, plan, work):
             report_cont = {}
         n = len(seg)
         env = np.ones(n, dtype=np.float32)
-        fin = xf if (k > 0 or late) else round(A['fade_in_s'] * SR)
+        fin = round(b['fade_in_s'] * SR) if (late and b.get('fade_in_s')) else (xf if (k > 0 or late) else round(A['fade_in_s'] * SR))
         u = np.linspace(0, 1, fin, dtype=np.float32)
         env[:fin] *= np.sin(u * np.pi / 2) if (k > 0 or late) else u
         if k < len(secs) - 1:
@@ -1084,6 +1460,9 @@ def build_audio(edit, plan, work):
             vox, meas, gain = normalise(vox, v.get('lufs', A['narration_lufs']), f"voice {s['id']}")
             fo = min(len(vox), round(v.get('fade_out_s', 0.03) * SR))
             vox[len(vox) - fo:] *= np.linspace(1, 0, fo, dtype=np.float32)[:, None]
+            fi = min(len(vox), round(v.get('fade_in_s', 0.0) * SR))
+            if fi:
+                vox[:fi] *= np.linspace(0, 1, fi, dtype=np.float32)[:, None]
             i0 = ps['start_frame'] * SPF + round(v.get('start_s', 0.0) * SR)
             voice_only[i0:i0 + len(vox)] += vox[:max(0, total - i0)]
             report['voice'].append({'section': s['id'], 'source': v['source'], 'in': v['in'], 'out': v['out'], 'start_s': round(i0 / SR, 3),
@@ -1121,13 +1500,35 @@ def build_audio(edit, plan, work):
 # ----------------------------------------------------------------------------------------------
 # assemble
 # ----------------------------------------------------------------------------------------------
+def xfade_graph(plan, labels=None):
+    """filter_complex joining the section renders with a linear crossfade of plan['crossfade_frames'] frames. Section k's
+    render holds its own frames plus the fade tail; the fade starts on its start_frame, so the blend covers
+    [start_frame, start_frame + crossfade) of the final timeline exactly."""
+    secs = plan['sections']
+    X = plan['crossfade_frames'] / FPS
+    chains = [f'[{i}:v]settb=1/{FPS},setpts=PTS-STARTPTS,fps={FPS}[v{i}]' for i in range(len(secs))]
+    prev = 'v0'
+    for i in range(1, len(secs)):
+        chains.append(f"[{prev}][v{i}]xfade=transition=fade:duration={X:.6f}:offset={secs[i]['start_frame'] / FPS:.6f}[x{i}]")
+        prev = f'x{i}'
+    chains.append(f"[{prev}]format=yuv420p,setparams=range=tv:color_primaries=bt709:color_trc=bt709:colorspace=bt709[vout]")
+    return ';'.join(chains)
+
+
 def assemble(edit, plan, wav):
     work = rp(edit['work_dir'])
     out = rp(edit['output'])
     out.parent.mkdir(parents=True, exist_ok=True)
-    (work / 'picture-concat.txt').write_text(''.join(f"file '{s['id']}.mp4'\n" for s in edit['sections']))
+    V = edit['video']
     pic = work / 'picture.mp4'
-    run(['ffmpeg', '-v', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', work / 'picture-concat.txt', '-c', 'copy', pic])
+    cmd = ['ffmpeg', '-v', 'error', '-y']
+    for sec in edit['sections']:
+        cmd += ['-i', str(work / f"{sec['id']}.mp4")]
+    cmd += ['-filter_complex', xfade_graph(plan), '-map', '[vout]', '-an', '-frames:v', str(plan['total_frames']), '-r', str(FPS),
+            '-c:v', 'libx264', '-preset', V['preset'], '-crf', str(V['crf']), '-pix_fmt', 'yuv420p',
+            '-color_range', 'tv', '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709',
+            '-x264-params', 'colorprim=bt709:transfer=bt709:colormatrix=bt709:fullrange=off', '-movflags', '+faststart', str(pic)]
+    run(cmd)
     run(['ffmpeg', '-v', 'error', '-y', '-i', pic, '-i', wav, '-map', '0:v', '-map', '1:a', '-c:v', 'copy',
          '-c:a', 'aac', '-b:a', edit['audio']['aac_bitrate'], '-ar', str(SR), '-ac', '2', '-t', f"{plan['duration_s']:.6f}",
          '-map_metadata', '-1', '-movflags', '+faststart', out])
@@ -1178,6 +1579,8 @@ def check(edit, plan=None):
     res['audio_duration_s'] = adur
     res['frames'] = frames
     verdict('under_180_s', dur < 180, round(dur, 3))
+    cap = edit.get('limits', {}).get('cap_s', 180.0)
+    verdict('under_cap', dur <= cap, {'duration_s': round(dur, 3), 'cap_s': cap})
     verdict('frame_count_matches_plan', frames == plan['total_frames'], {'frames': frames, 'planned': plan['total_frames']})
     verdict('video_duration_matches_plan', abs(vdur - plan['duration_s']) < 0.002, {'video': vdur, 'planned': plan['duration_s']})
     verdict('audio_duration_matches_picture', abs(adur - vdur) < 0.05, {'audio': adur, 'video': vdur})
@@ -1255,6 +1658,9 @@ def extract_frames(edit, plan, folder):
     paths = []
     for ps, s in zip(plan['sections'], edit['sections']):
         times = {'a': 0.4, 'b': ps['duration_s'] / 2, 'c': ps['duration_s'] - 0.35}
+        if ps['fade_in_frames']:
+            fx = ps['fade_in_frames'] / FPS
+            times.update({'x0': 0.0, 'x1': fx * 0.25, 'x2': fx * 0.5, 'x3': fx * 0.75, 'x4': fx})
         for L in s['layers']:
             if L['type'] == 'ribbon':
                 f = next(x for x in s['layers'] if x['type'] == 'footage')
@@ -1267,6 +1673,13 @@ def extract_frames(edit, plan, folder):
             run(['ffmpeg', '-v', 'error', '-y', '-ss', f"{ps['start_s'] + t:.4f}", '-i', out, '-frames:v', '1', p])
             paths.append(p)
     return paths
+
+
+def check_cap(plan, cap=180.0):
+    """Hard cap: refuse a plan longer than cap (edit.json limits.cap_s, 178.0) and, always, one of 180 s or more
+    unless the caller renders an explicitly named over-cap proof."""
+    if plan['duration_s'] > cap + 1e-9:
+        raise ValueError(f"planned duration {plan['duration_s']:.3f} s is over the {cap:.1f} s cap")
 
 
 def print_plan(plan):
@@ -1286,6 +1699,7 @@ def main(argv=None):
     ap.add_argument('--audio-only', action='store_true')
     ap.add_argument('--fallback', choices=['on', 'off'], help='override fallback.enabled in edit.json for this run')
     ap.add_argument('--voice', choices=['callum', 'own'], help='override narration.source in edit.json for this run')
+    ap.add_argument('--allow-over-cap', action='store_true', help='render a plan that is over limits.cap_s as a proof; the file name gets -OVER-CAP and no v1.2 file is written')
     ap.add_argument('--output', help='override the output path (use with --fallback on to keep the default export intact)')
     ap.add_argument('--work-dir', help='override the work directory')
     ap.add_argument('--frames', metavar='DIR', help='extract QA frames from the existing output into DIR')
@@ -1314,6 +1728,15 @@ def main(argv=None):
     work = rp(edit['work_dir'])
     work.mkdir(parents=True, exist_ok=True)
     print_plan(plan)
+    try:
+        check_cap(plan, edit.get('limits', {}).get('cap_s', 180.0))
+    except ValueError as e:
+        if not args.allow_over_cap:
+            print(f'ERROR: {e}', file=sys.stderr)
+            return 3
+        o = Path(edit['output'])
+        edit['output'] = str(o.with_name(o.stem + '-OVER-CAP' + o.suffix))
+        print(f'WARNING: {e}. Rendering a proof to {edit["output"]}', file=sys.stderr)
     if args.only:
         render_sections(edit, plan, only=set(args.only.split(',')))
         return 0
@@ -1328,7 +1751,8 @@ def main(argv=None):
     res['audio_build'] = arep
     rec = rp('build/video-v1.0/receipts')
     rec.mkdir(parents=True, exist_ok=True)
-    (rec / ('render-v1.0-fallback.json' if edit.get('fallback_active') else 'render-v1.0.json')).write_text(json.dumps({'plan': plan, 'check': res}, indent=2, default=str) + '\n')
+    tag = ('-fallback' if edit.get('fallback_active') else '') + ('-OVER-CAP' if '-OVER-CAP' in edit['output'] else '')
+    (rec / f"render-v{edit['version']}{tag}.json").write_text(json.dumps({'plan': plan, 'check': res}, indent=2, default=str) + '\n')
     print(json.dumps(res, indent=2, default=str))
     return 0 if res['pass'] else 1
 

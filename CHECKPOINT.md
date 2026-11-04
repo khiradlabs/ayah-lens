@@ -1,6 +1,6 @@
 # Ayah Lens checkpoint
 
-Updated November 4, 2026, 15:05. DELIVERABLE CHANGED: a live browser deck (`deck/`) that Faraz drives and screen-records with his own narration replaces the rendered film. See NEXT-TASK.md for the order of the remaining steps. The v1.0 renderer (`tools/v1`, `build/video-v1.0`) and the v0.9 cut remain on disk as fallbacks; their MP4s are stale for scene one and must not be submitted.
+Updated November 4, 2026, 18:00. Final deliverable: the rendered film v1.2 (`build/video-v1.0/Ayah-Lens-Demo-v1.2.mp4`, 176.7 s): Faraz's on-camera opening with his own voice, title card, lens view, then Callum narration (ElevenLabs via fal) through sections 2 to 7 including the architecture diagram with API references (muse-voice-transcribe-1.0 realtime ASR, muse-spark-1.3 chat completions with strict JSON schema, DAT 1.0.1) and the 2:282 ribbon. Web encode live on release v1.0-hackathon. The live deck (`deck/`) was built and QA'd but not used. See NEXT-TASK.md. The v1.0 renderer (`tools/v1`, `build/video-v1.0`) and the v0.9 cut remain on disk as fallbacks; their MP4s are stale for scene one and must not be submitted.
 
 ## Deck state (verified)
 - Built to `deck/SPEC.md`; builder's Playwright checks in `deck/CHECK.md`: all keys, all slides at 1920x1080 / 1280x720 / 1000x760, ribbon lit words = lens Arabic at 7 of 7 steps, 35 spec strings exact, no console errors except the optional `toggle.mp4` probe.

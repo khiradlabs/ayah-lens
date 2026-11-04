@@ -49,14 +49,16 @@ def all_texts(edit):
     for s in edit['sections']:
         for l in s['layers']:
             for ln in l.get('lines', []):
-                yield s['id'], ln['text']
+                yield s['id'], (ln['text'] if isinstance(ln, dict) else ln)
+            for nd in l.get('nodes', []):
+                yield s['id'], ' \u00b7 '.join(R.node_parts(nd))
 
 
 class EditJson(unittest.TestCase):
     def test_edit_json_is_valid_and_complete(self):
-        self.assertEqual([s['id'] for s in BASE['sections']], [f's{i}' for i in range(1, 8)])
-        self.assertEqual([s['id'] for s in EDIT['sections']], ['s1', 's2', 's3', 's4', 's6', 's7'], 'no toggle clip: s5 is dropped')
-        self.assertEqual([s['id'] for s in TOG['sections']], [f's{i}' for i in range(1, 8)])
+        self.assertEqual([s['id'] for s in BASE['sections']], ['s1', 's2', 's3', 's4', 's5', 's3b', 's6', 's7'])
+        self.assertEqual([s['id'] for s in EDIT['sections']], ['s1', 's2', 's3', 's4', 's3b', 's6', 's7'], 'no toggle clip: s5 is dropped')
+        self.assertEqual([s['id'] for s in TOG['sections']], ['s1', 's2', 's3', 's4', 's5', 's3b', 's6', 's7'])
         self.assertIsNone(RAW['toggle']['file'])
         self.assertFalse(RAW['fallback']['enabled'], 'fallback mode must be off by default')
         self.assertEqual(EDIT['canvas'], {'w': 1920, 'h': 1080, 'fps': 30})
@@ -66,11 +68,14 @@ class EditJson(unittest.TestCase):
         for k, f in EDIT['fonts'].items():
             self.assertTrue(Path(f).exists(), f'font {k} missing: {f}')
         self.assertTrue(Path(EDIT['quran']['qpc_json']).exists())
+        self.assertEqual(EDIT['version'], '1.2')
+        self.assertTrue(EDIT['output'].endswith('Ayah-Lens-Demo-v1.2.mp4'))
+        self.assertEqual(EDIT['limits'], {'cap_s': 178.0, 'hard_s': 180.0})
         for key, src in EDIT['footage'].items():
             self.assertTrue(R.rp(src['file']).exists(), key)
             self.assertIn(src['range'], ('tv', 'pc'))
             self.assertEqual(src['matrix'], 'bt709')
-        allowed = {'paper', 'card', 'plate', 'pin', 'ribbon', 'footage'}
+        allowed = {'paper', 'card', 'plate', 'pin', 'ribbon', 'footage', 'diagram', 'api_card'}
         for edit in (EDIT, FB, EST):
             for s in edit['sections']:
                 self.assertIn(s['bed']['source'], edit['footage'])
@@ -94,29 +99,34 @@ class EditJson(unittest.TestCase):
     def test_script_lines_are_exact(self):
         exact = EDIT['script_lines_exact']
         for edit in (EDIT, FB):
-            s6 = [l['lines'][0]['text'] for l in content_plates('s6', edit)]
-            self.assertEqual(sorted(s6), sorted([exact['s6_line1'], exact['s6_line2']]))
+            s6 = [l['lines'][0]['text'] for l in layers('s6', 'plate', edit) if l.get('role') == 'stat']
+            self.assertEqual(s6, [exact['s6_line1'], 'Unchanged source text: Tanzil Arabic \u00b7 Pickthall English', exact['s6_line2']],
+                             'the stale-decisions line left with its sentence: node 7 already shows it')
             s7 = layers('s7', 'card', edit)[0]
-            self.assertEqual(' · '.join(l['text'] for l in s7['lines']), exact['s7_card'])
-        s2 = [l['lines'][0]['text'] for l in content_plates('s2')]
-        self.assertEqual(' · '.join(s2), exact['s2_card'])
-        s5 = next(l for l in layers('s5', 'plate', TOG) if l.get('role') != 'label')['lines'][0]
+            self.assertEqual(' \u00b7 '.join(l['text'] for l in s7['lines']), exact['s7_card'])
+        s2 = [l['lines'][0]['text'] for l in content_plates('s2') if l.get('role') != 'rubric']
+        self.assertEqual(' \u00b7 '.join(s2), exact['s2_card'])
+        s5 = next(l for l in layers('s5', 'plate', TOG) if l.get('role') not in ('label', 'rubric'))['lines'][0]
         self.assertEqual((s5['text'], s5['size']), ('Arabic only, for memorization.', 56))
         s3 = [l['lines'][0]['text'] for l in layers('s3', 'plate')]
         self.assertIn('audio goes to Muse Voice', s3)
         self.assertIn('English prepared in advance', s3)
-        self.assertEqual(layers('s3', 'card')[0]['lines'][0]['text'], 'Ayah Lens')
-        self.assertEqual(layers('s3', 'card')[0]['end_s'], 1.0)
-
+        title = layers('s1', 'card')[0]['lines']
+        self.assertEqual((title[0]['text'], title[0]['size']), ('Ayah Lens', 160))
+        self.assertEqual((title[1]['text'], title[1]['size']), ('Meta Global AI Developer Hackathon \u00b7 Build for Your World', 48))
     def test_every_latin_word_is_large_enough(self):
-        """Cap height 40 px needs a 56 px Arial font. Footage labels are 48 px by decision."""
+        """Cap height 40 px needs a 56 px Arial font. Labels, rubric plates, the s6 stat lines and the title card's
+        sub-line are 48 px by decision; diagram node titles are 48 px and every other diagram text is 40 px or more."""
         self.assertGreaterEqual(EDIT['min_latin_px'], 56)
         self.assertEqual(EDIT['label_px'], 48)
         for edit in (EDIT, FB, EST):
             for s in edit['sections']:
                 for l in s['layers']:
                     for ln in l.get('lines', []):
-                        floor = edit['label_px'] if l.get('role') in ('label', 'illustration') else edit['min_latin_px']
+                        if isinstance(ln, str):
+                            continue
+                        small = l.get('role') in ('label', 'illustration', 'rubric', 'stat') or l['type'] == 'card'
+                        floor = edit['label_px'] if small else edit['min_latin_px']
                         self.assertGreaterEqual(ln['size'], floor, f"{s['id']}: {ln['text']!r}")
                     if l['type'] == 'pin':
                         self.assertGreaterEqual(l['size'], 56)
@@ -124,6 +134,11 @@ class EditJson(unittest.TestCase):
                         self.assertGreaterEqual(l['counter_size'], 56)
                         _, size, _, _ = R.layout_ribbon(edit, l)
                         self.assertGreaterEqual(size, edit['min_text_px'])
+                    if l['type'] == 'diagram':
+                        self.assertEqual(l['title_px'], 48)
+                        self.assertGreaterEqual(min(l['sub_px'], l['tag_px'], l['audio_flow']['label_px']), 40)
+                    if l['type'] == 'api_card':
+                        self.assertEqual((l['line_px'], l['code']['px']), (44, 40))
 
 
 class Labels(unittest.TestCase):
@@ -145,7 +160,7 @@ class Labels(unittest.TestCase):
         self.assertEqual({v['label'] for v in EDIT['footage'].values()}, {'Glasses display recording', 'Phone screen recording', 'Filmed on a phone'})
         by = {s['id']: next(l for l in s['layers'] if l.get('role') == 'label')['lines'][0]['text'] for s in EDIT['sections'] if any(l['type'] == 'footage' for l in s['layers'])}
         self.assertEqual(by['s1'], 'Filmed on a phone')
-        self.assertEqual([l['lines'][0]['text'] for l in layers('s1', 'plate')], ['Filmed on a phone', 'What I see through the glasses'])
+        self.assertEqual([l['lines'][0]['text'] for l in layers('s1', 'plate') if l.get('role') == 'label'], ['Filmed on a phone', 'What I see through the glasses'])
         self.assertEqual((by['s4'], by['s6'], by['s7']), ('Glasses display recording',) * 3)
         self.assertEqual((by['s2'], by['s3']), ('Phone screen recording',) * 2)
         self.assertEqual(next(l for l in layers('s5', 'plate', TOG) if l.get('role') == 'label')['lines'][0]['text'], 'Phone screen recording')
@@ -314,21 +329,73 @@ class Bounds(unittest.TestCase):
                     cdur = R.probe_audio_duration(R.rp(edit['footage'][cont['source']]['file']))
                     self.assertLessEqual(cont['in'] + (start + need - adur), cdur + 0.5, f"{s['id']} continuation runs past its source")
 
-    def test_picture_cuts_land_0_4_s_before_narration_ends(self):
-        for s, ps in zip(EDIT['sections'], PLAN['sections']):
-            if not s['narration'].get('file'):
-                continue
-            cut = s['narration'].get('cut_offset_s', EDIT['timing']['default_cut_offset_s'])
-            self.assertAlmostEqual(ps['narr_end'] - ps['end_s'], cut, delta=0.5 / R.FPS + 1e-6)
-        defaults = [ps for s, ps in zip(EDIT['sections'], PLAN['sections']) if s['narration'].get('file') and s['narration'].get('cut_offset_s', 0.4) == 0.4]
-        self.assertEqual([p['id'] for p in defaults], ['s2', 's3', 's4', 's6'])
-        for a, b in zip(PLAN['sections'], PLAN['sections'][1:]):
-            self.assertGreaterEqual(b['narr_start'], a['narr_end'])
-            self.assertGreaterEqual(b['narr_start'], a['end_s'] - 0.4 - 1e-6)
+    def test_every_boundary_is_a_half_second_crossfade_and_narration_starts_on_the_first_frame_after_it(self):
+        X = EDIT['timing']['crossfade_s']
+        self.assertEqual(X, 0.5)
+        self.assertEqual(PLAN['crossfade_frames'], 15)
+        self.assertEqual(EDIT['audio']['crossfade_s'], X, 'the bed crossfades over the same frames as the picture')
+        for edit, plan in ((EDIT, PLAN), (TOG, R.make_plan(TOG))):
+            secs = plan['sections']
+            self.assertEqual(secs[0]['fade_in_frames'], 0)
+            self.assertEqual(secs[-1]['tail_frames'], 0)
+            self.assertEqual(sum(p['frames'] for p in secs), plan['total_frames'])
+            for a, b in zip(secs, secs[1:]):
+                self.assertEqual((a['tail_frames'], b['fade_in_frames']), (15, 15))
+                self.assertEqual(b['start_frame'], a['end_frame'], 'the fade out of one section begins on the frame the next fades in')
+                self.assertEqual(a['render_frames'], a['frames'] + 15)
+                self.assertGreaterEqual(a['frames'], 2 * 15 - 15, 'a section is longer than its fade')
+                if b['has_narration']:
+                    self.assertEqual(round(b['narr_start'] * R.FPS), b['start_frame'] + 15, f"{b['id']}: narration starts on the first frame after the fade")
+                    self.assertAlmostEqual(b['narr_start'], (b['start_frame'] + 15) / R.FPS, places=9)
+                    self.assertGreaterEqual(b['narr_start'], a['end_s'] + X - 1e-9, f"{b['id']}'s narration starts while {a['id']}'s picture is still on screen")
+        # no section keeps the old gap model
+        for s_ in BASE['sections']:
+            self.assertNotIn('gap_before_s', s_['narration'], s_['id'])
+        # the fade begins when the voice stops (sections with no explicit cut or end_at)
+        by = {p['id']: p for p in PLAN['sections']}
+        for sid in ('s2', 's3', 's4', 's6'):
+            p = by[sid]
+            self.assertGreaterEqual(p['end_s'], p['speech_end'] - 1e-9, f'{sid}: the fade starts before the voice has stopped')
+            self.assertLess(p['end_s'] - p['speech_end'], 1 / R.FPS + 1e-9, f'{sid}: the fade starts later than needed')
+        # the explicit ones: s3b holds the API card 3.5 s past the voice, s7 holds the close 1.5 s past it
+        self.assertAlmostEqual(by['s3b']['end_s'] - by['s3b']['narr_end'], 3.5, delta=1 / R.FPS)
+        self.assertAlmostEqual(by['s7']['end_s'] - by['s7']['narr_end'], 1.5, delta=1 / R.FPS)
+        self.assertAlmostEqual(by['s6']['narr_start'] - by['s3b']['end_s'], 0.5, places=9, msg='s6 starts when the fade off the API card ends')
+        self.assertAlmostEqual(by['s2']['narr_start'] - by['s1']['end_s'], 0.5, places=9)
 
-    def test_total_planned_duration_under_180_s(self):
-        self.assertLess(PLAN['duration_s'], 180)
-        self.assertGreater(PLAN['duration_s'], 100)
+    def test_the_assembly_filter_crossfades_every_boundary_at_its_plan_frame(self):
+        g = R.xfade_graph(PLAN)
+        self.assertEqual(g.count('xfade=transition=fade:duration=0.500000'), len(PLAN['sections']) - 1)
+        for p in PLAN['sections'][1:]:
+            self.assertIn(f"offset={p['start_frame'] / R.FPS:.6f}[", g)
+        self.assertEqual(g.count(f'fps={R.FPS}'), len(PLAN['sections']))
+        self.assertIn('setparams=range=tv:color_primaries=bt709:color_trc=bt709:colorspace=bt709[vout]', g)
+
+    def test_no_narration_begins_with_the_four_words_the_previous_one_ended_with(self):
+        import re
+
+        def words(t):
+            return re.findall(r"[a-z0-9']+", t.lower())
+        # the checker itself: a repeated four-word ending and opening is caught
+        self.assertEqual(words('It is Ayah Lens.')[-4:], words('It is Ayah Lens, and')[:4])
+        for edit in (EDIT, TOG, FB, EST):
+            texts = []
+            for s_ in edit['sections']:
+                if s_['narration'].get('file'):
+                    try:
+                        texts.append((s_['id'], R.narration_text(edit, s_)))
+                    except KeyError:
+                        assert s_['id'] == 's5', 'only the stand-in s5 clip has no paragraph text'
+            self.assertGreaterEqual(len(texts), 6)
+            for (ida, ta), (idb, tb) in zip(texts, texts[1:]):
+                self.assertNotEqual(words(ta)[-4:], words(tb)[:4], f'{idb} opens with the four words {ida} ended on: {" ".join(words(tb)[:4])!r}')
+        by = {s_['id']: R.narration_text(EDIT, s_) for s_ in EDIT['sections'] if s_['narration'].get('file')}
+        self.assertTrue(by['s2'].rstrip().endswith('This is Ayah Lens.'))
+        self.assertFalse(by['s3'].startswith('This is Ayah Lens'), 'the v1.2 s3 no longer repeats the opener')
+
+    def test_total_planned_duration_structure(self):
+        self.assertGreaterEqual(PLAN['duration_s'], 165)
+        self.assertEqual([p['id'] for p in PLAN['sections']], ['s1', 's2', 's3', 's4', 's3b', 's6', 's7'])
         self.assertEqual(PLAN['audio_samples'], PLAN['total_frames'] * 1600)
         pos = 0
         for p in PLAN['sections']:
@@ -336,6 +403,12 @@ class Bounds(unittest.TestCase):
             self.assertGreater(p['frames'], 0)
             pos = p['end_frame']
         self.assertEqual(pos, PLAN['total_frames'])
+
+    def test_total_planned_duration_is_under_the_178_s_cap(self):
+        """RED in v1.2 as specified: the six narration files alone run 148.17 s and the establishing clip 24.0 s, so 178.0 s needs
+        everything else (title card, lens recording, six crossfades, the s3b card hold, the close) inside 5.8 s. See the v1.2 report."""
+        self.assertLessEqual(PLAN['duration_s'], EDIT['limits']['cap_s'], 'over the cap')
+        self.assertLess(PLAN['duration_s'], EDIT['limits']['hard_s'], 'over the 180 s limit')
 
 
 def times_disjoint(a, b):
@@ -485,18 +558,22 @@ class Audio(unittest.TestCase):
         self.assertNotEqual(s7['bed']['source'], 'glasses', 'glasses audio is near-silent after the recitation ends')
 
     def test_cue_times_snap_to_narration_pauses(self):
-        s = next(x for x in EDIT['sections'] if x['id'] == 's3')
-        ps = next(p for p in PLAN['sections'] if p['id'] == 's3')
+        s = next(x for x in EDIT['sections'] if x['id'] == 's3b')
+        ps = next(p for p in PLAN['sections'] if p['id'] == 's3b')
         pauses = R.narration_pauses(str(R.rp(s['narration']['file'])))
-        self.assertGreaterEqual(len(pauses), 4)
-        for phrase in ('Muse Voice', 'Muse Spark'):
-            t_rel = R.phrase_time(EDIT, ps, s, phrase)
+        self.assertGreaterEqual(len(pauses), 8)
+        diagram = next(l for l in s['layers'] if l['type'] == 'diagram')
+        times = []
+        for nd in diagram['nodes']:
+            t_rel = R.phrase_time(EDIT, ps, s, nd['cue'])
+            times.append(t_rel)
             narr_t = t_rel + ps['start_s'] - ps['narr_start']
-            self.assertTrue(any(abs(narr_t - e) < 0.01 for _, e in pauses), f'{phrase} not snapped to a pause end')
-        order = [R.phrase_time(EDIT, ps, s, p) for p in ('Muse Voice', 'Muse Spark')]
-        self.assertLess(order[0], order[1])
-        self.assertLess(order[1], ps['duration_s'])
-
+            if nd['cue'] not in ('iPhone app', 'Muse Voice Transcribe') and not nd.get('cue_offset_s'):  # mid-sentence cues are proportional estimates
+                self.assertTrue(any(abs(narr_t - e) < 0.01 for _, e in pauses), f"{nd['cue']} not snapped to a pause end")
+        self.assertEqual(times, sorted(times), 'nodes must build in narration order')
+        self.assertLess(times[-1] + diagram['nodes'][-1].get('cue_offset_s', 0.0) + 0.1, ps['narr_end'] - ps['start_s'] - diagram['slide']['before_narration_end_s'])
+        late = next(nd for nd in diagram['nodes'] if nd.get('late'))
+        self.assertGreater(R.phrase_time(EDIT, ps, s, late['late']['cue']), R.phrase_time(EDIT, ps, s, late['cue']))
     def test_narration_files_have_speech_and_positive_duration(self):
         for s in EDIT['sections']:
             if not s['narration'].get('file'):
@@ -515,35 +592,45 @@ def s1_of(edit):
 
 
 class OpeningS1(unittest.TestCase):
-    def test_s1_is_the_phone_clip_with_its_own_audio_then_the_lens_recording(self):
+    def test_s1_is_the_phone_clip_the_title_card_then_the_lens_recording(self):
         s1 = s1_of(EST)
         self.assertNotIn('file', s1['narration'], 'no Callum s1 and no narration file')
-        self.assertEqual(s1['narration']['duration_s'], 33.9)
-        est, est_label, lens, lens_label = s1['layers'][1:]
-        self.assertEqual([l['type'] for l in s1['layers']], ['paper', 'footage', 'plate', 'footage', 'plate'])
-        self.assertEqual((est['source'], est['in'], est['out'], est['start_s'], est['end_s']), ('establishing', 0.0, 24.0, 0, 24.0))
-        self.assertEqual((lens['source'], lens['in'], lens['out'], lens['start_s']), ('glasses_desk', 24.3, 34.2, 24.0))
-        self.assertAlmostEqual(est['out'] - est['in'] + lens['out'] - lens['in'], s1['narration']['duration_s'], places=6)
+        self.assertEqual(s1['narration']['duration_s'], 30.2)
+        self.assertEqual([l['type'] for l in s1['layers']], ['paper', 'footage', 'plate', 'plate', 'card', 'footage', 'plate'])
+        _, est, est_label, rubric, card, lens, lens_label = s1['layers']
+        self.assertEqual((est['source'], est['in'], est['out'], est['start_s'], est['end_s'], est['fade_s']), ('establishing', 0.0, 24.0, 0, 24.0, 1.0))
+        self.assertEqual((lens['source'], lens['in'], lens['start_s'], lens['fade_s']), ('glasses_desk', 24.3, 25.2, 0.8))
+        self.assertAlmostEqual(lens['out'] - lens['in'], 5.5, places=6, msg='5.0 s in the section plus the 0.5 s fade tail')
+        # 24.0 s phone clip + 1.2 s title card hold + 5.0 s lens recording; each crossfade overlaps (0.8 s)
+        self.assertAlmostEqual(24.0 + 1.2 + (lens['out'] - lens['in'] - 0.5), s1['narration']['duration_s'], places=6)
+        self.assertEqual((card['start_s'], card['end_s'], card['fade_s']), (23.2, 26.0, 0.8))
+        self.assertAlmostEqual(card['start_s'] + card['fade_s'], est['end_s'], places=6, msg='phone clip ends as the card is fully in')
+        self.assertAlmostEqual(card['end_s'] - card['fade_s'], lens['start_s'], places=6, msg='the lens crossfade starts as the 2.0 s hold ends')
+        self.assertAlmostEqual(lens['start_s'] - est['end_s'], 1.2, places=6)
         self.assertEqual(est_label['lines'][0]['text'], 'Filmed on a phone')
         self.assertEqual(lens_label['lines'][0]['text'], 'What I see through the glasses')
-        self.assertEqual((est_label['end_s'], lens_label['start_s']), (24.0, 24.0))
+        self.assertEqual((est_label['end_s'], lens_label['start_s']), (24.0, 25.2))
         self.assertEqual(EST['footage']['establishing']['label'], 'Filmed on a phone')
         self.assertEqual(EST['footage']['establishing']['file'], 'recordings/v1/IMG_4535-sdr.mp4')
+        # audio: voice fades in over 1.0 s and out over 0.8 s; the bed starts under the lens recording and fades in over 0.5 s
+        self.assertEqual((s1['voice']['fade_in_s'], s1['voice']['fade_out_s'], s1['voice']['lufs']), (1.0, 0.8, -20.0))
+        self.assertEqual((s1['bed']['start_s'], s1['bed']['fade_in_s'], s1['bed']['in']), (25.2, 0.5, 24.3))
 
     def test_the_cut_to_s2_is_where_the_lens_clip_ends(self):
         ps = EST_PLAN['sections'][0]
-        self.assertEqual((ps['id'], ps['frames'], ps['start_s'], ps['end_s']), ('s1', 1017, 0.0, 33.9))
-        self.assertAlmostEqual(24.0 * R.FPS, 720)
-        self.assertAlmostEqual((34.2 - 24.3) * R.FPS, 297, places=6)
+        self.assertEqual((ps['id'], ps['frames'], ps['start_s'], ps['end_s']), ('s1', 906, 0.0, 30.2))
+        self.assertEqual(ps['render_frames'], 906 + 15, 'plus the 15-frame tail that fades into s2')
         s2 = EST_PLAN['sections'][1]
-        self.assertEqual((s2['id'], s2['start_s']), ('s2', 33.9))
-        self.assertAlmostEqual(s2['narr_start'], 33.9 + EST['timing']['default_gap_s'], places=6)
+        self.assertEqual((s2['id'], s2['start_s']), ('s2', 30.2))
+        self.assertAlmostEqual(s2['narr_start'], 30.2 + 0.5, places=6)
         with tempfile.TemporaryDirectory() as d:
             stages, _ = R.resolve_section(EST, EST_PLAN, s1_of(EST), PAL, Path(d))
         foots = [st for st in stages if st['kind'] == 'footage']
-        self.assertEqual((foots[0]['start'], foots[0]['end'], foots[1]['start'], foots[1]['end']), (0, 24.0, 24.0, None))
+        self.assertEqual((foots[0]['start'], foots[0]['end'], foots[1]['start'], foots[1]['end']), (0, 24.0, 25.2, None))
         self.assertAlmostEqual(foots[1]['in'], 24.3, places=3)
-        self.assertAlmostEqual(foots[1]['len'], 9.9, places=3)
+        self.assertAlmostEqual(foots[1]['len'], 5.5, places=3)
+        self.assertAlmostEqual(foots[1]['start'] + foots[1]['len'], ps['render_frames'] / R.FPS, places=3)
+        self.assertEqual((foots[0]['fade'], foots[1]['fade']), (1.0, 0.8))
 
     def test_no_callum_s1_anywhere(self):
         blob = json.dumps(EST['sections']) + json.dumps(FB['sections']) + R.DEFAULT_EDIT.read_text()
@@ -570,6 +657,7 @@ class OpeningS1(unittest.TestCase):
         self.assertEqual((info['w'], info['h'], info['color_transfer'], info['color_range']), (1080, 1920, 'bt709', 'tv'))
         self.assertAlmostEqual(info['duration'], 24.041, places=2)
         label = s1_of(EST)['layers'][2]
+        self.assertEqual(label['lines'][0]['text'], 'Filmed on a phone')
         bb = R.paint_plate(EST, PAL, label).getchannel('A').getbbox()
         self.assertGreaterEqual(bb[0], est['dest'][0] + est['dest'][2], 'the label sits on the paper pillar, not on the clip')
         with tempfile.TemporaryDirectory() as d:
@@ -593,12 +681,41 @@ class OpeningS1(unittest.TestCase):
         b1 = next(b for b in rep['bed'] if b['section'] == 's1')
         self.assertAlmostEqual(b1['measured_lufs'] + b1['gain_db'], -23.0, delta=0.1)
         win = rep['bed_windows']['s1']
-        self.assertAlmostEqual(win['start_s'], 24.0, places=3)
+        self.assertAlmostEqual(win['start_s'], 25.2, places=3)
         self.assertEqual(win['duck_db_min'], 0.0, 'the bed under the lens recording is at the normal level, not ducked')
-        self.assertEqual([n['section'] for n in rep['narration']], ['s2', 's3', 's4', 's6', 's7'])
+        self.assertEqual([n['section'] for n in rep['narration']], ['s2', 's3', 's4', 's3b', 's6', 's7'])
         self.assertEqual(rep['stems']['duck_depth_db_min'], -16.0)
         self.assertLessEqual(rep['mix_peak_dbfs'], -3.0 + 0.05)
         self.assertGreaterEqual(rep['duck_measure']['speaking']['median_db'], 12.0)
+
+    def test_the_three_opening_transitions_are_gradual_fades(self):
+        """Render the s1 picture and frame-diff the boundaries: each transition must change gradually over at least 20 frames."""
+        import copy
+        edit = copy.deepcopy(EST)
+        with tempfile.TemporaryDirectory() as d:
+            edit['work_dir'] = d
+            R.render_sections(edit, EST_PLAN, only={'s1'})
+            raw = subprocess.check_output(['ffmpeg', '-v', 'error', '-i', str(Path(d) / 's1.mp4'), '-vf', 'scale=192:108:flags=area,format=gray',
+                                           '-f', 'rawvideo', '-'])
+        frames = np.frombuffer(raw, dtype=np.uint8).reshape(-1, 108, 192).astype(np.float64)
+        self.assertEqual(len(frames), 921, '906 frames plus the 15-frame fade tail')
+
+        def progress(a, b):
+            ref = np.abs(frames[b] - frames[a]).mean()
+            self.assertGreater(ref, 8, 'the two ends of a transition must differ')
+            return np.array([np.abs(frames[f] - frames[a]).mean() / ref for f in range(a, b + 1)])
+        for name, a, b in (('fade in from paper', 0, 30), ('phone clip to title card', 696, 720), ('title card to lens recording', 756, 780)):
+            p = progress(a, b)
+            mid = int(((p > 0.05) & (p < 0.95)).sum())
+            self.assertGreaterEqual(mid, 20, f'{name}: only {mid} gradual frames')
+            self.assertLessEqual(float(np.abs(np.diff(p)).max()), 0.15, f'{name}: a sudden jump')
+            self.assertGreaterEqual(float(p[-1]), 0.9, name)
+        # the boundaries themselves never jump (the lens recording's own fast camera motion is not a cut)
+        step = np.abs(np.diff(frames, axis=0)).mean(axis=(1, 2))
+        for a, b in ((0, 30), (690, 726), (750, 786)):
+            self.assertLess(float(step[a:b].max()), 14.0, f'a hard cut near frame {a}-{b}')
+        # the last frames, before the fade into s2: the lens clip's own camera pan makes the steps large but they ramp, never jump
+        self.assertLess(float(np.abs(np.diff(step[880:920])).max()), 10.0, 'a hard cut in the tail of s1')
 
 
 class S7Alignment(unittest.TestCase):
@@ -618,14 +735,55 @@ class S7Alignment(unittest.TestCase):
         self.assertEqual(card['appear_phrase'], 'Follow the meaning.')
         self.assertGreater(R.phrase_time(EST, ps, s7, card['appear_phrase']), t_hear)
 
-    def test_s6_holds_on_the_desk_clip_44_to_52_under_the_lines(self):
+    def test_s7_shows_the_two_hifz_lines_over_the_footage_as_they_are_spoken(self):
+        s7 = next(s for s in EST['sections'] if s['id'] == 's7')
+        ps = next(p for p in EST_PLAN['sections'] if p['id'] == 's7')
+        plates = [l for l in s7['layers'] if l['type'] == 'plate' and l.get('role') == 'stat']
+        self.assertEqual([l['lines'][0]['text'] for l in plates],
+                         ['Hifz: Arabic stays in view while you rehearse', 'Future, with more development: a teacher that catches a wrong recitation'])
+        self.assertEqual([l['lines'][0]['text'] for l in plates], [EST['script_lines_exact']['s7_line1'], EST['script_lines_exact']['s7_line2']])
+        self.assertEqual([l['lines'][0]['size'] for l in plates], [48, 48])
+        self.assertEqual([l['appear_phrase'] for l in plates], ['For those memorizing', 'With more development'])
+        cues = [R.phrase_time(EST, ps, s7, l['appear_phrase']) for l in plates]
+        t_hear = R.phrase_time(EST, ps, s7, 'Hear the recitation')
+        t_close = R.phrase_time(EST, ps, s7, 'Follow the meaning.')
+        self.assertLess(cues[0], cues[1])
+        self.assertLess(cues[1], t_hear)
+        self.assertLess(t_hear, t_close)
+        self.assertGreaterEqual(t_close - t_hear, 1.0, 'the two short closing sentences snap to their own pauses')
+        self.assertLessEqual(ps['narr_end'] - ps['start_s'] - t_close, 1.2, 'the close card arrives on the last sentence')
+        text = R.narration_text(EST, s7)
+        self.assertIn('For those memorizing the Quran', text)
+        self.assertIn('With more development, a teacher that catches a wrong recitation', text)
+        self.assertTrue(text.startswith('Now the meaning can follow.'), 'the first two sentences left s7')
+        card = next(l for l in s7['layers'] if l['type'] == 'card')
+        self.assertEqual(card['appear_phrase'], 'Follow the meaning.', 'the close card arrives on the last sentence')
+        self.assertEqual(s7['layers'].index(card), len(s7['layers']) - 1, 'the card is on top of the plates')
+        # both lines stay out of the lens text and inside the margins (the generic overlap test covers every section too)
+        for l in plates:
+            bb = R.paint_plate(EST, PAL, l).getchannel('A').getbbox()
+            self.assertLessEqual(bb[3], 559, 'above the lens text zone')
+            self.assertLessEqual(bb[2], 1880)
+        # the future line says "with more development" and nothing that reads as a shipped feature
+        self.assertNotIn('catches a wrong recitation.', plates[1]['lines'][0]['text'])
+
+    def test_s6_holds_on_the_desk_clip_44_to_52_beside_the_three_lines(self):
         f = layers('s6', 'footage', EST)[0]
         self.assertEqual((f['source'], f['in'], f['out'], f['freeze_after']), ('glasses_desk', 44.0, 52.0, True))
-        self.assertEqual(len(content_plates('s6', EST)), 2)
+        stats = [l for l in layers('s6', 'plate', EST) if l.get('role') == 'stat']
+        self.assertEqual(len(stats), 3)
+        self.assertEqual([l['lines'][0]['size'] for l in stats], [48] * 3)
+        self.assertNotIn('Stale decisions are discarded', R.narration_text(EST, next(s for s in EST['sections'] if s['id'] == 's6')))
+        cues = [R.phrase_time(EST, EST_PLAN['sections'][-2], next(s for s in EST['sections'] if s['id'] == 's6'), l['appear_phrase']) for l in stats]
+        self.assertEqual(cues, sorted(cues), 'the lines appear in the order the voice reaches them')
+        self.assertEqual(stats[0]['lines'][0]['text'], EST['script_lines_exact']['s6_line1'])
+        self.assertEqual(stats[2]['lines'][0]['text'], EST['script_lines_exact']['s6_line2'])
+        self.assertIn('59 tests passed, Nov 2', stats[2]['lines'][0]['text'])
 
     def test_s1_lens_recording_is_the_desk_clip_24_3_to_34_2(self):
         f = next(l for l in layers('s1', 'footage', EDIT) if l['id'] == 'main')
-        self.assertEqual((f['source'], f['in'], f['out']), ('glasses_desk', 24.3, 34.2))
+        self.assertEqual((f['source'], f['in'], f['start_s']), ('glasses_desk', 24.3, 25.2))
+        self.assertAlmostEqual(f['out'] - f['in'], 5.5, places=6)
 
 
 class ToggleAndPlaceholder(unittest.TestCase):
@@ -634,13 +792,14 @@ class ToggleAndPlaceholder(unittest.TestCase):
         by = {s['id']: s for s in EDIT['sections']}
         self.assertNotIn('s5', by)
         self.assertTrue(by['s4']['narration']['file'].endswith('s4-fallback.mp3'))
-        self.assertEqual(by['s6']['narration']['gap_before_s'], 0.35)
+        self.assertNotIn('gap_before_s', by['s3b']['narration'])
+        self.assertNotIn('gap_before_s', by['s6']['narration'])
         self.assertFalse(EDIT['toggle_active'])
         # with a clip: s5 plays it, s4 keeps the bridged line, s6 waits out the hold
         byt = {s['id']: s for s in TOG['sections']}
         self.assertTrue(TOG['toggle_active'])
         self.assertTrue(byt['s4']['narration']['file'].endswith('narration/s4.mp3'))
-        self.assertEqual(byt['s6']['narration']['gap_before_s'], 2.35)
+        self.assertNotIn('gap_before_s', byt['s3b']['narration'])
         s5 = byt['s5']
         self.assertEqual([l['type'] for l in s5['layers']], ['paper', 'footage', 'plate', 'plate'])
         foot = s5['layers'][1]
@@ -650,8 +809,11 @@ class ToggleAndPlaceholder(unittest.TestCase):
         self.assertEqual((y, h), (0, 1080), 'a portrait clip is pillar-boxed full height')
         self.assertEqual(foot['crop'], [0, 0, 1206, 2622], 'never cropped')
         self.assertEqual(R.make_plan(TOG)['sections'][4]['id'], 's5')
-        self.assertLess(R.make_plan(EDIT)['duration_s'], 180)
-        self.assertLess(R.make_plan(TOG)['duration_s'], 180)
+        cap = EDIT['limits']['cap_s']
+        R.check_cap(R.make_plan(EDIT), 1000.0)
+        self.assertGreater(R.make_plan(TOG)['duration_s'], R.make_plan(EDIT)['duration_s'] + 6, 'a toggle clip adds s5')
+        with self.assertRaises(ValueError):
+            R.check_cap(R.make_plan(TOG), cap)
 
     def test_toggle_input_is_validated(self):
         with self.assertRaises(FileNotFoundError):
@@ -693,20 +855,230 @@ class ToggleAndPlaceholder(unittest.TestCase):
                 self.assertNotIn('s5', [s['id'] for s in e['sections']])
 
 
+RUBRIC = {'s1': 'DEMO', 's2': 'IMPACT', 's3': 'META AI TOOLING', 's4': 'DEMO \u00b7 TECHNICAL DEPTH',
+          's3b': 'META AI TOOLING \u00b7 TECHNICAL DEPTH', 's6': 'TECHNICAL DEPTH', 's7': 'IMPACT'}
+NODES = [
+    (1, 'Glasses microphones'), (2, 'iPhone app \u00b7 Device Access Toolkit'), (3, 'Muse Voice Transcribe \u00b7 live Arabic'),
+    (4, 'Local index \u00b7 6,236 ayahs'), (5, 'Source-word tracker \u00b7 position inside the verse'),
+    (6, 'Muse Spark 1.3 \u00b7 chat completions API \u00b7 strict JSON-schema output \u00b7 constrained choice or abstain \u00b7 Arabic \u2194 Pickthall pairing \u00b7 validated, then cached'),
+    (7, 'Display scheduler \u00b7 newest window only'), (8, 'Lens')]
+API_LINES = ['Meta Model API \u00b7 https://api.meta.ai/v1',
+             'muse-voice-transcribe-1.0 \u00b7 wss://api.meta.ai/v1/asr/realtime (streaming Arabic)',
+             'muse-spark-1.3 \u00b7 POST /v1/chat/completions \u00b7 response_format json_schema, strict',
+             'candidates enum: verse ids + "abstain"',
+             'Wearables Device Access Toolkit 1.0.1 \u00b7 MWDATCore \u00b7 MWDATDisplay']
+
+
+class RubricPlates(unittest.TestCase):
+    def test_every_section_opens_with_its_rubric_plate_for_2_5_s(self):
+        for sid, text in RUBRIC.items():
+            plates = [l for l in layers(sid, 'plate', EDIT) if l.get('role') == 'rubric']
+            self.assertEqual(len(plates), 1, sid)
+            pl = plates[0]
+            self.assertEqual(pl['lines'], [{'text': text, 'size': 48, 'bold': True, 'color': 'blue'}], sid)
+            self.assertEqual((pl['anchor'], pl['pos'][1], pl['end_s']), ('tl', 28, 2.5), sid)
+            self.assertNotIn('start_s', pl)
+            self.assertNotIn('appear_phrase', pl)
+            self.assertLess(pl['pos'][0], 300)
+        self.assertEqual(sorted(RUBRIC), sorted(s['id'] for s in EDIT['sections']))
+
+    def test_rubric_plates_never_overlap_labels_pins_footage_or_each_other(self):
+        for sid in RUBRIC:
+            s = next(x for x in EDIT['sections'] if x['id'] == sid)
+            rub = next(l for l in s['layers'] if l.get('role') == 'rubric')
+            bb = R.paint_plate(EDIT, PAL, rub).getchannel('A').getbbox()
+            self.assertIsNotNone(bb)
+            self.assertLessEqual(bb[2], 1280, f'{sid}: the rubric plate reaches the top-right label corner')
+            for l in s['layers']:
+                if l is rub:
+                    continue
+                if l['type'] in ('plate', 'pin') and not times_disjoint(rub, l):
+                    other = (R.paint_plate(EDIT, PAL, l) if l['type'] == 'plate' else R.paint_pin(EDIT, PAL, l)).getchannel('A').getbbox()
+                    self.assertTrue(bb[2] <= other[0] or other[2] <= bb[0] or bb[3] <= other[1] or other[3] <= bb[1], f"{sid}: rubric overlaps {l.get('role') or l['type']}")
+                if l['type'] == 'footage' and tuple(l['dest'][2:]) != (W, H):
+                    fx, fy, fw, fh = l['dest']
+                    self.assertTrue(bb[2] <= fx or bb[0] >= fx + fw or bb[3] <= fy or bb[1] >= fy + fh, f'{sid}: rubric overlaps the footage window')
+        # s4: the plate sits right of the 2:282 pin
+        s4 = next(x for x in EDIT['sections'] if x['id'] == 's4')
+        pin = R.paint_pin(EDIT, PAL, next(l for l in s4['layers'] if l['type'] == 'pin')).getchannel('A').getbbox()
+        rub = R.paint_plate(EDIT, PAL, next(l for l in s4['layers'] if l.get('role') == 'rubric')).getchannel('A').getbbox()
+        self.assertGreaterEqual(rub[0], pin[2])
+
+
+class Diagram(unittest.TestCase):
+    def setUp(self):
+        self.s3b = next(s for s in EDIT['sections'] if s['id'] == 's3b')
+        self.diagram = next(l for l in self.s3b['layers'] if l['type'] == 'diagram')
+
+    def test_eight_nodes_with_the_exact_texts_in_two_rows(self):
+        nodes = self.diagram['nodes']
+        self.assertEqual(len(nodes), 8)
+        self.assertEqual([(n['n'], ' \u00b7 '.join(R.node_parts(n))) for n in nodes], NODES)
+        self.assertEqual([n['row'] for n in nodes], [0, 0, 0, 0, 1, 1, 1, 1])
+        tags = {n['n']: (n['tag']['text'], n['tag']['color']) for n in nodes if n.get('tag')}
+        self.assertEqual(tags, {3: ('LIVE', 'blue'), 5: ('LIVE', 'blue'), 6: ('PREPARED IN ADVANCE', 'red')})
+        n6 = nodes[5]
+        self.assertEqual(n6['title'], 'Muse Spark 1.3 \u00b7 chat completions API')
+        self.assertEqual(n6['subs'], ['strict JSON-schema output \u00b7 constrained choice or abstain', 'Arabic \u2194 Pickthall pairing \u00b7 validated, then cached'])
+        self.assertEqual((n6['tag']['text'], n6['tag']['color']), ('PREPARED IN ADVANCE', 'red'), 'the tag stays')
+        self.assertEqual(n6['late']['items'], ['sub:1', 'tag'], 'the pairing line and the tag arrive on the pairing sentence')
+        self.assertEqual(n6['cue'], 'Muse Spark 1.3')
+        self.assertIn(n6['late']['cue'], R.narration_text(EDIT, self.s3b))
+        laid, row_y, row_h, g = R.diagram_layout(EDIT, self.diagram)
+        lay6 = laid[5]
+        self.assertEqual(lay6['title_lines'], ['Muse Spark 1.3', 'chat completions API'], 'the title breaks at its separator, which is dropped')
+        self.assertEqual(lay6['sub_lines'], [['strict JSON-schema output', 'constrained choice or abstain'], ['Arabic \u2194 Pickthall pairing', 'validated, then cached']])
+        for ln in lay6['title_lines'] + [x for subl in lay6['sub_lines'] for x in subl]:
+            self.assertFalse(ln.startswith('\u00b7') or ln.endswith('\u00b7'), f'dangling separator on {ln!r}')
+        self.assertEqual(len(lay6['title_lines']), 2)
+        for sub, wrapped in zip(n6['subs'], lay6['sub_lines']):
+            self.assertEqual(' '.join(wrapped).split(), sub.replace(' \u00b7 ', ' ').split(), 'every word survives; only the separator is dropped at a break')
+        self.assertGreaterEqual(self.diagram['sub_px'], 40)
+        self.assertGreaterEqual(self.diagram['tag_px'], 40)
+        self.assertLessEqual(lay6['y'] + lay6['h'], H - EDIT['bottom_margin_px'])
+        af = self.diagram['audio_flow']
+        self.assertEqual((af['from'], af['to'], af['label']), (1, 3, 'audio goes to Muse Voice'))
+
+    def test_all_diagram_text_is_at_least_40_px_and_node_titles_48(self):
+        self.assertEqual(self.diagram['title_px'], 48)
+        for k in ('sub_px', 'tag_px'):
+            self.assertGreaterEqual(self.diagram[k], 40)
+        self.assertGreaterEqual(self.diagram['audio_flow']['label_px'], 40)
+        nodes, row_y, row_h, g = R.diagram_layout(EDIT, self.diagram)
+        self.assertEqual(len(nodes), 8)
+        self.assertEqual((g['title_px'], g['sub_px'], g['tag_px']), (48, 40, 40))
+        # every wrapped line fits inside its node (layout raises otherwise)
+        for n in nodes:
+            for ln in n['title_lines']:
+                self.assertLessEqual(R.text_width(EDIT['fonts']['latin_bold'], 48, ln), n['w'] - 2 * g['pad'] + 1)
+
+    def test_diagram_stays_inside_the_safe_area(self):
+        nodes, row_y, row_h, g = R.diagram_layout(EDIT, self.diagram)
+        for n in nodes:
+            self.assertGreaterEqual(n['x'], 60)
+            self.assertLessEqual(n['x'] + n['w'], W - 60)
+            self.assertGreaterEqual(n['y'], 130)
+            self.assertLessEqual(n['y'] + n['h'], H - EDIT['bottom_margin_px'])
+        items = R.paint_diagram(EDIT, PAL, self.diagram)
+        self.assertEqual(len([i for i in items if i['node']]), 9, '8 nodes plus the late items of node 6')
+        for it in items:
+            bb = it['img'].getchannel('A').getbbox()
+            self.assertGreaterEqual(bb[0], 40)
+            self.assertLessEqual(bb[2], W - 40)
+            self.assertGreaterEqual(bb[1], 100)
+            self.assertLessEqual(bb[3], H - EDIT['bottom_margin_px'], it['name'])
+
+    def test_nodes_build_in_time_with_the_narration_cues(self):
+        ps = next(p for p in PLAN['sections'] if p['id'] == 's3b')
+        text = R.narration_text(EDIT, self.s3b)
+        for n in self.diagram['nodes']:
+            self.assertIn(n['cue'], text)
+        times = [R.phrase_time(EDIT, ps, self.s3b, n['cue']) + n.get('cue_offset_s', 0.0) for n in self.diagram['nodes']]
+        self.assertEqual(times, sorted(times))
+        self.assertEqual(len(set(round(x, 2) for x in times)), 8)
+        audio = R.phrase_time(EDIT, ps, self.s3b, self.diagram['audio_flow']['cue'])
+        self.assertLess(audio, times[2] + 0.01, 'the audio line is drawn no later than node 3')
+        self.assertGreater(audio, times[0])
+
+
+class ApiCard(unittest.TestCase):
+    def setUp(self):
+        self.s3b = next(s for s in EDIT['sections'] if s['id'] == 's3b')
+        self.card = next(l for l in self.s3b['layers'] if l['type'] == 'api_card')
+
+    def test_the_five_api_lines_are_exact_44_px_with_identifiers_in_monospace(self):
+        plain = [R.plain_from_markup(x) for x in self.card['lines']]
+        self.assertEqual(plain, API_LINES)
+        self.assertEqual(self.card['line_px'], 44)
+        self.assertEqual(self.card['title'], 'API references, from the source')
+        mono = {t for raw in self.card['lines'] for t, m, _ in R.parse_markup(raw) if m}
+        for ident in ('https://api.meta.ai/v1', 'muse-voice-transcribe-1.0', 'wss://api.meta.ai/v1/asr/realtime', 'muse-spark-1.3',
+                      'POST /v1/chat/completions', 'MWDATCore', 'MWDATDisplay', '"abstain"'):
+            self.assertIn(ident, mono)
+        rows, src_lines, wrapped = R.api_card_layout(EDIT, self.card)
+        # identifiers are never split across lines
+        for toks, widths, lines in rows:
+            placed = sorted(i for ln in lines for i in ln)
+            self.assertEqual(placed, list(range(len(toks))))
+
+    def test_code_excerpt_is_verbatim_from_museSpark_swift_and_never_truncated(self):
+        code = self.card['code']
+        self.assertEqual((code['label'], code['px'], code['lines']), ('MuseSpark.swift', 40, [24, 25]))
+        src = (R.ROOT / code['source']).read_text().split('\n')
+        want = [src[n - 1].strip() for n in code['lines']]
+        self.assertIn('"model": "muse-spark-1.3"', want[0])
+        self.assertIn('"response_format": ["type": "json_schema"', want[1])
+        self.assertIn('"strict": true', want[1])
+        rows, src_lines, wrapped = R.api_card_layout(EDIT, self.card)
+        self.assertEqual(src_lines, want)
+        self.assertNotIn('"enum": ids + ["abstain"]', ' '.join(wrapped), 'line 19 is dropped; the card keeps its own candidates line')
+        self.assertIn('candidates enum: verse ids + "abstain"', [R.plain_from_markup(x) for x in self.card['lines']])
+        self.assertEqual(' '.join(wrapped).split(' '), ' '.join(want).split(' '), 'wrapping at spaces only: every token survives')
+        self.assertLessEqual(len(wrapped), 12, 'two source lines wrap to about eleven visual lines (three lines took sixteen)')
+        mono = EDIT['fonts']['mono']
+        for ln in wrapped:
+            self.assertLessEqual(R.text_width(mono, 40, ln), self.card['right'][2] - 52 + 1)
+
+    def test_card_arrives_one_second_before_the_voice_ends_and_stays_four_and_a_half_after_a_two_second_diagram_hold(self):
+        img = R.paint_api_card(EDIT, PAL, self.card)
+        self.assertEqual(img.size, (W, H))
+        ps = next(p for p in PLAN['sections'] if p['id'] == 's3b')
+        diagram = next(l for l in self.s3b['layers'] if l['type'] == 'diagram')
+        slide = ps['narr_end'] - ps['start_s'] - diagram['slide']['before_narration_end_s']
+        start = ps['narr_end'] - ps['start_s'] - self.card['appear_before_narration_end_s']
+        self.assertEqual((diagram['slide']['before_narration_end_s'], self.card['appear_before_narration_end_s']), (1.0, 1.0))
+        self.assertAlmostEqual(start, slide, places=6, msg='the diagram leaves exactly as the card arrives')
+        self.assertEqual(diagram['slide']['duration_s'], self.card['slide_in_s'])
+        self.assertAlmostEqual(ps['duration_s'] - start, 4.5, delta=1 / R.FPS + 0.01, msg='card on screen 4.5 s from the start of the slide until its fade out begins')
+        self.assertAlmostEqual(ps['end_s'] - ps['narr_end'], 3.5, delta=1 / R.FPS)
+        n8 = diagram['nodes'][-1]
+        t8 = R.phrase_time(EDIT, ps, self.s3b, n8['cue']) + n8.get('cue_offset_s', 0.0)
+        self.assertLessEqual(t8 + 2.0, start, 'the finished diagram holds at least 2.0 s before the card pushes in')
+        n7 = diagram['nodes'][-2]
+        t7 = R.phrase_time(EDIT, ps, self.s3b, n7['cue']) + n7.get('cue_offset_s', 0.0)
+        self.assertAlmostEqual(t8 - t7, 1.0, places=6, msg='nodes 7 and 8 are 1.0 s apart')
+        self.assertIn('min(1,max(0,(t-', R.motion_y({'kind': 'out_up', 't0': 1.0, 'd': 1.0}, H))
+        self.assertTrue(R.motion_y({'kind': 'in_up', 't0': 1.0, 'd': 1.0}, H).startswith(f'{H}*(1-'))
+
+
+
+class OrderAndNarration(unittest.TestCase):
+    def test_section_order_and_narration_files(self):
+        self.assertEqual([s['id'] for s in EDIT['sections']], ['s1', 's2', 's3', 's4', 's3b', 's6', 's7'])
+        files = {s['id']: Path(s['narration']['file']).name for s in EDIT['sections'] if s['narration'].get('file')}
+        self.assertEqual(files, {'s2': 's2.mp3', 's3': 's3-v12.mp3', 's4': 's4-fallback.mp3', 's3b': 's3b-v12.mp3',
+                                 's6': 's6-v12.mp3', 's7': 's7-v12.mp3'})
+        for sid, name in files.items():
+            self.assertTrue((R.ROOT / 'build/video-v1.0/narration' / name).exists(), name)
+            self.assertGreater(len(R.narration_text(EDIT, next(s for s in EDIT['sections'] if s['id'] == sid))), 40)
+        by = {p['id']: p for p in PLAN['sections']}
+        for sid, prev in (('s2', 's1'), ('s3', 's2'), ('s4', 's3'), ('s3b', 's4'), ('s6', 's3b'), ('s7', 's6')):
+            self.assertAlmostEqual(by[sid]['narr_start'] - by[prev]['end_s'], 0.5, places=9, msg=f'{sid} starts when the fade off {prev} ends')
+        # s3 ends on 'that is the easy part'; s4 (without the bridge) ends 'moves with it'
+        self.assertTrue(R.narration_text(EDIT, next(s for s in EDIT['sections'] if s['id'] == 's3')).rstrip().endswith('And that is the easy part.'))
+        self.assertTrue(R.narration_text(EDIT, next(s for s in EDIT['sections'] if s['id'] == 's4')).rstrip().endswith('and the meaning moves with it.'))
+        for sid in ('s2', 's3', 's4', 's6'):
+            self.assertAlmostEqual(by[sid]['end_s'], by[sid]['speech_end'], delta=1 / R.FPS)
+
+    def test_s7_close_card_and_tail(self):
+        s7 = next(s for s in EDIT['sections'] if s['id'] == 's7')
+        self.assertEqual(s7['narration']['cut_offset_s'], -1.5, 'the close holds 1.5 s past the voice (was 2.0 s)')
+        ps = next(p for p in PLAN['sections'] if p['id'] == 's7')
+        self.assertAlmostEqual(ps['end_s'] - ps['narr_end'], 1.5, delta=1 / R.FPS)
+        card = next(l for l in s7['layers'] if l['type'] == 'card')
+        self.assertEqual(' \u00b7 '.join(l['text'] for l in card['lines']), EDIT['script_lines_exact']['s7_card'])
+        self.assertEqual(EDIT['audio']['final_fade_s'] + EDIT['audio']['final_quiet_s'], 1.0)
+
+
 class Fallback(unittest.TestCase):
     def test_fallback_uses_the_fallback_narration_and_pictures(self):
         by = {s['id']: s for s in FB['sections']}
         self.assertNotIn('file', by['s1']['narration'], 'fallback s1 is the same on-camera opening: no Callum s1')
         self.assertTrue(by['s4']['narration']['file'].endswith('s4-fallback.mp3'))
-        self.assertTrue(by['s6']['narration']['file'].endswith('s6.mp3'))
-        self.assertEqual(by['s6']['narration']['gap_before_s'], 0.35)
-        f6 = next(l for l in by['s6']['layers'] if l['type'] == 'footage')
-        self.assertEqual((f6['source'], f6['in'], f6['out']), ('phone_long', 60.0, 72.0))
-        f7 = next(l for l in by['s7']['layers'] if l['type'] == 'footage')
-        self.assertEqual(f7['source'], 'glasses')
-        self.assertGreaterEqual(f7['in'], 14.3)
-        self.assertLessEqual(f7['out'], 29.5)
+        self.assertTrue(by['s6']['narration']['file'].endswith('s6-v12.mp3'))
         self.assertFalse(RAW['fallback']['enabled'])
+        # with the old fallback pictures removed, fallback mode is the default without a toggle clip
+        self.assertEqual(FB['sections'], EDIT['sections'])
 
     @unittest.skipUnless(FB_READY, 'fallback narration files not generated yet')
     def test_fallback_footage_stays_inside_the_source_files(self):
@@ -720,25 +1092,11 @@ class Fallback(unittest.TestCase):
                     self.assertLess(l['start_s'], ps['duration_s'], s['id'])
 
     @unittest.skipUnless(FB_READY, 'fallback narration files not generated yet')
-    def test_fallback_plan_is_valid_and_s7_english_lands_on_hear_the_recitation(self):
+    @unittest.skipUnless(FB_READY, 'fallback narration files not generated yet')
+    def test_fallback_plan_is_valid(self):
         plan = R.make_plan(FB)
-        self.assertLess(plan['duration_s'], 180)
+        self.assertEqual(plan['duration_s'], PLAN['duration_s'])
         self.assertEqual(plan['audio_samples'], plan['total_frames'] * 1600)
-        s7 = next(s for s in FB['sections'] if s['id'] == 's7')
-        ps = next(p for p in plan['sections'] if p['id'] == 's7')
-        t_hear = R.phrase_time(FB, ps, s7, 'Hear the recitation')
-        f7 = next(l for l in s7['layers'] if l['type'] == 'footage')
-        landing = f7['start_s'] + (27.0 - f7['in'])  # 112:4 arrives at 27.0 s in take-03
-        self.assertAlmostEqual(landing, t_hear, delta=0.1)
-        card = next(l for l in s7['layers'] if l['type'] == 'card')
-        self.assertGreater(card['start_s'], landing + 1.0)
-        for s in FB['sections']:
-            if s['narration'].get('file'):
-                self.assertTrue(R.rp(s['narration']['file']).exists(), s['id'])
-            ps = next(p for p in plan['sections'] if p['id'] == s['id'])
-            for l in s['layers']:
-                if l['type'] == 'footage' and not l.get('freeze_after'):
-                    self.assertLessEqual(l.get('end_s', ps['duration_s']) - l['start_s'], l['out'] - l['in'] + 1 / R.FPS)
 
     @unittest.skipUnless(FB_READY, 'fallback narration files not generated yet')
     def test_fallback_ribbon_states_fit_the_shorter_s4(self):
@@ -763,24 +1121,24 @@ class NarrationSource(unittest.TestCase):
         by = {s['id']: s for s in own['sections']}
         self.assertNotIn('file', by['s1']['narration'], 's1 has no narration file: Faraz speaks on camera')
         stems = {sid: Path(s['narration']['file']).stem for sid, s in by.items() if s['narration'].get('file')}
-        self.assertEqual(stems, {'s2': 's2', 's3': 's3', 's4': 's4-fallback', 's6': 's6', 's7': 's7'})
+        self.assertEqual(stems, {'s2': 's2', 's3': 's3-v12', 's4': 's4-fallback', 's3b': 's3b-v12', 's6': 's6-v12', 's7': 's7-v12'})
         for sid, stem in stems.items():
             self.assertEqual(by[sid]['narration']['file'], f"build/video-v1.0/narration/own/{stem}.wav")
             self.assertTrue(by[sid]['narration']['callum_file'].endswith('.mp3'))
         own_t = R.apply_narration_source(TOG, 'own')
-        self.assertEqual([Path(s['narration']['file']).stem for s in own_t['sections'] if s['narration'].get('file')], ['s2', 's3', 's4', 's5', 's6', 's7'])
+        self.assertEqual([Path(s['narration']['file']).stem for s in own_t['sections'] if s['narration'].get('file')],
+                         ['s2', 's3-v12', 's4', 's5', 's3b-v12', 's6-v12', 's7-v12'])
         for a, b in zip(EDIT['sections'], own['sections']):
-            for k in ('cut_offset_s', 'gap_before_s'):
+            for k in ('cut_offset_s', 'gap_before_s', 'end_at'):
                 self.assertEqual(a['narration'].get(k), b['narration'].get(k))
 
     def test_own_source_in_fallback_mode_uses_the_fallback_takes(self):
         own_fb = R.apply_narration_source(FB, 'own')
         by = {s['id']: s['narration'].get('file') for s in own_fb['sections']}
-        self.assertEqual(list(by), ['s1', 's2', 's3', 's4', 's6', 's7'])
+        self.assertEqual(list(by), ['s1', 's2', 's3', 's4', 's3b', 's6', 's7'])
         self.assertIsNone(by['s1'])
         self.assertEqual(by['s4'], 'build/video-v1.0/narration/own/s4-fallback.wav')
-        self.assertEqual(by['s6'], 'build/video-v1.0/narration/own/s6.wav')
-        self.assertEqual(R.load_edit(fallback=True, voice='own')['sections'][3]['narration']['file'], by['s4'])
+        self.assertEqual(by['s6'], 'build/video-v1.0/narration/own/s6-v12.wav')
 
     def test_unknown_source_is_rejected_and_missing_own_files_name_the_fix(self):
         with self.assertRaises(ValueError):

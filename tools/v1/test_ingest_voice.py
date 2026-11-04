@@ -155,14 +155,14 @@ class Folder(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             src, out = Path(d) / 'in', Path(d) / 'own'
             src.mkdir()
-            for i in range(1, 8):
-                shutil.copy(CALLUM / f's{i}.mp3', src / f's{i}.mp3')
-            for n in ('s1-fallback', 's4-fallback'):
+            names = [f's{i}' for i in range(1, 8)] + ['s1-fallback', 's4-fallback', 's3-short', 's3b-architecture', 's6-deep', 's3-v12', 's3b-v12', 's6-v12', 's7-v12']
+            for n in names:
                 shutil.copy(CALLUM / f'{n}.mp3', src / f'{n}.mp3')
             m = I.ingest_folder(src, out, CALLUM, log=lambda *_: None)
-            self.assertEqual([f['id'] for f in m['files']], [f's{i}' for i in range(1, 8)] + ['s1-fallback', 's4-fallback'])
+            self.assertEqual(sorted(f['id'] for f in m['files']), sorted(names))
             self.assertEqual((m['refused'], m['missing_required']), ([], []))
-            self.assertEqual(m['extra_ingested'], ['s1', 's4', 's5', 's1-fallback'], 's1, the bridged s4, s5 and s1-fallback are ingested but unused in the default film')
+            self.assertEqual(sorted(m['extra_ingested']), sorted(['s1', 's3', 's4', 's5', 's6', 's7', 's1-fallback', 's3-short', 's3b-architecture', 's6-deep']),
+                             'the old s3 and s6, the bridged s4, s5, s1 and s1-fallback are ingested but unused in the default film')
             for f in m['files']:
                 self.assertEqual(f['status'], 'ok', f)
                 self.assertAlmostEqual(f['integrated_lufs'], -20.0, delta=1.0)
@@ -170,13 +170,15 @@ class Folder(unittest.TestCase):
                 self.assertLess(abs(f['ratio_to_callum'] - 1), 0.1)
                 self.assertTrue(Path(f['output']).exists())
             self.assertTrue((out / 'manifest.json').exists())
+            for name in ('paragraphs.json', 'fallback-paragraphs.json'):  # the cue texts live one folder above own/
+                shutil.copy(CALLUM / name, Path(d) / name)
             # the render plan accepts the own files: swap them in through narration.source and compare durations
             edit = R.apply_narration_source(R.load_edit(fallback=False, voice='callum'), 'own')
             for s in edit['sections']:
                 if s['narration'].get('file'):
                     s['narration']['file'] = str(out / (Path(s['narration']['file']).stem + '.wav'))
             plan, base = R.make_plan(edit), R.make_plan(R.load_edit(voice='callum'))
-            self.assertLess(plan['duration_s'], 180)
+            # the over-cap question belongs to test_render_v1 (the cap test); here the own files only have to track the Callum timing
             self.assertLess(abs(plan['duration_s'] - base['duration_s']), 3.0)
         after = {p.name: sha(p) for p in CALLUM.glob('*.mp3')}
         self.assertEqual(before, after, 'Callum files must never change')
@@ -192,8 +194,8 @@ class Folder(unittest.TestCase):
             src.mkdir()
             write_wav(src / 's1.wav', padded())
             m = I.ingest_folder(src, out, cal, log=lambda *_: None)
-            self.assertEqual(m['required_ids'], ['s2', 's3', 's4-fallback', 's6', 's7'])
-            self.assertEqual(m['missing_required'], ['s2', 's3', 's4-fallback', 's6', 's7'])
+            self.assertEqual(m['required_ids'], ['s2', 's3-v12', 's4-fallback', 's3b-v12', 's6-v12', 's7-v12'])
+            self.assertEqual(m['missing_required'], ['s2', 's3-v12', 's4-fallback', 's3b-v12', 's6-v12', 's7-v12'])
             self.assertEqual([f['id'] for f in m['files']], ['s1'])
 
 

@@ -46,6 +46,6 @@ Repository: https://github.com/khiradlabs/ayah-lens
 
 Implementation: merged to main on Nov 4 (PR 1).
 
-Video URL: https://github.com/khiradlabs/ayah-lens/releases/download/v1.0-hackathon/Ayah-Lens-Demo-v1.0.mp4 (release page https://github.com/khiradlabs/ayah-lens/releases/tag/v1.0-hackathon); check it signed out after upload.
+Video URL: https://github.com/khiradlabs/ayah-lens/releases/download/v1.0-hackathon/Ayah-Lens-Demo.mp4 (release page https://github.com/khiradlabs/ayah-lens/releases/tag/v1.0-hackathon); check it signed out after upload.
 
 Entrant and contributor fields: copy the accepted profile and list all actual contributors. Do not guess legal acceptance fields or submit this draft automatically.
