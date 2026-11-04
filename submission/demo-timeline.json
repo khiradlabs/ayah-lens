@@ -1,0 +1,100 @@
+{
+  "title": "Ayah Lens demo script Draft 1",
+  "duration_seconds": 180,
+  "baseline_version": "0.3.0",
+  "baseline_build": 28,
+  "source_branch": "feat/within-ayah-following",
+  "status": "Script and capture plan ready; final footage not assembled",
+  "segments": [
+    {
+      "start": 0,
+      "end": 8,
+      "title": "Show the working glasses first",
+      "narration": "",
+      "visual": "Actual glasses output and the live phone Lens preview, with the same recitation audible. Keep this opening continuous.",
+      "overlay": "Ayah Lens · Follow the meaning",
+      "capture": "hero_live"
+    },
+    {
+      "start": 8,
+      "end": 34,
+      "title": "Establish the human need",
+      "narration": "About two billion people are Muslim, roughly a quarter of humanity. Five daily prayers make recitation a recurring part of worship. Three include passages recited aloud in congregation. For listeners who do not understand Arabic, following the meaning can mean looking away from the recitation.",
+      "visual": "Faraz on camera, then a simple population card and a listener wearing the glasses. Use everyday listening footage, without staging a claim of formal-prayer approval.",
+      "overlay": "About 2 billion Muslims · Pew 2020 estimate, published 2025\nFive daily prayers · recurring listening context",
+      "capture": "founder_intro"
+    },
+    {
+      "start": 34,
+      "end": 48,
+      "title": "Introduce the product",
+      "narration": "Ayah Lens listens through Meta Ray-Ban Display glasses and brings the Arabic and published English meaning into view. Start listening once, then follow hands free.",
+      "visual": "Show version 0.3.0 Build 28, the external recitation source and Start Muse live Quran. Establish that the phone stays foregrounded.",
+      "overlay": "Glasses microphone → live recitation following",
+      "capture": "start_session"
+    },
+    {
+      "start": 48,
+      "end": 83,
+      "title": "Prove automatic following",
+      "narration": "",
+      "visual": "One continuous external-reciter take of 73:20 or 2:102. Show actual lens output and the matching Lens preview. Keep at least 25 seconds uncut and retain recitation audio. Capture at least three automatic window changes without touching Next.",
+      "overlay": "Actual glasses display | Live phone preview\nKeep each label attached to its own view.",
+      "capture": "hero_live"
+    },
+    {
+      "start": 83,
+      "end": 101,
+      "title": "Explain within ayah following",
+      "narration": "The hard part is following a long ayah. The display moves through the relevant portion automatically, with a little upcoming context. No page turning is needed as the recitation continues.",
+      "visual": "Continue the same passage. Point out the same verse ID while the source portion changes. An explanatory close-up can follow the continuous proof take.",
+      "overlay": "Same ayah · automatic portion changes",
+      "capture": "within_ayah"
+    },
+    {
+      "start": 101,
+      "end": 131,
+      "title": "Show what Muse contributes",
+      "narration": "Muse Voice Transcribe supplies the live Arabic transcript. Muse Spark helps resolve uncertain verse candidates, and pairs Arabic phrases with ranges from the published Pickthall translation. We validate those boundaries and cache them. Local code tracks the position and selects the source text. Spark’s contribution is visible here: usable meaning alongside a moving recitation.",
+      "visual": "Use a simple architecture diagram, then show one real paired source window. Label cached phrase plans accurately. If showing candidate-resolution evidence, identify the selected synthetic diagnostic separately from the live take.",
+      "overlay": "Muse Voice Transcribe · live Arabic\nMuse Spark 1.3 · candidate decisions and paired source portions\nPhrase plan cached · displayed text from attributed sources",
+      "capture": "model_roles"
+    },
+    {
+      "start": 131,
+      "end": 150,
+      "title": "Explain source trust and scope",
+      "narration": "The display uses unchanged Tanzil Arabic and Pickthall English. The full reference covers 114 surahs and 6,236 ayahs. This prototype identifies passages and follows supported phrases; shared openings can wait for more evidence.",
+      "visual": "Show the source attribution, one canonical-reference lookup and an unchanged source slice. Distinguish full reference coverage from measured recognition accuracy.",
+      "overlay": "114 surahs · 6,236 reference ayahs\nArabic: Tanzil · English: Pickthall",
+      "capture": "source_proof"
+    },
+    {
+      "start": 150,
+      "end": 164,
+      "title": "Make the new work visible",
+      "narration": "Built during the hackathon: the glasses integration, live Muse client, verse retrieval, phrase tracking, and automatic display. Fifty-two automated tests cover core matching, source preservation, and display scheduling.",
+      "visual": "Show real event-dated Git history, original source modules and the existing 52-test result. Keep credentials and private test receipts out of this view.",
+      "overlay": "Original event implementation · October 26–29\n52 automated tests passed",
+      "capture": "engineering_proof"
+    },
+    {
+      "start": 164,
+      "end": 175,
+      "title": "State the next milestone",
+      "narration": "Today, the prototype supports selected hands-free listening demonstrations. Next comes broader reciter testing and language support, with reliable meaning in view as the goal.",
+      "visual": "Return to Faraz and the working device. Treat broader reciters and additional languages as future work.",
+      "overlay": "Working prototype · English meaning\nNext: broader reciter evaluation",
+      "capture": "founder_close"
+    },
+    {
+      "start": 175,
+      "end": 180,
+      "title": "Close on the user benefit",
+      "narration": "Ayah Lens. Hear the recitation. Follow the meaning.",
+      "visual": "End with the working glasses and a readable project/repository address. Add the final accessible video/submission link only when available.",
+      "overlay": "Ayah Lens\nHear the recitation. Follow the meaning.",
+      "capture": "closing_card"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+# Ayah Lens hackathon prototype specification
+
+## Goal
+
+Follow recitation from anywhere in the complete Quran through Meta glasses and display unchanged canonical Arabic plus a published English translation. The delivery target is all 114 surahs and 6,236 ayahs in the prepared reference, not a series of individually selected short-surah demos.
+
+Al-Fatihah was the first integration slice for proving audio, live Muse transcription, matching and lens display. It is not the complete product scope.
+
+The event build window is October 26 through November 4 after organizer clarification. The submission target is November 4, 8 PM Houston time. The implementation is native SwiftUI using Meta Wearables DAT 1.0.1.
+
+## Current implementation
+
+- Version 0.3.0, Build 28 bundles all 6,236 aligned Arabic/Pickthall rows across 114 surahs.
+- Muse Voice Transcribe supplies realtime Arabic transcripts. Global indexed retrieval runs outside the UI actor.
+- Muse Spark 1.3 is wired as an opt-in candidate resolver with strict supplied-ID validation, abstention and stale-response rejection.
+- Spark ambiguity resolution is limited to three requests per run; source alignment has a separate three-new-verse limit. Actual provider validation passed three synthetic cases, including one recovery after matcher abstention. Representative live benefit remains pending.
+- Long ayahs use automatic compact source portions during listening. Manual paging is restricted to separate display tests. New physical layout validation remains pending.
+- Fifty-two core tests, the actual PCM callback, synthetic WebSocket and Spark HTTP probes passed. Signed build/install/version verification passed. Consult the latest checkpoint for Build 28 device launch status.
+- Full reference availability and selected regression cases do not establish recognition accuracy for every ayah.
+
+## Delivery requirements
+
+### 1. Canonical corpus
+
+Bundle the full aligned reference and preserve every displayed Arabic/translation string verbatim with existing attribution and notices. Normalize separate recognition copies only. Validate unique IDs, source alignment, nonempty text and complete corpus coverage. No model may author Quran text or a replacement translation.
+
+### 2. Global retrieval
+
+Identify the passage from incoming recitation without requiring the wearer to choose a surah. Use a fast local index to retrieve a small candidate set across the full corpus, then apply detailed matching only to those candidates. Run retrieval outside the UI actor. Do not scale the existing seven-row dynamic-programming scan directly to all rows on the main thread.
+
+Use recent verified verse IDs to follow sequence, pauses, repeats, backtracking and passage changes. Preserve the current fast local path for strong, distinctive evidence. Short-opening shortcuts must be unique in the applicable retrieval context; uniqueness inside Al-Fatihah alone is insufficient for the whole corpus.
+
+Shared basmala phrases and other identical text may remain unresolved until more context arrives. Keep the last verified display or show an identifying status. Do not invent a surah assignment to make the UI advance.
+
+### 3. Muse Spark decision layer
+
+Integrate Muse Spark as a bounded ambiguity resolver over retrieved candidates and recent verified context. It receives the ASR fragment as untrusted data, a small candidate list and recent position. Constrain output to supplied verse identifiers or abstention, then independently validate the identifier before canonical lookup.
+
+Strong local matches should remain immediate. Invoke Spark only where its contribution is useful, not for every streaming partial. Deduplicate in-flight requests and discard stale responses after Stop or a newer passage decision. Identical phrases without distinguishing context require abstention; a model cannot supply missing evidence.
+
+Measure matcher-only versus matcher-plus-Spark decisions on shared phrases and noisy fragments. Claim a benefit only after the comparison demonstrates one. Spark does not generate displayed Quran text, translations or unvalidated religious rulings.
+
+## Acceptance
+
+- All 6,236 Arabic and translation rows are bundled, aligned and unchanged.
+- Global retrieval handles distinctive samples from different surahs and middle-of-surah entry without manual selection.
+- Identical/shared fragments are handled as ambiguous when evidence is insufficient.
+- A short live run samples more than the original passage, including an external recitation source with permission.
+- Pauses, repeats and passage changes have regression tests and selected live checks.
+- Spark protocol/response validation has local tests; a real approved Spark call and measured comparison establish actual integration.
+- The phone and lens identify Muse versus local fallback. Every tested artifact shows version and build.
+- Report measured initial-session timings separately from per-ayah or word-aligned display delay. SDK send completion does not prove visible pixels at that instant.
+
+## Boundaries
+
+This is a foreground hackathon prototype. Battery endurance, exhaustive background/locked-phone operation, production accounts, App Store release and broad environmental hardening remain deferred.
+
+Keep a verified HFP-only microphone route; do not silently substitute the phone microphone. Retain audio-first display startup, bounded queues, cleanup and cancellation. No keys in the app bundle, source, chat or logs; the current key is provisioned privately into device-only Keychain.
+
+Live paid calls and external audio transfer must fit the current private authorization scope. An earlier single Voice Transcribe test does not authorize ongoing spend, dataset upload or Spark calls. Prepare concrete testable code before requesting the final paid validation approval.
+
+## Follow-on scoring work
+
+After full-Quran retrieval and the meaningful Spark role are validated, collect a small user-benefit evaluation and produce the three-minute video with actual lens output, clear model roles, new-work provenance and honest evidence. Additional isolated-surah expansion is superseded by complete-corpus integration.
+
+## October 29 change: automatic within-ayah following
+
+The live lens must show a compact portion corresponding to current recitation. It must not require Next/Previous during listening. Manual pagination remains a separate display test only.
+
+1. Track a supported word position inside a matched ayah from current Muse transcript evidence. Hold on unrelated/ambiguous fragments; support middle entry and deliberate repeats. Verify with exact/noisy/cumulative/ambiguous regression cases.
+2. Use compact source slices. Arabic and English must be exact substrings of the published references. Muse Spark may supply paired word boundaries only; validate monotonic complete coverage and display bounds before using them. Never display model-authored text.
+3. Cache accepted alignments per source verse. Arabic follows immediately while an uncached translation alignment is prepared. Unaligned translation stays available on the phone, rather than implying arbitrary word alignment. Apply new alignments only to the current session/verse. Limit new alignment calls to three per run and avoid repeated failed calls.
+4. Recompute the selected portion on each supported transcript update, even when the verse ID remains unchanged. Reset on passage change/Stop; prevent late responses and duplicate sends.
+5. Live lens layout uses one compact header, Arabic and the paired Pickthall portion when available. Remove navigation controls from the listening display. Verify source bounds over the full corpus; actual readability still requires the physical lens test.
+6. Run core regressions, actual client probes, signed build/install/version verification and a live probe. Record what was verified and what remains physical-user testing.
+
+This is phrase-level following from transcript evidence, not acoustic word timestamps. Full-Quran scope remains unchanged. First-use translation alignment can take time; subsequent uses load the validated cache.
+
+## October 29 refinement: reading context and display scheduling
+
+The live window may include the current source portion plus the next portion when their combined Arabic is at most 84 grapheme clusters and English at most 150 characters. Preserve contiguous source spans. This is visible upcoming context, not a claim those words were already recognized. Keep individual alignment bounds unchanged.
+
+The phone's primary live card must mirror the same selected window; full ayah text remains separately accessible. This makes phone/lens comparison meaningful.
+
+Recitation processing must not wait for each SDK display send. Use one send in flight and one latest pending frame. Replace superseded pending frames; invalidate them on Stop. Measure queue waiting and SDK completion separately, without claiming visible-pixel latency. Verify delayed-send coalescing and cancellation with controlled async tests, then perform the same physical check.
