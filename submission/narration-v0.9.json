@@ -1,0 +1,64 @@
+{
+  "version": "0.9",
+  "status": "Production narration independently verified; final measured allocation approved",
+  "provider": "OpenAI",
+  "model": "gpt-realtime-2.1",
+  "voice": "cedar",
+  "speed": 1,
+  "delivery_reference": "submission/narration-v0.7.json",
+  "instructions": "Read only the supplied script exactly once, including every final word. One continuous English take. Quran is pronounced kuh-raan. No introduction, added words, music or effects. Tell one friend about a possibility that you find exciting. Conversational, present, grounded, with light energy. Around175 words per minute, with an easy flow. Let the explanation flow with engaged curiosity; give the opening question sincere curiosity. Ease off naturally at the paragraph end. Use subtle pitch movement, soft links between words, selective emphasis and a few tiny thinking pauses. Deliver connected thoughts rather than separate slogans. Keep the voice personal and informal, without a presenter cadence or theatrical emphasis. Pronounce Ayah Lens as eye-ah lens, Hifz as hifz, Muse as myooz. Say names as written, without speaking pronunciation notes.",
+  "approved_opening_sha256": "4d15303af416215071544db08ff1cc5ab4c268c0b18193606a0a28595d830423",
+  "clips": [
+    {
+      "id": "opening",
+      "text": "For many who don’t understand Arabic, the sound is familiar. Two billion Muslims, roughly a quarter of humanity. The potential impact is enormous: helping listeners follow the meaning of a daily recitation, without interrupting it. We want to understand what Allah is saying. But stopping to look up the meaning takes us away from the recitation. What if your glasses became your personal Quran translator? The meaning, right in front of your eyes. The text follows the recitation automatically. No scrolling. No tapping. Just listen. And understand.",
+      "instructions": "Read only the supplied English script exactly once, with every word complete. Same Cedar voice, selected B delivery: tell one friend about an idea you find exciting. Conversational, present, grounded, lightly animated, natural pitch variation and selective emphasis. Connect clauses into flowing thoughts. Use only brief natural sentence pauses, about a fifth of a second; no dramatic rhetorical gaps or separate slogan delivery. Maintain an easy engaged pace around 175–185 words per minute. Aim for 29–32 seconds of complete speech, without rushing articulation. Give the opening question sincere curiosity and finish warmly. No introductions, extra words, music or effects. Quran is pronounced kuh-raan. Ayah Lens is pronounced eye-ah lens as two clearly separate words. Muse is pronounced myooz. Say the supplied words, not the pronunciation guidance."
+    },
+    {
+      "id": "product",
+      "text": "Meet Ayah Lens: Meta Ray-Ban Display, Muse Voice and Muse Spark, bringing Quran recitation and its published English meaning into view."
+    },
+    {
+      "id": "use_cases",
+      "text": "The Quran is part of five daily prayers. Imagine following the meaning during prayer, or listening to a reciter on television, with your hands free."
+    },
+    {
+      "id": "meta_challenge",
+      "text": "The Quran contains over six thousand verses. Finding the right one from live recitation is challenging. Phrases repeat across different passages, and a listener can join halfway through a verse."
+    },
+    {
+      "id": "meta_pipeline",
+      "text": "The glasses capture the recitation. Muse Voice turns that audio into a live Arabic transcript. Our software searches the Quran reference and tracks the listener’s position, even inside a long verse. Muse Spark helps resolve uncertain matches and pair Arabic portions with published English meaning. Readable portions reach the glasses display automatically as the recitation continues. Our software checks that the displayed wording comes directly from the published sources. Spark’s pairing plans are cached for these demonstrations. Transcription and passage tracking run live.",
+      "instructions": "Read only the supplied English script exactly once, with every word complete. Same Cedar voice, selected B delivery: tell one friend about an idea you find exciting. Conversational, present, grounded, lightly animated, natural pitch variation and selective emphasis. Connect clauses into flowing thoughts. Use only brief natural sentence pauses, about a fifth of a second; no dramatic rhetorical gaps or separate slogan delivery. Maintain an easy engaged pace around 175–185 words per minute. Aim for 27–30 seconds of complete speech, without rushing articulation. Give the opening question sincere curiosity and finish warmly. No introductions, extra words, music or effects. Quran is pronounced kuh-raan. Ayah Lens is pronounced eye-ah lens as two clearly separate words. Muse is pronounced myooz. Say the supplied words, not the pronunciation guidance."
+    },
+    {
+      "id": "hifz",
+      "text": "For Hifz, or Quran memorization, you can turn off English and keep Arabic in view while rehearsing. Turn the meaning back on whenever you want to follow it."
+    },
+    {
+      "id": "foundation",
+      "text": "Built during this hackathon, the prototype covers the complete Quran reference. Fifty-nine core tests check matching, source preservation and display delivery.",
+      "instructions": "Read only the supplied English script exactly once, with every word complete. Same Cedar voice, selected B delivery: tell one friend about an idea you find exciting. Conversational, present, grounded, lightly animated, natural pitch variation and selective emphasis. Connect clauses into flowing thoughts. Use only brief natural sentence pauses, about a fifth of a second; no dramatic rhetorical gaps or separate slogan delivery. Maintain an easy engaged pace around 175–185 words per minute. Aim for 8–9 seconds of complete speech, without rushing articulation. Give the opening question sincere curiosity and finish warmly. No introductions, extra words, music or effects. Quran is pronounced kuh-raan. Ayah Lens is pronounced eye-ah lens as two clearly separate words. Muse is pronounced myooz. Say the supplied words, not the pronunciation guidance."
+    },
+    {
+      "id": "close",
+      "text": "The potential impact is enormous. Hear the recitation. Follow the meaning.",
+      "instructions": "Read only the supplied English script exactly once, with every word complete. Same Cedar voice, selected B delivery: tell one friend about an idea you find exciting. Conversational, present, grounded, lightly animated, natural pitch variation and selective emphasis. Connect clauses into flowing thoughts. Use only brief natural sentence pauses, about a fifth of a second; no dramatic rhetorical gaps or separate slogan delivery. Maintain an easy engaged pace around 175–185 words per minute. Aim for 4.5–6.5 seconds of complete speech, without rushing articulation. Give the opening question sincere curiosity and finish warmly. No introductions, extra words, music or effects. Quran is pronounced kuh-raan. Ayah Lens is pronounced eye-ah lens as two clearly separate words. Muse is pronounced myooz. Say the supplied words, not the pronunciation guidance."
+    }
+  ],
+  "spoken_word_count": 306,
+  "quiet_budget_seconds": 52,
+  "transition_budget_seconds": 1.2,
+  "max_duration_seconds": 179.9,
+  "timing_edit": "Controller approved production timing trims after actual first takes totaled144.8seconds. Remove repeated demo-cue narration; foundation21words and closing13words. Future teaching stays qualified on screen. Approved opening87words and all technical roles unchanged. Whole-paragraph connected B refinement only; no audio speeding or internal phrase cutting. Controller authorized one corrected-text foundation/close replacement: the prototype replaces repeated spoken brand; close leaves Ayah Lens on screen. Product introduction retains independently verified spoken brand. Original opening87 words remains exact.",
+  "cold_review": "Independent reviewer pass, November 4, loop1; exact opening, claims and timing budget checked",
+  "onscreen_qualifications": [
+    "Teaching support is future work and needs extensive testing."
+  ],
+  "demo_slots_seconds": {
+    "tv": 18,
+    "long_verse": 11,
+    "english_toggle": 7
+  },
+  "allocation_decision": "Measured final raw voice125.4seconds is kept untouched. Original listening/replay16seconds stays unchanged. Controller approved18/11/7second demo spaces and0.15secondperparagraph editorial breath, total1.2seconds. Final encoded frame quantization is checked by renderer."
+}
