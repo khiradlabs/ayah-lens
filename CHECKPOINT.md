@@ -1,5 +1,21 @@
 # Ayah Lens implementation checkpoint
 
+## November 3: script content accepted; three demo recordings pending
+
+Faraz approved the revised impact opening, requested the 6,000-verse technical challenge, accepted three demonstration shots and said the script was okay. Saved the current consolidated content as submission/DEMO-SCRIPT-V0.9.md with 415 spoken words. This supersedes the old 274-word draft and pending opening approval. B remains selected Cedar delivery. Original v0.5 visual sequence remains the creative baseline; its 49-word opening is intentionally extended by Faraz’s approved lines. Masjid footage is cancelled.
+
+The three user-recorded shots are TV following, automatic within-verse changes for 73:20, and English off/on while Arabic follows. Instructions are saved in submission/DEMO-RECORDING-CHECKLIST-V0.9.md. Source files are not yet received or verified. submission/EDIT-HANDOFF-V0.9.md saves the remaining non-demo/assembly work.
+
+Timing remains unresolved: 415 words take approximately 142 seconds at the planned 175wpm before genuine proof, recitation-only moments and transitions. This is an estimate, not generated performance. Complete a timing edit without changing the approved opening or rushing/accelerating source recitation. Final master must be under 180 seconds. No v0.9 speech, images, capture or video has been generated. No app change, publish or submission occurred.
+
+Verification: local script/manifest comparison confirmed all current spoken passages and 415-word count; demo checklist includes all three accepted shots; manifest has no fixed output timestamps and no masjid scene. git diff --check passed. See this turn’s terminal receipt. No new app/hardware or final-media checks occurred.
+
+## Decisions and next task
+
+Content/creative direction is accepted for preparation. Final recorded voice timing, naturalness and complete encoded cut remain unreviewed. Next: perform the timing edit from submission/EDIT-HANDOFF-V0.9.md, using the approved impact opening and selected B. Faraz independently records the three shots. Do not wait for footage to prepare timing/editorial assets. Never fabricate missing proof.
+
+## Earlier history, superseded where it conflicts with the current direction
+
 ## Current result, November 3: v0.8 makes rubric evidence explicit
 
 Faraz asked for the scoring rubric to be clearer in narration, especially potentially large global impact. Produced build/video-v0.8/Ayah-Lens-Demo-v0.8.mp4 at175.066667seconds,5252frames,1080p30 and48kHz stereo. Final SHA2567de8371ae991c04f519a19a372350b08f0c6d0824cd79dd12f5b908ad485b9b9. Full script307words, with only following and close changed. Selected B and six unchanged performances were reused. Technical challenge is now spoken directly; closing says The impact could be enormous, cites roughly one quarter of humanity, and narrows the benefit to listeners who do not understand Arabic. Existing Meta Voice/Spark roles and actual demonstration remain narrated.

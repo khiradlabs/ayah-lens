@@ -1,0 +1,158 @@
+{
+  "draft": "0.9",
+  "status": "Content accepted for production preparation; timing pass remains. Three new user-recorded demos pending.",
+  "gate_source": "User: Restore the opening and slides we finalized. Keep B’s voice and add the scoring points to the narration. Show me the full revised script before rendering anything again.",
+  "picture_master": {
+    "path": "build/video-v0.5/Ayah-Lens-Demo-v0.5.mp4",
+    "sha256": "eda86f8188c7e8d472d700964eabf3ec65e50813e9639fc3936875f25764cfc8",
+    "source_speed": 1,
+    "reuse_original_slide_order": true,
+    "redesign_authorized": false
+  },
+  "approved_opening": {
+    "path": "build/video-v0.5-opening/Ayah-Lens-Opening-v0.5.mp4",
+    "sha256": "0ee67a247163bb5d01176c1bc6722ed28a9db7e338beee0d48912d7d869e9d2e",
+    "visual_sequence": [
+      "listen",
+      "problem",
+      "scale",
+      "hook",
+      "benefits",
+      "replay"
+    ],
+    "narration": "For many who don’t understand Arabic, the sound is familiar. Two billion Muslims, roughly a quarter of humanity. The potential impact is enormous: helping listeners follow the meaning of a daily recitation, without interrupting it. We want to understand what Allah is saying. But stopping to look up the meaning takes us away from the recitation. What if your glasses became your personal Quran translator? The meaning, right in front of your eyes. The text follows the recitation automatically. No scrolling. No tapping. Just listen. And understand.",
+    "narration_must_match": true,
+    "original_duration_seconds": 38,
+    "text_source": "submission/DEMO-SCRIPT-V0.9.md; approved opening now extends original v0.5 wording",
+    "duration_status": "New delivery unmeasured; original 38-second opening is a visual template, not a fixed duration."
+  },
+  "voice": {
+    "provider": "OpenAI",
+    "model": "gpt-realtime-2.1",
+    "voice": "cedar",
+    "delivery_reference": "submission/narration-v0.7.json",
+    "reference_is_delivery_only": true,
+    "use_audition_text_as_story": false
+  },
+  "timing_status": "415 spoken words, approximately 142 seconds at 175wpm before demonstration pauses. Legacy timings are reference only. Complete timing pass under 180s; no recitation speedup or artificial narration acceleration.",
+  "scenes": [
+    {
+      "id": "listen",
+      "original_slide": "Original Just listen opening",
+      "narration": "",
+      "note": "Original recitation only.",
+      "legacy_reference_start": 0,
+      "legacy_reference_end": 8
+    },
+    {
+      "id": "opening",
+      "original_slide": "Original problem → population → question → animated benefits",
+      "narration": "For many who don’t understand Arabic, the sound is familiar. Two billion Muslims, roughly a quarter of humanity. The potential impact is enormous: helping listeners follow the meaning of a daily recitation, without interrupting it. We want to understand what Allah is saying. But stopping to look up the meaning takes us away from the recitation. What if your glasses became your personal Quran translator? The meaning, right in front of your eyes. The text follows the recitation automatically. No scrolling. No tapping. Just listen. And understand.",
+      "note": "Use explicitly approved impact/Allah wording, keeping original visual order. Do not substitute B audition words.",
+      "legacy_reference_start": 8,
+      "legacy_reference_end": 30
+    },
+    {
+      "id": "meaning_reveal",
+      "original_slide": "Original recitation replay with genuine meaning in view",
+      "narration": "",
+      "note": "Original recitation only. No voiceover.",
+      "legacy_reference_start": 30,
+      "legacy_reference_end": 38
+    },
+    {
+      "id": "product",
+      "original_slide": "Original Ayah Lens / glasses / Meta stack reveal",
+      "narration": "Meet Ayah Lens: Meta Ray-Ban Display, Muse Voice and Muse Spark, bringing Quran recitation and its published English meaning into view.",
+      "note": "Keep the original product slide and illustration labels.",
+      "legacy_reference_start": 38,
+      "legacy_reference_end": 48
+    },
+    {
+      "id": "use_cases",
+      "original_slide": "Original prayer and television use-case slide",
+      "narration": "The Quran is part of five daily prayers. Imagine following the meaning during prayer, or listening to a reciter on television, with your hands free.",
+      "note": "Retain the existing on-screen prayer disclaimer.",
+      "legacy_reference_start": 48,
+      "legacy_reference_end": 60
+    },
+    {
+      "id": "tv_demo",
+      "original_slide": "TV recitation demonstration replacing the masjid reservation",
+      "narration": "Watch the reciter on television. As the recitation continues, Ayah Lens automatically follows the passage and brings its meaning into view.",
+      "note": "Faraz will record TV following; see recording checklist. No masjid reservation. Preserve genuine speed and recitation.",
+      "legacy_reference_start": 60,
+      "legacy_reference_end": 90
+    },
+    {
+      "id": "long_verse",
+      "original_slide": "Original same-ayah / changing-portions demonstration",
+      "narration": "Watch the verse number. It stays the same. Ayah Lens is following our position inside this single long verse.",
+      "note": "Use the original long-passage slide and genuine phone preview, not a new layout.",
+      "legacy_reference_start": 90,
+      "legacy_reference_end": 112
+    },
+    {
+      "id": "meta_roles",
+      "original_slide": "Original animated technical diagram",
+      "narration": "The Quran contains over six thousand verses. Finding the right one from live recitation is challenging. Phrases repeat across different passages, and a listener can join halfway through a verse. Meta’s hardware and AI work together here. The glasses capture the recitation. Muse Voice turns that audio into a live Arabic transcript. Our software searches the Quran reference and tracks the listener’s position, even inside a long verse. Muse Spark helps resolve uncertain matches and pair Arabic portions with published English meaning. Then we deliver readable portions to the small glasses display, updating automatically as the recitation continues. Our software checks that the displayed wording comes directly from the published sources. Spark’s pairing plans are cached for these demonstrations. Transcription and passage tracking run live.",
+      "note": "Keep source attribution and cached/live labels. Displayed words come from published sources.",
+      "legacy_reference_start": 112,
+      "legacy_reference_end": 138
+    },
+    {
+      "id": "hifz",
+      "original_slide": "Original memorization and English-meaning choice slide",
+      "narration": "For Hifz, or Quran memorization, you can turn off English and keep Arabic in view while rehearsing. Turn the meaning back on whenever you want to follow it.",
+      "note": "New actual toggle proof pending from Faraz; explanatory graphic alone is not a filmed toggle.",
+      "legacy_reference_start": 138,
+      "legacy_reference_end": 152
+    },
+    {
+      "id": "foundation",
+      "original_slide": "Original full-reference / event work / tests / future slide",
+      "narration": "Built during this hackathon, Ayah Lens combines glasses integration with automatic following. Its reference covers the complete Quran. Fifty-nine core tests check matching, source preservation and display delivery. Teaching support would need extensive testing.",
+      "note": "Keep 114 surahs / 6,236 ayahs as reference coverage and the recorded 59-test receipt. Teaching stays future.",
+      "legacy_reference_start": 152,
+      "legacy_reference_end": 168
+    },
+    {
+      "id": "close",
+      "original_slide": "Original listening reprise and closing card",
+      "narration": "The potential impact is enormous. For listeners who don’t understand Arabic, a daily recitation can become an opportunity to follow the meaning, without holding a phone or turning a page. Across a global Muslim community of roughly two billion people, that is a meaningful problem to solve. Ayah Lens. Hear the recitation. Follow the meaning.",
+      "note": "Keep the original closing slide. Global context is established by the unchanged two-billion / one-quarter opening.",
+      "legacy_reference_start": 168,
+      "legacy_reference_end": 179.9
+    }
+  ],
+  "rubric_spoken_evidence": {
+    "impact_30": [
+      "opening",
+      "use_cases",
+      "close"
+    ],
+    "meta_tooling_25": [
+      "product",
+      "meta_roles"
+    ],
+    "technical_execution_20": [
+      "long_verse",
+      "meta_roles",
+      "foundation"
+    ],
+    "demo_25": [
+      "meaning_reveal",
+      "tv_demo",
+      "long_verse",
+      "hifz"
+    ]
+  },
+  "media_generated_this_revision": false,
+  "spoken_word_count": 415,
+  "user_updates": {
+    "demo_choice": "Masjid cancelled. Faraz will record TV following, long verse 73:20, and English off/on.",
+    "opening_text": "Explicitly approved impact/Allah wording is consolidated in the script.",
+    "recording_checklist": "submission/DEMO-RECORDING-CHECKLIST-V0.9.md"
+  },
+  "approval_source": "User approved the impact opening, requested the 6,000-verse technical detail, accepted all three demo shots, then said the script was okay and asked to finish the rest."
+}

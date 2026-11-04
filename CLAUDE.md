@@ -64,3 +64,5 @@ Read NEXT-TASK.md, CHECKPOINT.md and SPEC.md before implementation. This is a ha
 - Sampling only after a transition missed source-text collisions and doubled headings during its first half-second. Keep existing layers stationary and animate only incoming content. Verify consecutive encoded frames at boundaries and internal narration cues, not only average image-change scores.
 
 - Retiming narration changes the final visible replay frame. A hard-coded held card rewound the source at the model explanation. Derive it from integer timeline bounds. Verify following_last_frame tests and consecutive encoded replay-to-model frames.
+
+- A voice audition replaced the approved opening during a full rewrite. Lock the approved picture and opening words separately from the voice selection. Verify RESTORATION-V0.9.json against the v0.5 source hashes and timing.py opening before generation. When Faraz requests the complete script first, no TTS or rendering occurs until that review is approved.
