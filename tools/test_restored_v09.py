@@ -14,6 +14,11 @@ class RestoredTests(unittest.TestCase):
   x=self.manifest();self.assertEqual(m.validate_narration(x),json.loads((ROOT/'submission/narration-v0.9.json').read_text())['spoken_word_count'])
   x['clips'][0]['text']='What if your glasses became your personal Quran translator?'
   with self.assertRaisesRegex(ValueError,'approved opening'):m.validate_narration(x)
+ def test_original_listener_art_fades_into_reading_window_handoff(self):
+  self.assertEqual(m.opening_art_opacity('hook',20,37),1)
+  self.assertEqual(m.opening_art_opacity('population',8,37),.45)
+  self.assertEqual(m.opening_art_opacity('hands_free',37,37),0)
+  self.assertGreater(m.opening_art_opacity('hands_free',36.3,37),0)
  def test_source_range_is_converted_before_tagging(self):
   self.assertIn('in_range=pc:out_range=tv',m.SOURCE_FILTER)
   self.assertIn('in_color_matrix=bt601:out_color_matrix=bt709',m.SOURCE_FILTER)

@@ -122,8 +122,12 @@ def opening_stage(t,duration,cues=None):
 def native_preview():
  return Image.open(ROOT/'tools/problem-opening/public/media/native-crop-frame0.png').convert('RGB').resize((1664,416))
 
+def opening_art_opacity(stage,t,duration):
+ if stage=='hands_free':return 1-ease(t,max(0,duration-.8),.8)
+ return .45 if stage in ('population','impact') else 1
+
 def opening_image(t,duration,cues=None,handsfree=None):
- id,local,span=opening_stage(t,duration,cues);im=artbase(.45 if id in ('population','impact') else 1);d=ImageDraw.Draw(im)
+ id,local,span=opening_stage(t,duration,cues);im=artbase(opening_art_opacity(id,t,duration));d=ImageDraw.Draw(im)
  # Original opening placement and type; approved additions use the same left editorial field.
  labels={'problem':'A familiar sound. An unfamiliar language.','population':'One listener. A worldwide community.','impact':'A daily need. A global opportunity.','need':'Understanding matters.','hook':'Ayah Lens','meaning':'01 / Meaning in view','following':'02 / Follows automatically','hands_free':'03 / Hands-free following'}
  txt(im,(100,65),labels[id],25,INK,1600)
