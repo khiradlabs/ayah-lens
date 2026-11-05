@@ -1,7 +1,7 @@
 {
-  "version": "1.2",
-  "notes": "Everything that may change when new clips arrive lives here. Times in 'in', 'out' and 'from_source_s' are seconds in the SOURCE file. 'start_s', 'end_s' are seconds from the start of the section picture. Paths are relative to the ayah-lens project root. Set fallback.enabled to true to ship without the s5 placeholder. v1.1 adds the opening fades and title card, the s3b architecture section with the API-references beat, the s6 deep narration and the rubric plates. v1.1b: s6 narration now starts after the API card has left; see the s3b end_at and the s6 gap. v1.2: 0.5 s picture crossfades at every section boundary (timing.crossfade_s), narration starts on the first frame after each fade, new narration files s3-v12, s3b-v12, s6-v12, s7-v12, node 6 and s7 plates reworded, budget savings in s1 / s3b / s7. limits.cap_s is the hard cap; render_v1.py refuses a longer plan unless --allow-over-cap is given (then the file is named -OVER-CAP). v1.2 final: s6-v12 and s7-v12 were regenerated shorter (the stale-decisions sentence left s6, the first two sentences left s7), so s6 shows three lines; the phone clip stays at 24.0 s because its last phrase (22.6-23.6 s) is speech, not silence.",
-  "output": "build/video-v1.0/Ayah-Lens-Demo-v1.2.mp4",
+  "version": "1.3",
+  "notes": "Everything that may change when new clips arrive lives here. Times in 'in', 'out' and 'from_source_s' are seconds in the SOURCE file. 'start_s', 'end_s' are seconds from the start of the section picture. Paths are relative to the ayah-lens project root. Set fallback.enabled to true to ship without the s5 placeholder. v1.1 adds the opening fades and title card, the s3b architecture section with the API-references beat, the s6 deep narration and the rubric plates. v1.1b: s6 narration now starts after the API card has left; see the s3b end_at and the s6 gap. v1.2: 0.5 s picture crossfades at every section boundary (timing.crossfade_s), narration starts on the first frame after each fade, new narration files s3-v12, s3b-v12, s6-v12, s7-v12, node 6 and s7 plates reworded, budget savings in s1 / s3b / s7. limits.cap_s is the hard cap; render_v1.py refuses a longer plan unless --allow-over-cap is given (then the file is named -OVER-CAP). v1.2 final: s6-v12 and s7-v12 were regenerated shorter (the stale-decisions sentence left s6, the first two sentences left s7), so s6 shows three lines; the phone clip stays at 24.0 s because its last phrase (22.6-23.6 s) is speech, not silence. v1.3: s7 close reworked so the Hifz and teacher ideas read as future uses (s7-v13 narration, a 'Today' line and a red 'NEXT, WITH MORE DEVELOPMENT' block of three 44 px lines); time budget steps applied: s3b card 4.5 -> 3.5 s, lens segment 5.0 -> 4.0 s, title hold 1.2 -> 0.8 s, s7 tail 1.5 -> 1.0 s.",
+  "output": "build/video-v1.0/Ayah-Lens-Demo-v1.3.mp4",
   "work_dir": "build/video-v1.0/work",
   "canvas": {"w": 1920, "h": 1080, "fps": 30},
   "palette": {"paper": "#ECE7D3", "ink": "#1E1E1E", "blue": "#465D79", "red": "#B94B37", "dim_mix": 0.55},
@@ -120,8 +120,8 @@
       "id": "s1",
       "name": "Cold open: the wearer, the title, what he sees",
       "narration": {
-        "duration_s": 30.2,
-        "note": "No narration file. Phone clip 0-24.0 s with its own audio (fade in 1.0 s, fade out 0.8 s), a title card (0.8 s crossfade in, 1.2 s hold, 0.8 s crossfade out into the lens recording, visible 23.2-26.0 s), then 5.0 s of the lens recording from 25.2 s with the bed fading in over 0.5 s. duration_s must equal 24.0 + 1.2 + 5.0."
+        "duration_s": 28.8,
+        "note": "No narration file. Phone clip 0-24.0 s with its own audio (fade in 1.0 s, fade out 0.8 s), a title card (0.8 s crossfade in, 0.8 s hold, 0.8 s crossfade out into the lens recording, visible 23.2-25.6 s), then 4.0 s of the lens recording from 24.8 s with the bed fading in over 0.5 s. duration_s must equal 24.0 + 0.8 + 4.0."
       },
       "voice": {
         "source": "establishing",
@@ -132,7 +132,7 @@
         "fade_in_s": 1.0,
         "fade_out_s": 0.8
       },
-      "bed": {"source": "glasses_desk", "in": 24.3, "start_s": 25.2, "fade_in_s": 0.5},
+      "bed": {"source": "glasses_desk", "in": 24.3, "start_s": 24.8, "fade_in_s": 0.5},
       "layers": [
         {"type": "paper"},
         {
@@ -177,7 +177,7 @@
         {
           "type": "card",
           "start_s": 23.2,
-          "end_s": 26.0,
+          "end_s": 25.6,
           "fade_s": 0.8,
           "valign": "middle",
           "lines": [
@@ -196,8 +196,8 @@
           "source": "glasses_desk",
           "label": "What I see through the glasses",
           "in": 24.3,
-          "out": 29.8,
-          "start_s": 25.2,
+          "out": 28.8,
+          "start_s": 24.8,
           "fade_s": 0.8,
           "crop": [0, 421, 976, 549],
           "dest": [0, 0, 1920, 1080],
@@ -213,7 +213,7 @@
           "lines": [
             {"text": "What I see through the glasses", "size": 48, "bold": true}
           ],
-          "start_s": 25.2,
+          "start_s": 24.8,
           "fade_s": 0.8
         }
       ]
@@ -467,8 +467,8 @@
       "narration": {
         "file": "build/video-v1.0/narration/s3b-v12.mp3",
         "end_at": {
-          "after_narration_end_s": 3.5,
-          "note": "The picture ends 3.5 s after the narration ends: the card slides in 1.0 s before the end of the voice and stays on screen 4.5 s from the start of the slide, so the finished diagram holds 2.0 s or more first. The 0.5 s crossfade into s6 starts at this cut and the s6 narration starts when it ends, so nothing is spoken over the card."
+          "after_narration_end_s": 2.5,
+          "note": "The picture ends 2.5 s after the narration ends: the card slides in 1.0 s before the end of the voice and stays on screen 3.5 s from the start of the slide, so the finished diagram holds 2.0 s or more first. The 0.5 s crossfade into s6 starts at this cut and the s6 narration starts when it ends, so nothing is spoken over the card."
         }
       },
       "bed": {"source": "phone_fatiha", "in": 29.0},
@@ -681,7 +681,7 @@
     {
       "id": "s7",
       "name": "Close",
-      "narration": {"file": "build/video-v1.0/narration/s7-v12.mp3", "cut_offset_s": -1.5},
+      "narration": {"file": "build/video-v1.0/narration/s7-v13.mp3", "cut_offset_s": -1.0},
       "bed": {
         "source": "glasses_desk",
         "in": 29.8,
@@ -729,31 +729,67 @@
         {
           "type": "plate",
           "role": "stat",
-          "pos": [60, 150],
+          "pos": [60, 130],
           "anchor": "tl",
-          "max_width": 1140,
+          "max_width": 860,
           "pad": 18,
           "fade_s": 0.3,
-          "appear_phrase": "For those memorizing",
+          "appear_phrase": "Today, Ayah Lens does one thing well",
           "lines": [
-            {"text": "Hifz: Arabic stays in view while you rehearse", "size": 48, "bold": true}
+            {"text": "Today: the meaning follows the recitation, hands free", "size": 48, "bold": true}
           ]
         },
         {
           "type": "plate",
           "role": "stat",
-          "pos": [60, 270],
+          "pos": [980, 130],
           "anchor": "tl",
-          "max_width": 1140,
+          "max_width": 880,
           "pad": 18,
           "fade_s": 0.3,
           "appear_phrase": "With more development",
+          "fill": "red",
           "lines": [
-            {
-              "text": "Future, with more development: a teacher that catches a wrong recitation",
-              "size": 48,
-              "bold": true
-            }
+            {"text": "NEXT, WITH MORE DEVELOPMENT", "size": 48, "bold": true, "color": "paper"}
+          ]
+        },
+        {
+          "type": "plate",
+          "role": "future",
+          "pos": [980, 240],
+          "anchor": "tl",
+          "max_width": 880,
+          "pad": 14,
+          "fade_s": 0.3,
+          "appear_phrase": "memorize the Quran",
+          "lines": [
+            {"text": "Support for those memorizing the Quran", "size": 44, "bold": true}
+          ]
+        },
+        {
+          "type": "plate",
+          "role": "future",
+          "pos": [980, 334],
+          "anchor": "tl",
+          "max_width": 880,
+          "pad": 14,
+          "fade_s": 0.3,
+          "appear_phrase": "flag a wrong recitation",
+          "lines": [
+            {"text": "Flag a wrong recitation for a learner", "size": 44, "bold": true}
+          ]
+        },
+        {
+          "type": "plate",
+          "role": "future",
+          "pos": [980, 428],
+          "anchor": "tl",
+          "max_width": 880,
+          "pad": 14,
+          "fade_s": 0.3,
+          "appear_phrase": "and bring the meaning",
+          "lines": [
+            {"text": "The meaning in any language", "size": 44, "bold": true}
           ]
         },
         {
@@ -785,8 +821,11 @@
     "s6_line1": "Transcription and tracking run live · Spark's English pairing prepared in advance",
     "s6_line2": "114 surahs · 6,236 ayahs bundled · 3 passages with prepared English · 59 tests passed, Nov 2",
     "s7_card": "Ayah Lens · github.com/khiradlabs/ayah-lens",
-    "s7_line1": "Hifz: Arabic stays in view while you rehearse",
-    "s7_line2": "Future, with more development: a teacher that catches a wrong recitation"
+    "s7_today": "Today: the meaning follows the recitation, hands free",
+    "s7_next_tag": "NEXT, WITH MORE DEVELOPMENT",
+    "s7_next1": "Support for those memorizing the Quran",
+    "s7_next2": "Flag a wrong recitation for a learner",
+    "s7_next3": "The meaning in any language"
   },
   "limits": {"cap_s": 178.0, "hard_s": 180.0}
 }

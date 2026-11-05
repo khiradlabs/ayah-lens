@@ -68,8 +68,8 @@ class EditJson(unittest.TestCase):
         for k, f in EDIT['fonts'].items():
             self.assertTrue(Path(f).exists(), f'font {k} missing: {f}')
         self.assertTrue(Path(EDIT['quran']['qpc_json']).exists())
-        self.assertEqual(EDIT['version'], '1.2')
-        self.assertTrue(EDIT['output'].endswith('Ayah-Lens-Demo-v1.2.mp4'))
+        self.assertEqual(EDIT['version'], '1.3')
+        self.assertTrue(EDIT['output'].endswith('Ayah-Lens-Demo-v1.3.mp4'))
         self.assertEqual(EDIT['limits'], {'cap_s': 178.0, 'hard_s': 180.0})
         for key, src in EDIT['footage'].items():
             self.assertTrue(R.rp(src['file']).exists(), key)
@@ -127,6 +127,8 @@ class EditJson(unittest.TestCase):
                             continue
                         small = l.get('role') in ('label', 'illustration', 'rubric', 'stat') or l['type'] == 'card'
                         floor = edit['label_px'] if small else edit['min_latin_px']
+                        if l.get('role') == 'future':
+                            floor = 44  # the three 'next, with more development' lines are 44 px by decision
                         self.assertGreaterEqual(ln['size'], floor, f"{s['id']}: {ln['text']!r}")
                     if l['type'] == 'pin':
                         self.assertGreaterEqual(l['size'], 56)
@@ -357,9 +359,9 @@ class Bounds(unittest.TestCase):
             p = by[sid]
             self.assertGreaterEqual(p['end_s'], p['speech_end'] - 1e-9, f'{sid}: the fade starts before the voice has stopped')
             self.assertLess(p['end_s'] - p['speech_end'], 1 / R.FPS + 1e-9, f'{sid}: the fade starts later than needed')
-        # the explicit ones: s3b holds the API card 3.5 s past the voice, s7 holds the close 1.5 s past it
-        self.assertAlmostEqual(by['s3b']['end_s'] - by['s3b']['narr_end'], 3.5, delta=1 / R.FPS)
-        self.assertAlmostEqual(by['s7']['end_s'] - by['s7']['narr_end'], 1.5, delta=1 / R.FPS)
+        # the explicit ones: s3b holds the API card 2.5 s past the voice, s7 holds the close 1.0 s past it
+        self.assertAlmostEqual(by['s3b']['end_s'] - by['s3b']['narr_end'], 2.5, delta=1 / R.FPS)
+        self.assertAlmostEqual(by['s7']['end_s'] - by['s7']['narr_end'], 1.0, delta=1 / R.FPS)
         self.assertAlmostEqual(by['s6']['narr_start'] - by['s3b']['end_s'], 0.5, places=9, msg='s6 starts when the fade off the API card ends')
         self.assertAlmostEqual(by['s2']['narr_start'] - by['s1']['end_s'], 0.5, places=9)
 
@@ -595,40 +597,40 @@ class OpeningS1(unittest.TestCase):
     def test_s1_is_the_phone_clip_the_title_card_then_the_lens_recording(self):
         s1 = s1_of(EST)
         self.assertNotIn('file', s1['narration'], 'no Callum s1 and no narration file')
-        self.assertEqual(s1['narration']['duration_s'], 30.2)
+        self.assertEqual(s1['narration']['duration_s'], 28.8)
         self.assertEqual([l['type'] for l in s1['layers']], ['paper', 'footage', 'plate', 'plate', 'card', 'footage', 'plate'])
         _, est, est_label, rubric, card, lens, lens_label = s1['layers']
         self.assertEqual((est['source'], est['in'], est['out'], est['start_s'], est['end_s'], est['fade_s']), ('establishing', 0.0, 24.0, 0, 24.0, 1.0))
-        self.assertEqual((lens['source'], lens['in'], lens['start_s'], lens['fade_s']), ('glasses_desk', 24.3, 25.2, 0.8))
-        self.assertAlmostEqual(lens['out'] - lens['in'], 5.5, places=6, msg='5.0 s in the section plus the 0.5 s fade tail')
-        # 24.0 s phone clip + 1.2 s title card hold + 5.0 s lens recording; each crossfade overlaps (0.8 s)
-        self.assertAlmostEqual(24.0 + 1.2 + (lens['out'] - lens['in'] - 0.5), s1['narration']['duration_s'], places=6)
-        self.assertEqual((card['start_s'], card['end_s'], card['fade_s']), (23.2, 26.0, 0.8))
+        self.assertEqual((lens['source'], lens['in'], lens['start_s'], lens['fade_s']), ('glasses_desk', 24.3, 24.8, 0.8))
+        self.assertAlmostEqual(lens['out'] - lens['in'], 4.5, places=6, msg='4.0 s in the section plus the 0.5 s fade tail')
+        # 24.0 s phone clip + 0.8 s title card hold + 4.0 s lens recording; each crossfade overlaps (0.8 s)
+        self.assertAlmostEqual(24.0 + 0.8 + (lens['out'] - lens['in'] - 0.5), s1['narration']['duration_s'], places=6)
+        self.assertEqual((card['start_s'], card['end_s'], card['fade_s']), (23.2, 25.6, 0.8))
         self.assertAlmostEqual(card['start_s'] + card['fade_s'], est['end_s'], places=6, msg='phone clip ends as the card is fully in')
         self.assertAlmostEqual(card['end_s'] - card['fade_s'], lens['start_s'], places=6, msg='the lens crossfade starts as the 2.0 s hold ends')
-        self.assertAlmostEqual(lens['start_s'] - est['end_s'], 1.2, places=6)
+        self.assertAlmostEqual(lens['start_s'] - est['end_s'], 0.8, places=6)
         self.assertEqual(est_label['lines'][0]['text'], 'Filmed on a phone')
         self.assertEqual(lens_label['lines'][0]['text'], 'What I see through the glasses')
-        self.assertEqual((est_label['end_s'], lens_label['start_s']), (24.0, 25.2))
+        self.assertEqual((est_label['end_s'], lens_label['start_s']), (24.0, 24.8))
         self.assertEqual(EST['footage']['establishing']['label'], 'Filmed on a phone')
         self.assertEqual(EST['footage']['establishing']['file'], 'recordings/v1/IMG_4535-sdr.mp4')
         # audio: voice fades in over 1.0 s and out over 0.8 s; the bed starts under the lens recording and fades in over 0.5 s
         self.assertEqual((s1['voice']['fade_in_s'], s1['voice']['fade_out_s'], s1['voice']['lufs']), (1.0, 0.8, -20.0))
-        self.assertEqual((s1['bed']['start_s'], s1['bed']['fade_in_s'], s1['bed']['in']), (25.2, 0.5, 24.3))
+        self.assertEqual((s1['bed']['start_s'], s1['bed']['fade_in_s'], s1['bed']['in']), (24.8, 0.5, 24.3))
 
     def test_the_cut_to_s2_is_where_the_lens_clip_ends(self):
         ps = EST_PLAN['sections'][0]
-        self.assertEqual((ps['id'], ps['frames'], ps['start_s'], ps['end_s']), ('s1', 906, 0.0, 30.2))
-        self.assertEqual(ps['render_frames'], 906 + 15, 'plus the 15-frame tail that fades into s2')
+        self.assertEqual((ps['id'], ps['frames'], ps['start_s'], ps['end_s']), ('s1', 864, 0.0, 28.8))
+        self.assertEqual(ps['render_frames'], 864 + 15, 'plus the 15-frame tail that fades into s2')
         s2 = EST_PLAN['sections'][1]
-        self.assertEqual((s2['id'], s2['start_s']), ('s2', 30.2))
-        self.assertAlmostEqual(s2['narr_start'], 30.2 + 0.5, places=6)
+        self.assertEqual((s2['id'], s2['start_s']), ('s2', 28.8))
+        self.assertAlmostEqual(s2['narr_start'], 28.8 + 0.5, places=6)
         with tempfile.TemporaryDirectory() as d:
             stages, _ = R.resolve_section(EST, EST_PLAN, s1_of(EST), PAL, Path(d))
         foots = [st for st in stages if st['kind'] == 'footage']
-        self.assertEqual((foots[0]['start'], foots[0]['end'], foots[1]['start'], foots[1]['end']), (0, 24.0, 25.2, None))
+        self.assertEqual((foots[0]['start'], foots[0]['end'], foots[1]['start'], foots[1]['end']), (0, 24.0, 24.8, None))
         self.assertAlmostEqual(foots[1]['in'], 24.3, places=3)
-        self.assertAlmostEqual(foots[1]['len'], 5.5, places=3)
+        self.assertAlmostEqual(foots[1]['len'], 4.5, places=3)
         self.assertAlmostEqual(foots[1]['start'] + foots[1]['len'], ps['render_frames'] / R.FPS, places=3)
         self.assertEqual((foots[0]['fade'], foots[1]['fade']), (1.0, 0.8))
 
@@ -681,7 +683,7 @@ class OpeningS1(unittest.TestCase):
         b1 = next(b for b in rep['bed'] if b['section'] == 's1')
         self.assertAlmostEqual(b1['measured_lufs'] + b1['gain_db'], -23.0, delta=0.1)
         win = rep['bed_windows']['s1']
-        self.assertAlmostEqual(win['start_s'], 25.2, places=3)
+        self.assertAlmostEqual(win['start_s'], 24.8, places=3)
         self.assertEqual(win['duck_db_min'], 0.0, 'the bed under the lens recording is at the normal level, not ducked')
         self.assertEqual([n['section'] for n in rep['narration']], ['s2', 's3', 's4', 's3b', 's6', 's7'])
         self.assertEqual(rep['stems']['duck_depth_db_min'], -16.0)
@@ -698,13 +700,13 @@ class OpeningS1(unittest.TestCase):
             raw = subprocess.check_output(['ffmpeg', '-v', 'error', '-i', str(Path(d) / 's1.mp4'), '-vf', 'scale=192:108:flags=area,format=gray',
                                            '-f', 'rawvideo', '-'])
         frames = np.frombuffer(raw, dtype=np.uint8).reshape(-1, 108, 192).astype(np.float64)
-        self.assertEqual(len(frames), 921, '906 frames plus the 15-frame fade tail')
+        self.assertEqual(len(frames), 879, '864 frames plus the 15-frame fade tail')
 
         def progress(a, b):
             ref = np.abs(frames[b] - frames[a]).mean()
             self.assertGreater(ref, 8, 'the two ends of a transition must differ')
             return np.array([np.abs(frames[f] - frames[a]).mean() / ref for f in range(a, b + 1)])
-        for name, a, b in (('fade in from paper', 0, 30), ('phone clip to title card', 696, 720), ('title card to lens recording', 756, 780)):
+        for name, a, b in (('fade in from paper', 0, 30), ('phone clip to title card', 696, 720), ('title card to lens recording', 744, 768)):
             p = progress(a, b)
             mid = int(((p > 0.05) & (p < 0.95)).sum())
             self.assertGreaterEqual(mid, 20, f'{name}: only {mid} gradual frames')
@@ -712,10 +714,10 @@ class OpeningS1(unittest.TestCase):
             self.assertGreaterEqual(float(p[-1]), 0.9, name)
         # the boundaries themselves never jump (the lens recording's own fast camera motion is not a cut)
         step = np.abs(np.diff(frames, axis=0)).mean(axis=(1, 2))
-        for a, b in ((0, 30), (690, 726), (750, 786)):
+        for a, b in ((0, 30), (690, 726), (738, 774)):
             self.assertLess(float(step[a:b].max()), 14.0, f'a hard cut near frame {a}-{b}')
         # the last frames, before the fade into s2: the lens clip's own camera pan makes the steps large but they ramp, never jump
-        self.assertLess(float(np.abs(np.diff(step[880:920])).max()), 10.0, 'a hard cut in the tail of s1')
+        self.assertLess(float(np.abs(np.diff(step[840:878])).max()), 10.0, 'a hard cut in the tail of s1')
 
 
 class S7Alignment(unittest.TestCase):
@@ -735,37 +737,59 @@ class S7Alignment(unittest.TestCase):
         self.assertEqual(card['appear_phrase'], 'Follow the meaning.')
         self.assertGreater(R.phrase_time(EST, ps, s7, card['appear_phrase']), t_hear)
 
-    def test_s7_shows_the_two_hifz_lines_over_the_footage_as_they_are_spoken(self):
+    def test_s7_says_today_then_shows_three_future_uses_over_the_footage_as_they_are_spoken(self):
         s7 = next(s for s in EST['sections'] if s['id'] == 's7')
         ps = next(p for p in EST_PLAN['sections'] if p['id'] == 's7')
-        plates = [l for l in s7['layers'] if l['type'] == 'plate' and l.get('role') == 'stat']
-        self.assertEqual([l['lines'][0]['text'] for l in plates],
-                         ['Hifz: Arabic stays in view while you rehearse', 'Future, with more development: a teacher that catches a wrong recitation'])
-        self.assertEqual([l['lines'][0]['text'] for l in plates], [EST['script_lines_exact']['s7_line1'], EST['script_lines_exact']['s7_line2']])
-        self.assertEqual([l['lines'][0]['size'] for l in plates], [48, 48])
-        self.assertEqual([l['appear_phrase'] for l in plates], ['For those memorizing', 'With more development'])
+        plates = [l for l in s7['layers'] if l['type'] == 'plate' and l.get('role') in ('stat', 'future')]
+        today, tag, *future = plates
+        x = EST['script_lines_exact']
+        self.assertEqual(today['lines'][0]['text'], 'Today: the meaning follows the recitation, hands free')
+        self.assertEqual(tag['lines'][0]['text'], 'NEXT, WITH MORE DEVELOPMENT')
+        self.assertEqual([l['lines'][0]['text'] for l in future],
+                         ['Support for those memorizing the Quran', 'Flag a wrong recitation for a learner', 'The meaning in any language'])
+        self.assertEqual([x['s7_today'], x['s7_next_tag'], x['s7_next1'], x['s7_next2'], x['s7_next3']], [l['lines'][0]['text'] for l in plates])
+        self.assertEqual([l['lines'][0]['size'] for l in (today, tag)], [48, 48])
+        self.assertEqual([l['lines'][0]['size'] for l in future], [44, 44, 44])
+        self.assertEqual((tag['fill'], tag['lines'][0]['color']), ('red', 'paper'), 'the NEXT tag is red')
+        self.assertEqual([l['appear_phrase'] for l in plates],
+                         ['Today, Ayah Lens does one thing well', 'With more development', 'memorize the Quran', 'flag a wrong recitation', 'and bring the meaning'])
+        text = R.narration_text(EST, s7)
+        for l in plates:
+            self.assertIn(l['appear_phrase'], text)
+        self.assertTrue(text.startswith('Today, Ayah Lens does one thing well: the meaning follows the recitation, hands free.'))
+        self.assertIn('With more development, the same foundation can support', text)
+        self.assertNotIn('That is where this is going', text)
         cues = [R.phrase_time(EST, ps, s7, l['appear_phrase']) for l in plates]
         t_hear = R.phrase_time(EST, ps, s7, 'Hear the recitation')
         t_close = R.phrase_time(EST, ps, s7, 'Follow the meaning.')
-        self.assertLess(cues[0], cues[1])
-        self.assertLess(cues[1], t_hear)
+        self.assertEqual(cues, sorted(cues), 'the lines appear in the order the voice reaches them')
+        self.assertEqual(len(set(round(c, 1) for c in cues)), 5)
+        self.assertLess(cues[-1], t_hear)
         self.assertLess(t_hear, t_close)
         self.assertGreaterEqual(t_close - t_hear, 1.0, 'the two short closing sentences snap to their own pauses')
-        self.assertLessEqual(ps['narr_end'] - ps['start_s'] - t_close, 1.2, 'the close card arrives on the last sentence')
-        text = R.narration_text(EST, s7)
-        self.assertIn('For those memorizing the Quran', text)
-        self.assertIn('With more development, a teacher that catches a wrong recitation', text)
-        self.assertTrue(text.startswith('Now the meaning can follow.'), 'the first two sentences left s7')
+        self.assertLessEqual(ps['narr_end'] - ps['start_s'] - t_close, 1.6, 'the close card arrives on the last sentence')
         card = next(l for l in s7['layers'] if l['type'] == 'card')
-        self.assertEqual(card['appear_phrase'], 'Follow the meaning.', 'the close card arrives on the last sentence')
-        self.assertEqual(s7['layers'].index(card), len(s7['layers']) - 1, 'the card is on top of the plates')
-        # both lines stay out of the lens text and inside the margins (the generic overlap test covers every section too)
+        self.assertEqual(card['appear_phrase'], 'Follow the meaning.')
+        self.assertEqual(s7['layers'].index(card), len(s7['layers']) - 1, 'the card is on top of the plates: they stay until it arrives')
         for l in plates:
-            bb = R.paint_plate(EST, PAL, l).getchannel('A').getbbox()
+            self.assertNotIn('end_s', l, 'the lines stay until the close card')
+        # layout: today on the left, the future block on the right, all above the lens text and clear of each other and the label
+        boxes = [R.paint_plate(EST, PAL, l).getchannel('A').getbbox() for l in plates]
+        for bb in boxes:
             self.assertLessEqual(bb[3], 559, 'above the lens text zone')
             self.assertLessEqual(bb[2], 1880)
-        # the future line says "with more development" and nothing that reads as a shipped feature
-        self.assertNotIn('catches a wrong recitation.', plates[1]['lines'][0]['text'])
+            self.assertGreaterEqual(bb[1], 118, 'below the top-right label')
+        self.assertLessEqual(boxes[0][2], boxes[1][0], 'the today line sits left of the future block')
+        for a, b in zip(boxes[1:], boxes[2:]):
+            self.assertLessEqual(a[3], b[1], 'the future block stacks top to bottom without overlap')
+        weights = [(b[2] - b[0]) * (b[3] - b[1]) for b in boxes]
+        self.assertGreater(sum(weights[1:]), 2 * weights[0], 'the future block carries more weight than the today line')
+        # the footage alignment still lands 2:282 on "Hear the recitation"
+        with tempfile.TemporaryDirectory() as d:
+            stages, _ = R.resolve_section(EST, EST_PLAN, s7, PAL, Path(d))
+        st = next(x_ for x_ in stages if x_['kind'] == 'footage')
+        self.assertAlmostEqual(st['start'] + (33.8 - st['in']), t_hear, delta=1.5 / R.FPS)
+        self.assertGreaterEqual(st['in'], 0)
 
     def test_s6_holds_on_the_desk_clip_44_to_52_beside_the_three_lines(self):
         f = layers('s6', 'footage', EST)[0]
@@ -782,8 +806,8 @@ class S7Alignment(unittest.TestCase):
 
     def test_s1_lens_recording_is_the_desk_clip_24_3_to_34_2(self):
         f = next(l for l in layers('s1', 'footage', EDIT) if l['id'] == 'main')
-        self.assertEqual((f['source'], f['in'], f['start_s']), ('glasses_desk', 24.3, 25.2))
-        self.assertAlmostEqual(f['out'] - f['in'], 5.5, places=6)
+        self.assertEqual((f['source'], f['in'], f['start_s']), ('glasses_desk', 24.3, 24.8))
+        self.assertAlmostEqual(f['out'] - f['in'], 4.5, places=6)
 
 
 class ToggleAndPlaceholder(unittest.TestCase):
@@ -1019,7 +1043,7 @@ class ApiCard(unittest.TestCase):
         for ln in wrapped:
             self.assertLessEqual(R.text_width(mono, 40, ln), self.card['right'][2] - 52 + 1)
 
-    def test_card_arrives_one_second_before_the_voice_ends_and_stays_four_and_a_half_after_a_two_second_diagram_hold(self):
+    def test_card_arrives_one_second_before_the_voice_ends_and_stays_three_and_a_half_after_a_two_second_diagram_hold(self):
         img = R.paint_api_card(EDIT, PAL, self.card)
         self.assertEqual(img.size, (W, H))
         ps = next(p for p in PLAN['sections'] if p['id'] == 's3b')
@@ -1029,8 +1053,8 @@ class ApiCard(unittest.TestCase):
         self.assertEqual((diagram['slide']['before_narration_end_s'], self.card['appear_before_narration_end_s']), (1.0, 1.0))
         self.assertAlmostEqual(start, slide, places=6, msg='the diagram leaves exactly as the card arrives')
         self.assertEqual(diagram['slide']['duration_s'], self.card['slide_in_s'])
-        self.assertAlmostEqual(ps['duration_s'] - start, 4.5, delta=1 / R.FPS + 0.01, msg='card on screen 4.5 s from the start of the slide until its fade out begins')
-        self.assertAlmostEqual(ps['end_s'] - ps['narr_end'], 3.5, delta=1 / R.FPS)
+        self.assertAlmostEqual(ps['duration_s'] - start, 3.5, delta=1 / R.FPS + 0.01, msg='card on screen 3.5 s from the start of the slide until its fade out begins')
+        self.assertAlmostEqual(ps['end_s'] - ps['narr_end'], 2.5, delta=1 / R.FPS)
         n8 = diagram['nodes'][-1]
         t8 = R.phrase_time(EDIT, ps, self.s3b, n8['cue']) + n8.get('cue_offset_s', 0.0)
         self.assertLessEqual(t8 + 2.0, start, 'the finished diagram holds at least 2.0 s before the card pushes in')
@@ -1047,7 +1071,7 @@ class OrderAndNarration(unittest.TestCase):
         self.assertEqual([s['id'] for s in EDIT['sections']], ['s1', 's2', 's3', 's4', 's3b', 's6', 's7'])
         files = {s['id']: Path(s['narration']['file']).name for s in EDIT['sections'] if s['narration'].get('file')}
         self.assertEqual(files, {'s2': 's2.mp3', 's3': 's3-v12.mp3', 's4': 's4-fallback.mp3', 's3b': 's3b-v12.mp3',
-                                 's6': 's6-v12.mp3', 's7': 's7-v12.mp3'})
+                                 's6': 's6-v12.mp3', 's7': 's7-v13.mp3'})
         for sid, name in files.items():
             self.assertTrue((R.ROOT / 'build/video-v1.0/narration' / name).exists(), name)
             self.assertGreater(len(R.narration_text(EDIT, next(s for s in EDIT['sections'] if s['id'] == sid))), 40)
@@ -1062,9 +1086,9 @@ class OrderAndNarration(unittest.TestCase):
 
     def test_s7_close_card_and_tail(self):
         s7 = next(s for s in EDIT['sections'] if s['id'] == 's7')
-        self.assertEqual(s7['narration']['cut_offset_s'], -1.5, 'the close holds 1.5 s past the voice (was 2.0 s)')
+        self.assertEqual(s7['narration']['cut_offset_s'], -1.0, 'the close holds 1.0 s past the voice (was 2.0 s in v1.1)')
         ps = next(p for p in PLAN['sections'] if p['id'] == 's7')
-        self.assertAlmostEqual(ps['end_s'] - ps['narr_end'], 1.5, delta=1 / R.FPS)
+        self.assertAlmostEqual(ps['end_s'] - ps['narr_end'], 1.0, delta=1 / R.FPS)
         card = next(l for l in s7['layers'] if l['type'] == 'card')
         self.assertEqual(' \u00b7 '.join(l['text'] for l in card['lines']), EDIT['script_lines_exact']['s7_card'])
         self.assertEqual(EDIT['audio']['final_fade_s'] + EDIT['audio']['final_quiet_s'], 1.0)
@@ -1121,13 +1145,13 @@ class NarrationSource(unittest.TestCase):
         by = {s['id']: s for s in own['sections']}
         self.assertNotIn('file', by['s1']['narration'], 's1 has no narration file: Faraz speaks on camera')
         stems = {sid: Path(s['narration']['file']).stem for sid, s in by.items() if s['narration'].get('file')}
-        self.assertEqual(stems, {'s2': 's2', 's3': 's3-v12', 's4': 's4-fallback', 's3b': 's3b-v12', 's6': 's6-v12', 's7': 's7-v12'})
+        self.assertEqual(stems, {'s2': 's2', 's3': 's3-v12', 's4': 's4-fallback', 's3b': 's3b-v12', 's6': 's6-v12', 's7': 's7-v13'})
         for sid, stem in stems.items():
             self.assertEqual(by[sid]['narration']['file'], f"build/video-v1.0/narration/own/{stem}.wav")
             self.assertTrue(by[sid]['narration']['callum_file'].endswith('.mp3'))
         own_t = R.apply_narration_source(TOG, 'own')
         self.assertEqual([Path(s['narration']['file']).stem for s in own_t['sections'] if s['narration'].get('file')],
-                         ['s2', 's3-v12', 's4', 's5', 's3b-v12', 's6-v12', 's7-v12'])
+                         ['s2', 's3-v12', 's4', 's5', 's3b-v12', 's6-v12', 's7-v13'])
         for a, b in zip(EDIT['sections'], own['sections']):
             for k in ('cut_offset_s', 'gap_before_s', 'end_at'):
                 self.assertEqual(a['narration'].get(k), b['narration'].get(k))

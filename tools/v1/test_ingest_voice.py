@@ -155,13 +155,13 @@ class Folder(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             src, out = Path(d) / 'in', Path(d) / 'own'
             src.mkdir()
-            names = [f's{i}' for i in range(1, 8)] + ['s1-fallback', 's4-fallback', 's3-short', 's3b-architecture', 's6-deep', 's3-v12', 's3b-v12', 's6-v12', 's7-v12']
+            names = [f's{i}' for i in range(1, 8)] + ['s1-fallback', 's4-fallback', 's3-short', 's3b-architecture', 's6-deep', 's3-v12', 's3b-v12', 's6-v12', 's7-v13', 's7-v12']
             for n in names:
                 shutil.copy(CALLUM / f'{n}.mp3', src / f'{n}.mp3')
             m = I.ingest_folder(src, out, CALLUM, log=lambda *_: None)
             self.assertEqual(sorted(f['id'] for f in m['files']), sorted(names))
             self.assertEqual((m['refused'], m['missing_required']), ([], []))
-            self.assertEqual(sorted(m['extra_ingested']), sorted(['s1', 's3', 's4', 's5', 's6', 's7', 's1-fallback', 's3-short', 's3b-architecture', 's6-deep']),
+            self.assertEqual(sorted(m['extra_ingested']), sorted(['s1', 's3', 's4', 's5', 's6', 's7', 's7-v12', 's1-fallback', 's3-short', 's3b-architecture', 's6-deep']),
                              'the old s3 and s6, the bridged s4, s5, s1 and s1-fallback are ingested but unused in the default film')
             for f in m['files']:
                 self.assertEqual(f['status'], 'ok', f)
@@ -194,8 +194,8 @@ class Folder(unittest.TestCase):
             src.mkdir()
             write_wav(src / 's1.wav', padded())
             m = I.ingest_folder(src, out, cal, log=lambda *_: None)
-            self.assertEqual(m['required_ids'], ['s2', 's3-v12', 's4-fallback', 's3b-v12', 's6-v12', 's7-v12'])
-            self.assertEqual(m['missing_required'], ['s2', 's3-v12', 's4-fallback', 's3b-v12', 's6-v12', 's7-v12'])
+            self.assertEqual(m['required_ids'], ['s2', 's3-v12', 's4-fallback', 's3b-v12', 's6-v12', 's7-v13'])
+            self.assertEqual(m['missing_required'], ['s2', 's3-v12', 's4-fallback', 's3b-v12', 's6-v12', 's7-v13'])
             self.assertEqual([f['id'] for f in m['files']], ['s1'])
 
 
